@@ -16,7 +16,7 @@ module Facebook
         signature, signed_params = signed_request.split('.')
 
         # Verify signature
-        if signed_request_is_valid?("1d352a9612df9715e3afad5ebe8c2b9b", signature, signed_params)
+        if signed_request_is_valid?("8878da4199b3af4cacbf188b15c21517", signature, signed_params)
           # Parse JSON
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
 
