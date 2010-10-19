@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Fb user:</b>
+  <%= @rental_unit.fb_user_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @rental_unit.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @rental_unit.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_rental_unit_path(@rental_unit) %> |
+<%= link_to 'Back', rental_units_path %>

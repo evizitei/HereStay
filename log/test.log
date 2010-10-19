@@ -1,0 +1,32 @@
+
+
+Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:16:29 -0500 2010
+  Processing by CanvasController#index as HTML
+Completed   in 6ms
+
+
+Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:16:29 -0500 2010
+  Processing by CanvasController#index as HTML
+Completed   in 1ms
+
+
+Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:17:39 -0500 2010
+  Processing by CanvasController#index as HTML
+Rendered canvas/index.html.haml within layouts/canvas (1.9ms)
+Completed 200 OK in 4ms (Views: 4.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:17:39 -0500 2010
+  Processing by CanvasController#index as HTML
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:24:10 -0500 2010
+  Processing by CanvasController#index as HTML
+Rendered canvas/index.html.haml within layouts/canvas (2.0ms)
+Completed 200 OK in 4ms (Views: 4.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:24:10 -0500 2010
+  Processing by CanvasController#index as HTML
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.0ms)

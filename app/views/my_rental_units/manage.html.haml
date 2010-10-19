@@ -1,0 +1,24 @@
+:erb
+  <script>
+  <!--
+    Facebook.showPermissionDialog('email', function(){
+      //do nothing
+    });
+  //-->
+  </script>
+#profile_box{:style=>"width:200px;float:right;"}
+  %p Having HereStay as a profile tab lets your listings show up on your profile page
+  %fb:add-profile-tab
+%fb:profile-pic{:size=>"small",:uid=>"loggedinuser"}
+%fb:header
+  %fb:name{:uid=>"loggedinuser",:useyou=>"false",:possessive=>"true"}
+  Listings:
+%br
+=render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>true}
+%br
+%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+  %a{:href=>"/#{fb_app_name}/account/edit",:requirelogin=>1}
+    %input{:type=>"button",:value=>"Edit My Account"}
+%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+  %a{:href=>"/#{fb_app_name}/my_rental_units/new",:requirelogin=>1}
+    %input{:type=>"button",:value=>"Add Listing"}

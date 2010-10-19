@@ -1,0 +1,55 @@
+:erb
+  <script>
+  <!--
+    Facebook.showPermissionDialog('email', function(){
+      //do nothing
+    });
+  //-->
+  </script>
+%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;margin-right:300px;"}
+  %a{:href=>"/#{fb_app_name}/bookings/discuss?id=#{@rental_unit.id}",:requirelogin=>1}
+    %input{:type=>"button",:value=>"Book"}
+%fb:header= @rental_unit.name
+%br
+%br
+=render(:partial=>"share_unit",:object=>@rental_unit)
+#tab_content.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+  %table.dataTable
+    %tbody
+      %fb:if-is-friends-with-viewer
+        %tr.dataRow
+          %th
+          %td.data
+            %a.profile_action.actionspro_a{:href=>"/ajax/messaging/composer.php?id=#{@rental_unit.fb_user_id}",:rel=>"dialog",:id=>"profile_action_send_message"} 
+              Send
+              %fb:name{:uid=>@rental_unit.fb_user_id,:useyou=>"false"}
+              a message
+        %td.rightCol
+      %tr.spacer
+        %td{:colspan=>3}
+          %hr
+      %tr.dataRow
+        %td{:colspan=>3}=render(:partial=>"info",:object=>@rental_unit)
+      %tr.spacer
+        %td{:colspan=>3}
+          %hr
+      %tr.dataRow
+        %td{:colspan=>3}
+          %fb:iframe{:src=>"http://www.micasa-fb.com/rental_units/#{@rental_unit.id}/gallery",:smartsize=>"false",:frameborder=>"0",:height=>"400",:width=>"600",:scrolling=>"no"}
+      %tr.spacer
+        %td{:colspan=>3}
+          %hr
+      %tr.dataRow
+        %td{:colspan=>3}
+          %fb:iframe{:src=>"http://www.micasa-fb.com/rental_units/#{@rental_unit.id}/map",:smartsize=>"false",:frameborder=>"0",:height=>"400",:width=>"600",:scrolling=>"no"}
+      %tr.spacer
+        %td{:colspan=>3}
+          %hr
+      -if @rental_unit.has_video?
+        %tr.dataRow
+          %td{:colspan=>3}
+            %fb:iframe{:src=>"http://www.micasa-fb.com/rental_units/#{@rental_unit.id}/watch_video",:smartsize=>"false",:frameborder=>"0",:height=>"400",:width=>"600",:scrolling=>"no"}
+        %tr.spacer
+          %td{:colspan=>3}
+            %hr
+  %fb:comments{:xid=>"micasa_sucasa_unit_#{@rental_unit.id}",:canpost=>"true",:candelete=>"false",:showform=>"true",:send_notification_uid=>@rental_unit.fb_user_id,:publish_feed=>"true"}

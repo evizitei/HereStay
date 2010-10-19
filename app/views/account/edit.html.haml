@@ -1,0 +1,26 @@
+%fb:header
+  Edit Account for
+  %fb:name{:uid=>"loggedinuser"}
+.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+  #user_form
+    =form_for :user,:url=>"/#{fb_app_name}/account/save" do |f|
+      %table.dataTable
+        %tbody
+          %tr.dataRow
+            %th.label VRBO Login:
+            %td.data= f.text_field :vrbo_login
+            %td.rightCol
+          %tr.dataRow
+            %th.label VRBO Password:
+            %td.data= f.text_field :vrbo_password
+            %td.rightCol
+          %tr.spacer
+            %td{:colspan=>3}
+              %hr
+        %tfoot
+          %tr.dataRow
+            %th.label
+            %td.data
+              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save Changes"
+              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=>"/#{fb_app_name}/my_rental_units"}
+                %span.uiButtonText Cancel

@@ -1,0 +1,69 @@
+%tr.data_row
+  %th= "About:"
+  %td.data= info.name
+  %td.rightCol
+%tr.data_row
+  %th Owner:
+  %td.data
+    %fb:profile-pic{:uid=>info.fb_user_id,:size=>"thumb"}
+    %fb:name{:uid=>info.fb_user_id}
+    %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;"}
+      %a{:href=>"/#{fb_app_name}/my_rental_listings/owned_by?owner_id=#{info.fb_user_id}"}
+        %input{:type=>"button",:value=>"All Listings"}
+  %td.rightCol
+%tr.spacer
+  %td{:colspan=>3}
+    %hr
+%tr.data_row
+  %th Address:
+  %td.data
+    = info.address
+    -if !info.address_2.blank?
+      %br
+      = info.address_2
+    %br
+    = "#{info.city}, #{info.state}, #{info.zip}"
+  %td.rightCol 
+%tr.spacer
+  %td{:colspan=>3}
+    %hr
+%tr.data_row
+  %th Photo
+  %td.data= image_tag info.picture.url(:medium)
+  %td.rightCol
+%tr.spacer
+  %td{:colspan=>3}
+    %hr
+%tr.data_row
+  %th.label Description
+  %td.data= info.description
+  %td.rightCol
+%tr.data_row
+  %th.label Pricing
+  %td.data= info.pricing
+  %td.rightCol
+%tr.data_row
+  %th.label Pricing
+  %td.data
+    %table
+      %tbody
+        %tr
+          %th
+          %th High
+          %th Mid
+          %th Low
+        %tr
+          %td Nightly
+          %td== $#{info.nightly_high_price}
+          %td== $#{info.nightly_mid_price}
+          %td== $#{info.nightly_low_price}
+        %tr
+          %td Weekly
+          %td== $#{info.weekly_high_price}
+          %td== $#{info.weekly_mid_price}
+          %td== $#{info.weekly_low_price}
+  %td.rightCol
+%style
+  :sass
+    td, th
+      :font-size 10pt

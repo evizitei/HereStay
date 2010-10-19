@@ -1,0 +1,15 @@
+user:
+  name: Micasa Owner
+  gender: M
+  dob: 2/3/1987
+  zip: 54670
+  email: micasaowner@yahoo.com
+  email_password: micasa123
+  fb_password: micasa123
+  email_questions:
+    one:
+      question: What is the first name of your favorite uncle?
+      answer: There is no Uncle
+    two:
+      question: Where did you spend your childhood summers
+      answer: There is no Summer

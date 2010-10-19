@@ -1,0 +1,2 @@
+module MyRentalUnitsHelper
+end

@@ -1,0 +1,14 @@
+=@rental_unit.name
+
+-@photos.each do |photo|
+  .photo
+    =image_tag(photo.picture.url(:thumb))
+    .actions
+      =link_to "Delete","/#{fb_app_name}/my_rental_units/delete_photo?id=#{photo.id}"
+=form_for :photo,:url=>"http://micasa-fb.com/canvas/my_rental_listings/new_photo",:html => { :multipart => true } do |f|
+  =f.hidden_field :rental_unit_id
+  %br
+  = f.label :picture,"New Photo:"
+  = f.file_field :picture
+  %br
+  = f.submit "Add"

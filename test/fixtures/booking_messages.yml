@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_fb_id: MyString
+  booking_id: 1
+  rental_unit_id: 1
+  message: MyText
+
+two:
+  user_fb_id: MyString
+  booking_id: 1
+  rental_unit_id: 1
+  message: MyText

@@ -1,0 +1,6 @@
+%fb:profile-pic{:size=>"small",:uid=>@owner_id}
+%fb:header
+  Listings belonging to 
+  %fb:name{:uid=>@owner_id,:useyou=>"false"}
+%br
+=render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>false}

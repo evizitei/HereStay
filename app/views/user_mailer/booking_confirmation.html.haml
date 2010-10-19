@@ -1,0 +1,5 @@
+%h2 Greetings from HereStay!
+
+%p== The owner of the property named #{@rental_unit.name} has confirmed your booking!  Follow the link below to see the details:
+
+=link_to "My Vacation!","http://apps.facebook.com/micasasucasa/booking/details?booking_id=#{@booking.id}"

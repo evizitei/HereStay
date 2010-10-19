@@ -1,0 +1,33 @@
+%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;"}
+  %fb:if-is-app-user
+    %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
+      %input{:type=>"button",:value=>"Manage My Listings"}
+    %fb:else
+      %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
+        %input{:type=>"button",:value=>"List My Property on HereStay!"}
+%fb:if-is-app-user
+  #integration
+    %fb:add-profile-tab
+#listings
+  %h2{:style=>"font-size:16pt;"} Featured Listings
+  %br
+  #search_box{:style=>"height:30px;width:320px;"}
+    =form_tag("/#{fb_app_name}/search") do
+      #search_icon{:style=>"float:left;width:25px;"}
+        %img{:src=>"http://micasa-fb.com/images/search_icon.jpg"}
+      #search_text{:style=>"width:175px;height:30px;float:left;"}
+        =text_field_tag :search
+      %label#search_button.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"width:70px;color:white;font-size:10pt;float:right;"}
+        =submit_tag "Search"
+  %br
+  =will_paginate(@paginate_obj,:renderer=>"FacebookLinkRenderer")
+  =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
+%br
+%br
+%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;"}
+  %fb:if-is-app-user
+    %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
+      %input{:type=>"button",:value=>"Manage My Listings"}
+    %fb:else
+      %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
+        %input{:type=>"button",:value=>"List My Property on HereStay!"}

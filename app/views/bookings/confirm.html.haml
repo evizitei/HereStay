@@ -1,0 +1,29 @@
+%fb:header== Confirm Booking for "#{@rental_unit.name}
+.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+  #booking_form
+    =form_for :booking,:url=>"/#{fb_app_name}/bookings/exec_confirm" do |f|
+      =hidden_field_tag :booking_id,@booking.id
+      %table.dataTable
+        %tbody
+          %tr.dataRow
+            %th.label Start Date:
+            %td.data= f.date_select :start_date
+            %td.rightCol
+          %tr.dataRow
+            %th.label Stop Date:
+            %td.data= f.date_select :stop_date
+            %td.rightCol
+          %tr.spacer
+            %td{:colspan=>3}
+              %hr
+          %tr.dataRow
+            %th.label Description:
+            %td.data= f.text_area :description,:rows=>5
+            %td.rightCol
+        %tfoot
+          %tr.dataRow
+            %th.label
+            %td.data
+              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save"
+              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=>"/#{fb_app_name}/bookings/discuss?booking_id=#{@booking.id}"}
+                %span.uiButtonText Cancel

@@ -1,0 +1,10 @@
+!!!
+%html
+  %head
+    %title HereStay
+    = stylesheet_link_tag 'delayed_job_admin'
+    = javascript_include_tag "jquery","delayed_job_admin"
+    = csrf_meta_tag
+  %body
+    = yield 
+    = yield :javascript

@@ -1,0 +1,24 @@
+-if @app_page
+  #listings
+    %h1{:style=>"font-size:16pt;"} Featured Listings
+    =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
+-else
+  =link_to "HereStay","http://apps.facebook.com/#{fb_app_name}/",{:target=>"_top"}
+  -if @rental_units.size > 0
+    %br
+    -unit = @rental_units.delete_at(0)
+    =link_to unit.name,unit.fb_url,{:class=>"UIObjectListing_Title",:requirelogin=>1}
+    #first_listing.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+      %table.dataTable
+        %tbody
+          %tr.dataRow
+            %th Primary Listing
+            %td.data
+            %td.rightCol
+          =render(:partial=>"info",:object=>unit)
+    %br
+    -if @rental_units.size > 0
+      %h2 Here are all my other listings:
+      =render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>false}
+  -else
+    %h3 Sorry!  This user has no listings available.

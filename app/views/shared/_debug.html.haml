@@ -1,0 +1,16 @@
+#debug
+  %h2 Cookies
+  #cookies
+    -@cookies.each do |k,v|
+      .cookie
+        .name
+          %strong=k
+        .value= v
+  %h2 Params
+  #params
+    -@params.each do |k,v|
+      .param
+        .name
+          %strong= k
+        .value= v
+  

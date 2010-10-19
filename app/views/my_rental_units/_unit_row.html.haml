@@ -1,0 +1,28 @@
+.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:style=>"background-color:#{cycle("#FFC67D","#E5D7C4")};"}
+  .unit_box{:style=>"height:100px;"}
+    .unit_picture{:style=>"width:100px;float:left;"}
+      -if unit_row.picture.file?
+        = unit_row.picture.url(:thumb)
+    .unit_description{:style=>"width:500px;float:right;"} 
+      =link_to unit_row.name,unit_row.fb_url,{:class=>"UIObjectListing_Title",:requirelogin=>1}
+      .description.UIObjectListing_Subtext
+        = unit_row.description
+  -if admin
+    %br
+    .admin_buttons{:style=>"height:40px;"}
+      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+        %a{:href=>"/#{fb_app_name}/my_rental_units/edit?id=#{unit_row.id}",:requirelogin=>1}
+          %input{:type=>"button",:value=>"Edit"}
+      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+        %a{:href=>"/#{fb_app_name}/my_rental_unit_photos?id=#{unit_row.id}",:requirelogin=>1}
+          %input{:type=>"button",:value=>"Photos"}
+      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+        %a{:href=>"/#{fb_app_name}/my_rental_unit_video?id=#{unit_row.id}",:requirelogin=>1}
+          %input{:type=>"button",:value=>"Video"}
+      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+        %a{:href=>"/#{fb_app_name}/my_rental_units/bookings?id=#{unit_row.id}",:requirelogin=>1}
+          %input{:type=>"button",:value=>"Bookings"}
+      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
+        %a{:href=>"/#{fb_app_name}/my_rental_units/delete?id=#{unit_row.id}",:requirelogin=>1}
+          %input{:type=>"button",:value=>"Delete"}
+  =render(:partial=>"my_rental_units/share_unit",:object=>unit_row)

@@ -1,0 +1,5 @@
+%h2 Upload your Video
+%form{:action=>"#{@upload_token[:url]}?nexturl=http%3A%2F%2Fwww.micasa-fb.com%2Fvideo_uploaded%3Funit_id%3D#{@rental_unit.id}",:method=>"post",:enctype=>"multipart/form-data"}
+  %input{:id=>"file",:type=>"file",:name=>"file"}
+  %input{:type=>"hidden",:name=>"token",:value=>@upload_token[:token]}
+  %input{:type=>"submit",:value=>"Upload"}

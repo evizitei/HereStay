@@ -1,0 +1,18 @@
+:erb
+  <script>
+  <!--
+    Facebook.showPermissionDialog('publish_stream', function(){
+      //do nothing
+    });
+  //-->
+  </script>
+
+%h2== Booking for #{@rental_unit.name}
+%div#header
+  =render(:partial=>"my_rental_units/unit_row",:object=>@rental_unit,:locals=>{:admin=>false})
+  
+%h2 This booking is complete!
+
+-if @booking.discounts.size < 1
+  %h3 get a discount here for publishing this on your wall!
+  =link_to "Post to your wall!","/#{fb_app_name}/bookings/wall_post?booking_id=#{@booking.id}"

@@ -1,0 +1,17 @@
+%script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
+=javascript_include_tag "jquery"
+:javascript
+  $(document).ready(function(){
+    var element = $("#map_canvas");
+    if(element.attr("data-lat").length > 0){
+      var latlng = new google.maps.LatLng(parseFloat(element.attr("data-lat")),parseFloat(element.attr("data-long")));
+      var myOptions = {zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
+      var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+      var marker = new google.maps.Marker({position: latlng,map: map,title: element.attr("data-fulladdress")});
+    }else{
+      $("#map_canvas").html("<h1>Sorry, cannot map this address</h1>");
+    }
+  });
+#map_wrapper{:style=>"width:600px;height:400px;"}
+  %h3 Map
+  #map_canvas{:style=>"width:100%; height:90%",:data=>{:canmap=>(@rental_unit.geocoding_success ? "true" : "false"),:lat=>@rental_unit.lat,:long=>@rental_unit.long,:fulladdress=>@rental_unit.geocoded_address}}
