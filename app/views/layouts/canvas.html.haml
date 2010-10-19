@@ -5,21 +5,21 @@
   %body
     = image_tag "herestay.png"
     %br
-    #fb_root
+    #fb-root
       = yield
     :javascript
       window.fbAsyncInit = function() {
         FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
         FB.getLoginStatus(function(response) {
           if (response.session) {
-            alert("Logged in!")
+            FB.log("Logged in!")
           } else {
-            alert("Not Logged in!")
+            FB.log("Not Logged in!");
           }
         });
       };
       (function() {
         var e = document.createElement('script'); e.async = true;
         e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-        document.getElementById('fb_root').appendChild(e);
+        document.getElementById('fb-root').appendChild(e);
       }());
