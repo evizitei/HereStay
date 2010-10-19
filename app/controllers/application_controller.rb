@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :debug_params
   before_filter :update_user
-  begore_filter :oauth_obj
+  before_filter :oauth_obj
   
 protected
   def debug_params
