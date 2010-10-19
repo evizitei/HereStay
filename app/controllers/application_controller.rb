@@ -18,7 +18,7 @@ protected
   # end
   
   def fb_app_name
-    Facebook::APP_NAME.to_s
+    "here_stay"
   end
   
   def fb_redirect_to(url)

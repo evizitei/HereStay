@@ -11,18 +11,6 @@
       }
     });
     
-    FB.getLoginStatus(function(response) {
-      if (response.session) {
-        FB.log("Logged in!")
-        $(".logged_in").show();
-        $(".not_logged_in").hide();
-      } else {
-        FB.log("Not Logged in!");
-        $(".logged_in").hide();
-        $(".not_logged_in").show();
-      }
-    });
-    
   };
   (function() {
     var e = document.createElement('script'); e.async = true;
