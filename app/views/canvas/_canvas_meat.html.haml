@@ -1,4 +1,5 @@
-
+-if @user.nil?
+  %fb:login-button
 -if @user
   %label.fbButton.f_right.logged_in
     %a{:href=>"/#{fb_app_name}/manage_my_rental_units"}
