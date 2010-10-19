@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :debug_params
   before_filter :update_user
-  before_filter :oauth_obj
+  # before_filter :oauth_obj
   
 protected
   def debug_params
@@ -13,9 +13,9 @@ protected
     @cookies = cookies
   end
   
-  def oauth_obj
-    @oauth = Koala::Facebook::OAuth.new(FB_ID, FB_SECRET)
-  end
+  # def oauth_obj
+  #   @oauth = Koala::Facebook::OAuth.new(FB_ID, FB_SECRET)
+  # end
   
   def fb_app_name
     Facebook::APP_NAME.to_s
@@ -27,16 +27,16 @@ protected
   
   def update_user
     if params[:user_id]
-      user = User.find_by_fb_user_id(params[:user_id])
-      if user
+      @user = User.find_or_create_by_fb_user_id(params[:user_id])
+      if @user
         auth_token = params[:oauth_token]
         if auth_token
-          if user.authorize_signature != auth_token
-            user.update_attributes!(:authorize_signature=>auth_token,:session_expires_at=>Time.at(params[:expires]))
+          if @user.authorize_signature != auth_token
+            @user.update_attributes!(:authorize_signature=>auth_token,:session_expires_at=>Time.at(params[:expires]))
           end
         
-          if user.email.nil?
-            Delayed::Job.enqueue(FbEmailFetcher.new(user.fb_user_id))
+          if @user.email.nil?
+            Delayed::Job.enqueue(FbEmailFetcher.new(@user.fb_user_id))
           end
         else
           puts "NO AUTH TOKEN!!!"

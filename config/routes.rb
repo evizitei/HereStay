@@ -20,8 +20,6 @@ Micasasucasa::Application.routes.draw do |map|
   
   match "/video_uploaded"=>"my_rental_units#video_uploaded"
   
-  match "/users/create"=>"users#create"
-  
   match "/debug/geocode"=>"debug#geocode"
   
   scope "canvas" do 
