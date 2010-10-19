@@ -1,4 +1,4 @@
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;"}
+%label.fbButton.f_right
   %fb:if-is-app-user
     %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
       %input{:type=>"button",:value=>"Manage My Listings"}
@@ -17,14 +17,14 @@
         %img{:src=>"http://micasa-fb.com/images/search_icon.jpg"}
       #search_text{:style=>"width:175px;height:30px;float:left;"}
         =text_field_tag :search
-      %label#search_button.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"width:70px;color:white;font-size:10pt;float:right;"}
+      %label#search_button.fbButton.f_right{:style=>"width:70px;"}
         =submit_tag "Search"
   %br
   =will_paginate(@paginate_obj,:renderer=>"FacebookLinkRenderer")
   =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 %br
 %br
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;"}
+%label.fbButton
   %fb:if-is-app-user
     %a{:href=>"/#{fb_app_name}/manage_my_rental_units",:requirelogin=>"1"}
       %input{:type=>"button",:value=>"Manage My Listings"}
