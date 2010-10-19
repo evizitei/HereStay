@@ -1,15 +1,18 @@
-= stylesheet_link_tag "jacked_fb_styles"
-= csrf_meta_tag
-= image_tag "herestay.png"
-%br
-#fb_root
-  = yield
-:javascript
-  window.fbAsyncInit = function() {
-    FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb_root').appendChild(e);
-  }());
+%html
+  %head
+    = stylesheet_link_tag "jacked_fb_styles"
+    = csrf_meta_tag
+  %body
+    = image_tag "herestay.png"
+    %br
+    #fb_root
+      = yield
+    :javascript
+      window.fbAsyncInit = function() {
+        FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
+      };
+      (function() {
+        var e = document.createElement('script'); e.async = true;
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb_root').appendChild(e);
+      }());
