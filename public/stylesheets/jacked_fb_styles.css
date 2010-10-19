@@ -33,6 +33,22 @@
 	white-space:nowrap;
 }
 
+.fbButton input{
+	margin-bottom: -1px;
+	color: #FFFFFF;
+	background: none repeat scroll 0 0 transparent;
+	border: 0 none;
+	cursor:pointer;
+	display:inline-block;
+	font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	margin:0;
+	outline:medium none;
+	padding:1px 0 2px;
+	white-space:nowrap;
+}
+
 .f_right{
 	float:right;
 }
