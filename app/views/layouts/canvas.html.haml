@@ -1,6 +1,7 @@
 %html
   %head
     = stylesheet_link_tag "jacked_fb_styles"
+    = javascript_include_tag "jquery"
     = csrf_meta_tag
   %body
     = image_tag "herestay.png"
@@ -13,8 +14,12 @@
         FB.getLoginStatus(function(response) {
           if (response.session) {
             FB.log("Logged in!")
+            $(".logged_in").show();
+            $(".not_logged_in").hide();
           } else {
             FB.log("Not Logged in!");
+            $(".logged_in").hide();
+            $(".not_logged_in").show();
           }
         });
       };
