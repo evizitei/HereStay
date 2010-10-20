@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :debug_params
   # before_filter :update_user
-  # before_filter :oauth_obj
+  before_filter :oauth_obj
   
 protected
   def debug_params
@@ -15,6 +15,7 @@ protected
   
   def oauth_obj
     @oauth = Koala::Facebook::OAuth.new(FB_ID, FB_SECRET)
+    @user = @oauth.get_user_from_cookie(cookies)
   end
   
   def fb_app_name
