@@ -30,10 +30,10 @@ class MyRentalUnitsController < ApplicationController
   
   def save
     @rental_unit = (params[:rental_unit][:id].blank? ? 
-                      RentalUnit.new(:fb_user_id=>params[:user_id]) : 
+                      RentalUnit.new(:fb_user_id=>@user.fb_user_id) : 
                       RentalUnit.find(params[:rental_unit][:id]))
     @rental_unit.update_attributes!(params[:rental_unit])
-    render :text => fb_redirect_to("http://apps.facebook.com/#{fb_app_name}/my_rental_units/share?id=#{@rental_unit.id}")
+    redirect_to manage_my_rental_listings_path
   end
   
   def show

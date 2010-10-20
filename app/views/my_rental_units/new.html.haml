@@ -1,4 +1,13 @@
 %fb:header
   New Listing for
-  %fb:name{:uid=>"loggedinuser"}
+  %fb:name{:uid=>@user.fb_user_id}
 =render(:partial=>"form")
+:javascript
+  window.fbAsyncInit = function() {
+    FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());

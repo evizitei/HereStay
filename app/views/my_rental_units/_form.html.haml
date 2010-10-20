@@ -1,6 +1,6 @@
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #rental_unit_form
-    =form_for :rental_unit,:url=>"/#{fb_app_name}/my_rental_listings/save",:html => { :multipart => true } do |f|
+    =form_for :rental_unit,:url=>save_my_rental_units_path,:html => { :multipart => true } do |f|
       =f.hidden_field :id
       %table.dataTable
         %tbody
@@ -76,6 +76,6 @@
           %tr.dataRow
             %th.label
             %td.data
-              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save Changes"
-              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=>"/#{fb_app_name}/my_rental_units"}
-                %span.uiButtonText Cancel
+              %label.fbButton= f.submit "Save Changes"
+              %label.fbButton
+                =link_to content_tag(:span,nil,{:type=>"button",:value=>"Cancel"}),manage_my_rental_units_path
