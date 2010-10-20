@@ -29,10 +29,6 @@ class RentalUnit < ActiveRecord::Base
     string  :zip
   end
   
-  def fb_url
-    "http://apps.facebook.com/micasasucasa/my_rental_units/show?id=#{self.id}"
-  end
-  
   def user
     @user ||= User.find_by_fb_user_id(fb_user_id)
   end
