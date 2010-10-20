@@ -2,8 +2,7 @@
   %fb:login-button
 -if @user
   %label.fbButton.f_right.logged_in
-    %a{:href=>"/#{fb_app_name}/manage_my_rental_units"}
-      %input{:type=>"button",:value=>"Manage My Listings"}
+    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
 -else
   %label.fbButton.f_right.not_logged_in
     %a{:href=>"/#{fb_app_name}/manage_my_rental_units"}
