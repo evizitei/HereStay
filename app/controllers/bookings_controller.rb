@@ -24,15 +24,14 @@ class BookingsController < ApplicationController
   end
   
   def discuss
-    @user_id = params[:user_id]
     if params[:booking_id]
       @booking = Booking.find(params[:booking_id])
       @rental_unit = @booking.rental_unit
-    elsif params[:id]
-      @rental_unit = RentalUnit.find(params[:id])
-      @booking = @rental_unit.bookings.find_by_renter_fb_id_and_owner_fb_id(params[:user_id],@rental_unit.fb_user_id)
+    elsif params[:my_rental_unit_id]
+      @rental_unit = RentalUnit.find(params[:my_rental_unit_id])
+      @booking = @rental_unit.bookings.find_by_renter_fb_id_and_owner_fb_id(@user.fb_user_id,@rental_unit.fb_user_id)
       if @booking.nil? or @booking.status == "COMPLETE"
-        @booking = @rental_unit.bookings.create!(:renter_fb_id=>params[:user_id],:owner_fb_id=>@rental_unit.fb_user_id)
+        @booking = @rental_unit.bookings.create!(:renter_fb_id=>@user.fb_user_id,:owner_fb_id=>@rental_unit.fb_user_id)
       end
     end
     @messages = @booking.booking_messages.order("created_at ASC")
