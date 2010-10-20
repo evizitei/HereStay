@@ -1,24 +1,29 @@
-:erb
-  <script>
-  <!--
-    Facebook.showPermissionDialog('email', function(){
-      //do nothing
-    });
-  //-->
-  </script>
-#profile_box{:style=>"width:200px;float:right;"}
-  %p Having HereStay as a profile tab lets your listings show up on your profile page
-  %fb:add-profile-tab
-%fb:profile-pic{:size=>"small",:uid=>"loggedinuser"}
-%fb:header
-  %fb:name{:uid=>"loggedinuser",:useyou=>"false",:possessive=>"true"}
+%fb:profile-pic{:size=>"small",:uid=>@user.fb_user_id}
+%h2
+  %fb:name{:uid=>@user.fb_user_id,:useyou=>"false",:possessive=>"true"}
   Listings:
 %br
 =render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>true}
 %br
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-  %a{:href=>"/#{fb_app_name}/account/edit",:requirelogin=>1}
-    %input{:type=>"button",:value=>"Edit My Account"}
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-  %a{:href=>"/#{fb_app_name}/my_rental_units/new",:requirelogin=>1}
-    %input{:type=>"button",:value=>"Add Listing"}
+%label.fbButton.f_left.logged_in
+  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit My Account"}),edit_account_path(@user.id)
+%label.fbButton.f_left.logged_in
+  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Add Listing"}),new_my_rental_units_path
+:javascript
+  window.fbAsyncInit = function() {
+    FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
+
+    FB.Event.subscribe('auth.sessionChange', function(response) {
+      if (response.session) {
+        // A user has logged in, and a new cookie has been saved
+      } else {
+        // The user has logged out, and the cookie has been cleared
+      }
+    });
+
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());

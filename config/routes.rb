@@ -28,6 +28,13 @@ Micasasucasa::Application.routes.draw do |map|
     end
   end
   
+  resources :accounts do
+    member do
+      get :edit
+      get :save
+    end
+  end
+  
   # scope "canvas" do 
   #   match "/search"=>"canvas#search"
   #   match "/my_rental_units"=>"my_rental_units#index"
