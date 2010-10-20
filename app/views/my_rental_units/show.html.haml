@@ -2,7 +2,7 @@
 %script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
 =javascript_include_tag "old_jquery","eye","utils","spacegallery","layout"
 %label.fbButton.f_right
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Book"}),discuss_my_rental_unit_bookings(:id=>unit_row.id)
+  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Book"}),discuss_my_rental_unit_bookings(:id=>@rental_unit.id)
 %h2= @rental_unit.name
 %br
 %br
