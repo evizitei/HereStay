@@ -20,7 +20,4 @@
         =link_to content_tag(:input,nil,{:type=>"button",:value=>"Bookings"}),my_rental_unit_bookings_path(unit_row.id)
       %label.fbButton.f_left
         =link_to content_tag(:input,nil,{:type=>"button",:value=>"Delete"}),my_rental_unit_path(unit_row.id),:method=>:delete
-      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-        %a{:href=>"/#{fb_app_name}/my_rental_units/delete?id=#{unit_row.id}",:requirelogin=>1}
-          %input{:type=>"button",:value=>"Delete"}
   =render(:partial=>"my_rental_units/share_unit",:object=>unit_row)
