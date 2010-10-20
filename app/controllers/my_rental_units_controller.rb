@@ -17,7 +17,7 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def manage
-    @rental_units = RentalUnit.find_all_by_fb_user_id(params[:user_id])
+    @rental_units = RentalUnit.find_all_by_fb_user_id(@user.fb_user_id)
   end
   
   def new
