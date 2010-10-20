@@ -15,7 +15,8 @@ protected
   
   def oauth_obj
     @oauth = Koala::Facebook::OAuth.new(FB_ID, FB_SECRET)
-    @user = @oauth.get_user_from_cookie(cookies)
+    user_id = @oauth.get_user_from_cookie(cookies)
+    @user = User.find_or_create_by_fb_user_id(user_id) if user_id
   end
   
   def fb_app_name
