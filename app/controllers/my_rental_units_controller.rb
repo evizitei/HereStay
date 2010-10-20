@@ -40,10 +40,10 @@ class MyRentalUnitsController < ApplicationController
     @rental_unit = RentalUnit.find(params[:id])
   end
   
-  def delete
+  def destroy
     @rental_unit = RentalUnit.find(params[:id])
     @rental_unit.destroy
-    redirect_to :action=>:manage
+    redirect_to manage_my_rental_units_path
   end
   
   def share
@@ -53,7 +53,7 @@ class MyRentalUnitsController < ApplicationController
     end
   end
   
-  def photos
+  def photos_for
     @rental_unit = RentalUnit.find(params[:id])
     @photos = @rental_unit.photos
     @photo = @rental_unit.photos.new
@@ -78,7 +78,7 @@ class MyRentalUnitsController < ApplicationController
     @rental_units = RentalUnit.find_all_by_fb_user_id(@owner_id)
   end
   
-  def upload_video
+  def upload_video_for
     @rental_unit = RentalUnit.find(params[:id])
     @upload_token = @rental_unit.upload_token  
   end

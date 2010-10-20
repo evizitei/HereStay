@@ -2,7 +2,7 @@
   .unit_box{:style=>"height:100px;"}
     .unit_picture{:style=>"width:100px;float:left;"}
       -if unit_row.picture.file?
-        = unit_row.picture.url(:thumb)
+        =image_tag(unit_row.picture.url(:thumb))
     .unit_description{:style=>"width:500px;float:right;"} 
       =link_to unit_row.name,unit_row.fb_url,{:class=>"UIObjectListing_Title",:requirelogin=>1}
       .description.UIObjectListing_Subtext
@@ -10,18 +10,16 @@
   -if admin
     %br
     .admin_buttons{:style=>"height:40px;"}
-      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-        %a{:href=>"/#{fb_app_name}/my_rental_units/edit?id=#{unit_row.id}",:requirelogin=>1}
-          %input{:type=>"button",:value=>"Edit"}
-      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-        %a{:href=>"/#{fb_app_name}/my_rental_unit_photos?id=#{unit_row.id}",:requirelogin=>1}
-          %input{:type=>"button",:value=>"Photos"}
-      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-        %a{:href=>"/#{fb_app_name}/my_rental_unit_video?id=#{unit_row.id}",:requirelogin=>1}
-          %input{:type=>"button",:value=>"Video"}
-      %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
-        %a{:href=>"/#{fb_app_name}/my_rental_units/bookings?id=#{unit_row.id}",:requirelogin=>1}
-          %input{:type=>"button",:value=>"Bookings"}
+      %label.fbButton.f_left
+        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit"}),edit_my_rental_unit_path(unit_row.id)
+      %label.fbButton.f_left
+        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Photos"}),photos_for_my_rental_unit_path(unit_row.id)
+      %label.fbButton.f_left
+        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Video"}),upload_video_for_my_rental_unit_path(unit_row.id)
+      %label.fbButton.f_left
+        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Bookings"}),my_rental_unit_bookings_path(unit_row.id)
+      %label.fbButton.f_left
+        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Delete"}),my_rental_unit(unit_row.id),:method=>:delete
       %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:left;margin-right:5px;"}
         %a{:href=>"/#{fb_app_name}/my_rental_units/delete?id=#{unit_row.id}",:requirelogin=>1}
           %input{:type=>"button",:value=>"Delete"}

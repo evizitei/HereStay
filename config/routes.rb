@@ -27,6 +27,14 @@ Micasasucasa::Application.routes.draw do |map|
       get :manage
       post :save
     end
+    
+    member do
+      get :photos_for
+      get :upload_video_for
+    end
+    
+    resources :bookings do
+    end
   end
   
   resources :accounts do
