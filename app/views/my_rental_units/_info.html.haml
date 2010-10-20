@@ -7,9 +7,8 @@
   %td.data
     %fb:profile-pic{:uid=>info.fb_user_id,:size=>"thumb"}
     %fb:name{:uid=>info.fb_user_id}
-    %label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;"}
-      %a{:href=>"/#{fb_app_name}/my_rental_listings/owned_by?owner_id=#{info.fb_user_id}"}
-        %input{:type=>"button",:value=>"All Listings"}
+    %label.fbButton.f_right
+      =link_to content_tag(:input,nil,{:type=>"button",:value=>"All Listings"}),owned_by_my_rental_units_path(:owner_id=>info.fb_user_id)
   %td.rightCol
 %tr.spacer
   %td{:colspan=>3}

@@ -26,6 +26,7 @@ Micasasucasa::Application.routes.draw do |map|
     collection do
       get :manage
       post :save
+      get :owned_by
     end
     
     member do
