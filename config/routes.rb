@@ -34,6 +34,9 @@ Micasasucasa::Application.routes.draw do |map|
     end
     
     resources :bookings do
+      collection do
+        get :discuss
+      end
     end
   end
   
