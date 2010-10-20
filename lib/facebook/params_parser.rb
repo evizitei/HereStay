@@ -14,9 +14,8 @@ module Facebook
       signed_request = request.params["signed_request"]
       if signed_request
         signature, signed_params = signed_request.split('.')
-
         # Verify signature
-        if signed_request_is_valid?("8878da4199b3af4cacbf188b15c21517", signature, signed_params)
+        if signed_request_is_valid?(Facebook::SECRET.to_s, signature, signed_params)
           # Parse JSON
           signed_params = Yajl::Parser.new.parse(base64_url_decode(signed_params))
 
