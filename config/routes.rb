@@ -25,7 +25,7 @@ Micasasucasa::Application.routes.draw do |map|
   resources :my_rental_units do
     collection do
       get :manage
-      get :save
+      post :save
     end
   end
   
