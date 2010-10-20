@@ -33,7 +33,7 @@ class MyRentalUnitsController < ApplicationController
                       RentalUnit.new(:fb_user_id=>@user.fb_user_id) : 
                       RentalUnit.find(params[:rental_unit][:id]))
     @rental_unit.update_attributes!(params[:rental_unit])
-    redirect_to manage_my_rental_listings_path
+    redirect_to manage_my_rental_units_path
   end
   
   def show
