@@ -1,7 +1,7 @@
 =render(:partial=>"canvas_meat")
 :javascript
   window.fbAsyncInit = function() {
-    FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
+    FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
     
     FB.Event.subscribe('auth.sessionChange', function(response) {
       if (response.session) {

@@ -47,7 +47,7 @@
   %fb:comments{:xid=>"here_stay_unit_#{@rental_unit.id}",:canpost=>"true",:candelete=>"false",:showform=>"true",:send_notification_uid=>@rental_unit.fb_user_id,:publish_feed=>"true"}
 :javascript
   window.fbAsyncInit = function() {
-    FB.init({appId: '#{FB_ID}', status: true, cookie: true,xfbml: true});
+    FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
   };
   (function() {
     var e = document.createElement('script'); e.async = true;
