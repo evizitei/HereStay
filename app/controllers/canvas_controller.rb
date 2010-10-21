@@ -5,10 +5,6 @@ class CanvasController < ApplicationController
     search_setup
   end
   
-  def search
-    search_setup
-  end
-  
 protected
   def search_setup
     @search = params[:search]
