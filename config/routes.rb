@@ -1,4 +1,4 @@
-Micasasucasa::Application.routes.draw do |map|
+Micasasucasa::Application.routes.draw do
   resources :photos
   resources :delayed_jobs
   resources :unit_photos
