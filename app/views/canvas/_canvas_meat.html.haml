@@ -1,5 +1,5 @@
 -if @user.nil?
-  %fb:login-button
+  %fb:login-button{:onlogin => "window.top.location.href='http://apps.facebook.com/#{Facebook::APP_NAME}/'", :perms => 'publish_stream,offline_access,user_birthday,email'}
 -if @user
   %label.fbButton.f_right.logged_in
     =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
