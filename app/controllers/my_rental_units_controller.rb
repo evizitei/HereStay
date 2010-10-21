@@ -71,7 +71,7 @@ class MyRentalUnitsController < ApplicationController
   
   def new_photo
     photo = Photo.create!(params[:photo])
-    redirect_to "http://apps.facebook.com/#{fb_app_name}/my_rental_unit_photos?id=#{photo.rental_unit_id}"
+    redirect_to photos_for_my_rental_unit_path(photo.rental_unit_id)
   end
   
   def owned_by
