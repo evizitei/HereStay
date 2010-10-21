@@ -9,7 +9,7 @@ class RentalUnitGeocoder
   def perform
     unit = RentalUnit.find(@unit_id) 
     unit.update_attributes!(:geocoded_at=>DateTime.now)
-    response = HTTParty.get("http://maps.googleapis.com/maps/api/geocode/json?address=#{CGI::escape("#{unit.address}, #{unit.city}, #{unit.state}, #{unit.zip}")}&sensor=false"
+    response = HTTParty.get("http://maps.googleapis.com/maps/api/geocode/json?address=#{CGI::escape("#{unit.address}, #{unit.city}, #{unit.state}, #{unit.zip}")}&sensor=false")
     response = response.parsed_response
     if response["status"] == "OK"
       result = response["results"].first
