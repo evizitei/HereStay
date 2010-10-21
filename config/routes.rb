@@ -27,6 +27,8 @@ Micasasucasa::Application.routes.draw do
       get :manage
       post :save
       get :owned_by
+      get :delete_photo
+      post :new_photo
     end
     
     member do
