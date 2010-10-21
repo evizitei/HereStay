@@ -3,9 +3,9 @@
   =@rental_unit.name
 
 -@photos.each do |photo|
-  .photo{:style=>"background-color:#{cycle("#FFC67D","#E5D7C4")};"}
+  .photo{:style=>"background-color:#{cycle("#FFC67D","#E5D7C4")};padding:10px;margin-bottom:5px;"}
     =image_tag(photo.picture.url(:thumb))
-    .actions
+    .actions.f_right
       %label.fbButton
         =link_to content_tag(:input,nil,{:type=>"button",:value=>"Delete"}),delete_photo_my_rental_units_path(:id=>photo.id)
 %br
