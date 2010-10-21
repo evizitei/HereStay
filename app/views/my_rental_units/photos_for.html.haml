@@ -1,8 +1,9 @@
 %h2 
   Photos for
   =@rental_unit.name
-%label.fbButton.f_right
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_path
+%label.fbButton
+  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Back to My Listings"}),manage_my_rental_units_path
+%br
 -@photos.each do |photo|
   .photo{:style=>"background-color:#{cycle("#FFC67D","#E5D7C4")};padding:10px;margin-bottom:5px;"}
     =image_tag(photo.picture.url(:thumb))
