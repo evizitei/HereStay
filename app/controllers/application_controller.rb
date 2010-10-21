@@ -26,6 +26,13 @@ protected
     "<fb:redirect url=\"#{url_for(url)}\" />"
   end
   
+  def login_required
+    unless @user
+      render "shared/login_required", :layout => 'canvas'
+      return false
+    end
+  end
+  
   # def update_user
   #     if params[:user_id]
   #       session[:user_id] = params[:user_id]

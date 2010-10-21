@@ -1,5 +1,6 @@
 class MyRentalUnitsController < ApplicationController
   layout "canvas"
+  before_filter :login_required, :only => %w(index show share photos_for owned_by)
   
   def index
     @app_page = (params[:profile_id].to_s == "123982284313527")
