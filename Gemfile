@@ -8,7 +8,6 @@ gem 'koala'
 gem 'koala-rails'
 gem 'paperclip'
 gem "aws-s3"
-gem "geokit"
 gem "nokogiri"
 gem "yajl-ruby"
 gem "httparty"
