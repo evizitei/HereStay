@@ -38,12 +38,12 @@
       -if @rental_unit.has_video?
         %tr.dataRow
           %td{:colspan=>3}
-          %h3 Video
-          %object{:style=>"height: 344px; width: 425px"}
-            %param{:name=>"movie",:value=>"http://www.youtube.com/v/#{@rental_unit.video_id}"}
-            %param{:name=>"allowFullScreen",:value=>"true"}
-            %param{:name=>"allowScriptAccess",:value=>"always"}
-            %embed{:src=>"http://www.youtube.com/v/#{@rental_unit.video_id}",:type=>"application/x-shockwave-flash",:allowfullscreen=>"true",:allowScriptAccess=>"always",:width=>"425",:height=>"344"}
+            %h3 Video
+            %object{:style=>"height: 344px; width: 425px"}
+              %param{:name=>"movie",:value=>"http://www.youtube.com/v/#{@rental_unit.video_id}"}
+              %param{:name=>"allowFullScreen",:value=>"true"}
+              %param{:name=>"allowScriptAccess",:value=>"always"}
+              %embed{:src=>"http://www.youtube.com/v/#{@rental_unit.video_id}",:type=>"application/x-shockwave-flash",:allowfullscreen=>"true",:allowScriptAccess=>"always",:width=>"425",:height=>"344"}
       %tr.spacer
         %td{:colspan=>3}
           %hr
