@@ -1,7 +1,0 @@
--if @coordinates
-  ==Success: #{@coordinates.success}
-  ==Lat: #{@coordinates.lat}
-  ==Long: #{@coordinates.lng}
-=form_tag("/debug/geocode") do
-  =text_field_tag :address
-  =submit_tag

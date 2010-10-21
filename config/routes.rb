@@ -19,8 +19,6 @@ Micasasucasa::Application.routes.draw do
   
   
   match "/video_uploaded"=>"my_rental_units#video_uploaded"
-  
-  match "/debug/geocode"=>"debug#geocode"
 
   resources :my_rental_units do
     collection do
