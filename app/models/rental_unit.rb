@@ -34,7 +34,7 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def youtube_description
-    "#{self.description}  BOOK: #{my_rental_unit_path(unit_row.id)}"
+    "#{self.description}  BOOK: #{my_rental_unit_path(self.id)}"
   end
   
   def upload_token
