@@ -87,6 +87,6 @@ class MyRentalUnitsController < ApplicationController
   def video_uploaded
     rental_unit = RentalUnit.find(params[:unit_id])
     rental_unit.update_attributes!(:video_id=>params[:id],:video_status=>params[:status],:video_code=>params[:code])
-    redirect_to rental_unit.fb_url
+    redirect_to my_rental_unit_path(rental_unit.id)
   end
 end
