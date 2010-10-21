@@ -8,6 +8,7 @@ module ApplicationHelper
       <script>
         window.fbAsyncInit = function() {
           FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
+          FB.Canvas.setAutoResize();
         };
         (function() {
           var e = document.createElement('script'); e.async = true;
