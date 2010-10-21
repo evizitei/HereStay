@@ -6,7 +6,7 @@
 =render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>true}
 %br
 %label.fbButton.f_left.logged_in
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit My Account"}),edit_account_path(@user.id)
+  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit My Account"}), edit_account_path
 %label.fbButton.f_left.logged_in
   =link_to content_tag(:input,nil,{:type=>"button",:value=>"Add Listing"}),new_my_rental_unit_path
 :javascript

@@ -12,7 +12,7 @@ Micasasucasa::Application.routes.draw do
     
     resources :photos
   end
-
+  
   match "/"=>"main#home"
   match "/canvas"=>"canvas#index"
   match "/canvas/"=>"canvas#index"
@@ -40,13 +40,8 @@ Micasasucasa::Application.routes.draw do
       end
     end
   end
-  
-  resources :accounts do
-    member do
-      get :edit
-      get :save
-    end
-  end
+
+  resource :account, :controller => :account, :only => [:edit, :update]
   
   # scope "canvas" do 
   #   match "/search"=>"canvas#search"

@@ -3,7 +3,7 @@
   %fb:name{:uid=>"loggedinuser"}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #user_form
-    =form_for :user,:url=>"/#{fb_app_name}/account/save" do |f|
+    =form_for @user, :url => account_path, :html => {:method => :put} do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
