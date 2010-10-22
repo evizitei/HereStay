@@ -19,4 +19,17 @@ module ApplicationHelper
     JAVASCRIPT
     js.html_safe
   end
+  
+  def fb_button(*args, &block)
+    if block_given?
+      options = args.first || {}
+      "<label class='fbButton #{options[:class_name]}'>#{capture(&block)}</label>".html_safe
+    else
+      text = args.first
+      url = args.second
+      options = args.third || {}
+      btn = "<input type=button value=\"#{text}\">"
+      "<label class='fbButton #{options[:class_name]}'><a href='#{url}'>#{btn}</a></label>".html_safe
+    end
+  end
 end
