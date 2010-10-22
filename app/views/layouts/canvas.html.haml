@@ -4,7 +4,7 @@
     = javascript_include_tag "jquery"
     = csrf_meta_tag
   %body
-    = image_tag "herestay.png"
+    = link_to image_tag("herestay.png", :border => 0), root_path
     %br
     #fb-root
       = yield
