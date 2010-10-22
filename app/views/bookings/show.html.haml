@@ -1,0 +1,9 @@
+%h2 Booking for #{@booking.rental_unit.name}
+%div#header
+  =render(:partial=>"my_rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
+  
+%h2 This booking is complete!
+
+-if @booking.discounts.size < 1
+  %h3 get a discount here for publishing this on your wall!
+  =link_to "Post to your wall!", wall_post_booking_path(@booking), :method => :post
