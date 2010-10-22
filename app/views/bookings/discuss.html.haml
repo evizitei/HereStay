@@ -1,29 +1,29 @@
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;margin:3px;"}
-  %a{:href=>"#"}
-    %input{:type=>"button",:value=>"Availability Calendar"}
-%label.uiButton.uiButtonConfirm.uiButtonMedium{:style=>"color:white;font-size:15px;float:right;margin:3px;"}
-  %a{:href=>"/#{fb_app_name}/booking/confirm?booking_id=#{@booking.id}"}
-    %input{:type=>"button",:value=>"Confirm Booking!"}
-%h2== Discussion on #{@rental_unit.name}
-%br
-%br
-%div#header
-  =render(:partial=>"my_rental_units/unit_row",:object=>@rental_unit,:locals=>{:admin=>false})
-=form_for :booking_message,:url=>"/#{fb_app_name}/booking/messages/create" do |f|
-  =f.hidden_field :booking_id,:value=>@booking.id
-  =f.hidden_field :rental_unit_id,:value=>@rental_unit.id
-  =f.hidden_field :user_fb_id,:value=>@user_id
+= fb_button "Availability Calendar", '#', :class_name => 'f_right'
+= fb_button "Confirm Booking!", confirm_booking_path(@booking), :class_name => 'f_right'
+
+%h2 Discussion on #{@booking.rental_unit.name}
+
+#header
+  =render(:partial=>"my_rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
+
+= form_for :booking_message,:url=> booking_messages_path(@booking) do |f|
+  =f.hidden_field :rental_unit_id,:value=>@booking.rental_unit.id
   =f.text_area :message,{:rows=>6,:cols=>55}
   %br
-  =f.submit "Send Message"
+  = fb_button do
+    =f.submit "Send Message"
+
 #booking_messages
-  -@messages.each do |message|
-    -color = (message.user_fb_id == @user_id ? "#A3E03A" : "#E5D7C4")
+  -@booking.booking_messages.by_date.each do |message|
+    -color = (message.user_fb_id == @user.fb_user_id ? "#A3E03A" : "#E5D7C4")
     .message{:style=>"margin:7px;padding:7px;background-color:#{color};font-size:10pt;"}
       .message_body{:style=>"width:650px;float:right;"}
         %i= message.created_at.strftime("%m/%d/%Y")
         %br
         %strong=message.message
+      
       %fb:profile-pic{:uid=>message.user_fb_id,:size=>"thumb"}
       %br
       %fb:name{:uid=>message.user_fb_id}
+      
+= fb_connect_async_js

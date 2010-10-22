@@ -1,8 +1,7 @@
-%fb:header== New Booking for "#{@rental_unit.name}
+%h2 New Booking for #{@rental_unit.name}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #booking_form
-    =form_for :booking,:url=>"/#{fb_app_name}/my_rental_units/create_booking" do |f|
-      =hidden_field_tag :id,@rental_unit.id
+    =form_for :booking, :url=> my_rental_unit_bookings_path(@rental_unit) do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
@@ -32,6 +31,8 @@
           %tr.dataRow
             %th.label
             %td.data
-              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save"
-              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=>"/#{fb_app_name}/my_rental_units/bookings?id=#{@rental_unit.id}"}
-                %span.uiButtonText Cancel
+              = fb_button do
+                = f.submit "Save"
+              = fb_button 'Cancel', my_rental_unit_bookings_path(@rental_unit)
+
+= fb_connect_async_js

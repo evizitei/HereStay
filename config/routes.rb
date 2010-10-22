@@ -1,4 +1,5 @@
 Micasasucasa::Application.routes.draw do
+  root :to => "canvas#index"
   resources :photos
   resources :delayed_jobs
   resources :unit_photos
@@ -40,7 +41,17 @@ Micasasucasa::Application.routes.draw do
       end
     end
   end
-
+  
+  resources :bookings do
+    member do
+      get :discuss
+      get :confirm
+      put :exec_confirm
+      post :wall_post
+    end
+    resources :messages
+  end
+  
   resource :account, :controller => :account, :only => [:edit, :update]
   
   # scope "canvas" do 

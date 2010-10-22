@@ -33,6 +33,12 @@ class RentalUnit < ActiveRecord::Base
     @user ||= User.find_by_fb_user_id(fb_user_id)
   end
   
+  # find uncompleted booking by user or create new if booking not found
+  def find_uncompleted_booking_for_user_or_create(user)
+    booking = self.bookings.uncompleted.find_by_renter_fb_id_and_owner_fb_id(user.fb_user_id, self.fb_user_id)
+    booking || self.bookings.create!(:renter_fb_id=> user.fb_user_id, :owner_fb_id => self.fb_user_id )
+  end
+  
   def youtube_description
     "#{self.description}  BOOK: http://herestay.heroku.com/my_rental_unit/#{self.id}"
   end

@@ -1,8 +1,7 @@
-%fb:header== Confirm Booking for "#{@rental_unit.name}
+%h2 Confirm Booking for #{@booking.rental_unit.name}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #booking_form
-    =form_for :booking,:url=>"/#{fb_app_name}/bookings/exec_confirm" do |f|
-      =hidden_field_tag :booking_id,@booking.id
+    =form_for :booking, :url=> exec_confirm_booking_path(@booking), :html => {:method => :put} do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
@@ -24,6 +23,6 @@
           %tr.dataRow
             %th.label
             %td.data
-              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save"
-              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=>"/#{fb_app_name}/bookings/discuss?booking_id=#{@booking.id}"}
-                %span.uiButtonText Cancel
+              = fb_button do
+                = f.submit "Save"
+              = fb_button('Cancel', discuss_booking_path(@booking))
