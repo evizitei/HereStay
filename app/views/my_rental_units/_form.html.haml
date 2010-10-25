@@ -1,81 +1,77 @@
-.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
-  #rental_unit_form
-    =form_for :rental_unit,:url=>save_my_rental_units_path,:html => { :multipart => true } do |f|
-      =f.hidden_field :id
-      %table.dataTable
-        %tbody
-          %tr.dataRow
-            %th.label Listing Name:
-            %td.data= f.text_field :name
-            %td.rightCol
-          %tr.dataRow
-            %th.label Description:
-            %td.data= f.text_area :description,:rows=>5
-            %td.rightCol
-          %tr.spacer
-            %td{:colspan=>3}
-              %hr
-          %tr.dataRow
-            %th.label Address Line 1:
-            %td.data= f.text_field :address
-            %td.rightCol
-          %tr.dataRow
-            %th.label Address Line 2:
-            %td.data= f.text_field :address_2
-            %td.rightCol
-          %tr.dataRow
-            %th.label City:
-            %td.data= f.text_field :city
-            %td.rightCol
-              =f.label :state,"State:"
-              =f.text_field :state
-          %tr.dataRow
-            %th.label Zip:
-            %td.data= f.text_field :zip
-            %td.rightCol
-          %tr.dataRow
-            %th.label VRBO ID:
-            %td.data= f.text_field :vrbo_id,:rows=>5
-            %td.rightCol
-          %tr.spacer
-            %td{:colspan=>3}
-              %hr
-          %tr.dataRow
-            %th.label Pricing:
-            %td.data
-              %table
-                %tbody
-                  %tr
-                    %th
-                    %th High
-                    %th Mid
-                    %th Low
-                  %tr
-                    %td Nightly
-                    %td= f.text_field :nightly_high_price,:size=>6
-                    %td= f.text_field :nightly_mid_price,:size=>6
-                    %td= f.text_field :nightly_low_price,:size=>6
-                  %tr
-                    %td Weekly
-                    %td= f.text_field :weekly_high_price,:size=>6
-                    %td= f.text_field :weekly_mid_price,:size=>6
-                    %td= f.text_field :weekly_low_price,:size=>6
-            %td.rightCol
-          %tr.dataRow
-            %th.label Pricing Description:
-            %td.data= f.text_area :pricing,:rows=>5
-            %td.rightCol
-          %tr.spacer
-            %td{:colspan=>3}
-              %hr
-          %tr.dataRow
-            %th.label Photo:
-            %td.data= f.file_field :picture
-            %td.rightCol
-        %tfoot
-          %tr.dataRow
-            %th.label
-            %td.data
-              %label.fbButton= f.submit "Save Changes"
-              %label.fbButton
-                =link_to content_tag(:input,nil,{:type=>"button",:value=>"Cancel"}),manage_my_rental_units_path
+%table.dataTable
+  %tbody
+    %tr.dataRow
+      %th.label Listing Name:
+      %td.data= f.text_field :name
+      %td.rightCol
+    %tr.dataRow
+      %th.label Description:
+      %td.data= f.text_area :description,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Address Line 1:
+      %td.data= f.text_field :address
+      %td.rightCol
+    %tr.dataRow
+      %th.label Address Line 2:
+      %td.data= f.text_field :address_2
+      %td.rightCol
+    %tr.dataRow
+      %th.label City:
+      %td.data= f.text_field :city
+      %td.rightCol
+        =f.label :state,"State:"
+        =f.text_field :state
+    %tr.dataRow
+      %th.label Zip:
+      %td.data= f.text_field :zip
+      %td.rightCol
+    %tr.dataRow
+      %th.label VRBO ID:
+      %td.data= f.text_field :vrbo_id,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Pricing:
+      %td.data
+        %table
+          %tbody
+            %tr
+              %th
+              %th High
+              %th Mid
+              %th Low
+            %tr
+              %td Nightly
+              %td= f.text_field :nightly_high_price,:size=>6
+              %td= f.text_field :nightly_mid_price,:size=>6
+              %td= f.text_field :nightly_low_price,:size=>6
+            %tr
+              %td Weekly
+              %td= f.text_field :weekly_high_price,:size=>6
+              %td= f.text_field :weekly_mid_price,:size=>6
+              %td= f.text_field :weekly_low_price,:size=>6
+      %td.rightCol
+    %tr.dataRow
+      %th.label Pricing Description:
+      %td.data= f.text_area :pricing,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Photo:
+      %td.data= f.file_field :picture
+      %td.rightCol
+  %tfoot
+    %tr.dataRow
+      %th.label
+      %td.data
+        %label.fbButton= f.submit "Save Changes"
+        %label.fbButton
+          =link_to content_tag(:input,nil,{:type=>"button",:value=>"Cancel"}),manage_my_rental_units_path

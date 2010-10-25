@@ -11,7 +11,8 @@ class RentalUnit < ActiveRecord::Base
   
   has_many :photos
   has_many :bookings
-  has_many :booking_messages
+  has_many :booking_messages, :through => "booking"
+  belongs_to :user
   
   before_save do |unit| 
     if unit.address_changed?
@@ -27,10 +28,6 @@ class RentalUnit < ActiveRecord::Base
     string  :city
     string  :state
     string  :zip
-  end
-  
-  def user
-    @user ||= User.find_by_fb_user_id(fb_user_id)
   end
   
   # find uncompleted booking by user or create new if booking not found

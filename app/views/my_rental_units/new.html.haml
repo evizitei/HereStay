@@ -1,4 +1,7 @@
 %h2
   New Listing for
   %fb:name{:uid=>@user.fb_user_id}
-=render(:partial=>"form")
+.pal.grayArea.gray_box.noborder.colored-bg
+  #rental_unit_form
+    = form_for @rental_unit, :rental_unit, :url => my_rental_units_path, :html => { :multipart => true } do |f|
+      = render 'form', {:f => f}

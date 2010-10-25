@@ -1,6 +1,6 @@
 class BookingMessage < ActiveRecord::Base
   belongs_to :booking
-  belongs_to :rental_unit
+  belongs_to :rental_unit, :through => :booking
   
   scope :by_date, :order => 'created_at ASC'
   

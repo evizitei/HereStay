@@ -1,6 +1,9 @@
-%h2==Editing #{@rental_unit.name}
-=render(:partial=>"form")
-%label.fbButton.f_right
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Load VRBO Calendar"}),"#"
-%label.fbButton.f_right
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Load VRBO Full Listing"}),"#"
+%h2 Editing #{@rental_unit.name}
+
+.pal.grayArea.gray_box.noborder.colored-bg
+  #rental_unit_form
+    = form_for @rental_unit, :rental_unit, :url => my_rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
+      = render 'form', {:f => f}
+      
+= fb_button 'Load VRBO Calendar', '#', :class_name => 'f_right'
+= fb_button 'Load VRBO Full Listing', '#', :class_name => 'f_right'

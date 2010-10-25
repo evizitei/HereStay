@@ -18,7 +18,7 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def manage
-    @rental_units = RentalUnit.find_all_by_fb_user_id(@user.fb_user_id)
+    @rental_units = @user.rental_units
   end
   
   def new
@@ -26,15 +26,19 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def edit
-    @rental_unit = RentalUnit.find(params[:id])
+    @rental_unit = @user.rental_units.find(params[:id])
   end
   
-  def save
-    @rental_unit = (params[:rental_unit][:id].blank? ? 
-                      RentalUnit.new(:fb_user_id=>@user.fb_user_id) : 
-                      RentalUnit.find(params[:rental_unit][:id]))
+  def create
+    @rental_unit = @user.rental_units.build(params[:rental_unit])
+    @rental_unit.save!
+    redirect_to manage_my_rental_units_url
+  end
+  
+  def update
+    @rental_unit = @user.rental_units.find(params[:id])
     @rental_unit.update_attributes!(params[:rental_unit])
-    redirect_to manage_my_rental_units_path
+    redirect_to manage_my_rental_units_url
   end
   
   def show
@@ -42,14 +46,14 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def destroy
-    @rental_unit = RentalUnit.find(params[:id])
+    @rental_unit = @user.rental_units.find(params[:id])
     @rental_unit.destroy
-    redirect_to manage_my_rental_units_path
+    redirect_to manage_my_rental_units_url
   end
   
   def share
     @rental_unit = RentalUnit.find(params[:id])
-    if params[:user_id].to_s != @rental_unit.fb_user_id.to_s
+    unless @rental_unit.user == @user
       redirect_to "http://apps.facebook.com/#{fb_app_name}"
     end
   end
