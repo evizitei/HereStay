@@ -7,7 +7,7 @@ class MessagesController < InheritedResources::Base
   before_filter :login_required
   
   def create
-    create!(:location => discuss_my_rental_unit_bookings_path(parent.rental_unit))
+    create!(:location => discuss_booking_path(parent))
   end
   
   protected

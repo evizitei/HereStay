@@ -31,6 +31,7 @@ class BookingsController < ApplicationController
     if params[:id]
       get_booking
     elsif params[:my_rental_unit_id]
+      # find existing uncomplete booking or create new for user @user
       @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(@user)
     end
   end
