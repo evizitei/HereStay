@@ -48,7 +48,7 @@
         %td{:colspan=>3}
           %hr
   %fb:comments{:xid=>"here_stay_unit_#{@rental_unit.id}",:canpost=>"true",:candelete=>"false",:showform=>"true",:send_notification_uid=>@rental_unit.fb_user_id,:publish_feed=>"true"}
-= fb_connect_async_js
+
 :javascript
   $(document).ready(function(){
     var element = $("#map_canvas");
