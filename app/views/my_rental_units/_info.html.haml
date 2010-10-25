@@ -7,8 +7,7 @@
   %td.data
     %fb:profile-pic{:uid=>info.fb_user_id,:size=>"thumb"}
     %fb:name{:uid=>info.fb_user_id}
-    %label.fbButton.f_right
-      =link_to content_tag(:input,nil,{:type=>"button",:value=>"All Listings"}),owned_by_my_rental_units_path(:owner_id=>info.fb_user_id)
+    = fb_button 'All Listings', owned_by_my_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
 %tr.spacer
   %td{:colspan=>3}

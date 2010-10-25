@@ -79,8 +79,8 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def owned_by
-    @owner_id = params[:owner_id]
-    @rental_units = RentalUnit.find_all_by_fb_user_id(@owner_id)
+    @user = User.find params[:user_id]
+    @rental_units = @user.rental_units.paginate(:page => params[:page], :per_page => 1)
   end
   
   def upload_video_for
