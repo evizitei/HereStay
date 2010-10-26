@@ -13,6 +13,7 @@
   $(document).ready(function(){
     $("#booking_amount").bind("blur",calculate_fee);
   });
+=enable_jqueryui_datepicker
 %h2 New Booking for #{@rental_unit.name}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #booking_form
@@ -29,11 +30,11 @@
               %hr
           %tr.dataRow
             %th.label Start Date:
-            %td.data= f.date_select :start_date
+            %td.data=date_picker_tag("booking[start_date]",@booking.start_date)
             %td.rightCol
           %tr.dataRow
             %th.label Stop Date:
-            %td.data= f.date_select :stop_date
+            %td.data=date_picker_tag("booking[stop_date]",@booking.stop_date)
             %td.rightCol
           %tr.dataRow
             %th.label Amount:

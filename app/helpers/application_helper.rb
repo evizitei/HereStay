@@ -51,4 +51,23 @@ module ApplicationHelper
       content_tag(:div, msg, :class => 'wrapper')
     end
   end
+  
+  def enable_jqueryui_datepicker(selector=".date_picker")
+    "<script type=\"text/javascript\">
+      $(function(){
+        $('#{selector}').datepicker({changeMonth: true, 
+                                          changeYear: true,
+                                          showButtonPanel: true,
+                                          dateFormat: 'mm/dd/yy',
+                                          yearRange: '-20:+3'});
+      });
+      </script>"
+  end
+  
+  def date_picker_tag(name,date,options={})
+    value = date.nil? ? "" : date.strftime("%m/%d/%Y")
+    options[:class] = (options[:class].nil?) ? "date_picker" : "#{options[:class]} date_picker"
+    options[:style] = "width:8em" if options[:style].nil?
+    return text_field_tag(name,value,options)
+  end
 end
