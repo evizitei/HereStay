@@ -3,7 +3,7 @@
   %fb:name{:uid=>"loggedinuser"}
 .pal.grayArea.gray_box.noborder.colored-bg
   =form_for @user, :url => account_path, :html => {:method => :put} do |f|
-    #user_form
+    #user_form{:style=>"width:400px","min-height"=>"200px"}
       %table.dataTable
         %tbody
           %tr.dataRow
