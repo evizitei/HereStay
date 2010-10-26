@@ -13,4 +13,18 @@ class User < ActiveRecord::Base
       end
     end
   end
+  
+  def access_token
+    self.authorize_signature
+  end
+  
+  def fb_friends
+    begin
+      graph = Koala::Facebook::GraphAPI.new(self.access_token)
+      @fb_friends ||= graph.get_connections('me', 'friends')
+    rescue => err
+      logger.error { "Unable to get fb friends. #{err}" }
+      []
+    end
+  end
 end

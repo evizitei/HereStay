@@ -6,9 +6,14 @@ class Booking < ActiveRecord::Base
   
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   
+  # change status without saving (like aasm)
+  def complete
+    self.status = "COMPLETE"
+  end
+  
   def confirm!
     UserMailer.booking_confirmation(self).deliver
-    self.status = "COMPLETE"
+    self.complete
     self.save!
   end
   

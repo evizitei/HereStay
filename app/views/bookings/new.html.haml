@@ -7,7 +7,7 @@
           %tr.dataRow
             %th.label Renter Name:
             %td.data  
-              %fb:friend-selector{:uid=>@rental_unit.fb_user_id,:name=>:renter_name,:idname=>:renter_fb_id}
+              = f.select :renter_fb_id, @user.fb_friends.map{|friend| [friend['name'], friend['id']] }, :include_blank => true
             %td.rightCol
           %tr.spacer
             %td{:colspan=>3}

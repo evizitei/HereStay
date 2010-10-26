@@ -16,13 +16,9 @@ class BookingsController < ApplicationController
   
   def create
     @booking = @rental_unit.bookings.build(params[:booking])
-    
-    @booking.status = "COMPLETE"
-    # TODO: derive real renter_fb_id and renter name from the form
-    @booking.renter_name = params[:renter_name] if params[:renter_name]
-    @booking.renter_fb_id = params[:renter_fb_id] if params[:renter_fb_id]
+    @booking.complete
     @booking.save!
-    
+    flash[:notice] = 'Booking created successfully.'
     redirect_to my_rental_unit_bookings_url(@booking.rental_unit)
   end
   
