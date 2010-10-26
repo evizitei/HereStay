@@ -1,7 +1,7 @@
 %fb:header
   Edit Account for
   %fb:name{:uid=>"loggedinuser"}
-.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+.pal.grayArea.gray_box.noborder.colored-bg
   #user_form
     =form_for @user, :url => account_path, :html => {:method => :put} do |f|
       %table.dataTable
@@ -14,13 +14,10 @@
             %th.label VRBO Password:
             %td.data= f.text_field :vrbo_password
             %td.rightCol
-          %tr.spacer
-            %td{:colspan=>3}
-              %hr
         %tfoot
           %tr.dataRow
             %th.label
             %td.data
-              %label.uiButton.uiButtonConfirm.uiButtonMedium= f.submit "Save Changes"
-              %a.uiButton.uiButtonDefault.uiButtonMedium{:href=> manage_my_rental_units_path}
-                %span.uiButtonText Cancel
+              = fb_button do
+                = f.submit "Save Changes"
+              = fb_button 'Cancel', manage_my_rental_units_path
