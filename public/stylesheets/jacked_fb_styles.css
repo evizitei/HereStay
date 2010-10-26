@@ -64,3 +64,20 @@
 .colored-bg{
   background-color:#FFC67D;
 }
+
+#flash .flash{
+  border:3px solid #FFC67D;
+  color:#000;
+  font-weight:bold;
+  margin:10px 0;
+  padding:10px;
+  font-size: 1.2em;
+}
+
+#flash .flash.alert{
+  border: 3px solid red;
+  color: red;
+  font-weight:bold;
+  margin:10px 0;
+  padding:10px;
+}

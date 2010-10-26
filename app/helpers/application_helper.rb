@@ -32,4 +32,23 @@ module ApplicationHelper
       "<label class='fbButton #{options[:class_name]}'><a href='#{url}'>#{btn}</a></label>".html_safe
     end
   end
+  
+  def get_flash_message
+    if flash[:alert]
+      wrap_flash_message flash[:alert], :alert
+    elsif flash[:notice]
+      wrap_flash_message flash[:notice], :notice
+    end
+  end
+
+  def wrap_flash_message(msg, flash_type)
+    content_tag(:div, msg, :class => "flash #{flash_type}")
+  end
+
+  def display_flashes(msg = nil, flash_type = nil)
+    msg = msg.present? ? wrap_flash_message(msg, flash_type) : get_flash_message
+    content_tag(:div, :id => 'flash') do
+      content_tag(:div, msg, :class => 'wrapper')
+    end
+  end
 end
