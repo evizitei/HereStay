@@ -16,6 +16,36 @@
       %strong VRBO Username:
       =@user.vrbo_login
     
-#open_bookings
-#closed_bookings
+#my_bookings
+  %h3 Where I am staying
+  %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px;"} ID
+        %th{:style=>"padding:3px;"} Discussion
+        %th{:style=>"padding:3px;"} Arrive
+        %th{:style=>"padding:3px;"} Depart
+        %th{:style=>"padding:3px;"} Owner
+        %th{:style=>"padding:3px;"} Description
+    %tbody
+      -@my_bookings.each do |booking|
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            = link_to booking.id, booking
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.status != "COMPLETE"
+              = link_to "Discussion", discuss_booking_path(booking)
+            -else
+              \--Closed--
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.start_date
+              = booking.start_date.strftime("%m/%d/%Y")
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.stop_date
+              = booking.stop_date.strftime("%m/%d/%Y")
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            %fb:profile-pic{:uid=>booking.owner_fb_id,:size=>"thumb"}
+            %fb:name{:uid=>booking.owner_fb_id}
+          %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
+#others_booking_me
 #my_rewards

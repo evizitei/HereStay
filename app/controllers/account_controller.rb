@@ -2,6 +2,7 @@ class AccountController < ApplicationController
   layout "canvas"
   
   def show
+    @my_bookings = Booking.where(:renter_fb_id=>@user.fb_user_id)
   end
    
   def edit
