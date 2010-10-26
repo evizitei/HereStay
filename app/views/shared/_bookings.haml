@@ -6,6 +6,7 @@
       %th{:style=>"padding:3px;"} Arrive
       %th{:style=>"padding:3px;"} Depart
       %th{:style=>"padding:3px;"} Amount
+      %th{:style=>"padding:3px;"} Fee
       %th{:style=>"padding:3px;"} Renter
       %th{:style=>"padding:3px;"} Description
   %tbody
@@ -28,6 +29,9 @@
             booking.amount
           -else
             \----
+        %td{:style=>"padding:3px;font-size:10pt;"}
+          $
+          =booking.promotional_fee
         %td{:style=>"padding:3px;font-size:10pt;"}
           -if booking.renter_fb_id
             %fb:profile-pic{:uid=>booking.renter_fb_id,:size=>"thumb"}

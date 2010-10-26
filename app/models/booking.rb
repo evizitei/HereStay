@@ -24,6 +24,14 @@ class Booking < ActiveRecord::Base
     confirm!
   end
   
+  def promotional_fee
+    if self.amount
+      (((self.amount * 0.05) * 100).round.to_f / 100)
+    else
+      0.0
+    end
+  end
+  
   # post message to the user wall and add discount
   def wall_post_by_user!(user)
     HTTParty.post("https://graph.facebook.com/me/feed", {
