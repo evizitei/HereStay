@@ -3,18 +3,7 @@
   %fb:name{:uid=>@user.fb_user_id,:useyou=>"false",:possessive=>"true"}
   Listings:
 %br
-=render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>true}
+=render :partial=>"unit_row",:collection=>@rental_units
 %br
-%label.fbButton.f_left.logged_in
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit My Account"}), edit_account_path
-%label.fbButton.f_left.logged_in
-  =link_to content_tag(:input,nil,{:type=>"button",:value=>"Add Listing"}),new_my_rental_unit_path
-:javascript
-  window.fbAsyncInit = function() {
-    FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
+= fb_button 'Edit My Account', edit_account_path, :class_name => 'f_left logged_in'
+= fb_button 'Add Listing', new_my_rental_unit_path, :class_name => 'f_left logged_in'
