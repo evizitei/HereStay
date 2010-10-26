@@ -1,11 +1,13 @@
 :javascript
   function calculate_fee(){
-    val = parseFloat($("#booking_amount").value());
-    val = val * 0.05;
-    val = val * 100;
-    val = Math.round(val);
-    val = val / 100;
-    $("#fee").value("$" + val + "");
+    var val;
+    val = parseFloat($("#booking_amount").val());
+    if(isNaN(val)){
+      $("#fee").html("$ 0.00");
+    }else{
+      val = (Math.round((val * 0.05) * 100) / 100);
+      $("#fee").html("$" + val + "");
+    }
   }
   
   $(document).ready(function(){
