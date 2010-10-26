@@ -11,6 +11,7 @@ class RentalUnit < ActiveRecord::Base
   
   has_many :photos
   has_many :bookings
+  has_many :booking_messages, :through => "booking"
   belongs_to :user
   
   before_save do |unit| 
