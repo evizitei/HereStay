@@ -78,6 +78,6 @@
     -rewards_total = @rewards.map{|r| r.amount}.inject(0.0){|amt,r| amt = amt + r}
     == $#{rewards_total}
     %b Total Redeemed:
-    == $#{@user.redeemed_rewards}
+    == $#{@user.redeemed_rewards || 0.0}
     %b Rewards Balance:
-    == $#{rewards_total - @user.redeemed_rewards}
+    == $#{rewards_total - (@user.redeemed_rewards - 0.0)}
