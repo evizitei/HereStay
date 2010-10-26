@@ -28,8 +28,8 @@ module ApplicationHelper
       text = args.first
       url = args.second
       options = args.third || {}
-      btn = "<input type=button value=\"#{text}\">"
-      "<label class='fbButton #{options[:class_name]}'><a href='#{url}'>#{btn}</a></label>".html_safe
+      link = link_to(url, :method => options[:method] ){ "<input type=button value=\"#{text}\">" }
+      "<label class='fbButton #{options[:class_name]}'>#{link}</label>".html_safe
     end
   end
   

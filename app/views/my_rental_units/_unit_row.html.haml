@@ -1,23 +1,19 @@
-.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:style=>"background-color:#{cycle("#FFC67D","#E5D7C4")};"}
-  .unit_box{:style=>"height:100px;"}
-    .unit_picture{:style=>"width:100px;float:left;"}
+.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
+  .unit_box
+    .unit_picture
       -if unit_row.picture.file?
         =image_tag(unit_row.picture.url(:thumb))
-    .unit_description{:style=>"width:500px;float:right;"} 
+    .unit_description
       =link_to unit_row.name,my_rental_unit_path(unit_row.id)
       .description.UIObjectListing_Subtext
         = unit_row.description
-  -if admin
+  -if @user && unit_row.user == @user
     %br
-    .admin_buttons{:style=>"height:40px;"}
-      %label.fbButton.f_left
-        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Edit"}),edit_my_rental_unit_path(unit_row.id)
-      %label.fbButton.f_left
-        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Photos"}),photos_for_my_rental_unit_path(unit_row.id)
-      %label.fbButton.f_left
-        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Video"}),upload_video_for_my_rental_unit_path(unit_row.id)
-      %label.fbButton.f_left
-        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Bookings"}),my_rental_unit_bookings_path(unit_row.id)
-      %label.fbButton.f_left
-        =link_to content_tag(:input,nil,{:type=>"button",:value=>"Delete"}),my_rental_unit_path(unit_row.id),:method=>:delete
+    .admin_buttons
+      = fb_button 'Edit', edit_my_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Photos', photos_for_my_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Video', upload_video_for_my_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Bookings', my_rental_unit_bookings_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Delete', my_rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
+
   =render(:partial=>"my_rental_units/share_unit",:object=>unit_row)
