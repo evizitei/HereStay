@@ -1,3 +1,16 @@
+:javascript
+  function calculate_fee(){
+    val = parseFloat($(".amount_field").value);
+    val = val * 0.05;
+    val = val * 100;
+    val = Math.round(val);
+    val = val / 100;
+    $("#fee").value("$" + val + "");
+  }
+  
+  $(document).ready(function(){
+    $(".amount_field").bind("blur",calculate_fee);
+  });
 %h2 New Booking for #{@rental_unit.name}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #booking_form
@@ -24,8 +37,10 @@
             %th.label Amount:
             %td.data
               $
-              = f.text_field :amount
+              = f.text_field :amount,:html=>{:class=>"amount_field"}
             %td.rightCol
+              %b Fee:
+              %span#fee
           %tr.spacer
             %td{:colspan=>3}
               %hr
