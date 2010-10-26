@@ -20,6 +20,12 @@
             %th.label Stop Date:
             %td.data= f.date_select :stop_date
             %td.rightCol
+          %tr.dataRow
+            %th.label Amount:
+            %td.data
+              $
+              = f.text_field :amount
+            %td.rightCol
           %tr.spacer
             %td{:colspan=>3}
               %hr

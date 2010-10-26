@@ -48,6 +48,7 @@
             %fb:name{:uid=>booking.owner_fb_id}
           %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
 #others_booking_me
+  =render(:partial=>"shared/bookings",:object=>@bookings)
 #my_rewards
   %h3 My rewards
   %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
