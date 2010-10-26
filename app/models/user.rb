@@ -15,6 +15,11 @@ class User < ActiveRecord::Base
     end
   end
   
+  def initialize(attrs={})
+    super({})
+    self.redeemed_rewards ||= 0.0
+  end
+  
   def access_token
     self.authorize_signature
   end
