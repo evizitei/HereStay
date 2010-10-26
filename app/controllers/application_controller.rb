@@ -16,6 +16,9 @@ protected
   def oauth_obj
     oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
     @user = User.for(oauth.get_user_info_from_cookie(cookies))
+    if @user and @user.email.nil?
+      Delayed::Job.enqueue(FbEmailFetcher.new(@user.fb_user_id))
+    end
   end
   
   def fb_app_name
@@ -32,30 +35,4 @@ protected
       return false
     end
   end
-  
-  # def update_user
-  #     if params[:user_id]
-  #       session[:user_id] = params[:user_id]
-  #       session[:oauth_token] = params[:oauth_token]
-  #     end
-  #     if session[:user_id]
-  #       @user = User.find_or_create_by_fb_user_id(session[:user_id])
-  #       if @user
-  #         auth_token = params[:oauth_token]
-  #         if auth_token
-  #           if @user.authorize_signature != auth_token
-  #             @user.update_attributes!(:authorize_signature=>auth_token,:session_expires_at=>Time.at(params[:expires]))
-  #           end
-  #         
-  #           if @user.email.nil?
-  #             Delayed::Job.enqueue(FbEmailFetcher.new(@user.fb_user_id))
-  #           end
-  #         else
-  #           puts "NO AUTH TOKEN!!!"
-  #         end
-  #       else
-  #         puts "NO USER!!!"
-  #       end
-  #     end
-  #   end
 end
