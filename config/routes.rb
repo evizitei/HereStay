@@ -52,7 +52,7 @@ Micasasucasa::Application.routes.draw do
     resources :messages
   end
   
-  resource :account, :controller => :account, :only => [:edit, :update]
+  resource :account, :controller => :account, :only => [:edit, :update, :show]
   
   # scope "canvas" do 
   #   match "/search"=>"canvas#search"

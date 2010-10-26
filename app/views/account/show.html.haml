@@ -1,0 +1,21 @@
+
+= fb_button 'Edit Account', edit_account_path, :class_name => 'f_left logged_in'
+#user_info
+  %p
+    %strong Name:
+    %fb:name{:uid=>@user.fb_user_id}
+  %p
+    %strong Pic:
+    %fb:profile-pic{:size=>"small",:uid=>@user.fb_user_id}    
+  -if @user.email
+    %p
+      %strong Email:
+      =@user.email
+  -if @user.vrbo_login
+    %p
+      %strong VRBO Username:
+      =@user.vrbo_login
+    
+#open_bookings
+#closed_bookings
+#my_rewards

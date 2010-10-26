@@ -87,3 +87,7 @@
 .unit_picture{ width:100px;float:left;}
 .unit_description{ width:500px;float:right;}
 .admin_buttons{ height:40px;}
+
+#user_info{
+	background-color:#FFC67D;
+}

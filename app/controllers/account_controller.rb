@@ -1,6 +1,9 @@
 class AccountController < ApplicationController
   layout "canvas"
   
+  def show
+  end
+   
   def edit
   end
   

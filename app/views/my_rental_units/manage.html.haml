@@ -5,5 +5,5 @@
 %br
 =render :partial=>"unit_row",:collection=>@rental_units
 %br
-= fb_button 'Edit My Account', edit_account_path, :class_name => 'f_left logged_in'
+= fb_button 'My Account', show_account_path, :class_name => 'f_left logged_in'
 = fb_button 'Add Listing', new_my_rental_unit_path, :class_name => 'f_left logged_in'
