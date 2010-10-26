@@ -9,7 +9,7 @@
       %th{:style=>"padding:3px;"} Renter
       %th{:style=>"padding:3px;"} Description
   %tbody
-    -bookings.each do |booking|
+    -booking_collection.each do |booking|
       %tr
         %td{:style=>"padding:3px;font-size:10pt;"}
           = link_to booking.id, booking
