@@ -59,17 +59,17 @@
         %th{:style=>"padding:3px;"} Reward
     %tbody
       -@rewards.each do |reward|
-         %tr
-           %td{:style=>"padding:3px;font-size:10pt;"}
-             %fb:profile-pic{:uid=>reward.booking.owner_fb_id,:size=>"thumb"}
-             %fb:name{:uid=>reward.booking.owner_fb_id}
-           %td{:style=>"padding:3px;font-size:10pt;"}
-             -if reward.booking.renter_fb_id
-               %fb:profile-pic{:uid=>reward.booking.renter_fb_id,:size=>"thumb"}
-               %fb:name{:uid=>reward.booking.renter_fb_id}
-             -else
-               =reward.booking.renter_name
-           %td{:style=>"padding:3px;font-size:10pt;"}
-             =link_to reward.booking.rental_unit.name,my_rental_unit_path(reward.booking.rental_unit.id)
-           %td{:style=>"padding:3px;font-size:10pt;"}
-             ==$#{reward.amount || 0.0}
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            %fb:profile-pic{:uid=>reward.booking.owner_fb_id,:size=>"thumb"}
+            %fb:name{:uid=>reward.booking.owner_fb_id}
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if reward.booking.renter_fb_id
+              %fb:profile-pic{:uid=>reward.booking.renter_fb_id,:size=>"thumb"}
+              %fb:name{:uid=>reward.booking.renter_fb_id}
+            -else
+              =reward.booking.renter_name
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =link_to reward.booking.rental_unit.name,my_rental_unit_path(reward.booking.rental_unit.id)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            ==$#{reward.amount || 0.0}
