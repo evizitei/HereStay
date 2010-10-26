@@ -15,6 +15,8 @@
     %label.fbButton.f_right
       =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
   %br
+  %br
+  %br
   =will_paginate(@paginate_obj,:renderer=>"FacebookLinkRenderer")
   =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 %br
