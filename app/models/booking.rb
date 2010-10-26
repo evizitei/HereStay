@@ -3,6 +3,7 @@ class Booking < ActiveRecord::Base
   belongs_to :rental_unit
   has_many :booking_messages
   has_many :discounts
+  has_many :rewards
   
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   

@@ -3,6 +3,7 @@ class AccountController < ApplicationController
   
   def show
     @my_bookings = Booking.where(:renter_fb_id=>@user.fb_user_id)
+    @rewards = @user.rewards
   end
    
   def edit

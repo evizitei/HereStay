@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :discounts
   has_many :rental_units
+  has_many :rewards
   
   # find or create user by fb-uid and update his oauth token and session data
   def self.for(oauth_obj)

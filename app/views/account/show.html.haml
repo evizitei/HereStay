@@ -49,3 +49,27 @@
           %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
 #others_booking_me
 #my_rewards
+  %h3 My rewards
+  %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px;"} Owner
+        %th{:style=>"padding:3px;"} Renter
+        %th{:style=>"padding:3px;"} Unit
+        %th{:style=>"padding:3px;"} Reward
+    %tbody
+      -@rewards.each do |reward|
+         %tr
+           %td{:style=>"padding:3px;font-size:10pt;"}
+             %fb:profile-pic{:uid=>reward.booking.owner_fb_id,:size=>"thumb"}
+             %fb:name{:uid=>reward.booking.owner_fb_id}
+           %td{:style=>"padding:3px;font-size:10pt;"}
+             -if reward.booking.renter_fb_id
+               %fb:profile-pic{:uid=>reward.booking.renter_fb_id,:size=>"thumb"}
+               %fb:name{:uid=>reward.booking.renter_fb_id}
+             -else
+               =reward.booking.renter_name
+           %td{:style=>"padding:3px;font-size:10pt;"}
+             =link_to reward.booking.rental_unit.name,my_rental_unit_path(reward.booking.rental_unit.id)
+           %td{:style=>"padding:3px;font-size:10pt;"}
+             ==$#{reward.amount || 0.0}
