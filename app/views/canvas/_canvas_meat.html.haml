@@ -8,17 +8,17 @@
       =submit_tag "Search"
 -if @user.nil?
   = fb_login_button
--if @user
-  %label.fbButton.f_left
-    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
 #listings
   %h2{:style=>"font-size:16pt;"} Featured Listings
   %br
+  -if @user
+    %label.fbButton.f_right
+      =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
   %br
   =will_paginate(@paginate_obj,:renderer=>"FacebookLinkRenderer")
   =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 %br
 %br
 -if @user
-  %label.fbButton.f_left
+  %label.fbButton.f_right
     =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_url
