@@ -80,4 +80,4 @@
     %b Total Redeemed:
     == $#{@user.redeemed_rewards || 0.0}
     %b Rewards Balance:
-    == $#{rewards_total - (@user.redeemed_rewards - 0.0)}
+    == $#{rewards_total - (@user.redeemed_rewards || 0.0)}
