@@ -54,6 +54,7 @@
             %fb:name{:uid=>booking.owner_fb_id}
           %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
 #others_booking_me
+  %h3 Who's staying at my place
   =render(:partial=>"shared/bookings",:locals=>{:booking_collection=>@bookings})
 #my_rewards
   %h3 My rewards
