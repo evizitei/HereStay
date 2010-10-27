@@ -5,8 +5,8 @@
 %tr.data_row
   %th Owner:
   %td.data
-    %fb:profile-pic{:uid=>info.fb_user_id,:size=>"thumb"}
-    %fb:name{:uid=>info.fb_user_id}
+    %fb:profile-pic{:uid=>info.user.fb_user_id,:size=>"thumb"}
+    %fb:name{:uid=>info.user.fb_user_id}
     = fb_button 'All Listings', owned_by_my_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
 %tr.spacer

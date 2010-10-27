@@ -1,13 +1,14 @@
 #search_box{:style=>"height:30px;width:320px;"}
   =form_tag("/") do
-    #search_icon{:style=>"float:left;width:25px;"}
+    #search_icon{:style=>"float:left;width:25px;margin:5px;"}
       =image_submit_tag("search_icon.jpg")
-    #search_text{:style=>"width:175px;height:30px;float:left;"}
+    #search_text{:style=>"width:175px;height:30px;float:left;margin:5px;"}
       =text_field_tag :search
     %label#search_button.fbButton.f_right{:style=>"width:70px;"}
       =submit_tag "Search"
 -if @user.nil?
   = fb_login_button
+  \-- Press here to start using HereStay!
 #listings
   %h2{:style=>"font-size:16pt;"} Featured Listings
   %br

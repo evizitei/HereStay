@@ -2,4 +2,4 @@
 
 %p== The owner of the property named #{@rental_unit.name} has sent you a message!  Follow the link below to read and respond:
 
-=link_to "Read It!","http://apps.facebook.com/micasasucasa/bookings/discuss?booking_id=#{@message.booking_id}"
+=link_to "Read It!",discuss_booking_url(@message.booking)
