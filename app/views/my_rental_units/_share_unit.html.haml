@@ -1,6 +1,7 @@
-%fb:share-button{:class=>"meta",:content=>"mult"}
-  %meta{:name=>"medium",:content=>"mult"}
-  %meta{:name=>"title",:content=>share_unit.name}
-  %meta{:name=>"description",:content=>share_unit.description}
-  %link{:rel=>"image_src",:href=>share_unit.picture.url(:thumb)}
-  %link{:rel=>"target_url",:href=>my_rental_unit_path(share_unit)}
+.share_box
+  %fb:share-button{:class=>"meta",:content=>"mult"}
+    %meta{:name=>"medium",:content=>"mult"}
+    %meta{:name=>"title",:content=>share_unit.name}
+    %meta{:name=>"description",:content=>share_unit.description}
+    %link{:rel=>"image_src",:href=>share_unit.picture.url(:thumb)}
+    %link{:rel=>"target_url",:href=>my_rental_unit_path(share_unit)}  

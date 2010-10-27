@@ -91,3 +91,8 @@
 #user_info{
 	background-color:#FFC67D;
 }
+
+.share_box{
+	min-height: 20px;
+	min-width: 100px;
+}
