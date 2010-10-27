@@ -30,6 +30,11 @@ class RentalUnit < ActiveRecord::Base
     string  :zip
   end
   
+  def initialize(attrs = {})
+    super(attrs)
+    self.country ||= "USA"
+  end
+  
   # find uncompleted booking by user or create new if booking not found
   def find_uncompleted_booking_for_user_or_create(user)
     booking = self.bookings.uncompleted.find_by_renter_fb_id(user.fb_user_id)
