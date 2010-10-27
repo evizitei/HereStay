@@ -47,4 +47,9 @@ class Booking < ActiveRecord::Base
     )
     discounts.create!(:user_id=>user.id)
   end
+  
+  def confirm_by_renter!
+    self.confirmed_by_renter_at = DateTime.now
+    self.save!
+  end
 end

@@ -1,5 +1,7 @@
 %h2 Greetings from HereStay!
 
-%p== The owner of the property named #{@rental_unit.name} has confirmed your booking!  Follow the link below to see the details:
+%p== The owner of the property named #{@rental_unit.name} has confirmed your booking!
 
-=link_to "My Vacation!","http://apps.facebook.com/micasasucasa/booking/details?booking_id=#{@booking.id}"
+%p== You are scheduled to stay there from #{@booking.start_date.strftime("%m/%d/%Y")} to #{@booking.stop_date.strftime("%m/%d/%Y")} for just $#{@booking.amount}  Follow the link below to confirm this booking:
+
+=link_to "Confirm My Vacation!",renter_confirm_booking_url(@booking)

@@ -48,6 +48,7 @@ Micasasucasa::Application.routes.draw do
       get :confirm
       put :exec_confirm
       post :wall_post
+      get :renter_confirm
     end
     resources :messages
   end

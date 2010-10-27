@@ -1,7 +1,7 @@
 class BookingsController < ApplicationController
   layout "canvas"
   before_filter :get_rental_unit, :only => %w(index new create)
-  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post)
+  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm)
   
   def index
     @bookings = @rental_unit.bookings
@@ -43,6 +43,11 @@ class BookingsController < ApplicationController
   def wall_post
     @booking.wall_post_by_user!(@user)
     redirect_to @booking
+  end
+  
+  def renter_confirm
+    @booking.confirm_by_renter!
+    render :action=>:show
   end
   
   private
