@@ -4,8 +4,8 @@
       -if unit_row.picture.file?
         =image_tag(unit_row.picture.url(:thumb))
     .unit_description
-      =link_to unit_row.name,my_rental_unit_path(unit_row.id)
-      .description.UIObjectListing_Subtext
+      .title=link_to unit_row.name,my_rental_unit_path(unit_row.id)
+      .description
         = unit_row.description
   -if @user && unit_row.user == @user
     %br

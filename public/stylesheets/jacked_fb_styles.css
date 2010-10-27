@@ -86,6 +86,8 @@
 .unit_box{ height:100px;}
 .unit_picture{ width:100px;float:left;}
 .unit_description{ width:500px;float:right;}
+.unit_description .title{ font-size:14pt;font-weight:bold;}
+.unit_description .description{ margin-top:7px;font-size:14pt;}
 .admin_buttons{ height:40px;}
 
 #user_info{
