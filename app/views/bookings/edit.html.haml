@@ -14,10 +14,10 @@
     $("#booking_amount").bind("blur",calculate_fee);
   });
 =raw(enable_jqueryui_datepicker)
-%h2== New Booking for #{@rental_unit.name}
+%h2== Edit Booking for #{@rental_unit.name}
 .pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
   #booking_form
-    =form_for :booking, :url=> my_rental_unit_bookings_path(@rental_unit) do |f|
+    =form_for :booking, :url=> booking_path(@booking), :method=>"PUT" do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
