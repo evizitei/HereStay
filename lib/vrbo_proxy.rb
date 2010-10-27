@@ -49,6 +49,6 @@ module VrboProxy
   end
   
   def check_lisitng_id
-    raise Error, 'Missing listing id' if @listing_id.nil?
+    raise Error, 'Missing Vrbo listing id' if @listing_id.nil?
   end
 end

@@ -41,6 +41,12 @@ Micasasucasa::Application.routes.draw do
         get :discuss
       end
     end
+    
+    resources :reservations do
+      collection do
+        post :import
+      end
+    end
   end
   
   resources :bookings do

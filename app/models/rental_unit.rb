@@ -13,6 +13,7 @@ class RentalUnit < ActiveRecord::Base
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
+  has_many :reservations
   
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   

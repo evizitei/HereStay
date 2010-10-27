@@ -16,6 +16,7 @@ gem "will_paginate", "~> 3.0.pre2"
 gem 'inherited_resources', '1.1.2'
 gem 'mechanize'
 gem 'addressable'
+gem 'formtastic'
 
 group :development do
   gem 'cucumber'

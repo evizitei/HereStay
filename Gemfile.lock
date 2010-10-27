@@ -74,6 +74,10 @@ GEM
     escape (0.0.4)
     ffi (0.6.3)
       rake (>= 0.8.7)
+    formtastic (1.1.0)
+      actionpack (>= 2.3.0)
+      activesupport (>= 2.3.0)
+      i18n (>= 0.4.0)
     gherkin (2.2.9)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
@@ -170,6 +174,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  formtastic
   haml
   httparty
   inherited_resources (= 1.1.2)

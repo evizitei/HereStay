@@ -1,0 +1,32 @@
+%h1
+  Reservations
+%div
+  = fb_button 'Create reservation', new_resource_path
+  = fb_button 'Import', import_my_rental_unit_reservations_path(parent), :method => :post
+
+- if collection.blank?
+  %h3 There is no reservations.
+- else
+  %table.tbl_reservation
+    %tr{:class => cycle('unit_row odd', 'unit_row even')}
+      %th.first{:width => 50} #
+      %th{:width => 300} Stay Dates
+      %th{:width => 160} Status
+      %th{:width => 70} Name
+      %th &nbsp;
+    - for resource in collection
+      %tr{:class => cycle('unit_row odd', 'unit_row even')}
+        %td.first= resource.id
+        %td
+          = show_date resource.start_at.to_date
+          \-
+          = show_date resource.end_at.to_date
+        %td= t resource.status, :scope => "reservation.statuses"
+        %td= h resource.full_name
+        %td
+          = fb_button 'edit', edit_resource_path(resource)
+          = fb_button 'remove', resource_path(resource), :method => :delete
+  %p
+    = will_paginate collection
+  
+= fb_button 'Back to rental unit', edit_my_rental_unit_path(parent)
