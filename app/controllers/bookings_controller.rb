@@ -1,7 +1,7 @@
 class BookingsController < ApplicationController
   layout "canvas"
   before_filter :get_rental_unit, :only => %w(index new create)
-  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit)
+  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
   def index
     @bookings = @rental_unit.bookings
@@ -27,6 +27,8 @@ class BookingsController < ApplicationController
   end
   
   def update
+    @booking.update_attributes!(params[:booking])
+    redirect_to my_rental_unit_bookings_url(@booking.rental_unit)
   end
   
   # TODO: move to message controller
