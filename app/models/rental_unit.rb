@@ -13,6 +13,9 @@ class RentalUnit < ActiveRecord::Base
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
+  has_many :reservations
+  
+  validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   
   before_save do |unit| 
     if unit.address_changed?
@@ -53,4 +56,20 @@ class RentalUnit < ActiveRecord::Base
     !self.video_id.nil?
   end
   
+  # Import listing from vrbo account
+  # TODO: handle import errors
+  def self.import_from_vrbo!(user)
+    vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
+    vl.listings_except(user.rental_units.map{|u| u.vrbo_id}).each do |l|
+      user.rental_units.create!(l)
+    end
+  end
+  
+  # load attributes from vrbo listing
+  # currently it loads following attrs: name, description, address fields
+  def load_from_vrbo!
+    vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
+    self.attributes = vl.lisitng_attributes(self.vrbo_id)
+    self.save!
+  end
 end

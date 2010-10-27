@@ -96,3 +96,19 @@
 	min-height: 20px;
 	min-width: 100px;
 }
+
+.tbl_reservation{
+  width: 100%;
+  border-spacing: 0px 2px;
+}
+.tbl_reservation th{
+  font-size: 12px;
+}
+
+.tbl_reservation td{
+  padding:5px;
+  font-size: 12px;
+}
+.tbl_reservation td.first{
+  text-align: center;
+}

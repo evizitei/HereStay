@@ -52,6 +52,10 @@ module ApplicationHelper
     end
   end
   
+  def show_date(date, format = :long)
+    date.to_date.to_s(format)
+  end
+  
   def enable_jqueryui_datepicker(selector=".date_picker")
     "<script type=\"text/javascript\">
       $(function(){
