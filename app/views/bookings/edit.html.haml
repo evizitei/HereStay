@@ -23,7 +23,10 @@
           %tr.dataRow
             %th.label Renter Name:
             %td.data  
-              = f.select :renter_fb_id, @user.fb_friends.map{|friend| [friend['name'], friend['id']] }, :include_blank => true
+              -if @booking.renter_fb_id
+                %fb:name{:uid=>@booking.renter_fb_id}
+              -else
+                =@booking.renter_name
             %td.rightCol
           %tr.spacer
             %td{:colspan=>3}
