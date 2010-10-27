@@ -27,9 +27,11 @@ Micasasucasa::Application.routes.draw do
       get :owned_by
       get :delete_photo
       post :new_photo
+      post :import
     end
     
     member do
+      put :load_from_vrbo
       get :photos_for
       get :upload_video_for
     end

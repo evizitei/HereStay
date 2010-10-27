@@ -39,6 +39,7 @@ GEM
       activemodel (= 3.0.0)
       activesupport (= 3.0.0)
     activesupport (3.0.0)
+    addressable (2.2.2)
     arel (1.0.1)
       activesupport (~> 3.0.0)
     aws-s3 (0.6.2)
@@ -97,6 +98,8 @@ GEM
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
+    mechanize (1.0.0)
+      nokogiri (>= 1.2.1)
     mime-types (1.16)
     nokogiri (1.4.3.1)
     paperclip (2.3.4)
@@ -161,6 +164,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   aws-s3
   capybara
   cucumber
@@ -172,6 +176,7 @@ DEPENDENCIES
   koala
   koala-rails
   launchy
+  mechanize
   nokogiri
   paperclip
   pg

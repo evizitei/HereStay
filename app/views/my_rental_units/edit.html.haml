@@ -6,4 +6,4 @@
       = render 'form', {:f => f}
       
 = fb_button 'Load VRBO Calendar', '#', :class_name => 'f_right'
-= fb_button 'Load VRBO Full Listing', '#', :class_name => 'f_right'
+= fb_button 'Load VRBO Full Listing', load_from_vrbo_my_rental_unit_path, :class_name => 'f_right', :method => :put
