@@ -13,7 +13,7 @@
     -booking_collection.each do |booking|
       %tr
         %td{:style=>"padding:3px;font-size:10pt;"}
-          = link_to booking.id, booking
+          = link_to booking.id, edit_booking_path(booking)
         %td{:style=>"padding:3px;font-size:10pt;"}
           -if booking.status != "COMPLETE"
             = link_to "Discussion", discuss_booking_path(booking)
