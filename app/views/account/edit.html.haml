@@ -1,22 +1,18 @@
-%fb:header
-  Edit Account for
-  %fb:name{:uid=>"loggedinuser"}
-  
+%h2 Edit My Account 
 %p
   For VRBO users, please enter your credentials to automate the connection between our services.
-.pal.grayArea.gray_box.noborder.colored-bg
-  =form_for @user, :url => account_path, :html => {:method => :put} do |f|
-    #user_form{:style=>"width:400px","min-height"=>"200px"}
-      %table.dataTable
-        %tbody
-          %tr.dataRow
-            %th.label VRBO Login:
-            %td.data= f.text_field :vrbo_login
-            %td.rightCol
-          %tr.dataRow
-            %th.label VRBO Password:
-            %td.data= f.text_field :vrbo_password
-            %td.rightCol
-    = fb_button do
-      = f.submit "Save Changes"
-    = fb_button 'Cancel', manage_my_rental_units_path
+=form_for @user, :url => account_path, :html => {:method => :put} do |f|
+  #user_form{:style=>"width:400px","min-height"=>"200px"}
+    %table.dataTable
+      %tbody
+        %tr.dataRow
+          %th.label VRBO Login:
+          %td.data= f.text_field :vrbo_login
+          %td.rightCol
+        %tr.dataRow
+          %th.label VRBO Password:
+          %td.data= f.text_field :vrbo_password
+          %td.rightCol
+  = fb_button do
+    = f.submit "Save Changes"
+  = fb_button 'Cancel', manage_my_rental_units_path
