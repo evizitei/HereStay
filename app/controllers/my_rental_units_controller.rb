@@ -51,6 +51,19 @@ class MyRentalUnitsController < ApplicationController
     redirect_to manage_my_rental_units_url
   end
   
+  def load_from_vrbo
+    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit.load_from_vrbo!
+    flash[:notice] = "Full lisitng loaded from Vrbo successfully."
+    redirect_to edit_my_rental_unit_url(rental_unit)
+  end
+  
+  def import
+    RentalUnit.import_from_vrbo!(@user)
+    flash[:notice] = "Lisitngs was imported from Vrbo successfully."
+    redirect_to manage_my_rental_units_url
+  end
+  
   def share
     @rental_unit = RentalUnit.find(params[:id])
     unless @rental_unit.user == @user
