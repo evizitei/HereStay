@@ -1,6 +1,9 @@
 %fb:header
   Edit Account for
   %fb:name{:uid=>"loggedinuser"}
+  
+%p
+  For VRBO users, please enter your credentials to automate the connection between our services.
 .pal.grayArea.gray_box.noborder.colored-bg
   =form_for @user, :url => account_path, :html => {:method => :put} do |f|
     #user_form{:style=>"width:400px","min-height"=>"200px"}
