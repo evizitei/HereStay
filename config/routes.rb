@@ -13,8 +13,7 @@ Micasasucasa::Application.routes.draw do
     
     resources :photos
   end
-  
-  match "/"=>"canvas#index"
+
   match "/canvas"=>"canvas#index"
   match "/canvas/"=>"canvas#index"
   
