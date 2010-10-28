@@ -25,6 +25,8 @@ class RentalUnit < ActiveRecord::Base
     end
   end
   
+  after_save :add_remote_images, :if => :remote_images_present?
+  
   searchable do
     text    :name, :default_boost=>2
     text    :description
@@ -76,13 +78,23 @@ class RentalUnit < ActiveRecord::Base
   end
   
   # build new images from array of image urls/
-  def remote_images=(images)
-    unless images.blank?
-      existing_remote_photos = self.photos.map{|p| p.image_remote_url}.find_all{|i| i.present?}
-      new_photos = images - existing_remote_photos
-      unless new_photos.empty?
-        self.photos_attributes = new_photos.map{|i| {:image_url => i}}
-      end
-    end
+  # def remote_images=(images)
+  #   unless images.blank?
+  #     existing_remote_photos = self.photos.map{|p| p.image_remote_url}.find_all{|i| i.present?}
+  #     new_photos = images - existing_remote_photos
+  #     unless new_photos.empty?
+  #       self.photos_attributes = new_photos.map{|i| {:image_url => i}}
+  #     end
+  #   end
+  # end
+  
+  def remote_images_present?
+    @remote_images.present? && @remote_images.is_a?(Array)
+  end
+  
+  def add_remote_images
+    existing_remote_photos = self.photos.map{|p| p.image_remote_url}.find_all{|i| i.present?}
+    new_photos = @remote_images - existing_remote_photos
+    Delayed::Job.enqueue(LoadPhoto.new(self.id, new_photos))
   end
 end
