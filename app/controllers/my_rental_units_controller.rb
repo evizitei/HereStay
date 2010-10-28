@@ -54,7 +54,7 @@ class MyRentalUnitsController < ApplicationController
   def load_from_vrbo
     rental_unit = @user.rental_units.find(params[:id])
     rental_unit.load_from_vrbo!
-    flash[:notice] = "Full lisitng loaded from Vrbo successfully."
+    flash[:notice] = "Full lisitng loaded from Vrbo successfully. Photos will be imported in some minutes."
     redirect_to edit_my_rental_unit_url(rental_unit)
   end
   
@@ -78,12 +78,10 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def delete_photo
-    photo = Photo.find(params[:id])
-    photo.destroy
-    @rental_unit = RentalUnit.find(photo.rental_unit_id)
-    @photos = @rental_unit.photos
-    @photo = @rental_unit.photos.new
-    render :action=>:photos
+    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit.photos.find(params[:photo_id]).destroy
+    flash[:notice] = "Photo was deleted successfully"
+    redirect_to  photos_for_my_rental_unit_url(rental_unit)
   end
   
   def new_photo

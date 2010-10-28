@@ -5,6 +5,8 @@ class Booking < ActiveRecord::Base
   has_many :discounts
   has_many :rewards
   
+  after_save :create_reservation_on_confirm
+  
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   
   # change status without saving (like aasm)
@@ -15,7 +17,12 @@ class Booking < ActiveRecord::Base
   def confirm!
     UserMailer.booking_confirmation(self).deliver
     self.complete
+    create_reservation
     self.save!
+  end
+  
+  def confirmed?
+    self.status == "COMPLETE"
   end
   
   # upadate record and confirm
@@ -51,5 +58,11 @@ class Booking < ActiveRecord::Base
   def confirm_by_renter!
     self.confirmed_by_renter_at = DateTime.now
     self.save!
+  end
+  
+  def create_reservation_on_confirm
+    if status_changed? && self.confirmed?
+      rental_unit.reservations.create!(:status => 'RESERVE', :start_at => self.start_date, :end_at => self.stop_date, :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
+    end
   end
 end

@@ -25,7 +25,6 @@ Micasasucasa::Application.routes.draw do
       get :manage
       post :save
       get :owned_by
-      get :delete_photo
       post :new_photo
       post :import
     end
@@ -34,6 +33,7 @@ Micasasucasa::Application.routes.draw do
       put :load_from_vrbo
       get :photos_for
       get :upload_video_for
+      delete :delete_photo
     end
     
     resources :bookings do

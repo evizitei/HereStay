@@ -61,11 +61,11 @@ class Reservation < ActiveRecord::Base
   end
   
   def save_on_remote_server?
-    @save_on_remote_server.present? and (@save_on_remote_server.to_i == 1 || @save_on_remote_server == true)
+    @save_on_remote_server.present? and (@save_on_remote_server === true || @save_on_remote_server.to_s == '1')
   end
   
   def save_on_remote_server
-    @save_on_remote_server.present? ? save_on_remote_server? : remote_id?
+    @save_on_remote_server.present? ? save_on_remote_server? : remote_listing_id.present?
   end
   
   def self.import_for_rental_unit(rental_unit, year = nil)
@@ -91,6 +91,7 @@ private
   def sync_with_remote_server
     begin
       if recently_created? || remote_id.blank?
+        # TODO: retrive remote_id from exported reservation
         create_on_remote_server
       else
         update_on_remote_server

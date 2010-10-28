@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101027035549) do
+ActiveRecord::Schema.define(:version => 20101028053939) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20101027035549) do
     t.datetime "picture_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_remote_url"
   end
 
   create_table "rental_units", :force => true do |t|
