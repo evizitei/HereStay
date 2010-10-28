@@ -17,8 +17,12 @@ class RentalUnit < ActiveRecord::Base
   
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   
+  after_create do |unit|
+    Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
+  end
+  
   before_save do |unit| 
-    if unit.address_changed?
+    if unit.address_changed? and !unit.new?
       Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
     end
   end
