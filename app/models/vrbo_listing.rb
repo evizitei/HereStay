@@ -52,6 +52,9 @@ class VrboListing
     form = page.form('aspnetForm')
     rental_unit[:description] = form.send('ctl00$Main$tbLongDesc')
     
+    # get vrbo images
+    rental_unit[:remote_images] = agent.get('http://www.vrbo.com/305472').search('img.photo_thumb_image').map{|i| i[:src]}
+    
     rental_unit
   end
   

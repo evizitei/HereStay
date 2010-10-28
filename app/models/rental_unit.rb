@@ -1,7 +1,7 @@
 class RentalUnit < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 5
-  
+  attr_accessor :remote_images
   has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>" },
                       :storage => :s3,:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
                       :path => ":attachment/:id/:style/:basename.:extension",
@@ -10,6 +10,8 @@ class RentalUnit < ActiveRecord::Base
                       :url=>":s3_alias_url"
   
   has_many :photos
+  accepts_nested_attributes_for :photos, :allow_destroy => true
+  
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
@@ -71,5 +73,16 @@ class RentalUnit < ActiveRecord::Base
     vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
     self.attributes = vl.lisitng_attributes(self.vrbo_id)
     self.save!
+  end
+  
+  # build new images from array of image urls/
+  def remote_images=(images)
+    unless images.blank?
+      existing_remote_photos = self.photos.map{|p| p.image_remote_url}.find_all{|i| i.present?}
+      new_photos = images - existing_remote_photos
+      unless new_photos.empty?
+        self.photos_attributes = new_photos.map{|i| {:image_url => i}}
+      end
+    end
   end
 end

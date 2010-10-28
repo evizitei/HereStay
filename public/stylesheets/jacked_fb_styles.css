@@ -81,8 +81,8 @@
   margin:10px 0;
   padding:10px;
 }
-.unit_row.odd{ background-color:#FFC67D; }
-.unit_row.even{ background-color:#E5D7C4; }
+.odd{ background-color:#FFC67D; }
+.even{ background-color:#E5D7C4; }
 .unit_box{ height:100px;}
 .unit_picture{ width:100px;float:left;}
 .unit_description{ width:500px;float:right;}
