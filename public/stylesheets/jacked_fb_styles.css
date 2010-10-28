@@ -114,3 +114,6 @@
 .tbl_reservation td.first{
   text-align: center;
 }
+.clearfix{
+  clear: both;
+}

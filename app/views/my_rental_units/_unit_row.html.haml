@@ -9,7 +9,7 @@
         = unit_row.description
   -if @user && unit_row.user == @user
     %br
-    .admin_buttons
+    .admin_buttons.clearfix
       = fb_button 'Edit', edit_my_rental_unit_path(unit_row), :class_name => 'f_left'
       = fb_button 'Photos', photos_for_my_rental_unit_path(unit_row), :class_name => 'f_left'
       = fb_button 'Video', upload_video_for_my_rental_unit_path(unit_row), :class_name => 'f_left'
