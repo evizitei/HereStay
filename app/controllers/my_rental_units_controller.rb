@@ -60,13 +60,13 @@ class MyRentalUnitsController < ApplicationController
   def load_from_vrbo
     rental_unit = @user.rental_units.find(params[:id])
     rental_unit.load_from_vrbo!
-    flash[:notice] = "Full lisitng loaded from Vrbo successfully. Photos will be imported in some minutes."
+    flash[:notice] = "Full listing loaded from Vrbo successfully. Photos will be imported in some minutes."
     redirect_to edit_my_rental_unit_url(rental_unit)
   end
   
   def import
     RentalUnit.import_from_vrbo!(@user)
-    flash[:notice] = "Lisitngs was imported from Vrbo successfully."
+    flash[:notice] = "Listings were imported from Vrbo successfully."
     redirect_to manage_my_rental_units_url
   end
   
