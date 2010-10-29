@@ -74,4 +74,11 @@ module ApplicationHelper
     options[:style] = "width:8em" if options[:style].nil?
     return text_field_tag(name,value,options)
   end
+  
+  # build exteranl link to the facebook app with redirect path
+  # should be used for publishing application pages on the external sites
+  def fb_url(options)
+    url = url_for(options)
+    "http://apps.facebook.com/#{fb_app_name}/?redirect_to=#{Rack::Utils.escape(url)}"
+  end
 end
