@@ -25,8 +25,8 @@ class RentalUnit < ActiveRecord::Base
     Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
   end
   
-  before_save do |unit| 
-    if unit.address_changed? and !unit.new?
+  before_save do |unit|
+    if unit.address_changed? and !unit.new_record?
       Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
     end
   end
