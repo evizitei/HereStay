@@ -2,6 +2,13 @@
 %html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
   %head
     %title HereStay
+    -if @og_meta
+      %meta{:property=>"og:title",:content=>@og_meta[:title]}
+      %meta{:property=>"og:type",:content=>@og_meta[:type]}
+      %meta{:property=>"og:image",:content=>@og_meta[:image]}
+      %meta{:property=>"og:url",:content=>@og_meta[:url]}
+      %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
+      %meta{:property=>"og:app_id",:content=>@og_meta[:app_id]}
     = csrf_meta_tag
   %body
     = yield 
