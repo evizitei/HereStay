@@ -5,8 +5,9 @@ class ApplicationController < ActionController::Base
   
   before_filter :debug_params
   # before_filter :update_user
+  before_filter :redirect_from_params
   before_filter :oauth_obj
-  
+
 protected
   def debug_params
     @params = params
@@ -33,6 +34,13 @@ protected
     unless @user
       render "shared/login_required", :layout => 'canvas'
       return false
+    end
+  end
+  
+  # redirect to specified application page.
+  def redirect_from_params
+    if params[:redirect_to]
+      redirect_to params[:redirect_to]
     end
   end
 end
