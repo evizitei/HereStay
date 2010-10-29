@@ -1,5 +1,11 @@
 %html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
   %head
+    -if @og_meta
+      %meta{:property=>"og:title",:content=>@og_meta[:title]}
+      %meta{:property=>"og:type",:content=>@og_meta[:type]}
+      %meta{:property=>"og:image",:content=>@og_meta[:image]}
+      %meta{:property=>"og:url",:content=>@og_meta[:url]}
+      %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
     = stylesheet_link_tag "jacked_fb_styles", "formtastic.css", "formtastic_changes.css"
     %link{:type=>"text/css",:href=>"/jquery-ui/css/redmond/jquery-ui-1.8.2.custom.css",:rel=>"stylesheet"}
     = javascript_include_tag "jquery", "rails"
