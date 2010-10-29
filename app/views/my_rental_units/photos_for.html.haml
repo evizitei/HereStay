@@ -15,4 +15,4 @@
     = f.label :picture,"New Photo:"
     = f.file_field :picture
     %br
-    %label.fbButton= f.submit "Add"
+    %label.fbButton= f.submit "Add", :disable_with => 'Loading...'
