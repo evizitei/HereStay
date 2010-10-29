@@ -46,7 +46,7 @@ class MyRentalUnitsController < ApplicationController
     @og_meta = {:title=>@rental_unit.name,
                 :type=>"hotel",
                 :image=>@rental_unit.picture.url(:thumb),
-                :url=>my_rental_unit_path(@rental_unit),
+                :url=>my_rental_unit_url(@rental_unit),
                 :site_name=>"HereStay",
                 :app_id=>Facebook::APP_ID}
   end
