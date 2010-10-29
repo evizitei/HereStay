@@ -1,4 +1,6 @@
 class RentalUnit < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+  
   cattr_reader :per_page
   @@per_page = 5
   attr_accessor :remote_images
@@ -71,6 +73,11 @@ class RentalUnit < ActiveRecord::Base
     vl.listings_except(user.rental_units.map{|u| u.vrbo_id}).each do |l|
       user.rental_units.create!(l)
     end
+  end
+  
+  # TODO: Dry it using fb_url helper
+  def fb_url
+    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(my_rental_unit_path(self))}"
   end
   
   # load attributes from vrbo listing

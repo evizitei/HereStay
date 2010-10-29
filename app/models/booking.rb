@@ -5,7 +5,7 @@ class Booking < ActiveRecord::Base
   has_many :discounts
   has_many :rewards
   
-  after_save :create_reservation_on_confirm
+  after_save :run_on_confirm, :if => :recently_confirmed?
   
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   
@@ -17,7 +17,6 @@ class Booking < ActiveRecord::Base
   def confirm!
     UserMailer.booking_confirmation(self).deliver
     self.complete
-    create_reservation
     self.save!
   end
   
@@ -60,9 +59,26 @@ class Booking < ActiveRecord::Base
     self.save!
   end
   
-  def create_reservation_on_confirm
-    if status_changed? && self.confirmed?
-      rental_unit.reservations.create!(:status => 'RESERVE', :start_at => self.start_date, :end_at => self.stop_date, :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
-    end
+  private
+  
+  def create_reservation
+    rental_unit.reservations.create!(:status => 'RESERVE', :start_at => self.start_date, :end_at => self.stop_date, :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
+  end
+  
+  # Post to wall message "(This property) has been rented from (date) to (date)" 
+  # when the owner confirms or creates a booking
+  def rented_wall_post
+    oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
+    graph = Koala::Facebook::GraphAPI.new(oauth.get_app_access_token)
+    graph.put_object(Facebook::APP_ID.to_s, "feed", :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}", :link => rental_unit.fb_url, :name => 'view this property')
+  end
+  
+  def run_on_confirm
+    create_reservation
+    rented_wall_post
+  end
+  
+  def recently_confirmed?
+    status_changed? && self.confirmed?
   end
 end
