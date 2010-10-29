@@ -85,8 +85,10 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def new_photo
-    photo = Photo.create!(params[:photo])
-    redirect_to photos_for_my_rental_unit_path(photo.rental_unit_id)
+    rental_unit =  @user.rental_units.find(params[:id])
+    photo = rental_unit.photos.create!(params[:photo])
+    flash[:notice] = "Photo was added successfully"
+    redirect_to photos_for_my_rental_unit_path(rental_unit)
   end
   
   def owned_by

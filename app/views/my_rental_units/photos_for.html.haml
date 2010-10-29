@@ -9,8 +9,7 @@
       = fb_button 'Delete', delete_photo_my_rental_unit_path(@rental_unit, :photo_id => photo.id), :method => :delete
 %br
 #photo_form{:style=>"background-color:#FFC67D;"}
-  =form_for :photo,:url=>new_photo_my_rental_units_path,:html => { :multipart => true } do |f|
-    =f.hidden_field :rental_unit_id
+  =form_for :photo,:url=>new_photo_my_rental_unit_path(@rental_unit),:html => { :multipart => true } do |f|
     %br
     = f.label :picture,"New Photo:"
     = f.file_field :picture
