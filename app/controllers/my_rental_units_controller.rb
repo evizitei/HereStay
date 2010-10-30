@@ -65,8 +65,12 @@ class MyRentalUnitsController < ApplicationController
   end
   
   def import
-    RentalUnit.import_from_vrbo!(@user)
-    flash[:notice] = "Listings were imported from Vrbo successfully."
+    rental_units = RentalUnit.import_from_vrbo!(@user)
+    
+    flash[:notice] = t(:'flash.import.completed')
+    flash[:notice] << t(:'flash.import.success', :count => rental_units[:success].size)
+    flash[:notice] << t(:'flash.import.fail', :count => rental_units[:fail].size) unless rental_units[:fail].blank?
+    flash[:notice] << "."
     redirect_to manage_my_rental_units_url
   end
   

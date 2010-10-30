@@ -69,10 +69,17 @@ class RentalUnit < ActiveRecord::Base
   # Import listing from vrbo account
   # TODO: handle import errors
   def self.import_from_vrbo!(user)
+    rental_units = {:success => [], :fail => []}
     vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
     vl.listings_except(user.rental_units.map{|u| u.vrbo_id}).each do |l|
-      user.rental_units.create!(l)
+      new_unit = user.rental_units.build(l)
+      if new_unit.save
+        rental_units[:success] << new_unit
+      else
+        rental_units[:fail] << new_unit
+      end
     end
+    rental_units
   end
   
   # TODO: Dry it using fb_url helper

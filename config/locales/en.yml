@@ -8,3 +8,13 @@ en:
       RESERVE: Reserved
       UNAVAILABLE: Not Available For Rent
       CANCEL: Cancel
+      
+  flash:
+    import:
+      completed: "Import completed: "
+      success:
+        one: "1 listing loaded"
+        other: "%{count} listings loaded"
+      fail:
+        one: ", 1 listing failed"
+        other: ", %{count} listings failed"
