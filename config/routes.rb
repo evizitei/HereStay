@@ -20,8 +20,6 @@ Micasasucasa::Application.routes.draw do
     
     member do
       put :load_from_vrbo
-      get :photos_for
-      post :new_photo
       get :upload_video_for
       delete :delete_photo
     end
@@ -31,7 +29,7 @@ Micasasucasa::Application.routes.draw do
         get :discuss
       end
     end
-    
+    resources :photos
     resources :reservations do
       collection do
         post :import

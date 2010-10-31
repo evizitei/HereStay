@@ -1,6 +1,6 @@
 class RentalUnitsController < ApplicationController
   layout "canvas"
-  before_filter :login_required, :except => %w(index show share photos_for owned_by)
+  before_filter :login_required, :except => %w(index show share owned_by)
 
   def index
     @app_page = (params[:profile_id].to_s == "123982284313527")
@@ -79,26 +79,6 @@ class RentalUnitsController < ApplicationController
     unless @rental_unit.user == @user
       redirect_to "http://apps.facebook.com/#{fb_app_name}"
     end
-  end
-
-  def photos_for
-    @rental_unit = RentalUnit.find(params[:id])
-    @photos = @rental_unit.photos
-    @photo = @rental_unit.photos.new
-  end
-
-  def delete_photo
-    rental_unit = @user.rental_units.find(params[:id])
-    rental_unit.photos.find(params[:photo_id]).destroy
-    flash[:notice] = "Photo was deleted successfully"
-    redirect_to  photos_for_rental_unit_url(rental_unit)
-  end
-
-  def new_photo
-    rental_unit =  @user.rental_units.find(params[:id])
-    photo = rental_unit.photos.create!(params[:photo])
-    flash[:notice] = "Photo was added successfully"
-    redirect_to photos_for_rental_unit_path(rental_unit)
   end
 
   def owned_by
