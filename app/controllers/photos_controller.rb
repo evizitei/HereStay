@@ -1,8 +1,8 @@
-class PhotosController < InheritedResources::Base
+class PhotosController < ApplicationController
+  inherit_resources
+
   belongs_to :rental_unit
-  layout 'canvas'
   helper_method :parent
-  helper :all
   
   before_filter :login_required
   

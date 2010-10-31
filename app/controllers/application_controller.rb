@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   #protect_from_forgery
-  layout 'application'
+  layout 'canvas'
   helper_method :fb_app_name
   
   before_filter :debug_params

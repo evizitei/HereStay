@@ -1,5 +1,4 @@
 class RentalUnitsController < ApplicationController
-  layout "canvas"
   before_filter :login_required, :except => %w(index show share owned_by)
 
   def index
