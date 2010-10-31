@@ -1,8 +1,8 @@
-= fb_button "Create Booking", new_my_rental_unit_booking_path(@rental_unit), :class_name => 'f_right'
+= fb_button "Create Booking", new_rental_unit_booking_path(@rental_unit), :class_name => 'f_right'
 
 %h1{:style=>"font-size:16pt;"}== Bookings for "#{@rental_unit.name}"
 
 %br
 %br
 =render(:partial=>"shared/bookings",:locals=>{:booking_collection=>@bookings})
-= fb_button "Back to My Listings", manage_my_rental_units_path
+= fb_button "Back to My Listings", manage_rental_units_path

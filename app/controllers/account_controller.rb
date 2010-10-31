@@ -1,9 +1,7 @@
 class AccountController < ApplicationController
-  layout "canvas"
-  
   def show
     @my_bookings = Booking.where(:renter_fb_id=>@user.fb_user_id)
-    @bookings = Booking.joins(:rental_unit).where("rental_units.user_id = #{@user.id}")
+    @bookings = @user.bookings
     @rewards = @user.rewards
   end
    
@@ -12,6 +10,6 @@ class AccountController < ApplicationController
   
   def update
     @user.update_attributes!(params[:user])
-    redirect_to manage_my_rental_units_url
+    redirect_to manage_rental_units_url
   end
 end

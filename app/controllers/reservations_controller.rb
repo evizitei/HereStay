@@ -1,12 +1,11 @@
 require 'vrbo_proxy'
-class ReservationsController < InheritedResources::Base
+class ReservationsController < ApplicationController
+  inherit_resources
+
   rescue_from VrboProxy::Error, :with => :show_errors
   
-  belongs_to :my_rental_unit, :class_name => "RentalUnit"
-  layout 'canvas'
+  belongs_to :rental_unit
   helper_method :parent
-  
-  helper :all
   
   def create
     create!(:location => collection_url, :notice => 'Reservation was created successfully.')

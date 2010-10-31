@@ -1,5 +1,4 @@
 class BookingsController < ApplicationController
-  layout "canvas"
   before_filter :get_rental_unit, :only => %w(index new create)
   before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
@@ -19,7 +18,7 @@ class BookingsController < ApplicationController
     @booking.complete
     @booking.save!
     flash[:notice] = 'Booking created successfully.'
-    redirect_to my_rental_unit_bookings_url(@booking.rental_unit)
+    redirect_to rental_unit_bookings_url(@booking.rental_unit)
   end
   
   def edit
@@ -28,14 +27,14 @@ class BookingsController < ApplicationController
   
   def update
     @booking.update_attributes!(params[:booking])
-    redirect_to my_rental_unit_bookings_url(@booking.rental_unit)
+    redirect_to rental_unit_bookings_url(@booking.rental_unit)
   end
   
   # TODO: move to message controller
   def discuss
     if params[:id]
       get_booking
-    elsif params[:my_rental_unit_id]
+    elsif params[:rental_unit_id]
       # find existing uncomplete booking or create new for user @user
       @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(@user)
     end
@@ -46,7 +45,7 @@ class BookingsController < ApplicationController
   
   def exec_confirm
     @booking.update_attributes_and_confirm!(params[:booking])
-    redirect_to my_rental_unit_bookings_url(@booking.rental_unit)
+    redirect_to rental_unit_bookings_url(@booking.rental_unit)
   end
   
   def wall_post
@@ -61,7 +60,7 @@ class BookingsController < ApplicationController
   
   private
     def get_rental_unit
-      @rental_unit = RentalUnit.find(params[:rental_unit_id]||params[:my_rental_unit_id])
+      @rental_unit = RentalUnit.find(params[:rental_unit_id])
     end
     
     def get_booking

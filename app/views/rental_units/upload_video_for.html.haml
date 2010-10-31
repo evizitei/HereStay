@@ -1,5 +1,5 @@
 %h2 Upload your Video
-= fb_button 'My Listings', manage_my_rental_units_path, :class_name => 'f_left'
+= fb_button 'My Listings', manage_rental_units_path, :class_name => 'f_left'
 #video_form{:style=>"background-color:#FFC67D;"}
   %form{:action=>"#{@upload_token[:url]}?nexturl=http%3A%2F%2Fherestay.heroku.com%2Fvideo_uploaded%3Funit_id%3D#{@rental_unit.id}",:method=>"post",:enctype=>"multipart/form-data"}
     %p 

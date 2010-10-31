@@ -6,6 +6,6 @@
 =render :partial=>"unit_row",:collection=>@rental_units
 %br
 = fb_button 'My Account', account_path, :class_name => 'f_left logged_in'
-= fb_button 'Add Listing', new_my_rental_unit_path, :class_name => 'f_left logged_in'
-= fb_button 'Import active listings from Vrbo', import_my_rental_units_path, :method => :post, :class_name => 'f_left logged_in'
+= fb_button 'Add Listing', new_rental_unit_path, :class_name => 'f_left logged_in'
+= fb_button 'Import active listings from Vrbo', import_rental_units_path, :method => :post, :class_name => 'f_left logged_in'
 = fb_button 'Back to Search', root_path, :class_name => 'f_left logged_in'

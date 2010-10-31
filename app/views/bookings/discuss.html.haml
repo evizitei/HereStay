@@ -5,7 +5,7 @@
 %h2 Discussion on #{@booking.rental_unit.name}
 
 #header
-  =render(:partial=>"my_rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
+  =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
 = form_for :booking_message,:url=> booking_messages_path(@booking) do |f|
   =f.text_area :message,{:rows=>6,:cols=>55}

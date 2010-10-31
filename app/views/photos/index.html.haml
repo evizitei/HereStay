@@ -1,0 +1,20 @@
+%h2 Photos for #{@rental_unit.name}
+= fb_button 'Back to My Listings', manage_rental_units_path
+
+%br
+- collection.each do |resource|
+  .photo{:style=>"padding:10px;margin-bottom:5px;", :class => cycle("even","odd")}
+    =image_tag(resource.picture.url(:thumb))
+    .actions.f_right
+      - unless resource.primary?
+        = fb_button 'Make primary', resource_path(resource), :method => :put
+      = fb_button 'Delete', resource_path(resource), :method => :delete
+%br
+#photo_form.colored-bg
+  =form_for :photo, :url => collection_path, :html => { :multipart => true } do |f|
+    %br
+    = f.label :picture,"New Photo:"
+    = f.file_field :picture
+    %br
+    = fb_button do
+      = f.submit "Add", :disable_with => 'Loading...'

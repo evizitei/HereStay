@@ -4,15 +4,12 @@ class RentalUnit < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 5
   attr_accessor :remote_images
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>" },
-                      :storage => :s3,:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
-                      :path => ":attachment/:id/:style/:basename.:extension",
-                      :s3_host_alias => "s3.micasa-fb.com", 
-                      :bucket => "s3.micasa-fb.com", 
-                      :url=>":s3_alias_url"
   
-  has_many :photos
+  has_many :photos, :dependent => :destroy
+  has_one :primary_photo, :class_name => 'Photo', :conditions => {:primary => true }
+  
   accepts_nested_attributes_for :photos, :allow_destroy => true
+  accepts_nested_attributes_for :primary_photo, :allow_destroy => true
   
   has_many :bookings
   has_many :booking_messages, :through => "booking"
@@ -55,7 +52,7 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def youtube_description
-    "#{self.description}  BOOK: http://herestay.heroku.com/my_rental_unit/#{self.id}"
+    "#{self.description}  BOOK: http://herestay.heroku.com/rental_unit/#{self.id}"
   end
   
   def upload_token
@@ -64,6 +61,10 @@ class RentalUnit < ActiveRecord::Base
   
   def has_video?
     !self.video_id.nil?
+  end
+  
+  def is_owner?(u)
+    self.user == u
   end
   
   # Import listing from vrbo account
@@ -84,7 +85,7 @@ class RentalUnit < ActiveRecord::Base
   
   # TODO: Dry it using fb_url helper
   def fb_url
-    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(my_rental_unit_path(self))}"
+    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(rental_unit_path(self))}"
   end
   
   # load attributes from vrbo listing

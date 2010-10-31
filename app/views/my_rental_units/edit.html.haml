@@ -1,9 +1,0 @@
-%h2 Editing #{@rental_unit.name}
-
-.pal.grayArea.gray_box.noborder.colored-bg
-  #rental_unit_form
-    = form_for @rental_unit, :rental_unit, :url => my_rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
-      = render 'form', {:f => f}
-      
-= fb_button 'VRBO Calendar', my_rental_unit_reservations_path(@rental_unit), :class_name => 'f_right'
-= fb_button 'Load VRBO Full Listing', load_from_vrbo_my_rental_unit_path, :class_name => 'f_right', :method => :put

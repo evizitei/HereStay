@@ -1,6 +1,4 @@
 class CanvasController < ApplicationController
-  layout "canvas"
-  
   def index
     search_setup
   end

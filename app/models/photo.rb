@@ -13,11 +13,39 @@ class Photo < ActiveRecord::Base
                       
   belongs_to :rental_unit
   
-  before_validation :download_remote_image, :if => :image_url_provided?
   validates_presence_of :image_remote_url, :if => :image_url_provided?, :message => 'is invalid or inaccessible'
+  before_validation :download_remote_image, :if => :image_url_provided?
+  
+  before_create :assign_primary
+  after_destroy :reassign_primary, :if => :primary?
+  
+  scope :primary, where(:primary => true)
+  
+  def primary!
+    reset_primary
+    self.update_attribute(:primary, true)
+  end
   
   private
-
+    def reset_primary
+      self.rental_unit.photos.primary.update_all({:primary => false}, ["id != ?", self.id])
+    end
+    
+    def assign_primary
+      if self.primary?
+        reset_primary
+      elsif !self.rental_unit.photos.primary.exists?
+        self.primary = true
+      end
+    end
+    
+    def reassign_primary
+      if photo = rental_unit.photos.first
+        photo.primary!
+      end
+    end
+    
+    
     def image_url_provided?
       !self.image_url.blank?
     end

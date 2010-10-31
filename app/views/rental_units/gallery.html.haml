@@ -1,6 +1,0 @@
-=stylesheet_link_tag "spacegallery","custom"
-=javascript_include_tag "old_jquery","eye","utils","spacegallery","layout"
-%h3 Gallery
-#myGallery.spacegallery
-  -@rental_unit.photos.each do |photo|
-    %img{:src=>photo.picture.url(:medium)}

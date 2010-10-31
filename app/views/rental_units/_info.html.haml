@@ -7,7 +7,7 @@
   %td.data
     %fb:profile-pic{:uid=>info.user.fb_user_id,:size=>"thumb"}
     %fb:name{:uid=>info.user.fb_user_id}
-    = fb_button 'All Listings', owned_by_my_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
+    = fb_button 'All Listings', owned_by_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
 %tr.spacer
   %td{:colspan=>3}
@@ -27,7 +27,9 @@
     %hr
 %tr.data_row
   %th Photo
-  %td.data= image_tag info.picture.url(:medium)
+  %td.data
+    - if info.primary_photo
+      = image_tag info.primary_photo.picture.url(:medium)
   %td.rightCol
 %tr.spacer
   %td{:colspan=>3}

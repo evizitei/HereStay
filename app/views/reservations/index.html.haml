@@ -2,7 +2,7 @@
   Reservations
 %div
   = fb_button 'Create reservation', new_resource_path
-  = fb_button 'Import', import_my_rental_unit_reservations_path(parent), :method => :post
+  = fb_button 'Import', import_rental_unit_reservations_path(parent), :method => :post
 
 - if collection.blank?
   %h3 There is no reservations.
@@ -29,4 +29,4 @@
   %p
     = will_paginate collection
   
-= fb_button 'Back to rental unit', edit_my_rental_unit_path(parent)
+= fb_button 'Back to rental unit', edit_rental_unit_path(parent)

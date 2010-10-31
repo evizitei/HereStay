@@ -1,6 +1,6 @@
 %h2 Booking for #{@booking.rental_unit.name}
 %div#header
-  =render(:partial=>"my_rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
+  =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
   
 %h2 This booking is complete!
 

@@ -1,7 +1,7 @@
 -if @app_page
   #listings
     %h1{:style=>"font-size:16pt;"} Featured Listings
-    =render(:partial=>"my_rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
+    =render(:partial=>"rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 -else
   =link_to "HereStay","http://apps.facebook.com/#{fb_app_name}/",{:target=>"_top"}
   -if @rental_units.size > 0
