@@ -6,3 +6,4 @@ tmp/**/*
 ./**/*.log
 db/development.sqlite3
 solr/*
+.rvmrc
