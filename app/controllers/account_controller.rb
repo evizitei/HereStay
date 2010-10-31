@@ -1,7 +1,7 @@
 class AccountController < ApplicationController
   def show
     @my_bookings = Booking.where(:renter_fb_id=>@user.fb_user_id)
-    @bookings = Booking.joins(:rental_unit).where("rental_units.user_id = #{@user.id}")
+    @bookings = @user.bookings
     @rewards = @user.rewards
   end
    
