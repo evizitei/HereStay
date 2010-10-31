@@ -55,7 +55,7 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def youtube_description
-    "#{self.description}  BOOK: http://herestay.heroku.com/my_rental_unit/#{self.id}"
+    "#{self.description}  BOOK: http://herestay.heroku.com/rental_unit/#{self.id}"
   end
   
   def upload_token
@@ -84,7 +84,7 @@ class RentalUnit < ActiveRecord::Base
   
   # TODO: Dry it using fb_url helper
   def fb_url
-    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(my_rental_unit_path(self))}"
+    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(rental_unit_path(self))}"
   end
   
   # load attributes from vrbo listing

@@ -1,98 +1,119 @@
 class RentalUnitsController < ApplicationController
-  # GET /rental_units
-  # GET /rental_units.xml
-  def index
-    @rental_units = RentalUnit.all
+  layout "canvas"
+  before_filter :login_required, :except => %w(index show share photos_for owned_by)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @rental_units }
+  def index
+    @app_page = (params[:profile_id].to_s == "123982284313527")
+    if @app_page
+      offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
+      @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
+    else
+      @rental_units = RentalUnit.find_all_by_fb_user_id(params[:profile_id])
+      if @rental_units.size == 0
+        @app_page = true
+        offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
+        @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
+      end
     end
   end
 
-  # GET /rental_units/1
-  # GET /rental_units/1.xml
+  def manage
+    @rental_units = @user.rental_units
+  end
+
+  def new
+    @rental_unit = RentalUnit.new()
+  end
+
+  def edit
+    @rental_unit = @user.rental_units.find(params[:id])
+  end
+
+  def create
+    @rental_unit = @user.rental_units.build(params[:rental_unit])
+    @rental_unit.save!
+    redirect_to manage_rental_units_url
+  end
+
+  def update
+    @rental_unit = @user.rental_units.find(params[:id])
+    @rental_unit.update_attributes!(params[:rental_unit])
+    redirect_to manage_rental_units_url
+  end
+
   def show
     @rental_unit = RentalUnit.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @rental_unit }
-    end
+    @og_meta = {:title=>@rental_unit.name,
+                :type=>"hotel",
+                :image=>@rental_unit.picture.url(:thumb),
+                :url=>rental_unit_url(@rental_unit),
+                :site_name=>"HereStay",
+                :app_id=>Facebook::APP_ID}
   end
 
-  # GET /rental_units/new
-  # GET /rental_units/new.xml
-  def new
-    @rental_unit = RentalUnit.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @rental_unit }
-    end
-  end
-
-  # GET /rental_units/1/edit
-  def edit
-    @rental_unit = RentalUnit.find(params[:id])
-  end
-
-  # POST /rental_units
-  # POST /rental_units.xml
-  def create
-    @rental_unit = RentalUnit.new(params[:rental_unit])
-
-    respond_to do |format|
-      if @rental_unit.save
-        format.html { redirect_to(@rental_unit, :notice => 'Rental unit was successfully created.') }
-        format.xml  { render :xml => @rental_unit, :status => :created, :location => @rental_unit }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @rental_unit.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /rental_units/1
-  # PUT /rental_units/1.xml
-  def update
-    @rental_unit = RentalUnit.find(params[:id])
-
-    respond_to do |format|
-      if @rental_unit.update_attributes(params[:rental_unit])
-        format.html { redirect_to(@rental_unit, :notice => 'Rental unit was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @rental_unit.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /rental_units/1
-  # DELETE /rental_units/1.xml
   def destroy
-    @rental_unit = RentalUnit.find(params[:id])
+    @rental_unit = @user.rental_units.find(params[:id])
     @rental_unit.destroy
+    redirect_to manage_rental_units_url
+  end
 
-    respond_to do |format|
-      format.html { redirect_to(rental_units_url) }
-      format.xml  { head :ok }
+  def load_from_vrbo
+    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit.load_from_vrbo!
+    flash[:notice] = "Full listing loaded from Vrbo successfully. Photos will be imported in some minutes."
+    redirect_to edit_rental_unit_url(rental_unit)
+  end
+
+  def import
+    rental_units = RentalUnit.import_from_vrbo!(@user)
+
+    flash[:notice] = t(:'flash.import.completed')
+    flash[:notice] << t(:'flash.import.success', :count => rental_units[:success].size)
+    flash[:notice] << t(:'flash.import.fail', :count => rental_units[:fail].size) unless rental_units[:fail].blank?
+    flash[:notice] << "."
+    redirect_to manage_rental_units_url
+  end
+
+  def share
+    @rental_unit = RentalUnit.find(params[:id])
+    unless @rental_unit.user == @user
+      redirect_to "http://apps.facebook.com/#{fb_app_name}"
     end
   end
-  
-  def gallery
+
+  def photos_for
     @rental_unit = RentalUnit.find(params[:id])
-    render :layout=>false
+    @photos = @rental_unit.photos
+    @photo = @rental_unit.photos.new
   end
-  
-  def map
-    @rental_unit = RentalUnit.find(params[:id])
-    render :layout=>'application'
+
+  def delete_photo
+    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit.photos.find(params[:photo_id]).destroy
+    flash[:notice] = "Photo was deleted successfully"
+    redirect_to  photos_for_rental_unit_url(rental_unit)
   end
-  
-  def watch_video
+
+  def new_photo
+    rental_unit =  @user.rental_units.find(params[:id])
+    photo = rental_unit.photos.create!(params[:photo])
+    flash[:notice] = "Photo was added successfully"
+    redirect_to photos_for_rental_unit_path(rental_unit)
+  end
+
+  def owned_by
+    @user = User.find params[:user_id]
+    @rental_units = @user.rental_units.paginate(:page => params[:page], :per_page => 1)
+  end
+
+  def upload_video_for
     @rental_unit = RentalUnit.find(params[:id])
-    render :layout=>false
+    @upload_token = @rental_unit.upload_token  
+  end
+
+  def video_uploaded
+    rental_unit = RentalUnit.find(params[:unit_id])
+    rental_unit.update_attributes!(:video_id=>params[:id],:video_status=>params[:status],:video_code=>params[:code])
+    redirect_to rental_unit_path(rental_unit.id)
   end
 end

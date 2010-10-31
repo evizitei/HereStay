@@ -4,23 +4,13 @@ Micasasucasa::Application.routes.draw do
   resources :delayed_jobs
   resources :unit_photos
 
-  resources :rental_units do
-    member do
-      get :gallery
-      get :map
-      get :watch_video
-    end
-    
-    resources :photos
-  end
-
   match "/canvas"=>"canvas#index"
   match "/canvas/"=>"canvas#index"
   
   
-  match "/video_uploaded"=>"my_rental_units#video_uploaded"
+  match "/video_uploaded"=>"rental_units#video_uploaded"
 
-  resources :my_rental_units do
+  resources :rental_units do
     collection do
       get :manage
       post :save

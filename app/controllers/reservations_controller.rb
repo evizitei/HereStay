@@ -2,7 +2,7 @@ require 'vrbo_proxy'
 class ReservationsController < InheritedResources::Base
   rescue_from VrboProxy::Error, :with => :show_errors
   
-  belongs_to :my_rental_unit, :class_name => "RentalUnit"
+  belongs_to :rental_unit
   layout 'canvas'
   helper_method :parent
   

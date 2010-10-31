@@ -3,9 +3,9 @@
 =javascript_include_tag "old_jquery","eye","utils","spacegallery","layout"
 -if @user
   %label.fbButton.f_right
-    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Book"}),discuss_my_rental_unit_bookings_path(@rental_unit)
+    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Book"}),discuss_rental_unit_bookings_path(@rental_unit)
   %label.fbButton.f_right
-    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_my_rental_units_path
+    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_rental_units_path
 -else
   = fb_login_button
   \-- Press here to start booking your vacation!

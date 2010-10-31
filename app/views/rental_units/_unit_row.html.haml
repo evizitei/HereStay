@@ -1,0 +1,19 @@
+.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
+  .unit_box
+    .unit_picture
+      -if unit_row.picture.file?
+        =image_tag(unit_row.picture.url(:thumb))
+    .unit_description
+      .title=link_to unit_row.name,rental_unit_path(unit_row.id)
+      .description
+        = unit_row.description
+  -if @user && unit_row.user == @user
+    %br
+    .admin_buttons.clearfix
+      = fb_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Photos', photos_for_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Video', upload_video_for_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Bookings', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
+
+  =render(:partial=>"rental_units/share_unit",:object=>unit_row)
