@@ -1,8 +1,8 @@
 .unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
   .unit_box
     .unit_picture
-      -if unit_row.picture.file?
-        =image_tag(unit_row.picture.url(:thumb))
+      -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
+        =image_tag(unit_row.primary_photo.picture.url(:thumb))
     .unit_description
       .title=link_to unit_row.name,rental_unit_path(unit_row.id)
       .description

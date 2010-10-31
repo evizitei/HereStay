@@ -70,8 +70,11 @@
         %hr
     %tr.dataRow
       %th.label Photo:
-      %td.data= f.file_field :picture
-      %td.rightCol
+      - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
+      = f.fields_for :primary_photo do |p|
+        = p.hidden_field :primary, :value => true
+        %td.data= p.file_field :picture
+        %td.rightCol
   %tfoot
     %tr.dataRow
       %th.label

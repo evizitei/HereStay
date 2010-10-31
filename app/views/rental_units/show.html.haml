@@ -1,19 +1,20 @@
 =stylesheet_link_tag "spacegallery","custom"
 %script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
 =javascript_include_tag "old_jquery","eye","utils","spacegallery","layout"
--if @user
-  %label.fbButton.f_right
-    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Book"}),discuss_rental_unit_bookings_path(@rental_unit)
-  %label.fbButton.f_right
-    =link_to content_tag(:input,nil,{:type=>"button",:value=>"Manage My Listings"}),manage_rental_units_path
--else
+
+- if @user
+  = fb_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(@user)
+  = fb_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
+  = fb_button 'Manage My Listings', manage_rental_units_path, :class_name => 'f_right'
+- else
   = fb_login_button
   \-- Press here to start booking your vacation!
+
 %h2= @rental_unit.name
 %br
 %br
 =render(:partial=>"share_unit",:object=>@rental_unit)
-#tab_content.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+#tab_content.pal.grayArea.gray_box.noborder.colored-bg
   %table.dataTable
     %tbody
       %tr.dataRow
@@ -25,8 +26,8 @@
         %td{:colspan=>3}
           %h3 Gallery
           #myGallery.spacegallery
-            -@rental_unit.photos.each do |photo|
-              %img{:src=>photo.picture.url(:medium)} 
+            - @rental_unit.photos.each do |photo|
+              = image_tag photo.picture.url(:medium)
       %tr.spacer
         %td{:colspan=>3}
           %hr

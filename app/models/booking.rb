@@ -44,7 +44,7 @@ class Booking < ActiveRecord::Base
       :body=>{
         :access_token => user.authorize_signature,
         :message      => "I'm going on a trip, staying at a place I found on HereStay!",
-        :picture      => self.rental_unit.picture.url(:thumb),
+        :picture      => self.rental_unit.primary_photo ? self.rental_unit.primary_photo.picture.url(:thumb) : nil,
         :link         => self.rental_unit.fb_url,
         :name         => "Check it out!",
         :caption      => "See for yourself",

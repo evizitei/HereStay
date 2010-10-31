@@ -6,6 +6,8 @@
   .photo{:style=>"padding:10px;margin-bottom:5px;", :class => cycle("even","odd")}
     =image_tag(resource.picture.url(:thumb))
     .actions.f_right
+      - unless resource.primary?
+        = fb_button 'Make primary', resource_path(resource), :method => :put
       = fb_button 'Delete', resource_path(resource), :method => :delete
 %br
 #photo_form.colored-bg

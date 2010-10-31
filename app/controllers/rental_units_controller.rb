@@ -45,7 +45,7 @@ class RentalUnitsController < ApplicationController
     @rental_unit = RentalUnit.find(params[:id])
     @og_meta = {:title=>@rental_unit.name,
                 :type=>"hotel",
-                :image=>@rental_unit.picture.url(:thumb),
+                :image=> @rental_unit.primary_photo ? @rental_unit.primary_photo.picture.url(:thumb) : nil,
                 :url=>rental_unit_url(@rental_unit),
                 :site_name=>"HereStay",
                 :app_id=>Facebook::APP_ID}
