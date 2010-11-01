@@ -71,13 +71,14 @@ class VrboReservation
     page = search_reservations('periodType' => 'periodTypePast')
     links = page.links.find_all{|l| l.text =~ /Edit\sDetails/}
     past_links = links.map{|l| reservation_attributes(l.href)}
-    Rails.logger.debug { "message #{past_links.inspect}" }
+    
     past_links + future_links
   end
   
   # extract reservation id for aasignment
   def extract_remote_id_for_assignment(assignment)
-    page = search_reservations('year' => assignment.start_at.year, 'status' => assignment.human_status, 'periodType' => 'periodTypeYear')
+    page = search_reservations('year' => assignment.start_at.year, 'status' => assignment.vrbo_search_status, 'periodType' => 'periodTypeYear')
+
     page.search('tr.l1.false').each do |tr|
       p tr.search('td.l1.stayDates/div.label/strong').text + " =~ #{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}"
       if tr.search('td.l1.stayDates/div.label/strong').text =~ /#{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}/
@@ -122,6 +123,7 @@ private
       'firstName' => '', 'lastName' => '', 'expanded' => 'false'
     }
     options.reverse_merge! default_params
+
     agent.post("https://connect.homeaway.com/reservations/list.htm?sessionId=#{homeaway_session_id}", options)
   end
   
