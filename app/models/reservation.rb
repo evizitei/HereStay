@@ -3,7 +3,7 @@ class Reservation < ActiveRecord::Base
   
   STATUSES = %w(RESERVE HOLD UNAVAILABLE CANCEL)
   BUSY_STATUSES = %w(RESERVE UNAVAILABLE)
-  
+  HUMAN_STATUSES = {'RESERVE' => 'Reserved', 'HOLD' => 'Tentative', 'UNAVAILABLE' => 'Not Available For Rent', 'CANCEL' => 'Cancel'}
   belongs_to :rental_unit
   
   validates_inclusion_of  :status, :in => STATUSES
@@ -78,7 +78,7 @@ class Reservation < ActiveRecord::Base
   # Import reservations from remote server
   def self.import_from_vrbo(vrbo_login, vrbo_password, vrbo_listing_id, rental_unit, year)
     vr = VrboReservation.new(vrbo_login, vrbo_password, vrbo_listing_id)
-    vr.reservations(year).each do |reservation_attrs|
+    vr.all_reservations.each do |reservation_attrs|
       unless rental_unit.reservations.exists?(:remote_id => reservation_attrs[:remote_id])
         a = rental_unit.reservations.build(reservation_attrs)
         a.save_on_remote_server = false
@@ -86,13 +86,18 @@ class Reservation < ActiveRecord::Base
       end
     end
   end
+  
+  def human_status
+    Reservation::HUMAN_STATUSES[self.status]
+  end
+
 private
   # sync reservation with remote server if it's required
   def sync_with_remote_server
     begin
       if recently_created? || remote_id.blank?
         # TODO: retrive remote_id from exported reservation
-        create_on_remote_server
+          create_on_remote_server
       else
         update_on_remote_server
       end
@@ -107,7 +112,10 @@ private
   end
   
   def create_on_remote_server
-    VrboReservation.create_reservation(self)
+    new_remote_id = VrboReservation.create_reservation(self)
+    if new_remote_id.present? && !rental_unit.reservations.exists?(:remote_id => new_remote_id)
+      self.remote_id = new_remote_id
+    end
   end
   
   def destroy_on_remote_server

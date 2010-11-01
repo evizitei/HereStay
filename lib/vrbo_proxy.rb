@@ -40,7 +40,6 @@ module VrboProxy
   # get sessionId for connect.homeaway.com
   def get_session_id
     check_lisitng_id
-    
     calendar_frame = get_vrbo_calendar_page.iframes.first.src
     page = @agent.get calendar_frame
     link = page.links[3].href
@@ -49,6 +48,6 @@ module VrboProxy
   end
   
   def check_lisitng_id
-    raise Error, 'Missing Vrbo listing id' if @listing_id.nil?
+    raise Error, 'Missing Vrbo listing id' if @listing_id.blank?
   end
 end

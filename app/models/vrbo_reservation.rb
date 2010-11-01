@@ -46,7 +46,7 @@ class VrboReservation
     page = r.agent.submit(form)
     raise Error, 'Impossible to save assignment on the remote server' if page.form('reservationForm').present?
     # return true if reservationForm not present after submit
-    true
+    new_record ? r.extract_remote_id_for_assignment(assignment) : true
   end
 
   # destroy exisiting reservation
@@ -56,12 +56,36 @@ class VrboReservation
   end
   
   # collect links to edit reservation forms, parse them and return reservations
-  def reservations(year = nil)
-    page = search_reservations(year)
+  def reservations(year = Date.today.year)
+    page = search_reservations('year' => year)
     links = page.links.find_all{|l| l.text =~ /Edit\sDetails/}
     links.map{|l| reservation_attributes(l.href)}
   end
   
+  
+  def all_reservations
+    page = search_reservations('periodType' => 'periodTypeFuture')
+    links = page.links.find_all{|l| l.text =~ /Edit\sDetails/}
+    future_links = links.map{|l| reservation_attributes(l.href)}
+    
+    page = search_reservations('periodType' => 'periodTypePast')
+    links = page.links.find_all{|l| l.text =~ /Edit\sDetails/}
+    past_links = links.map{|l| reservation_attributes(l.href)}
+    Rails.logger.debug { "message #{past_links.inspect}" }
+    past_links + future_links
+  end
+  
+  # extract reservation id for aasignment
+  def extract_remote_id_for_assignment(assignment)
+    page = search_reservations('year' => assignment.start_at.year, 'status' => assignment.human_status, 'periodType' => 'periodTypeYear')
+    page.search('tr.l1.false').each do |tr|
+      p tr.search('td.l1.stayDates/div.label/strong').text + " =~ #{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}"
+      if tr.search('td.l1.stayDates/div.label/strong').text =~ /#{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}/
+        return tr[:id].gsub(/^row_/, '')
+      end
+    end
+    nil
+  end
 private
   # parse a reservation edit form and build reservation attributes
   def reservation_attributes(link)
@@ -92,11 +116,13 @@ private
   end
   
   # Post a reservation search form
-  def search_reservations(year = nil)
-    params = { 'periodType' => 'periodTypeYear', 'searchMode' => 0, 'sortBy' => 'ARRIVAL_DATE',
-      'sortByAscending' => 'true', 'status' => 'All', 'submit' => 'Find', 'year' => year || Date.today.year
+  def search_reservations(options = {})
+    default_params = { 'periodType' => 'periodTypeFuture', 'searchMode' => 0, 'sortBy' => 'ARRIVAL_DATE',
+      'sortByAscending' => 'true', 'status' => 'All', 'submit' => 'Find', 'year' => Date.today.year,
+      'firstName' => '', 'lastName' => '', 'expanded' => 'false'
     }
-    agent.get("https://connect.homeaway.com/reservations/list.htm?sessionId=#{homeaway_session_id}", params)
+    options.reverse_merge! default_params
+    agent.post("https://connect.homeaway.com/reservations/list.htm?sessionId=#{homeaway_session_id}", options)
   end
   
   
