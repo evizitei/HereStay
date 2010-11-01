@@ -90,6 +90,10 @@
 .unit_description .description{ margin-top:7px;font-size:10pt;}
 .admin_buttons{ height:40px;}
 
+.nice_form{
+	background-color:#E5D7C4;
+}
+
 #user_info{
 	background-color:#FFC67D;
 }
