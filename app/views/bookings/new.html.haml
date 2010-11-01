@@ -15,7 +15,9 @@
   });
 =raw(enable_jqueryui_datepicker)
 %h2== New Booking for #{@rental_unit.name}
-.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+
+= error_messages_for @booking
+.pal.grayArea.gray_box.noborder.colored-bg
   #booking_form
     =form_for :booking, :url=> rental_unit_bookings_path(@rental_unit) do |f|
       %table.dataTable

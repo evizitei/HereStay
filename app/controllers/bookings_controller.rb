@@ -16,9 +16,14 @@ class BookingsController < ApplicationController
   def create
     @booking = @rental_unit.bookings.build(params[:booking])
     @booking.complete
-    @booking.save!
-    flash[:notice] = 'Booking created successfully.'
-    redirect_to rental_unit_bookings_url(@booking.rental_unit)
+    respond_to do |format|
+      if @booking.save
+        flash[:notice] = 'Booking was created successfully.'
+        format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
+      else
+        format.html{render 'new'}
+      end
+    end
   end
   
   def edit
@@ -44,8 +49,14 @@ class BookingsController < ApplicationController
   end
   
   def exec_confirm
-    @booking.update_attributes_and_confirm!(params[:booking])
-    redirect_to rental_unit_bookings_url(@booking.rental_unit)
+    respond_to do |format|
+      if  @booking.update_attributes_and_confirm(params[:booking])
+        flash[:notice] = 'Booking was confirmed.'
+        format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
+      else
+        format.html{render 'confirm'}
+      end
+    end
   end
   
   def wall_post

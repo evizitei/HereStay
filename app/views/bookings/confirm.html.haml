@@ -15,7 +15,8 @@
   });
 =raw(enable_jqueryui_datepicker)
 %h2 Confirm Booking for #{@booking.rental_unit.name}
-.pal.grayArea.gray_box.noborder{:style=>"background-color:#FFC67D;"}
+= error_messages_for @booking
+.pal.grayArea.gray_box.noborder.colored-bg
   #booking_form
     =form_for :booking, :url=> exec_confirm_booking_path(@booking), :html => {:method => :put} do |f|
       %table.dataTable
