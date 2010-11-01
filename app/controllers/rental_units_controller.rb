@@ -95,4 +95,13 @@ class RentalUnitsController < ApplicationController
     rental_unit.update_attributes!(:video_id=>params[:id],:video_status=>params[:status],:video_code=>params[:code])
     redirect_to rental_unit_path(rental_unit.id)
   end
+  
+  def promotion_form
+    @rental_unit = @user.rental_units.find(params[:id])
+  end
+  
+  def promote
+    @rental_unit = @user.rental_units.find(params[:id])
+    redirect_to manage_rental_units_path
+  end
 end

@@ -1,0 +1,15 @@
+%h2 Promote this listing
+=render(:partial=>"unit_row",:object=>@rental_unit,:locals=>{:admin=>false})
+=form_tag promote_rental_unit_path(@rental_unit) do
+  I Stayed Here!
+  =radio_button_tag 'canned_text', 'I Stayed Here!'
+  %br
+  My Friends Stayed Here!
+  =radio_button_tag 'canned_text', 'My Friends Stayed Here!'
+  %br
+  I'm going Here!
+  =radio_button_tag 'canned_text', "I'm going Here!"
+  %br
+  Comments:
+  =text_field_tag "Comments"
+  =submit_tag "Promote!"

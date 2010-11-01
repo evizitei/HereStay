@@ -22,6 +22,8 @@ Micasasucasa::Application.routes.draw do
       put :load_from_vrbo
       get :upload_video_for
       delete :delete_photo
+      get :promotion_form
+      post :promote
     end
     
     resources :bookings do
