@@ -5,9 +5,14 @@ class Booking < ActiveRecord::Base
   has_many :discounts
   has_many :rewards
   
+  validate :check_dates
+  validate :validate_dates, :if => :require_validate_dates?
+  
   after_save :run_on_confirm, :if => :recently_confirmed?
   
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
+  scope :completed, where(:status => 'COMPLETE')
+  scope :except, lambda{|r| where("id != ?", r.id) }
   
   # change status without saving (like aasm)
   def complete
@@ -25,9 +30,10 @@ class Booking < ActiveRecord::Base
   end
   
   # upadate record and confirm
-  def update_attributes_and_confirm!(attributes)
+  def update_attributes_and_confirm(attributes)
     self.attributes = attributes
-    confirm!
+    complete
+    save
   end
   
   def promotional_fee
@@ -80,5 +86,44 @@ class Booking < ActiveRecord::Base
   
   def recently_confirmed?
     status_changed? && self.confirmed?
+  end
+  
+  # validate dates for other booking or reservation in this period when booking confirmed and dates are changes
+  def require_validate_dates?
+    self.confirmed? && (self.status_changed? || start_date_changed? || stop_date_changed?)
+  end
+  
+  # don't allow to start_at be greater than end_at
+  def check_dates
+    if start_date && stop_date
+      errors.add(:end_date, 'should be greater than start date') if stop_date <= start_date
+    end
+  end
+  
+  def validate_dates
+    validate_for_another_booking
+    validate_for_another_reservation
+  end
+  
+  # don't allow create more than one reservation with status UNAVAILABLE or RESERVE in same period
+  def validate_for_another_booking
+    if start_date && stop_date
+      errors.add(:start_date, 'Another booking already exists for these dates.') if exists_other_booking_in_same_period?
+    end
+  end
+  
+  def exists_other_booking_in_same_period?
+    rental_unit.bookings.except(self).completed.exists?([" ? < start_date AND ? > stop_date", self.start_date, self.stop_date])
+  end
+  
+  # don't allow create more than one reservation with status UNAVAILABLE or RESERVE in same period
+  def validate_for_another_reservation
+    if start_date && stop_date
+      errors.add(:start_date, 'These dates are unavailable for booking.') if exists_other_reservations_in_same_period?
+    end
+  end
+  
+  def exists_other_reservations_in_same_period?
+    rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at", self.start_date, self.stop_date])
   end
 end

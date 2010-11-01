@@ -3,7 +3,7 @@ class Reservation < ActiveRecord::Base
   
   STATUSES = %w(RESERVE HOLD UNAVAILABLE CANCEL)
   BUSY_STATUSES = %w(RESERVE UNAVAILABLE)
-  HUMAN_STATUSES = {'RESERVE' => 'Reserved', 'HOLD' => 'Tentative', 'UNAVAILABLE' => 'Not Available For Rent', 'CANCEL' => 'Cancel'}
+  VRBO_SEARCH_STATUSES = {'RESERVE' => 'Booked', 'HOLD' => 'Tentative', 'UNAVAILABLE' => 'Unavailable', 'CANCEL' => 'Cancelled'}
   belongs_to :rental_unit
   
   validates_inclusion_of  :status, :in => STATUSES
@@ -87,8 +87,8 @@ class Reservation < ActiveRecord::Base
     end
   end
   
-  def human_status
-    Reservation::HUMAN_STATUSES[self.status]
+  def vrbo_search_status
+    Reservation::VRBO_SEARCH_STATUSES[self.status]
   end
 
 private

@@ -17,6 +17,7 @@ gem 'inherited_resources', '1.1.2'
 gem 'mechanize'
 gem 'addressable'
 gem 'formtastic'
+gem 'dynamic_form'
 
 group :development do
   gem 'cucumber'
