@@ -102,6 +102,12 @@ class RentalUnitsController < ApplicationController
   
   def promote
     @rental_unit = @user.rental_units.find(params[:id])
+    graph = Koala::Facebook::GraphAPI.new(@user.authorize_signature)
+    graph.put_wall_post("#{params["canned_text"]} -- #{params["Comments"]}",{:name=>@rental_unit.name,
+                                                                             :link=>rental_unit_url(@rental_unit.id),
+                                                                             :caption=>"Provided by HereStay",
+                                                                             :description=>@rental_unit.description,
+                                                                             :picture=>@rental_unit.primary_photo.picture.url(:medium)})
     redirect_to manage_rental_units_path
   end
 end
