@@ -49,12 +49,10 @@ class VrboReservation
     new_record ? r.extract_remote_id_for_assignment(assignment) : true
   end
 
-  # destroy exisiting reservation
-  def self.destroy_reservation(assignment)
-    r = VrboReservation.new(assignment.remote_login, assignment.remote_password, assignment.remote_listing_id)
-    page = r.agent.get("https://connect.homeaway.com/reservations/delete.htm?sessionId=#{r.homeaway_session_id}&id=#{assignment.remote_id}")
+  def self.destroy_reservation(remote_login, remote_password, remote_listing_id, remote_id)
+    r = VrboReservation.new(remote_login, remote_password, remote_listing_id)
+    page = r.agent.get("https://connect.homeaway.com/reservations/delete.htm?sessionId=#{r.homeaway_session_id}&id=#{remote_id}")
   end
-  
   # collect links to edit reservation forms, parse them and return reservations
   def reservations(year = Date.today.year)
     page = search_reservations('year' => year)
@@ -80,7 +78,6 @@ class VrboReservation
     page = search_reservations('year' => assignment.start_at.year, 'status' => assignment.vrbo_search_status, 'periodType' => 'periodTypeYear')
 
     page.search('tr.l1.false').each do |tr|
-      p tr.search('td.l1.stayDates/div.label/strong').text + " =~ #{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}"
       if tr.search('td.l1.stayDates/div.label/strong').text =~ /#{assignment.start_at.to_s(:us_short_date)}\s\-\n#{assignment.end_at.to_s(:us_short_date)}/
         return tr[:id].gsub(/^row_/, '')
       end
