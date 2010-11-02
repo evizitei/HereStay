@@ -3,6 +3,7 @@
 =javascript_include_tag "old_jquery","eye","utils","spacegallery","layout"
 
 = fb_button 'Availability Calendar', [@rental_unit, :reservations], :class_name => 'f_right'
+
 - if @user
   = fb_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(@user)
   = fb_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
