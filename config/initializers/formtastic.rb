@@ -53,3 +53,22 @@
 # You can add custom inputs or override parts of Formtastic by subclassing SemanticFormBuilder and
 # specifying that class here.  Defaults to SemanticFormBuilder.
 # Formtastic::SemanticFormHelper.builder = MyCustomBuilder
+
+class MyAwesomeBuilder < Formtastic::SemanticFormBuilder
+  # f.input :start_on, :as => :datepicker
+  def datepicker_input(method, options = {})
+    format = options[:format] || Time::DATE_FORMATS[:us_date] || '%m/%b/%Y'
+    custom_options = datepicker_options(format, object.send(method))
+  
+    html_options = options.delete(:input_html) || {}
+    html_options[:class] = [custom_options[:class], html_options[:class]].compact.join(' ')
+    html_options[:value] = custom_options[:value] unless custom_options[:value].blank?
+    string_input(method, options.merge(:input_html => html_options) )
+  end
+
+  # Generate html input options for the datepicker_input
+  def datepicker_options(format, value = nil)
+    datepicker_options = {:value => value.try(:strftime, format), :class => 'date_picker'}
+  end
+end
+Formtastic::SemanticFormHelper.builder = MyAwesomeBuilder
