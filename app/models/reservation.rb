@@ -25,7 +25,7 @@ class Reservation < ActiveRecord::Base
   validates_presence_of :remote_login, :remote_password, :remote_listing_id, :if => :save_on_remote_server?
   
   before_create :set_recently_created
-  before_save :sync_with_remote_server, :if => :save_on_remote_server?
+  after_save :sync_with_remote_server, :if => :save_on_remote_server?
   after_destroy :destroy_on_remote_server, :if => Proc.new{|a| a.remote_id.present?}
   
   scope :by_start_time, order('start_at ASC')
@@ -90,22 +90,7 @@ class Reservation < ActiveRecord::Base
   def vrbo_search_status
     Reservation::VRBO_SEARCH_STATUSES[self.status]
   end
-
-private
-  # sync reservation with remote server if it's required
-  def sync_with_remote_server
-    begin
-      if recently_created? || remote_id.blank?
-        # TODO: retrive remote_id from exported reservation
-          create_on_remote_server
-      else
-        update_on_remote_server
-      end
-    rescue VrboProxy::Error => e
-      errors.add(:save_on_remote_server, e.to_s)
-      false
-    end
-  end
+  
   
   def update_on_remote_server
     VrboReservation.update_reservation(self)
@@ -115,11 +100,29 @@ private
     new_remote_id = VrboReservation.create_reservation(self)
     if new_remote_id.present? && !rental_unit.reservations.exists?(:remote_id => new_remote_id)
       self.remote_id = new_remote_id
+      Reservation.update_all({:remote_id => new_remote_id}, :id => self.id)
     end
   end
   
   def destroy_on_remote_server
-    VrboReservation.destroy_reservation(self)
+    Delayed::Job.enqueue(VrboUpdater.new(nil, :action => :destroy, :login => self.remote_login, :password => self.remote_password, :listing_id => self.remote_listing_id, :remote_id => self.remote_id))
+  end
+  
+private
+  # sync reservation with remote server if it's required
+  def sync_with_remote_server
+    begin
+      if recently_created? || remote_id.blank?
+        # create_on_remote_server
+        Delayed::Job.enqueue(VrboUpdater.new(self.id, :action => :create))
+      else
+        # update_on_remote_server
+        Delayed::Job.enqueue(VrboUpdater.new(self.id, :action => :update))
+      end
+    rescue VrboProxy::Error => e
+      errors.add(:save_on_remote_server, e.to_s)
+      false
+    end
   end
   
   def set_recently_created

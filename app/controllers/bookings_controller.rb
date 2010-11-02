@@ -2,6 +2,8 @@ class BookingsController < ApplicationController
   before_filter :get_rental_unit, :only => %w(index new create)
   before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
+  rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
+  
   def index
     @bookings = @rental_unit.bookings
   end
@@ -76,5 +78,12 @@ class BookingsController < ApplicationController
     
     def get_booking
       @booking = Booking.find(params[:id])
+    end
+    
+    # Handle errors occure in after_save callback (post to wall, post Vrbo reservation)
+    def confirmation_error
+      @booking.errors.add_to_base('Can\'t confirm booking.')
+      source_page = self.action_name == 'exec_confirm' ? 'confirm' : 'new'
+      render source_page
     end
 end

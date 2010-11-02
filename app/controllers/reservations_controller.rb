@@ -25,6 +25,11 @@ class ReservationsController < ApplicationController
   end
   
   private
+    # Disable not-owner to manage reservations
+    def begin_of_association_chain
+      self.action_name != 'index' ? @user : super
+    end
+    
     def collection
       @reservations ||= end_of_association_chain.by_start_time.paginate(:page => params[:page], :per_page => 15)
     end

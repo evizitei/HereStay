@@ -27,8 +27,32 @@ form.formtastic fieldset > ol > li.text textarea {
   width:63%;
 }
 form.formtastic {
-  font-size:0.95em;
+  font-size:1em;
 }
+form.formtastic label{
+  font-size:14px;
+  font-weight: bold;
+}
+
+form.formtastic textarea{
+  font-size:13px;
+}
+
 form.formtastic fieldset > ol > li p.inline-errors {
   clear: both;
+}
+
+form.formtastic .fbButton input {
+background:none repeat scroll 0 0 transparent;
+border:0 none;
+color:#FFFFFF;
+cursor:pointer;
+display:inline-block;
+font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+font-size:11px;
+font-weight:bold;
+margin:0;
+outline:medium none;
+padding:1px 0 2px;
+white-space:nowrap;
 }

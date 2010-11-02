@@ -1,9 +1,10 @@
+=raw(enable_jqueryui_datepicker)
 .colored-bg{:style => "padding: 10px"}
   - unless resource.errors.blank?
     %h2 #{pluralize(resource.errors.size, 'error')} prohibited reservation from being saved
   = f.inputs do
-    = f.input :start_at, :label => 'Arrival Date & Time'
-    = f.input :end_at, :label => 'Departure Date & Time'
+    = f.input :start_at, :as => :datepicker, :label => 'Arrival Date & Time', :input_html => {:size => 12}
+    = f.input :end_at,  :as => :datepicker, :label => 'Departure Date & Time', :input_html => {:size => '12'}
     = f.input :status, :label => 'Status', :collection => Reservation::STATUSES.map{|s| [t(s, :scope => "reservation.statuses"), s]}
     = f.input :notes, :label => 'Notes', :required => false, :input_html => {:rows => 3}
     = f.input :first_name, :label => 'First Name', :required => false
@@ -29,6 +30,3 @@
     = fb_button do
       = submit_tag "Save"
     = fb_button 'Cancel', collection_path
-
-:javascript
-  $().ready(function(){ toggleVrboFields() });

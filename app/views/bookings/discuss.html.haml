@@ -1,4 +1,4 @@
-= fb_button "Availability Calendar", '#', :class_name => 'f_right'
+= fb_button 'Availability Calendar', [@booking.rental_unit, :reservations], :class_name => 'f_right'
 -if @user.id == @booking.rental_unit.user_id
   = fb_button "Confirm Booking!", confirm_booking_path(@booking), :class_name => 'f_right'
 
