@@ -1,13 +1,15 @@
 require 'httparty'
 class Booking < ActiveRecord::Base
   belongs_to :rental_unit
-  has_many :booking_messages
+  has_many :booking_messages, :dependent => :destroy
   has_many :discounts
   has_many :rewards
+  has_one  :reservation, :dependent => :destroy
   
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
   
+  before_save :update_reservation, :unless => :recently_confirmed?
   after_save :run_on_confirm, :if => :recently_confirmed?
   
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
@@ -68,7 +70,14 @@ class Booking < ActiveRecord::Base
   private
   
   def create_reservation
-    rental_unit.reservations.create!(:status => 'RESERVE', :start_at => self.start_date.to_s(:db), :end_at => self.stop_date.to_s(:db), :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
+    build_reservation(:status => 'RESERVE', :start_at => self.start_date.to_s(:db), :end_at => self.stop_date.to_s(:db), :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?, :rental_unit => rental_unit)
+    reservation.save!
+  end
+  
+  def update_reservation
+    if reservation.present?
+      reservation.update_attributes(:start_at => self.start_date.to_s(:db), :end_at => self.stop_date.to_s(:db), :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
+    end
   end
   
   # Post to wall message "(This property) has been rented from (date) to (date)" 
@@ -113,7 +122,7 @@ class Booking < ActiveRecord::Base
   end
   
   def exists_other_booking_in_same_period?
-    rental_unit.bookings.except(self).completed.exists?([" ? < start_date AND ? > stop_date", self.start_date.to_s(:db), self.stop_date.to_s(:db)])
+    rental_unit.bookings.completed.exists?([" stop_date > ? AND start_date < ? AND id != ? ", self.start_date.to_s(:db), self.stop_date.to_s(:db), self.id || 0])
   end
   
   # don't allow create more than one reservation with status UNAVAILABLE or RESERVE in same period
@@ -124,6 +133,6 @@ class Booking < ActiveRecord::Base
   end
   
   def exists_other_reservations_in_same_period?
-    rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at", self.start_date.to_datetime, self.stop_date.to_datetime])
+    rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at AND booking_id != ?", self.start_date.to_datetime, self.stop_date.to_datetime, self.id||0])
   end
 end

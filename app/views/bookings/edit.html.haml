@@ -14,7 +14,7 @@
     $("#booking_amount").bind("blur",calculate_fee);
   });
 =raw(enable_jqueryui_datepicker)
-%h2== Edit Booking for #{@rental_unit.name}
+%h2 Edit Booking for #{@booking.rental_unit.name}
 = error_messages_for @booking
 .pal.grayArea.gray_box.colored-bg
   #booking_form
@@ -61,4 +61,4 @@
             %td.data
               = fb_button do
                 = f.submit "Save"
-              = fb_button 'Cancel', rental_unit_bookings_path(@rental_unit)
+              = fb_button 'Cancel', rental_unit_bookings_path(@booking.rental_unit)

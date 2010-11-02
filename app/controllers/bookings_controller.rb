@@ -3,7 +3,7 @@ class BookingsController < ApplicationController
   before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
   rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
-  
+  respond_to :html
   def index
     @bookings = @rental_unit.bookings
   end
@@ -33,8 +33,10 @@ class BookingsController < ApplicationController
   end
   
   def update
-    @booking.update_attributes!(params[:booking])
-    redirect_to rental_unit_bookings_url(@booking.rental_unit)
+    if @booking.update_attributes(params[:booking])
+      flash[:notice] = 'Booking was updated successfully.'
+    end
+    respond_with(@booking, :location => rental_unit_bookings_url(@booking.rental_unit))
   end
   
   # TODO: move to message controller

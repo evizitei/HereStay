@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101031130620) do
+ActiveRecord::Schema.define(:version => 20101102173943) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20101031130620) do
     t.integer  "rental_unit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "booking_id"
   end
 
   create_table "rewards", :force => true do |t|

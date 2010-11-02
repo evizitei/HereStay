@@ -5,6 +5,7 @@ class Reservation < ActiveRecord::Base
   BUSY_STATUSES = %w(RESERVE UNAVAILABLE)
   VRBO_SEARCH_STATUSES = {'RESERVE' => 'Booked', 'HOLD' => 'Tentative', 'UNAVAILABLE' => 'Unavailable', 'CANCEL' => 'Cancelled'}
   belongs_to :rental_unit
+  belongs_to :booking
   
   validates_inclusion_of  :status, :in => STATUSES
   validates_presence_of   :start_at, :end_at, :rental_unit_id
