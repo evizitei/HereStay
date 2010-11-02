@@ -1,4 +1,6 @@
 class AccountController < ApplicationController
+  respond_to :html
+  
   def show
     @my_bookings = Booking.where(:renter_fb_id=>@user.fb_user_id)
     @bookings = @user.bookings
@@ -9,7 +11,9 @@ class AccountController < ApplicationController
   end
   
   def update
-    @user.update_attributes!(params[:user])
-    redirect_to manage_rental_units_url
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "Your account was updated."
+    end
+    respond_with(@user, :location => account_url)
   end
 end
