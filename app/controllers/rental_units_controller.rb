@@ -97,7 +97,7 @@ class RentalUnitsController < ApplicationController
   end
   
   def promotion_form
-    @rental_unit = @user.rental_units.find(params[:id])
+    @rental_unit = RentalUnit.find(params[:id])
   end
   
   def promote
