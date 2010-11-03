@@ -55,6 +55,14 @@ class VrboListing
     # get vrbo images
     rental_unit[:remote_images] = agent.get('http://www.vrbo.com/305472').search('img.photo_thumb_image').map{|i| i[:src]}
     
+    # get vrbo rates
+    page = @agent.get("https://admin.vrbo.com/admin/rentalr.aspx?listing=#{listing_id}")
+    form = page.form('aspnetForm')
+    weekly_low_price = form.send('ctl00$Main$tbWeeklyRateLow').gsub(/^\D/, '').to_f rescue nil
+    weekly_high_price = form.send('ctl00$Main$tbWeeklyRateHigh').gsub(/^\D/, '').to_f rescue nil
+    rental_unit[:weekly_low_price] = weekly_low_price unless weekly_low_price.blank?
+    rental_unit[:weekly_high_price] = weekly_high_price unless weekly_high_price.blank?
+    
     rental_unit
   end
   
