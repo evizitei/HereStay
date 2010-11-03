@@ -52,7 +52,7 @@ class Booking < ActiveRecord::Base
       :body=>{
         :access_token => user.authorize_signature,
         :message      => "I'm going on a trip, staying at a place I found on HereStay!",
-        :picture      => self.rental_unit.primary_photo ? self.rental_unit.primary_photo.picture.url(:thumb) : nil,
+        :picture      => self.rental_unit.picture || '',
         :link         => self.rental_unit.fb_url,
         :name         => "Check it out!",
         :caption      => "See for yourself",
@@ -85,7 +85,12 @@ class Booking < ActiveRecord::Base
   def rented_wall_post
     oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
     graph = Koala::Facebook::GraphAPI.new(oauth.get_app_access_token)
-    graph.put_object(Facebook::APP_ID.to_s, "feed", :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}", :link => rental_unit.fb_url, :name => 'view this property')
+    graph.put_object(Facebook::APP_ID.to_s, "feed",
+      :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}",
+      :link => rental_unit.fb_url,
+      :name => 'view this property',
+      :picture=> rental_unit.picture(:medium) || ''
+    )
   end
   
   def run_on_confirm

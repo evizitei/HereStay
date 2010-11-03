@@ -67,6 +67,11 @@ class RentalUnit < ActiveRecord::Base
     self.user == u
   end
   
+  # shortcut method to find primary photo. Return nil if primary_photo is mising
+  def picture(style = :medium)
+    primary_photo.try(:picture).try(:url, style)
+  end
+  
   # Import listing from vrbo account
   # TODO: handle import errors
   def self.import_from_vrbo!(user)
