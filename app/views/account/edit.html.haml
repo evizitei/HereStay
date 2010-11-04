@@ -1,18 +1,16 @@
 %h2 Edit My Account 
 %p
   For VRBO users, please enter your credentials to automate the connection between our services.
-=form_for @user, :url => account_path, :html => {:method => :put} do |f|
-  #user_form{:style=>"width:400px;min-height:100px;background-color:#FFC67D;font-size:12pt;"}
-    %table.dataTable
-      %tbody
-        %tr.dataRow
-          %th.label VRBO Login:
-          %td.data= f.text_field :vrbo_login
-          %td.rightCol
-        %tr.dataRow
-          %th.label VRBO Password:
-          %td.data= f.text_field :vrbo_password
-          %td.rightCol
-  = fb_button do
-    = f.submit "Save Changes"
-  = fb_button 'Cancel', manage_rental_units_path
+#user_form.colored-bg{:style => "padding: 10px"}
+  = semantic_form_for @user, :url => account_path  do |f|
+    = f.inputs do
+      = f.input :vrbo_login
+      = f.input :vrbo_password
+      - if @user.twitter_name.blank?
+        = link_to 'Add twitter', new_connectors_twitter_path
+      - else
+        = f.input :twitter_name, :hint => link_to('change', new_connectors_twitter_path), :input_html => {:disabled => true}
+    = f.buttons do
+      = fb_button do
+        = submit_tag "Save"
+      = fb_button 'Cancel', account_path

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101102173943) do
+ActiveRecord::Schema.define(:version => 20101103163742) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -157,6 +157,9 @@ ActiveRecord::Schema.define(:version => 20101102173943) do
     t.string   "vrbo_login"
     t.string   "vrbo_password"
     t.float    "redeemed_rewards"
+    t.string   "twitter_secret"
+    t.string   "twitter_token"
+    t.string   "twitter_name"
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
