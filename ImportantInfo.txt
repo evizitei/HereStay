@@ -7,3 +7,12 @@ micasasucasafb,micasa123
 test account:
 micasaowner@yahoo.com,micasa123
 micasa.renter@yahoo.com,micasa123
+
+Twitter:
+user_name: here_stay
+password: f7ghkLnVHpWEA2Rs
+
+
+Bitly:
+user_name: herestay
+password: 8OtHAjYswvXuSF3Z
