@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/lifo/cramp.git
+  revision: bec5eb47a31398df1672e0f19b4b28a0b81db3fa
+  specs:
+    cramp (0.10.1)
+      activesupport (>= 3.0.0)
+      eventmachine (~> 0.12.10)
+      rack (>= 1.1.0)
+
+GIT
   remote: http://github.com/outoftime/sunspot.git
   revision: 58a46bf
   specs:
@@ -73,6 +82,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     escape (0.0.4)
+    eventmachine (0.12.10)
     ffi (0.6.3)
       rake (>= 0.8.7)
     formtastic (1.1.0)
@@ -172,6 +182,7 @@ DEPENDENCIES
   addressable
   aws-s3
   capybara
+  cramp!
   cucumber
   cucumber-rails
   database_cleaner

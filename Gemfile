@@ -18,6 +18,7 @@ gem 'mechanize'
 gem 'addressable'
 gem 'formtastic'
 gem 'dynamic_form'
+gem 'cramp',:git=>'git://github.com/lifo/cramp.git'
 
 group :development do
   gem 'cucumber'
