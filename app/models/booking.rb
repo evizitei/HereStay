@@ -96,6 +96,7 @@ class Booking < ActiveRecord::Base
   def run_on_confirm
     create_reservation
     rented_wall_post
+    rental_unit.rented_twitter_post(self)
   end
   
   def recently_confirmed?

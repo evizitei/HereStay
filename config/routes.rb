@@ -52,6 +52,12 @@ Micasasucasa::Application.routes.draw do
   
   resource :account, :controller => :account, :only => [:edit, :update, :show]
   
+  namespace "connectors" do
+    resource :twitter, :controller => :twitter do
+      get :callback
+    end
+  end
+  
   # scope "canvas" do 
   #   match "/search"=>"canvas#search"
   #   match "/my_rental_units"=>"my_rental_units#index"

@@ -18,6 +18,8 @@ gem 'mechanize'
 gem 'addressable'
 gem 'formtastic'
 gem 'dynamic_form'
+gem 'twitter', '0.9.12'
+gem 'bitly'
 
 group :development do
   gem 'cucumber'
