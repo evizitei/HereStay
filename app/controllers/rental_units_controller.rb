@@ -1,5 +1,6 @@
 class RentalUnitsController < ApplicationController
   before_filter :login_required, :except => %w(index show share owned_by)
+  respond_to :html
 
   def index
     @app_page = (params[:profile_id].to_s == "123982284313527")
@@ -30,14 +31,18 @@ class RentalUnitsController < ApplicationController
 
   def create
     @rental_unit = @user.rental_units.build(params[:rental_unit])
-    @rental_unit.save!
-    redirect_to manage_rental_units_url
+    if @rental_unit.save
+      flash[:notice] = 'Rental unit was created successfully'
+    end
+    respond_with(@rental_unit, :location => manage_rental_units_url)
   end
 
   def update
     @rental_unit = @user.rental_units.find(params[:id])
-    @rental_unit.update_attributes!(params[:rental_unit])
-    redirect_to manage_rental_units_url
+    if @rental_unit.update_attributes(params[:rental_unit])
+      flash[:notice] = 'Rental unit was updated successfully'
+    end
+    respond_with(@rental_unit, :location => manage_rental_units_url)
   end
 
   def show
