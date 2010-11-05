@@ -32,47 +32,47 @@
       "last_message" : "#{@booking.booking_messages.by_date.last.id}"};
 
   $(document).ready(function() {
-    $("#booking_message_message").focus();				
-  	setInterval(function() {
-  	  $.ajax({
-  		  url: "#{chat_poll_url}",
-  			type: "GET",
-  						data: polling_data,
-  						dataType: "json",
-  						success: function(data) {
-  							$.each(data, function(i, item) {
-  								appendMessage(item);
-  							});
-  							scrollDown();
-  						},
-  					})
-  				}, 5000);
-  			});
+    $("#booking_message_message").focus();        
+    setInterval(function() {
+      $.ajax({
+        url: "#{chat_poll_url}",
+        type: "GET",
+              data: polling_data,
+              dataType: "json",
+              success: function(data) {
+                $.each(data, function(i, item) {
+                  appendMessage(item);
+                });
+                scrollDown();
+              },
+            })
+          }, 5000);
+        });
 
-  	    function onSubmit() {
-  				$.ajax({
-  					url: "#{chat_poll_url}",
-  					type: "POST",
-  					dataType: "json",
-  					data: $("#chat_form").serialize(),
-  					success: function(data) {
-  						$.each(data, function(i, item){
-  							appendMessage(item);
-  						})
-  						scrollDown();
-  					},
-  				});
-  				$("#booking_message_message").val("").focus();
-  	    }
-  	    
-  	    function appendMessage(item){
-  	      var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<fb:profile-pic uid='"+item.user_fb_id+"' size='thumb'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"'></fb:name>" + "</div>"
-  	      $("#booking_messages").append(html_message);
-				  polling_data["last_message"] = item.id;
-  	    }
+        function onSubmit() {
+          $.ajax({
+            url: "#{chat_poll_url}",
+            type: "POST",
+            dataType: "json",
+            data: $("#chat_form").serialize(),
+            success: function(data) {
+              $.each(data, function(i, item){
+                appendMessage(item);
+              })
+              scrollDown();
+            },
+          });
+          $("#booking_message_message").val("").focus();
+        }
+        
+        function appendMessage(item){
+          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<fb:profile-pic uid='"+item.user_fb_id+"' size='thumb'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"'></fb:name>" + "</div>"
+          $("#booking_messages").append(html_message);
+          polling_data["last_message"] = item.id;
+        }
 
-  	    function scrollDown() {
-  	      FB.XFBML.parse(document.getElementById('booking_messages'));
-  				var messages = document.getElementById("messages");
-  				messages.scrollTop = messages.scrollHeight;
-  	    }
+        function scrollDown() {
+          FB.XFBML.parse(document.getElementById('booking_messages'));
+          var messages = document.getElementById("messages");
+          messages.scrollTop = messages.scrollHeight;
+        }
