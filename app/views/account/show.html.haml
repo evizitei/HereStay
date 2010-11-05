@@ -18,10 +18,13 @@
     %p
       %strong VRBO Username:
       =@user.vrbo_login
-    
+  -if @user.twitter?
+    %p
+      %strong Twitter:
+      =@user.twitter_name
 #my_bookings
   %h3 Where I am staying
-  %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
     %thead
       %tr
         %th{:style=>"padding:3px;"} ID
@@ -61,7 +64,7 @@
   =render(:partial=>"shared/bookings",:locals=>{:booking_collection=>@bookings})
 #my_rewards
   %h3 My rewards
-  %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
     %thead
       %tr
         %th{:style=>"padding:3px;"} Owner
