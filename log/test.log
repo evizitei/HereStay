@@ -30,3 +30,28 @@ Completed 200 OK in 4ms (Views: 4.3ms | ActiveRecord: 0.0ms)
 Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:24:10 -0500 2010
   Processing by CanvasController#index as HTML
 Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.0ms)
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+
+
+Started GET "/canvas/" for 127.0.0.1 at Wed Nov 03 15:06:48 -0500 2010
+  Processing by CanvasController#index as HTML
+  [1m[35mRentalUnit Load (14.1ms)[0m  SELECT "rental_units".* FROM "rental_units" ORDER BY created_at DESC LIMIT 5 OFFSET 0
+Rendered rental_units/_unit_row.html.haml (0.0ms)
+Rendered canvas/_canvas_meat.html.haml (17.1ms)
+Rendered canvas/index.html.haml within layouts/canvas (47.5ms)
+Completed 200 OK in 104ms (Views: 87.6ms | ActiveRecord: 15.0ms)
+
+
+Started GET "/canvas" for 127.0.0.1 at Wed Nov 03 15:06:48 -0500 2010
+  Processing by CanvasController#index as HTML
+  [1m[36mRentalUnit Load (0.1ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" ORDER BY created_at DESC LIMIT 5 OFFSET 0[0m
+Rendered rental_units/_unit_row.html.haml (0.0ms)
+Rendered canvas/_canvas_meat.html.haml (1.2ms)
+Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.1ms)
+  [1m[36mSQL (0.5ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
