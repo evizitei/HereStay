@@ -7,7 +7,7 @@
 #header
   =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
-= form_for :booking_message,:url=> booking_messages_path(@booking),:id=>"chat_form" do |f|
+= form_for :booking_message,:url=> booking_messages_path(@booking),:id=>"chat_form",:onsubmit=>"onSubmit(); return false;" do |f|
   =f.text_area :message,{:rows=>6,:cols=>55}
   %br
   = fb_button do
