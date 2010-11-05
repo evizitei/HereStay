@@ -9,13 +9,15 @@ class RentalUnit < ActiveRecord::Base
   has_one :primary_photo, :class_name => 'Photo', :conditions => {:primary => true }
   
   accepts_nested_attributes_for :photos, :allow_destroy => true
-  accepts_nested_attributes_for :primary_photo, :allow_destroy => true
+  accepts_nested_attributes_for :primary_photo, :allow_destroy => true, :reject_if => proc { |attributes| attributes['picture'].blank? }
+  
   
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
   has_many :reservations
   
+  validates_presence_of :name
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   
   after_create do |unit|
@@ -128,10 +130,21 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def added_twitter_post
-     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been added #{short_url}")
+     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been added. #{price_from} #{short_url}")
   end
   
   def rented_twitter_post(booking)
     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)} #{short_url}")
+  end
+  
+  def min_price
+    [
+      self.nightly_high_price, self.nightly_mid_price, self.nightly_low_price,
+      self.weekly_high_price, self.weekly_mid_price, self.weekly_low_price
+    ].compact.find_all{|p| p > 0.0 }.min
+  end
+  
+  def price_from
+    min_price.present? ? "Price from $#{min_price}" : ''
   end
 end

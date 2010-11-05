@@ -24,13 +24,15 @@ class User < ActiveRecord::Base
     self.authorize_signature
   end
   
-  def fb_friends
-    begin
-      graph = Koala::Facebook::GraphAPI.new(self.access_token)
-      @fb_friends ||= graph.get_connections('me', 'friends')
-    rescue => err
-      logger.error { "Unable to get fb friends. #{err}" }
-      []
+  def remove_twitter=(attrs)
+    if attrs
+      self.twitter_token = nil
+      self.twitter_secret = nil
+      self.twitter_name = nil
     end
+  end
+  
+  def twitter?
+    self.twitter_name? && self.twitter_token? && self.twitter_secret?
   end
 end

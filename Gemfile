@@ -32,4 +32,5 @@ group :development do
   gem 'spork'
   gem 'launchy'
   gem 'shoulda'
+  gem 'mocha'
 end

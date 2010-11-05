@@ -9,7 +9,12 @@
       - if @user.twitter_name.blank?
         = link_to 'Add twitter', new_connectors_twitter_path
       - else
-        = f.input :twitter_name, :hint => link_to('change', new_connectors_twitter_path), :input_html => {:disabled => true}
+        %li
+          %label My twitter
+          %strong=  f.object.twitter_name
+          %span
+            = link_to('change', new_connectors_twitter_path)
+            = link_to('remove', account_path(:user => {:remove_twitter => true}), :method => :put)
     = f.buttons do
       = fb_button do
         = submit_tag "Save"
