@@ -1,0 +1,1 @@
+Cramp::Websocket.backend = :thin

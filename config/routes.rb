@@ -4,7 +4,8 @@ Micasasucasa::Application.routes.draw do
   resources :delayed_jobs
   resources :unit_photos
 
-  match "/chat"=>ChatAction
+  match "/chat_poll"=>ChatPollAction
+  match "/chat_post"=>ChatPostAction
 
   match "/canvas"=>"canvas#index"
   match "/canvas/"=>"canvas#index"

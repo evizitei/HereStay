@@ -144,3 +144,22 @@
   margin: 0;
   padding: 0;
 }
+
+.message{
+	margin:7px;
+	padding:7px;
+	font-size:10pt;
+}
+
+.owner_message{
+	background-color:"#A3E03A";
+}
+
+.renter_message{
+	background-color:"#E5D7C4";
+}
+
+.message_body{
+	width:650px;
+	float:right;
+}

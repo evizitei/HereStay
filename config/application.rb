@@ -5,7 +5,8 @@ require 'rails/all'
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
-require "lib/chat_action"
+require "lib/chat_poll_action"
+require "lib/chat_post_action"
 
 module Micasasucasa
   class Application < Rails::Application
