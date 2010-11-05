@@ -66,13 +66,12 @@
   	    }
   	    
   	    function appendMessage(item){
-  	     $("#booking_messages").append("<div class=\"message " + item.message_class + "\"> " + 
-					    "<div class=\"message_body\">" + 
+  	     $("#booking_messages").append("<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + 
 					      "<i>" + item.sent_at + "</i>" +
 					      "<br/><strong>" + item.message + "</strong>" +
-					    "</div>"" +
+					    "</div>" +
 					    "<fb:profile-pic uid='"+item.user_fb_id+"' size='thumb'></fb:profile-pic>" + 
-					    "<br/><fb:name uid='"+item.user_fb_id+"'></fb:name>"
+					    "<br/><fb:name uid='"+item.user_fb_id+"'></fb:name>" +
 					  "</div>");
 					 polling_data["last_message"] = item.id;
   	    }
