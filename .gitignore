@@ -7,3 +7,4 @@ tmp/**/*
 db/development.sqlite3
 solr/*
 .rvmrc
+autotest/*
