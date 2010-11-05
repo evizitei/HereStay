@@ -128,10 +128,21 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def added_twitter_post
-     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been added #{short_url}")
+     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been added. #{price_from} #{short_url}")
   end
   
   def rented_twitter_post(booking)
     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)} #{short_url}")
+  end
+  
+  def min_price
+    [
+      self.nightly_high_price, self.nightly_mid_price, self.nightly_low_price,
+      self.weekly_high_price, self.weekly_mid_price, self.weekly_low_price
+    ].compact.find_all{|p| p > 0.0 }.min
+  end
+  
+  def price_from
+    min_price.present? ? "Price from $#{min_price}" : ''
   end
 end
