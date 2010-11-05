@@ -9,13 +9,15 @@ class RentalUnit < ActiveRecord::Base
   has_one :primary_photo, :class_name => 'Photo', :conditions => {:primary => true }
   
   accepts_nested_attributes_for :photos, :allow_destroy => true
-  accepts_nested_attributes_for :primary_photo, :allow_destroy => true
+  accepts_nested_attributes_for :primary_photo, :allow_destroy => true, :reject_if => proc { |attributes| attributes['picture'].blank? }
+  
   
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
   has_many :reservations
   
+  validates_presence_of :name
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   
   after_create do |unit|
