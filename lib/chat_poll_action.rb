@@ -11,7 +11,7 @@ class ChatPollAction < Cramp::Action
   end
 
   def retrieve_chats 
-    chats = @booking.booking_messages.where(["id > ?",params[:last_message])
+    chats = @booking.booking_messages.where(["id > ?",params[:last_message]])
     list = chats.map { |msg| { "message_class" => msg.html_class, 
                                "sent_at" => msg.created_at.to_formatted_s(:short), 
                                "message" => msg.message, 
