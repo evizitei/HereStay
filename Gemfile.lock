@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/lifo/cramp.git
-  revision: bec5eb47a31398df1672e0f19b4b28a0b81db3fa
+  revision: bec5eb4
   specs:
     cramp (0.10.1)
       activesupport (>= 3.0.0)

@@ -7,4 +7,8 @@ class BookingMessage < ActiveRecord::Base
   after_create do |message| 
     Delayed::Job.enqueue(BookingMessageNotifier.new(message))
   end
+  
+  def html_class
+    (self.user_fb_id == self.rental_unit.user.fb_user_id ? "owner_message" : "renter_message")
+  end
 end
