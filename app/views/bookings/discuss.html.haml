@@ -29,7 +29,7 @@
   var polling_data = {
       "user" : "#{@user.fb_user_id}",
       "booking" : "#{@booking.id}",
-      "last_message" : "#{@booking.booking_messages.by_date.last.id}"};
+      "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
 
   $(document).ready(function() {
     $("#booking_message_message").focus();        
