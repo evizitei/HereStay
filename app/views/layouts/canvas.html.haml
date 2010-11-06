@@ -15,7 +15,7 @@
     :javascript
       if (window.top === window.self){
         document.write = "";
-        window.top.location = http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{request.fullpath}';
+        window.top.location = 'http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{request.fullpath}';
         setTimeout(function(){document.body.innerHTML='';},1);
         window.self.onload=function(evt){document.body.innerHTML='';};
       }
