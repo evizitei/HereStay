@@ -49,4 +49,29 @@ class TwitterWrapper
   def post(message)
     twitter.update(message)
   end
+  
+  
+  # append shorten url to message and update twitter statuses
+  def post_with_url(message, url = nil)
+    message << " #{BitlyWrapper.short_url(url)}" if url.present?
+    post(message)
+  end
+  
+  def self.delayed_post(user, message, url)
+    Delayed::Job.enqueue(TweeterUpdater.new(user, message, url))
+  end
+  
+  #
+  # post statuses to twitter without url to unit
+  #
+  def self.post_unit_added(unit)
+    message = "#{ActionController::Base.helpers.truncate(unit.name, :length => 50)} has been added. #{unit.price_from}"
+    TwitterWrapper.delayed_post(:here_stay, message, unit.fb_url)
+  end
+  
+  def self.post_unit_rented(booking)
+    message = "#{ActionController::Base.helpers.truncate(booking.rental_unit.name, :length => 50)} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)}"
+    TwitterWrapper.delayed_post(:here_stay, message, booking.rental_unit.fb_url)
+  end
+  
 end

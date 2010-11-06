@@ -21,8 +21,8 @@ class RentalUnit < ActiveRecord::Base
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   
   after_create do |unit|
-    added_twitter_post
     Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
+    TwitterWrapper.post_unit_added(self)
   end
   
   before_save do |unit|
@@ -127,14 +127,6 @@ class RentalUnit < ActiveRecord::Base
   
   def short_url
     BitlyWrapper.short_url(fb_url)
-  end
-  
-  def added_twitter_post
-     TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been added. #{price_from} #{short_url}")
-  end
-  
-  def rented_twitter_post(booking)
-    TwitterWrapper.new(:here_stay).post("#{ActionController::Base.helpers.truncate(name, :length => 50)} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)} #{short_url}")
   end
   
   def min_price

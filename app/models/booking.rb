@@ -82,6 +82,7 @@ class Booking < ActiveRecord::Base
   
   # Post to wall message "(This property) has been rented from (date) to (date)" 
   # when the owner confirms or creates a booking
+  # TODO: move to background work
   def rented_wall_post
     oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
     graph = Koala::Facebook::GraphAPI.new(oauth.get_app_access_token)
@@ -96,7 +97,7 @@ class Booking < ActiveRecord::Base
   def run_on_confirm
     create_reservation
     rented_wall_post
-    rental_unit.rented_twitter_post(self)
+    TwitterWrapper.post_unit_rented(self)
   end
   
   def recently_confirmed?
