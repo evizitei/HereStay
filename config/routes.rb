@@ -11,8 +11,6 @@ Micasasucasa::Application.routes.draw do
   match "/canvas/"=>"canvas#index"
   
   
-  match "/video_uploaded"=>"rental_units#video_uploaded"
-
   resources :rental_units do
     collection do
       get :manage
@@ -23,8 +21,6 @@ Micasasucasa::Application.routes.draw do
     
     member do
       put :load_from_vrbo
-      get :upload_video_for
-      delete :delete_photo
       get :promotion_form
       post :promote
     end
@@ -35,6 +31,12 @@ Micasasucasa::Application.routes.draw do
       end
     end
     resources :photos
+    
+    resource :video, :only => [:show, :save, :destroy] do
+      member do
+        get :save
+      end
+    end
     resources :reservations do
       collection do
         post :import

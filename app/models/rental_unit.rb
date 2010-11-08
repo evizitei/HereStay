@@ -55,7 +55,7 @@ class RentalUnit < ActiveRecord::Base
   end
   
   def youtube_description
-    "#{self.description}  BOOK: http://herestay.heroku.com/rental_unit/#{self.id}"
+    "#{self.description}  BOOK: #{fb_url}"
   end
   
   def upload_token

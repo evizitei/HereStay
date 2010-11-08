@@ -89,17 +89,6 @@ class RentalUnitsController < ApplicationController
     @user = User.find params[:user_id]
     @rental_units = @user.rental_units.paginate(:page => params[:page], :per_page => 1)
   end
-
-  def upload_video_for
-    @rental_unit = RentalUnit.find(params[:id])
-    @upload_token = @rental_unit.upload_token  
-  end
-
-  def video_uploaded
-    rental_unit = RentalUnit.find(params[:unit_id])
-    rental_unit.update_attributes!(:video_id=>params[:id],:video_status=>params[:status],:video_code=>params[:code])
-    redirect_to rental_unit_path(rental_unit.id)
-  end
   
   def promotion_form
     @rental_unit = RentalUnit.find(params[:id])

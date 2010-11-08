@@ -12,7 +12,7 @@
     .admin_buttons.clearfix
       = fb_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'
       = fb_button 'Photos', rental_unit_photos_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Video', upload_video_for_rental_unit_path(unit_row), :class_name => 'f_left'
+      = fb_button 'Video', rental_unit_video_path(unit_row), :class_name => 'f_left'
       = fb_button 'Bookings', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
       = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
 

@@ -42,4 +42,16 @@ class YoutubeProxy
     resp, data = http.post('/action/GetUploadToken', xml, headers)
     return data
   end
+  
+  def delete_video(video_id, auth_token)
+    http = Net::HTTP.new("gdata.youtube.com")
+    headers = {
+      'Content-Type' => 'application/atom+xml',
+      'Authorization' => %Q{GoogleLogin auth=#{auth_token}},
+      'GData-Version'=>'2',
+      'X-GData-Key'=>%Q{key=#{YOUTUBE_API_KEY}}
+    }
+    resp, data = http.delete("/feeds/api/users/#{YOUTUBE_USERNAME}/uploads/#{video_id}", headers)
+    resp
+  end
 end
