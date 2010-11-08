@@ -20,7 +20,7 @@ class MessagesController < InheritedResources::Base
                                "message_class" => msg.html_class, 
                               "sent_at" => msg.created_at.to_formatted_s(:short), 
                               "message" => msg.message} }
-    render :json=> [list.to_json,"\n"]
+    render :json=> list.to_json
   end
   
   def poll_chat
@@ -31,7 +31,7 @@ class MessagesController < InheritedResources::Base
                                "sent_at" => msg.created_at.to_formatted_s(:short), 
                                "message" => msg.message, 
                                "user_fb_id" => msg.user_fb_id } }
-    render :json=>[list.to_json,"\n"]
+    render :json=>list.to_json
   end
   
   protected
