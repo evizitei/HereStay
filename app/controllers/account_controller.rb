@@ -1,4 +1,5 @@
 class AccountController < ApplicationController
+  before_filter :oauth_obj
   respond_to :html
   
   def show

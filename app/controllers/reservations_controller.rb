@@ -1,5 +1,6 @@
 require 'vrbo_proxy'
 class ReservationsController < ApplicationController
+  before_filter :oauth_obj
   inherit_resources
 
   rescue_from VrboProxy::Error, :with => :show_errors

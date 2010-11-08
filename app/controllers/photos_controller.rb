@@ -1,4 +1,6 @@
 class PhotosController < ApplicationController
+  before_filter :oauth_obj
+  
   inherit_resources
 
   belongs_to :rental_unit

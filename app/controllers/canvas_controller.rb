@@ -1,4 +1,6 @@
 class CanvasController < ApplicationController
+  before_filter :oauth_obj
+  
   def index
     search_setup
   end

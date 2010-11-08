@@ -3,15 +3,9 @@ class ApplicationController < ActionController::Base
   layout 'canvas'
   helper_method :fb_app_name
   
-  before_filter :debug_params
   before_filter :redirect_from_params
-  before_filter :oauth_obj
 
 protected
-  def debug_params
-    @params = params
-    @cookies = cookies
-  end
   
   def oauth_obj
     oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)

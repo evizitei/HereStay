@@ -1,4 +1,5 @@
 class VideosController < ApplicationController
+  before_filter :oauth_obj
   before_filter :login_required
   before_filter :get_rental_unit
   

@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+  before_filter :oauth_obj
   before_filter :get_rental_unit, :only => %w(index new create)
   before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
