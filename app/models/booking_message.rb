@@ -9,6 +9,6 @@ class BookingMessage < ActiveRecord::Base
   end
   
   def html_class
-    (self.user_fb_id == self.rental_unit.user.fb_user_id ? "owner_message" : "renter_message")
+    (self.user_fb_id == self.booking.rental_unit.user.fb_user_id ? "owner_message" : "renter_message")
   end
 end
