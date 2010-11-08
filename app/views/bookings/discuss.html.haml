@@ -7,7 +7,7 @@
 #header
   =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
-= form_for :booking_message,:url=> booking_messages_path(@booking),:id=>"chat_form",:onsubmit=>"onSubmit(); return false;" do |f|
+= form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
   =f.hidden_field :fb_user_id,:value=>@user.fb_user_id
   =f.hidden_field :booking_id,:value=>@booking.id
   =f.text_area :message,{:rows=>6,:cols=>55}
@@ -53,7 +53,7 @@
 
         function onSubmit() {
           $.ajax({
-            url: "#{chat_poll_url}",
+            url: "#{chat_post_url}",
             type: "POST",
             dataType: "json",
             data: $("#chat_form").serialize(),
