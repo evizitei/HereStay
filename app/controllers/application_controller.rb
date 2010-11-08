@@ -16,9 +16,6 @@ protected
   def oauth_obj
     oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
     @user = User.for(oauth.get_user_info_from_cookie(cookies))
-    if @user and @user.email.nil?
-      Delayed::Job.enqueue(FbEmailFetcher.new(@user.fb_user_id))
-    end
   end
   
   def fb_app_name
