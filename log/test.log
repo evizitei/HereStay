@@ -1,57 +1,1315 @@
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:11:51.784812', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:11:51.784812', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:11:51.794800', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:11:51.794800', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:11:51.962289', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:11:51.961854', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:11:51.962289', 39, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:11:51.980424', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F21
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:11:51.980362', '2010-11-08 21:11:51.980424')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:11:51.992067', 'Great Vacation', 7, NULL, 21, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:11:51.992067')[0m
 
 
-Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:16:29 -0500 2010
-  Processing by CanvasController#index as HTML
-Completed   in 6ms
+Started GET "/chat_poll?user=13579&booking=7&last_message=" for 127.0.0.1 at Mon Nov 08 15:11:52 -0600 2010
 
 
-Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:16:29 -0500 2010
-  Processing by CanvasController#index as HTML
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:12:01 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.9ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 21) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 21 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 39) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.6ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.2ms)
+Completed 200 OK in 50ms (Views: 46.6ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:12:01 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.1ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (6.8ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (7.7ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:17:43.463969', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:17:43.463969', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:17:43.474697', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:17:43.474697', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:17:43.652850', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:17:43.652418', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:17:43.652850', 41, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:17:43.670327', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F22
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:17:43.670261', '2010-11-08 21:17:43.670327')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:17:43.682897', 'Great Vacation', 7, NULL, 22, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:17:43.682897')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:17:52 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.8ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 22) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 22 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 41) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.4ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (40.6ms)
+Completed 200 OK in 49ms (Views: 46.1ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:17:53 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (8.1ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (2.0ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (9.1ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (2.0ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:18:55.005129', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:18:55.005129', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:18:55.014391', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:18:55.014391', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:18:55.169081', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:18:55.168646', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:18:55.169081', 43, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:18:55.186218', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F23
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:18:55.186154', '2010-11-08 21:18:55.186218')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:18:55.198335', 'Great Vacation', 7, NULL, 23, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:18:55.198335')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:19:04 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.8ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 23) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 23 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 43) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (1.9ms)
+Rendered rental_units/_unit_row.html.haml (13.1ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (40.6ms)
+Completed 200 OK in 49ms (Views: 45.6ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:19:04 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:20:05.444482', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:20:05.444482', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:20:05.454654', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:20:05.454654', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:20:05.665985', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:20:05.665186', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:20:05.665985', 45, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:20:05.683450', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F24
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:20:05.683388', '2010-11-08 21:20:05.683450')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:20:05.695618', 'Great Vacation', 7, NULL, 24, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:20:05.695618')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:20:14 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.3ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 24) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 24 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 45) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.5ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (40.4ms)
+Completed 200 OK in 49ms (Views: 45.8ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:20:15 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.8ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (8.3ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.9ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:45:38.440495', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:45:38.440495', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:45:38.450166', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:45:38.450166', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:45:38.686138', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:45:38.685705', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:45:38.686138', 47, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:45:38.703132', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F25
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:45:38.703073', '2010-11-08 21:45:38.703132')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:45:38.715212', 'Great Vacation', 7, NULL, 25, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:45:38.715212')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:45:47 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.9ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 25) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 25 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 47) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.3ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (40.7ms)
+Completed 200 OK in 49ms (Views: 45.5ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:45:48 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (7.4ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.1ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.7ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.1ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.1ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.7ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:46:14.689642', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:46:14.689642', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 21:46:14.699730', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 21:46:14.699730', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 21:46:14.849073', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 21:46:14.848552', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 21:46:14.849073', 49, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 21:46:14.866297', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F26
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 21:46:14.866236', '2010-11-08 21:46:14.866297')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 21:46:14.878345', 'Great Vacation', 7, NULL, 26, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 21:46:14.878345')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 15:46:23 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.7ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.3ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 26) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 26 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 49) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.5ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (40.9ms)
+Completed 200 OK in 49ms (Views: 45.8ms | ActiveRecord: 1.6ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 15:46:24 -0600 2010
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (3.6ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:07:34.594193', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:07:34.594193', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:07:34.604058', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:07:34.604058', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:07:34.821935', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:07:34.821486', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:07:34.821935', 51, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:07:34.840436', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F27
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:07:34.840363', '2010-11-08 22:07:34.840436')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:07:34.852098', 'Great Vacation', 7, NULL, 27, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:07:34.852098')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 27) LIMIT 1[0m
+  [1m[35mPhoto Load (0.2ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 27 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 51) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.2ms)
+Rendered rental_units/_unit_row.html.haml (14.8ms)
+  [1m[35mBookingMessage Load (0.2ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (46.9ms)
+Completed 200 OK in 57ms (Views: 52.8ms | ActiveRecord: 2.1ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
 Completed   in 1ms
 
 
-Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:17:39 -0500 2010
-  Processing by CanvasController#index as HTML
-Rendered canvas/index.html.haml within layouts/canvas (1.9ms)
-Completed 200 OK in 4ms (Views: 4.0ms | ActiveRecord: 0.0ms)
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
 
 
-Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:17:39 -0500 2010
-  Processing by CanvasController#index as HTML
-Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.0ms)
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
 
 
-Started GET "/canvas/" for 127.0.0.1 at Thu Jul 15 15:24:10 -0500 2010
-  Processing by CanvasController#index as HTML
-Rendered canvas/index.html.haml within layouts/canvas (2.0ms)
-Completed 200 OK in 4ms (Views: 4.3ms | ActiveRecord: 0.0ms)
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
 
 
-Started GET "/canvas" for 127.0.0.1 at Thu Jul 15 15:24:10 -0500 2010
-  Processing by CanvasController#index as HTML
-Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.0ms)
-  [1m[36mSQL (0.8ms)[0m  [1m SELECT name
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:07:44 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
  FROM sqlite_master
  WHERE type = 'table' AND NOT name = 'sqlite_sequence'
 [0m
-
-
-Started GET "/canvas/" for 127.0.0.1 at Wed Nov 03 15:06:48 -0500 2010
-  Processing by CanvasController#index as HTML
-  [1m[35mRentalUnit Load (14.1ms)[0m  SELECT "rental_units".* FROM "rental_units" ORDER BY created_at DESC LIMIT 5 OFFSET 0
-Rendered rental_units/_unit_row.html.haml (0.0ms)
-Rendered canvas/_canvas_meat.html.haml (17.1ms)
-Rendered canvas/index.html.haml within layouts/canvas (47.5ms)
-Completed 200 OK in 104ms (Views: 87.6ms | ActiveRecord: 15.0ms)
-
-
-Started GET "/canvas" for 127.0.0.1 at Wed Nov 03 15:06:48 -0500 2010
-  Processing by CanvasController#index as HTML
-  [1m[36mRentalUnit Load (0.1ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" ORDER BY created_at DESC LIMIT 5 OFFSET 0[0m
-Rendered rental_units/_unit_row.html.haml (0.0ms)
-Rendered canvas/_canvas_meat.html.haml (1.2ms)
-Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.1ms)
-  [1m[36mSQL (0.5ms)[0m  [1m SELECT name
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (0.9ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (6.4ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.0ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (4.4ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT name
  FROM sqlite_master
  WHERE type = 'table' AND NOT name = 'sqlite_sequence'
 [0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:09:42.316651', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:09:42.316651', NULL, NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:09:42.326935', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:09:42.326935', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:09:42.523056', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:09:42.522614', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:09:42.523056', 53, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:09:42.541950', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F28
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:09:42.541874', '2010-11-08 22:09:42.541950')
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:09:42.553916', 'Great Vacation', 7, NULL, 28, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:09:42.553916')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:09:51 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.9ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 28) LIMIT 1[0m
+  [1m[35mPhoto Load (0.2ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 28 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 53) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (14.0ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (42.9ms)
+Completed 200 OK in 52ms (Views: 48.5ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:09:52 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (6.6ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.1ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (4.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.0ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:10:31.429298', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:10:31.429298', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:10:31.438864', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:10:31.438864', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:10:31.646281', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:10:31.645833', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:10:31.646281', 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:10:31.664303', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F29
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:10:31.664225', '2010-11-08 22:10:31.664303')
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:10:31.677296', 'Great Vacation', 7, NULL, 29, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:10:31.677296')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:10:40 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.3ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 29) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 29 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 55) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.5ms)
+Rendered rental_units/_unit_row.html.haml (14.1ms)
+  [1m[35mBookingMessage Load (0.2ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (42.7ms)
+Completed 200 OK in 53ms (Views: 49.0ms | ActiveRecord: 2.0ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 1ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:10:41 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed   in 0ms
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (2.7ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (0.9ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (4.6ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (5.6ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:11:24.726321', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:11:24.726321', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:11:24.736262', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:11:24.736262', NULL, NULL)
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:11:24.953068', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:11:24.952620', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:11:24.953068', 57, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:11:24.971611', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F30
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:11:24.971539', '2010-11-08 22:11:24.971611')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:11:24.983413', 'Great Vacation', 7, NULL, 30, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:11:24.983413')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:11:34 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 30) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 30 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 57) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.8ms)
+  [1m[35mBookingMessage Load (0.2ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (42.7ms)
+Completed 200 OK in 52ms (Views: 48.6ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_poll" for 127.0.0.1 at Mon Nov 08 16:11:34 -0600 2010
+  Processing by MessagesController#poll_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+Completed 200 OK in 6ms (Views: 6.0ms | ActiveRecord: 0.0ms)
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.0ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (5.6ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (8.0ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:12:29.164251', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:12:29.164251', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:12:29.174092', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:12:29.174092', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:12:29.407899', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:12:29.407431', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:12:29.407899', 59, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:12:29.425914', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F31
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:12:29.425848', '2010-11-08 22:12:29.425914')
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:12:29.437712', 'Great Vacation', 7, NULL, 31, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:12:29.437712')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:12:38 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 31) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 31 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 59) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.8ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.9ms)
+Completed 200 OK in 51ms (Views: 47.2ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1[0m
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1[0m
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1[0m
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1
+Completed   in 1ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:12:39 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 13579) LIMIT 1[0m
+Completed   in 1ms
+  [1m[35mSQL (0.3ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "booking_messages";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "bookings";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "delayed_jobs";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "discounts";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "photos";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "rental_units";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "reservations";[0m
+  [1m[35mSQL (1.0ms)[0m  DELETE FROM "rewards";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "users";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "youtube_tokens";
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:13:04.779854', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:13:04.779854', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:13:04.789424', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:13:04.789424', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:13:05.001703', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:13:05.001256', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:13:05.001703', 61, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:05.019548', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F32
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:05.019478', '2010-11-08 22:13:05.019548')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:13:05.031332', 'Great Vacation', 7, NULL, 32, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:13:05.031332')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 32) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 32 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 61) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.5ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.3ms)
+Completed 200 OK in 51ms (Views: 46.7ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.693363', 'I want to stay here', '2010-11-08 22:13:14.693363', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.695984', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 1
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.695907', '2010-11-08 22:13:14.695984')
+Completed   in 12ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.706420', 'I want to stay here', '2010-11-08 22:13:14.706420', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.708234', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 2
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.708155', '2010-11-08 22:13:14.708234')
+Completed   in 7ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.715422', 'I want to stay here', '2010-11-08 22:13:14.715422', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.717100', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 3
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.717025', '2010-11-08 22:13:14.717100')
+Completed   in 11ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.6ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.732878', 'I want to stay here', '2010-11-08 22:13:14.732878', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.736659', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 4
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.736561', '2010-11-08 22:13:14.736659')
+Completed   in 10ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.744212', 'I want to stay here', '2010-11-08 22:13:14.744212', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.746201', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 5
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.746132', '2010-11-08 22:13:14.746201')
+Completed   in 8ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.753374', 'I want to stay here', '2010-11-08 22:13:14.753374', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.755240', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 6
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.755121', '2010-11-08 22:13:14.755240')
+Completed   in 12ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:13:14 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:13:14.874342', 'I want to stay here', '2010-11-08 22:13:14.874342', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:13:14.876860', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 7
+', NULL, NULL, NULL, 0, '2010-11-08 22:13:14.876787', '2010-11-08 22:13:14.876860')
+Completed   in 114ms
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.8ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (3.7ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (2.0ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (6.6ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.7ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:18:15.483741', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:18:15.483741', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:18:15.493197', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:18:15.493197', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:18:15.674332', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:18:15.673423', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:18:15.674332', 63, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:18:15.692218', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F33
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:18:15.692152', '2010-11-08 22:18:15.692218')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:18:15.704158', 'Great Vacation', 7, NULL, 33, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:18:15.704158')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:18:24 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.9ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 33) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 33 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 63) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.8ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.6ms)
+Completed 200 OK in 50ms (Views: 47.0ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:18:25 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+Completed 200 OK in 7ms (Views: 5.4ms | ActiveRecord: 0.4ms)
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.9ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (2.3ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (4.9ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:18:58.892518', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:18:58.892518', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:18:58.902174', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:18:58.902174', NULL, NULL)
+GoogleApi.geocoder error: Network is unreachable - connect(2). Address is: 2275 E Bearfield Sub, Columbia, MO, 65201, USA
+  [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.8ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.7ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.7ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:21:34.857216', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:21:34.857216', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:21:34.867000', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:21:34.867000', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:21:35.074060', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:21:35.073616', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:21:35.074060', 67, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:21:35.091896', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F34
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:21:35.091833', '2010-11-08 22:21:35.091896')
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:21:35.103443', 'Great Vacation', 7, NULL, 34, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:21:35.103443')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:21:44 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 34) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 34 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 67) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.7ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.9ms)
+Completed 200 OK in 50ms (Views: 47.0ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:21:45 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:21:45.121189', 'I want to stay here', '2010-11-08 22:21:45.121189', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:21:45.123803', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 8
+', NULL, NULL, NULL, 0, '2010-11-08 22:21:45.123727', '2010-11-08 22:21:45.123803')
+Completed 200 OK in 18ms (Views: 5.5ms | ActiveRecord: 0.8ms)
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (2.4ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.0ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (5.1ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:23:10.368012', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:23:10.368012', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:23:10.377739', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:23:10.377739', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:23:10.585086', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:23:10.584639', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:23:10.585086', 69, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:10.603668', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F35
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:10.603592', '2010-11-08 22:23:10.603668')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:23:10.616702', 'Great Vacation', 7, NULL, 35, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:23:10.616702')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:23:19 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 35) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 35 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 69) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.1ms)
+Rendered rental_units/_unit_row.html.haml (13.5ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.8ms)
+Completed 200 OK in 51ms (Views: 47.0ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.279694', 'I want to stay here', '2010-11-08 22:23:20.279694', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.282294', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 9
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.282216', '2010-11-08 22:23:20.282294')
+Completed   in 12ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.292770', 'I want to stay here', '2010-11-08 22:23:20.292770', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.294702', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 10
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.294619', '2010-11-08 22:23:20.294702')
+Completed   in 7ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.302266', 'I want to stay here', '2010-11-08 22:23:20.302266', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.304122', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 11
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.304035', '2010-11-08 22:23:20.304122')
+Completed   in 11ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.321226', 'I want to stay here', '2010-11-08 22:23:20.321226', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.323645', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 12
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.323563', '2010-11-08 22:23:20.323645')
+Completed   in 18ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.339964', 'I want to stay here', '2010-11-08 22:23:20.339964', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.341826', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 13
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.341734', '2010-11-08 22:23:20.341826')
+Completed   in 9ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.350978', 'I want to stay here', '2010-11-08 22:23:20.350978', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.352800', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 14
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.352723', '2010-11-08 22:23:20.352800')
+Completed   in 12ms
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:23:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:23:20.474912', 'I want to stay here', '2010-11-08 22:23:20.474912', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:23:20.477296', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 15
+', NULL, NULL, NULL, 0, '2010-11-08 22:23:20.477223', '2010-11-08 22:23:20.477296')
+Completed   in 116ms
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:24:32.305463', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:24:32.305463', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:24:32.315626', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:24:32.315626', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:24:32.520980', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:24:32.520530', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:24:32.520980', 71, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:24:32.539029', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F36
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:24:32.538966', '2010-11-08 22:24:32.539029')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:24:32.550896', 'Great Vacation', 7, NULL, 36, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:24:32.550896')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:24:41 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.1ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 36) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 36 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 71) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.8ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.6ms)
+Completed 200 OK in 51ms (Views: 47.2ms | ActiveRecord: 2.0ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:24:42 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:24:42.194527', 'I want to stay here', '2010-11-08 22:24:42.194527', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:24:42.197126', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 16
+', NULL, NULL, NULL, 0, '2010-11-08 22:24:42.197057', '2010-11-08 22:24:42.197126')
+Completed 200 OK in 18ms (Views: 5.5ms | ActiveRecord: 0.8ms)
+  [1m[36mSQL (0.4ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.8ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.7ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.7ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (6.2ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.6ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.8ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.1ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.4ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:25:10.691704', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:25:10.691704', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:25:10.701599', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:25:10.701599', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:25:10.862309', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:25:10.861867', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:25:10.862309', 73, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:25:10.880278', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F37
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:25:10.880206', '2010-11-08 22:25:10.880278')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:25:10.891945', 'Great Vacation', 7, NULL, 37, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:25:10.891945')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:25:20 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.3ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 37) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 37 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 73) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.2ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.1ms)
+Completed 200 OK in 50ms (Views: 46.4ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:25:20 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:25:20.768420', 'I want to stay here', '2010-11-08 22:25:20.768420', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:25:20.771004', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 17
+', NULL, NULL, NULL, 0, '2010-11-08 22:25:20.770934', '2010-11-08 22:25:20.771004')
+Completed 200 OK in 18ms (Views: 5.4ms | ActiveRecord: 0.7ms)
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (3.4ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (4.5ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.3ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:26:23.860413', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:26:23.860413', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:26:23.870733', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:26:23.870733', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:26:24.137666', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:26:24.137226', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:26:24.137666', 75, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:26:24.155090', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F38
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:26:24.155020', '2010-11-08 22:26:24.155090')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:26:24.166594', 'Great Vacation', 7, NULL, 38, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:26:24.166594')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:26:33 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.9ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 38) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 38 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 75) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.3ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.2ms)
+Completed 200 OK in 50ms (Views: 46.4ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:26:33 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:26:33.826797', 'I want to stay here', '2010-11-08 22:26:33.826797', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:26:33.829437', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 18
+', NULL, NULL, NULL, 0, '2010-11-08 22:26:33.829351', '2010-11-08 22:26:33.829437')
+Completed 200 OK in 18ms (Views: 5.6ms | ActiveRecord: 0.8ms)
+  [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (1.8ms)[0m  DELETE FROM "booking_messages";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "bookings";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "delayed_jobs";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "discounts";[0m
+  [1m[35mSQL (4.9ms)[0m  DELETE FROM "photos";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "rental_units";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "reservations";
+  [1m[36mSQL (1.7ms)[0m  [1mDELETE FROM "rewards";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "users";
+  [1m[36mSQL (1.1ms)[0m  [1mDELETE FROM "youtube_tokens";[0m
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:27:11.186888', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:27:11.186888', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:27:11.196542', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:27:11.196542', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:27:11.451660', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:27:11.451210', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:27:11.451660', 77, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:27:11.469802', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F39
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:27:11.469733', '2010-11-08 22:27:11.469802')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:27:11.486369', 'Great Vacation', 7, NULL, 39, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:27:11.486369')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:27:20 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (1.0ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.3ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 39) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 39 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 77) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.8ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.3ms)
+Completed 200 OK in 50ms (Views: 46.3ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:27:21 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:27:21.122915', 'I want to stay here', '2010-11-08 22:27:21.122915', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:27:21.125537', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 19
+', NULL, NULL, NULL, 0, '2010-11-08 22:27:21.125457', '2010-11-08 22:27:21.125537')
+  [1m[36mBooking Load (0.2ms)[0m  [1mSELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1[0m
+  [1m[35mRentalUnit Load (0.3ms)[0m  SELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 39) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 77) LIMIT 1[0m
+Completed 200 OK in 22ms (Views: 5.7ms | ActiveRecord: 1.3ms)
+  [1m[35mSQL (0.3ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+  [1m[36mSQL (1.8ms)[0m  [1mDELETE FROM "booking_messages";[0m
+  [1m[35mSQL (1.7ms)[0m  DELETE FROM "bookings";
+  [1m[36mSQL (1.8ms)[0m  [1mDELETE FROM "delayed_jobs";[0m
+  [1m[35mSQL (4.0ms)[0m  DELETE FROM "discounts";
+  [1m[36mSQL (1.5ms)[0m  [1mDELETE FROM "photos";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "rental_units";
+  [1m[36mSQL (5.0ms)[0m  [1mDELETE FROM "reservations";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "rewards";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "users";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "youtube_tokens";
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:28:42.103870', NULL, NULL, '13579', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:28:42.103870', NULL, NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("app_api_key", "authorize_signature", "authorized_at", "created_at", "email", "fb_updated_at", "fb_user_id", "linked_account_ids", "redeemed_rewards", "session_expires_at", "session_key", "twitter_name", "twitter_secret", "twitter_token", "updated_at", "vrbo_login", "vrbo_password") VALUES (NULL, NULL, NULL, '2010-11-08 22:28:42.113753', NULL, NULL, '98765', NULL, 0.0, NULL, NULL, NULL, NULL, NULL, '2010-11-08 22:28:42.113753', NULL, NULL)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "rental_units" ("address", "address_2", "city", "country", "created_at", "description", "fb_user_id", "geocoded_address", "geocoded_at", "geocoding_success", "lat", "long", "name", "nightly_high_price", "nightly_low_price", "nightly_mid_price", "percent_discount", "picture_content_type", "picture_file_name", "picture_file_size", "picture_updated_at", "pricing", "state", "updated_at", "user_id", "video_code", "video_id", "video_status", "vrbo_id", "weekly_high_price", "weekly_low_price", "weekly_mid_price", "zip") VALUES ('2275 E Bearfield Sub', NULL, 'Columbia', 'USA', '2010-11-08 22:28:42.313941', 'is beautiful', NULL, 'Columbia, MO, USA', '2010-11-08 22:28:42.313481', 't', 38.9517053, -92.3340724, 'My Place', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'MO', '2010-11-08 22:28:42.313941', 79, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '65201')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:28:42.331455', NULL, '--- !ruby/object:TweeterUpdater 
+message: "My Place has been added. "
+url: http://apps.facebook.com/here_stay/?redirect_to=%2Frental_units%2F40
+user: :here_stay
+', NULL, NULL, NULL, 0, '2010-11-08 22:28:42.331386', '2010-11-08 22:28:42.331455')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "bookings" ("amount", "confirmed_by_renter_at", "created_at", "description", "id", "owner_fb_id", "rental_unit_id", "renter_fb_id", "renter_name", "start_date", "status", "stop_date", "updated_at") VALUES (NULL, NULL, '2010-11-08 22:28:42.343111', 'Great Vacation', 7, NULL, 40, '13579', 'Some name', '2010-10-01', 'INITIATED', '2010-10-05', '2010-11-08 22:28:42.343111')[0m
+
+
+Started GET "/bookings/7/discuss" for 127.0.0.1 at Mon Nov 08 16:28:51 -0600 2010
+  Processing by BookingsController#discuss as HTML
+  Parameters: {"id"=>"7"}
+  [1m[35mBooking Load (0.7ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mRentalUnit Load (0.4ms)[0m  [1mSELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 40) LIMIT 1[0m
+  [1m[35mPhoto Load (0.1ms)[0m  SELECT "photos".* FROM "photos" WHERE ("photos".rental_unit_id = 40 AND ("photos"."primary" = 't')) LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 79) LIMIT 1[0m
+Rendered rental_units/_share_unit.html.haml (2.0ms)
+Rendered rental_units/_unit_row.html.haml (13.6ms)
+  [1m[35mBookingMessage Load (0.1ms)[0m  SELECT "booking_messages".* FROM "booking_messages" WHERE ("booking_messages".booking_id = 7) ORDER BY created_at ASC
+Rendered bookings/discuss.html.haml within layouts/canvas (41.2ms)
+Completed 200 OK in 49ms (Views: 46.5ms | ActiveRecord: 1.6ms)
+
+
+Started POST "/chat_post" for 127.0.0.1 at Mon Nov 08 16:28:51 -0600 2010
+  Processing by MessagesController#post_chat as JSON
+  Parameters: {"booking_message"=>{"fb_user_id"=>"13579", "booking_id"=>"7", "message"=>"I want to stay here"}, "utf8"=>"\342\234\223"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."fb_user_id" = '13579') LIMIT 1[0m
+  [1m[35mBooking Load (0.2ms)[0m  SELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "booking_messages" ("booking_id", "created_at", "message", "updated_at", "user_fb_id") VALUES (7, '2010-11-08 22:28:51.980780', 'I want to stay here', '2010-11-08 22:28:51.980780', '13579')[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "delayed_jobs" ("attempts", "created_at", "failed_at", "handler", "last_error", "locked_at", "locked_by", "priority", "run_at", "updated_at") VALUES (0, '2010-11-08 22:28:51.983446', NULL, '--- !ruby/object:BookingMessageNotifier 
+message_id: 20
+', NULL, NULL, NULL, 0, '2010-11-08 22:28:51.983366', '2010-11-08 22:28:51.983446')
+  [1m[36mBooking Load (0.2ms)[0m  [1mSELECT "bookings".* FROM "bookings" WHERE ("bookings"."id" = 7) LIMIT 1[0m
+  [1m[35mRentalUnit Load (0.2ms)[0m  SELECT "rental_units".* FROM "rental_units" WHERE ("rental_units"."id" = 40) LIMIT 1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("users"."id" = 79) LIMIT 1[0m
+Completed 200 OK in 22ms (Views: 5.7ms | ActiveRecord: 1.4ms)
+  [1m[35mSQL (0.3ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "booking_messages";[0m
+  [1m[35mSQL (4.2ms)[0m  DELETE FROM "bookings";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "delayed_jobs";[0m
+  [1m[35mSQL (1.3ms)[0m  DELETE FROM "discounts";
+  [1m[36mSQL (1.6ms)[0m  [1mDELETE FROM "photos";[0m
+  [1m[35mSQL (1.2ms)[0m  DELETE FROM "rental_units";
+  [1m[36mSQL (1.2ms)[0m  [1mDELETE FROM "reservations";[0m
+  [1m[35mSQL (1.4ms)[0m  DELETE FROM "rewards";
+  [1m[36mSQL (7.6ms)[0m  [1mDELETE FROM "users";[0m
+  [1m[35mSQL (1.5ms)[0m  DELETE FROM "youtube_tokens";

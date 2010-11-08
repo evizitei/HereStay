@@ -41,12 +41,7 @@
         type: "GET",
               data: polling_data,
               dataType: "json",
-              success: function(data) {
-                $.each(data, function(i, item) {
-                  appendMessage(item);
-                });
-                scrollDown();
-              },
+              success: appendMessages,
             })
           }, 5000);
         });
@@ -57,14 +52,16 @@
             type: "POST",
             dataType: "json",
             data: $("#chat_form").serialize(),
-            success: function(data) {
-              $.each(data, function(i, item){
-                appendMessage(item);
-              })
-              scrollDown();
-            },
+            success: appendMessages,
           });
           $("#booking_message_message").val("").focus();
+        }
+        
+        function appendMessages(data){
+          $.each(data, function(i, item) {
+            appendMessage(item);
+          });
+          scrollDown();
         }
         
         function appendMessage(item){
