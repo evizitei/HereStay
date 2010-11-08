@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   helper_method :fb_app_name
   
   before_filter :debug_params
-  # before_filter :update_user
   before_filter :redirect_from_params
   before_filter :oauth_obj
 
@@ -24,10 +23,6 @@ protected
   
   def fb_app_name
     Facebook::APP_NAME.to_s
-  end
-  
-  def fb_redirect_to(url)
-    "<fb:redirect url=\"#{url_for(url)}\" />"
   end
   
   def login_required
