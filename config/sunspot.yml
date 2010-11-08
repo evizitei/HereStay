@@ -1,0 +1,9 @@
+test: &TEST
+  solr:
+    hostname: localhost
+    port: 8981
+    log_level: WARNING
+
+cucumber:
+  <<: *TEST
+

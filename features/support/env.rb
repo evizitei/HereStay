@@ -55,3 +55,31 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
+
+require 'factory_girl'
+require 'factory_girl/step_definitions'
+
+$original_sunspot_session = Sunspot.session
+
+Before("~@search") do
+  Sunspot.session = Sunspot::Rails::StubSessionProxy.new($original_sunspot_session)
+end
+
+Before("@search") do
+  unless $sunspot
+    $sunspot = Sunspot::Rails::Server.new
+    pid = fork do
+      STDERR.reopen('/dev/null')
+      STDOUT.reopen('/dev/null')
+      $sunspot.run
+    end
+    # shut down the Solr server
+    at_exit { Process.kill('TERM', pid) }
+    # wait for solr to start
+    sleep 5
+  end
+  Sunspot.session = $original_sunspot_session
+
+  RentalUnit.remove_all_from_index!
+end
+
