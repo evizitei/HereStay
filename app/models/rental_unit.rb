@@ -22,7 +22,7 @@ class RentalUnit < ActiveRecord::Base
   
   after_create do |unit|
     Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
-    TwitterWrapper.post_unit_added(self)
+    TwitterWrapper.post_unit_added(unit)
   end
   
   before_save do |unit|

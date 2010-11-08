@@ -67,7 +67,7 @@ class TwitterWrapper
   def self.post_unit_added(unit)
     message = "#{ActionController::Base.helpers.truncate(unit.name, :length => 50)} has been added. #{unit.price_from}"
     TwitterWrapper.delayed_post(:here_stay, message, unit.fb_url)
-    if unit.user.twitter?
+    if unit.user and unit.user.twitter?
       message = "#{ActionController::Base.helpers.truncate(unit.name, :length => 50)} has been added for rent. #{unit.price_from}"
       TwitterWrapper.delayed_post(unit.user.id, message, unit.fb_url)
     end

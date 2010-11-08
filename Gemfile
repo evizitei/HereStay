@@ -23,14 +23,16 @@ gem 'twitter', '0.9.12'
 gem 'bitly'
 gem 'thin'
 
-group :development do
+group :development,:test,:cucumber do
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'capybara'
+  gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'spork'
   gem 'launchy'
   gem 'shoulda'
   gem 'mocha'
+  gem 'jasmine'
 end

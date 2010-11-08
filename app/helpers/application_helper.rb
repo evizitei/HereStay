@@ -4,6 +4,7 @@ module ApplicationHelper
   end
   
   def fb_connect_async_js
+    if Rails.env.production?
       js = <<-JAVASCRIPT
       <script>
         window.fbAsyncInit = function() {
@@ -16,8 +17,11 @@ module ApplicationHelper
           document.getElementById('fb-root').appendChild(e);
         }());
       </script>
-    JAVASCRIPT
-    js.html_safe
+      JAVASCRIPT
+      js.html_safe
+    else
+      ""
+    end
   end
   
   def fb_button(*args, &block)

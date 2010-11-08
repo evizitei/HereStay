@@ -12,13 +12,14 @@
     %script{:type=>"text/javascript",:src=>"/jquery-ui/js/jquery-ui-1.8.2.custom.min.js"}
     = csrf_meta_tag
   %body
-    :javascript
-      if (window.top === window.self){
-        document.write = "";
-        window.top.location = 'http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{request.fullpath}';
-        setTimeout(function(){document.body.innerHTML='';},1);
-        window.self.onload=function(evt){document.body.innerHTML='';};
-      }
+    -if Rails.env.production?
+      :javascript
+        if (window.top === window.self){
+          document.write = "";
+          window.top.location = 'http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{request.fullpath}';
+          setTimeout(function(){document.body.innerHTML='';},1);
+          window.self.onload=function(evt){document.body.innerHTML='';};
+        }
     
     = link_to image_tag("herestay.png", :border => 0), root_path
     %br
