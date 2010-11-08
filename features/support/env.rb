@@ -61,6 +61,28 @@ require 'factory_girl/step_definitions'
 
 $original_sunspot_session = Sunspot.session
 
+#prevent twitter from being hit during feature run
+require 'twitter_wrapper'
+class TwitterWrapper
+  def post_with_url(message,url = nil)
+    return true
+  end
+end
+
+require 'google_api'
+class GoogleApi
+  def geocoder(address)
+    return {:lat => 55.1229999, :long => 73.6416001, :geocoded_address => 'Address, City, State, ZIP, Country'}
+  end
+end
+
+require 'active_support/buffered_logger'
+require 'cramp'
+logger = ActiveSupport::BufferedLogger.new(File.join(File.dirname(__FILE__),"..","..","log","cramp.log"))
+logger.level = ActiveSupport::BufferedLogger::DEBUG
+logger.auto_flushing = true
+Cramp.logger = logger
+
 Before("~@search") do
   Sunspot.session = Sunspot::Rails::StubSessionProxy.new($original_sunspot_session)
 end

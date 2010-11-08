@@ -14,7 +14,11 @@ module NavigationHelpers
       '/canvas/'
     when /the canvas asset/
       '/canvas'
+    when /the booking discussion page for booking (\d+)/
+      discuss_booking_path($1) 
+
     # Add more mappings here.
+      #
     # Here is an example that pulls values out of the Regexp:
     #
     #   when /^(.*)'s profile page$/i

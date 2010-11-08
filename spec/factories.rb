@@ -14,3 +14,6 @@ Factory.define :rental_unit do |r|
   r.state "MO"
   r.zip "65201"
 end
+
+Factory.define :user do |u|
+end
