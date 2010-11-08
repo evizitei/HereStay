@@ -19,16 +19,11 @@ class RentalUnit < ActiveRecord::Base
   
   validates_presence_of :name
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
+  # geocoding address and validate
+  validate :geocode_address, :if => :full_address_changed?
   
   after_create do |unit|
-    Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
-    TwitterWrapper.post_unit_added(self)
-  end
-  
-  before_save do |unit|
-    if unit.address_changed? and !unit.new_record?
-      Delayed::Job.enqueue(RentalUnitGeocoder.new(unit))
-    end
+    TwitterWrapper.post_unit_added(unit)
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
@@ -104,17 +99,6 @@ class RentalUnit < ActiveRecord::Base
     self.save!
   end
   
-  # build new images from array of image urls/
-  # def remote_images=(images)
-  #   unless images.blank?
-  #     existing_remote_photos = self.photos.map{|p| p.image_remote_url}.find_all{|i| i.present?}
-  #     new_photos = images - existing_remote_photos
-  #     unless new_photos.empty?
-  #       self.photos_attributes = new_photos.map{|i| {:image_url => i}}
-  #     end
-  #   end
-  # end
-  
   def remote_images_present?
     @remote_images.present? && @remote_images.is_a?(Array)
   end
@@ -138,5 +122,26 @@ class RentalUnit < ActiveRecord::Base
   
   def price_from
     min_price.present? ? "Price from $#{min_price}" : ''
+  end
+  
+  def full_address
+    [address, address_2, city, state, zip, country].find_all{|a| a.present?}.join(', ')
+  end
+  
+  private
+  def full_address_changed?
+    ['address', 'address_2', 'city', 'state', 'zip', 'country'].any?{|a| self.send("#{a}_changed?")}
+  end
+  
+  # geocode adrress
+  def geocode_address
+    res = GoogleApi.geocoder(full_address)
+    if res
+      self.attributes = res
+      self.geocoding_success = true
+      self.geocoded_at = Time.now
+    else
+      errors.add(:base, "Sorry, we were unable to geocode that address")
+    end
   end
 end
