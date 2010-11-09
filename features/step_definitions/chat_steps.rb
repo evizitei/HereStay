@@ -18,3 +18,25 @@ Then /^I should get a JSON chat back saying "([^"]*)"$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
 
+When /^the owner of booking "([^"]*)" posts the message "([^"]*)"$/ do |booking_id, message|
+  booking = Booking.find(booking_id)
+  owner = User.find_by_fb_user_id(booking.owner_fb_id)
+  BookingMessage.create(:user_fb_id=>owner.fb_user_id,:booking_id=>booking.id,:message=>message)
+end
+
+When /^I wait (\d+) seconds$/ do |seconds|
+  sleep(seconds.to_i)
+end
+
+Given /^There is a booking discussion with id "([^"]*)" where I am the renter$/ do |booking_id|
+  owner = Factory(:user,:fb_user_id=>"98765")
+  unit = Factory(:rental_unit,:user=>owner)
+  booking = Factory(:booking,:owner_fb_id=>owner.fb_user_id,
+                    :rental_unit=>unit,:id=>booking_id,:renter_fb_id => @user.fb_user_id)
+end
+
+Then /^booking (\d+) should have (\d+) messages$/ do |booking_id,count|
+  booking = Booking.find(booking_id)
+  booking.booking_messages.size.should == count.to_i
+end
+
