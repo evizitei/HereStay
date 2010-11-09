@@ -26,12 +26,17 @@ class MessagesController < InheritedResources::Base
   def poll_chat
     @booking = Booking.find(params[:booking])
     @user = User.find_by_fb_user_id(params[:user])
-    chats = @booking.booking_messages.where(["id > ?",params[:last_message]])
-    list = chats.map { |msg| { "message_class" => msg.html_class, 
+    chats = []
+    if params[:last_message].blank?
+      chats = @booking.booking_messages
+    else
+      chats = @booking.booking_messages.where(["id > ?",params[:last_message]])
+    end
+    @list = chats.map { |msg| { "message_class" => msg.html_class, 
                                "sent_at" => msg.created_at.to_formatted_s(:short), 
                                "message" => msg.message, 
                                "user_fb_id" => msg.user_fb_id } }
-    render :json=>list.to_json
+    render :json=>@list.to_json
   end
   
   protected

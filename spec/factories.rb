@@ -6,6 +6,10 @@ Factory.define :booking do |b|
   b.status "INITIATED"
 end
 
+Factory.define :booking_message do |b|
+  
+end
+
 Factory.define :rental_unit do |r|
   r.name "My Place"
   r.description "is beautiful"
@@ -16,4 +20,5 @@ Factory.define :rental_unit do |r|
 end
 
 Factory.define :user do |u|
+  u.fb_user_id "12345"
 end
