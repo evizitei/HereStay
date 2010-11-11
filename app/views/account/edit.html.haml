@@ -1,21 +1,55 @@
 %h2 Edit My Account 
-%p
-  For VRBO users, please enter your credentials to automate the connection between our services.
+
 #user_form.colored-bg{:style => "padding: 10px"}
   = semantic_form_for @user, :url => account_path  do |f|
     = f.inputs do
+      = f.input :use_fb_profile, :label => "Use Facebook profile"
+    
+    #profile{:class => @user.use_fb_profile? && 'hidden'}
+      = f.inputs do
+        = f.input :first_name
+        = f.input :middle_initial
+        = f.input :last_name
+        = f.input :company
+    %br
+    %p
+      For VRBO users, please enter your credentials to automate the connection between our services.
+    
+    = f.inputs do
       = f.input :vrbo_login
       = f.input :vrbo_password
-      - if @user.twitter_name.blank?
-        = link_to 'Add twitter', new_connectors_twitter_path
-      - else
-        %li
+
+    %br
+    = f.inputs do
+      %li
+        - if @user.twitter_name.blank?
+          %label &nbsp;
+          = link_to 'Add twitter', new_connectors_twitter_path
+        - else
           %label My twitter
           %strong=  f.object.twitter_name
           %span
             = link_to('change', new_connectors_twitter_path)
             = link_to('remove', account_path(:user => {:remove_twitter => true}), :method => :put)
+    
     = f.buttons do
       = fb_button do
         = submit_tag "Save"
       = fb_button 'Cancel', account_path
+
+:javascript
+  $(function(){
+    var checkUsingFbProfile = function(){
+      var target = $('#profile');
+      if($('#user_use_fb_profile').is(':checked'))
+        target.slideUp('slow');
+      else
+        target.slideDown('slow');
+    };
+    
+    $('#user_use_fb_profile').click(function(){
+      checkUsingFbProfile();
+    });
+    
+    checkUsingFbProfile();
+  });
