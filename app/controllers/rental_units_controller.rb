@@ -1,4 +1,5 @@
 class RentalUnitsController < ApplicationController
+  before_filter :oauth_obj,  :except => %w(index show share owned_by)
   before_filter :login_required, :except => %w(index show share owned_by)
   respond_to :html
 
