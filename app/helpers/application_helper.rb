@@ -4,7 +4,7 @@ module ApplicationHelper
   end
   
   def fb_connect_async_js
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.development?
       js = <<-JAVASCRIPT
       <script>
         window.fbAsyncInit = function() {
