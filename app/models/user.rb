@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   has_many :rental_units
   has_many :rewards
   has_many :bookings, :through => :rental_units
+  
+  before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
+  
   # find or create user by fb-uid and update his oauth token and session data
   def self.for(oauth_obj)
     if oauth_obj && oauth_obj['uid'].present?
@@ -41,5 +44,18 @@ class User < ActiveRecord::Base
   
   def twitter?
     self.twitter_name? && self.twitter_token? && self.twitter_secret?
+  end
+  
+  private
+  def need_capture_fb_profile?
+    use_fb_profile_changed? && use_fb_profile?
+  end
+  
+  def capture_fb_profile
+    fb_profile = FacebookProxy.new(self.access_token).get_object('me')
+    self.first_name = fb_profile['first_name']
+    self.last_name = fb_profile['last_name']
+    self.middle_initial = nil
+    self.company = nil
   end
 end
