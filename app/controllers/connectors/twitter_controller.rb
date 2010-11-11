@@ -1,5 +1,6 @@
 require 'twitter_wrapper'
 class Connectors::TwitterController < ApplicationController
+  before_filter :oauth_obj
   before_filter :login_required
   before_filter :twitter_wrapper
   
