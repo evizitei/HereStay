@@ -1,7 +1,7 @@
 class FacebookProxy
   def initialize(access_token)
     @access_token = if access_token === :here_stay
-      oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
+      oauth = FacebookProxy.oauth
       oauth.get_app_access_token
     else
       access_token
@@ -10,6 +10,15 @@ class FacebookProxy
   
   def graph
     @graph ||= Koala::Facebook::GraphAPI.new(@access_token)
+  end
+  
+  def self.oauth
+    Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
+  end
+  
+  def self.get_user_info_from_cookie(cookies)
+    oauth = FacebookProxy.oauth
+    oauth.get_user_info_from_cookie(cookies)
   end
   
   def get_object(*args)

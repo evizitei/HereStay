@@ -8,8 +8,7 @@ class ApplicationController < ActionController::Base
 protected
   
   def oauth_obj
-    oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
-    @user = User.for(oauth.get_user_info_from_cookie(cookies))
+    @user = User.for(FacebookProxy.get_user_info_from_cookie(cookies))
   end
   
   def fb_app_name
