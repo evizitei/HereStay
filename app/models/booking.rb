@@ -84,9 +84,7 @@ class Booking < ActiveRecord::Base
   # when the owner confirms or creates a booking
   # TODO: move to background work
   def rented_wall_post
-    oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
-    graph = Koala::Facebook::GraphAPI.new(oauth.get_app_access_token)
-    graph.put_object(Facebook::APP_ID.to_s, "feed",
+    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed",
       :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}",
       :link => rental_unit.fb_url,
       :name => 'view this property',
