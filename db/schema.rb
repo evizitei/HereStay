@@ -160,7 +160,6 @@ ActiveRecord::Schema.define(:version => 20101110160139) do
     t.string   "twitter_secret"
     t.string   "twitter_token"
     t.string   "twitter_name"
-    t.string   "surname"
     t.string   "first_name"
     t.string   "middle_initial"
     t.string   "last_name"

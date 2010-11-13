@@ -18,10 +18,8 @@ gem 'mechanize'
 gem 'addressable'
 gem 'formtastic'
 gem 'dynamic_form'
-gem 'cramp',:git=>'git://github.com/lifo/cramp.git'
 gem 'twitter', '0.9.12'
 gem 'bitly'
-gem 'thin'
 
 group :development,:test,:cucumber do
   gem 'cucumber'
