@@ -13,6 +13,7 @@ class MessagesController < InheritedResources::Base
   
   def post_chat 
     @user = User.find_by_fb_user_id(params[:booking_message][:fb_user_id])
+    @user.pulse!
     @booking = Booking.find(params[:booking_message][:booking_id])
     message= BookingMessage.create!(:user_fb_id=>@user.fb_user_id,:booking_id=>@booking.id,:message=>params[:booking_message][:message])
     list = [message]
@@ -26,6 +27,7 @@ class MessagesController < InheritedResources::Base
   def poll_chat
     @booking = Booking.find(params[:booking])
     @user = User.find_by_fb_user_id(params[:user])
+    @user.pulse!
     chats = []
     if params[:last_message].blank?
       chats = @booking.booking_messages
