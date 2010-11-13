@@ -1,0 +1,51 @@
+=javascript_include_tag "jquery"
+%h2== Discussion on #{@booking.rental_unit.name}
+
+= form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
+  =f.hidden_field :fb_user_id,:value=>@user.fb_user_id
+  =f.hidden_field :booking_id,:value=>@booking.id
+  =f.text_area :message,{:rows=>6,:cols=>55}
+  %br
+  =f.submit "Send Message"
+
+#booking_messages
+  -@booking.booking_messages.by_date.each do |message|
+    .message{:class=>message.html_class}
+      .message_body
+        %i= message.created_at.strftime("%m/%d/%Y")
+        %br
+        %strong=message.message
+      
+:javascript
+
+  $(document).ready(function() {
+    $("#booking_message_message").focus();        
+  });
+
+  function onSubmit() {
+    $.ajax({
+      url: "#{chat_post_url}",
+      type: "POST",
+      dataType: "json",
+      data: $("#chat_form").serialize(),
+      success: appendMessages,
+    });
+    $("#booking_message_message").val("").focus();
+  }
+        
+        function appendMessages(data){
+          $.each(data, function(i, item) {
+            appendMessage(item);
+          });
+          scrollDown();
+        }
+        
+        function appendMessage(item){
+          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "</div>"
+          $("#booking_messages").append(html_message);
+        }
+
+        function scrollDown() {
+          var messages = document.getElementById("messages");
+          messages.scrollTop = messages.scrollHeight;
+        }

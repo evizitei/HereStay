@@ -50,6 +50,11 @@ class BookingsController < ApplicationController
     end
   end
   
+  def mobile_discuss
+    get_booking
+    render :layout=>nil
+  end
+  
   def confirm
   end
   

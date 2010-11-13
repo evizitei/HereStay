@@ -67,6 +67,11 @@ class Booking < ActiveRecord::Base
     self.save!
   end
   
+  def other_user_than(user)
+    fb_id = [self.owner_fb_id,self.renter_fb_id].select{|id| id != user.fb_user_id}.first
+    User.find_by_fb_user_id(fb_id)
+  end
+  
   private
   
   def create_reservation

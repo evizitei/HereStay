@@ -47,6 +47,7 @@ Micasasucasa::Application.routes.draw do
   resources :bookings do
     member do
       get :discuss
+      get :mobile_discuss
       get :confirm
       put :exec_confirm
       post :wall_post

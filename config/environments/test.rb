@@ -31,4 +31,9 @@ Micasasucasa::Application.configure do
   # config.active_record.schema_format = :sql
   
    config.active_support.deprecation = :stderr
+   config.after_initialize do
+     Moonshado::Sms.configure do |config|
+       config.production_environment = false
+     end
+   end
 end

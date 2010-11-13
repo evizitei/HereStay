@@ -28,4 +28,29 @@ Feature: Basic Discussion
 		Then booking 7 should have 1 messages
 		When I wait 5 seconds
 		Then I should see "Stay Any Time" within ".message_body"
+		
+	
+	Scenario: Delivering a message to an online user
+	  Given I am logged in as the user with FB id "13579"
+	    And there is another user with FB id "97531"
+		  And There is a booking discussion with id "7" where I am the renter and "97531" is the owner
+		  And the user "97531" is online
+		When I send a message for booking "7" saying "I want to stay here"
+		Then there should be no SMS messages sent
+	
+	Scenario: Delivering a message to an offline user without a phone
+	  Given I am logged in as the user with FB id "13579"
+	    And there is another user with FB id "97531"
+		  And There is a booking discussion with id "7" where I am the renter and "97531" is the owner
+		  And the user "97531" has been offline for "4" hours
+		When I send a message for booking "7" saying "I want to stay here"
+		Then there should be no SMS messages sent
+	
+	Scenario: Delivering a message to an offline user with a phone
+  	  Given I am logged in as the user with FB id "13579"
+  	    And there is another user with FB id "97531" and phone number "15732395840"
+  		  And There is a booking discussion with id "7" where I am the renter and "97531" is the owner
+  		  And the user "97531" has been offline for "4" hours
+  		When I send a message for booking "7" saying "I want to stay here"
+  		Then there should be an SMS sent to "15732395840" containing "You have a new message in HereStay:"
 

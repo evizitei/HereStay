@@ -51,6 +51,13 @@ class User < ActiveRecord::Base
     update_attributes!(:last_poll_time=>Time.zone.now)
   end
   
+  def deliver_message!(message)
+    target_time = Time.zone.now - 3.minutes
+    if target_time >= self.last_poll_time and self.phone
+      Moonshado::Sms.new(self.phone,message).deliver_sms
+    end
+  end
+  
   private
   def need_capture_fb_profile?
     use_fb_profile_changed? && use_fb_profile?

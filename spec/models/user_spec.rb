@@ -11,4 +11,10 @@ describe User do
     user.pulse!
     user.reload.last_poll_time.should_not == old_time
   end
+  
+  it "has a phone number" do
+    user = Factory(:user)
+    user.update_attributes!(:phone=>"5732395840")
+    user.reload.phone.should == "5732395840"
+  end
 end
