@@ -123,6 +123,9 @@ GEM
     mime-types (1.16)
     mocha (0.9.9)
       rake
+    moonshado-sms (1.1.0)
+      rest-client (= 1.6.0)
+      yajl-ruby (= 0.7.7)
     multi_json (0.0.4)
     nokogiri (1.4.3.1)
     oauth (0.4.4)
@@ -152,6 +155,8 @@ GEM
       thor (~> 0.14.0)
     rake (0.8.7)
     responders (0.6.2)
+    rest-client (1.6.0)
+      mime-types (>= 1.16)
     rsolr (0.12.1)
       builder (>= 2.1.2)
     rspec (2.0.1)
@@ -190,7 +195,7 @@ GEM
     tzinfo (0.3.23)
     will_paginate (3.0.pre2)
     xml-simple (1.0.12)
-    yajl-ruby (0.7.8)
+    yajl-ruby (0.7.7)
 
 PLATFORMS
   ruby
@@ -215,6 +220,7 @@ DEPENDENCIES
   launchy
   mechanize
   mocha
+  moonshado-sms (= 1.1.0)
   nokogiri
   paperclip
   pg
@@ -226,4 +232,4 @@ DEPENDENCIES
   sunspot_rails!
   twitter (= 0.9.12)
   will_paginate (~> 3.0.pre2)
-  yajl-ruby
+  yajl-ruby (= 0.7.7)

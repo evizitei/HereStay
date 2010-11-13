@@ -9,7 +9,7 @@ gem 'koala-rails'
 gem 'paperclip'
 gem "aws-s3"
 gem "nokogiri"
-gem "yajl-ruby"
+gem "yajl-ruby", "0.7.7"
 gem "httparty"
 gem 'sunspot_rails', :git => 'http://github.com/outoftime/sunspot.git'
 gem "will_paginate", "~> 3.0.pre2"
@@ -20,6 +20,7 @@ gem 'formtastic'
 gem 'dynamic_form'
 gem 'twitter', '0.9.12'
 gem 'bitly'
+gem "moonshado-sms", "1.1.0"
 
 group :development,:test,:cucumber do
   gem 'cucumber'
