@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   def initialize(attrs={})
     super({})
     self.redeemed_rewards ||= 0.0
+    self.last_poll_time ||= Time.zone.now
   end
   
   def access_token
@@ -44,6 +45,10 @@ class User < ActiveRecord::Base
   
   def twitter?
     self.twitter_name? && self.twitter_token? && self.twitter_secret?
+  end
+  
+  def pulse!
+    update_attributes!(:last_poll_time=>Time.zone.now)
   end
   
   private
