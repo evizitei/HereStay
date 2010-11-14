@@ -16,6 +16,8 @@ module NavigationHelpers
       '/canvas'
     when /the booking discussion page for booking (\d+)/
       discuss_booking_path($1) 
+    when /the my account page/
+      "/account"
 
     # Add more mappings here.
       #
