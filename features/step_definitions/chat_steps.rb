@@ -57,3 +57,6 @@ Then /^booking (\d+) should have (\d+) messages$/ do |booking_id,count|
   booking.booking_messages.size.should == count.to_i
 end
 
+Then /^I should see (\d+) messages$/ do |count|
+  page.should have_css(".message",:count=>count.to_i)
+end

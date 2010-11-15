@@ -13,11 +13,13 @@ Feature: Basic Discussion
 	@javascript
 	Scenario:  Posting a chat message from the form
 		Given I am logged in as the user with FB id "13579"
-		And There is a booking discussion with id "7" where I am the renter
-		And I am on the booking discussion page for booking 7
-               	When I fill in "booking_message_message" with "I want to stay here"
-                And I press "Send Message"
-                Then I should see "I want to stay here" within ".message_body"
+		  And There is a booking discussion with id "7" where I am the renter
+		  And I am on the booking discussion page for booking 7
+   	When I fill in "booking_message_message" with "I want to stay here"
+      And I press "Send Message"
+    Then I should see "I want to stay here" within ".message_body"
+    When I wait 7 seconds
+    Then I should see 1 messages
 
 	@javascript
 	Scenario: Receiving a new chat message

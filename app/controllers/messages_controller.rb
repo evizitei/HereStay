@@ -22,7 +22,8 @@ class MessagesController < InheritedResources::Base
     list = list.map { |msg| { "user_fb_id" => msg.user_fb_id,
                                "message_class" => msg.html_class, 
                               "sent_at" => msg.created_at.to_formatted_s(:short), 
-                              "message" => msg.message} }
+                              "message" => msg.message,
+                              "id" => msg.id} }
     render :json=> list.to_json
   end
   
@@ -39,7 +40,8 @@ class MessagesController < InheritedResources::Base
     @list = chats.map { |msg| { "message_class" => msg.html_class, 
                                "sent_at" => msg.created_at.to_formatted_s(:short), 
                                "message" => msg.message, 
-                               "user_fb_id" => msg.user_fb_id } }
+                               "user_fb_id" => msg.user_fb_id,
+                               "id" => msg.id } }
     render :json=>@list.to_json
   end
   
