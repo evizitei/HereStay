@@ -52,6 +52,7 @@ class BookingsController < ApplicationController
   
   def mobile_discuss
     get_booking
+    @user = User.find(params[:user_id])
     render :layout=>nil
   end
   
