@@ -52,10 +52,13 @@ class User < ActiveRecord::Base
   end
   
   def deliver_message!(message)
-    target_time = Time.zone.now - 3.minutes
-    if target_time >= self.last_poll_time and self.phone
+    if !self.online? and self.phone
       Moonshado::Sms.new(self.phone,message).deliver_sms
     end
+  end
+  
+  def online?
+     self.last_poll_time > (Time.zone.now - 1.minutes)
   end
   
   private
