@@ -9,6 +9,7 @@
     %fb:name{:uid=>info.user.fb_user_id}
     = fb_button 'All Listings', owned_by_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
+    =(info.user.online? ? "The owner is online!" : "The owner is offline.")
 %tr.spacer
   %td{:colspan=>3}
     %hr
