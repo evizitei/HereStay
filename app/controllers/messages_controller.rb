@@ -17,7 +17,7 @@ class MessagesController < InheritedResources::Base
     @booking = Booking.find(params[:booking_message][:booking_id])
     other = @booking.other_user_than(@user)
     message= BookingMessage.create!(:user_fb_id=>@user.fb_user_id,:booking_id=>@booking.id,:message=>params[:booking_message][:message])
-    other.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(@booking.id,:user_id=>other.id)}")
+    other.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(@booking.id,:user_id=>other.id)}") if other
     list = [message]
     list = list.map { |msg| { "user_fb_id" => msg.user_fb_id,
                                "message_class" => msg.html_class, 
