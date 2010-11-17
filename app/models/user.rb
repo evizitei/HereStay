@@ -64,9 +64,19 @@ class User < ActiveRecord::Base
   end
   
   def available_by_phone?
-    Time.zone.now > self.sms_starting_at and Time.zone.now < self.sms_ending_at
+    return false if self.phone.blank?
+    now = DateTime.now
+    start = DateTime.parse("#{now.strftime("%m/%d/%Y")} #{self.sms_starting_at.strftime("%H:%M")}") 
+    stop = DateTime.parse("#{now.strftime("%m/%d/%Y")} #{self.sms_ending_at.strftime("%H:%M")}")
+    stop = stop + 24.hours if stop < start
+    now > start and now < stop
   end
   
+  def availability_message
+    return "online!" if online?
+    return "available by phone." if available_by_phone?
+    "offline."
+  end
   private
   def need_capture_fb_profile?
     use_fb_profile_changed? && use_fb_profile?
