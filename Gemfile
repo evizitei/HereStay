@@ -34,4 +34,5 @@ group :development,:test,:cucumber do
   gem 'shoulda'
   gem 'mocha'
   gem 'jasmine'
+  gem 'timecop'
 end
