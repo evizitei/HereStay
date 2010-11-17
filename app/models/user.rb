@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   end
   
   def available_by_phone?
-    return false if self.phone.blank?
+    return false if self.phone.blank? or self.sms_starting_at.nil? or self.sms_ending_at.nil?
     now = DateTime.now
     start = DateTime.parse("#{now.strftime("%m/%d/%Y")} #{self.sms_starting_at.strftime("%H:%M")}") 
     stop = DateTime.parse("#{now.strftime("%m/%d/%Y")} #{self.sms_ending_at.strftime("%H:%M")}")
