@@ -60,7 +60,8 @@ class User < ActiveRecord::Base
   end
   
   def online?
-     self.last_poll_time > (Time.zone.now - 1.minutes)
+    return false if self.last_poll_time.nil?
+    self.last_poll_time > (Time.zone.now - 1.minutes)
   end
   
   def available_by_phone?
