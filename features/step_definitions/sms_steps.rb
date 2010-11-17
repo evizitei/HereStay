@@ -25,3 +25,17 @@ Then /^there should be an SMS sent to "([^"]*)" containing "([^"]*)"$/ do |numbe
   messages.size.should == 1
   messages.each{|msg| Moonshado::Sms.sent_messages.delete(msg)}
 end
+
+Then /^I should be available by phone at "([^"]*)"$/ do |time|
+  time = Time.parse(time)
+  Timecop.travel(time)
+  @user.available_by_phone?.should == true
+  Timecop.return
+end
+
+Then /^I should not be available by phone at "([^"]*)"$/ do |time|
+  time = Time.parse(time)
+  Timecop.travel(time)
+  @user.available_by_phone?.should == false
+  Timecop.return
+end

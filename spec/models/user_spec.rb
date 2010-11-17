@@ -7,6 +7,14 @@ describe User do
     built_user.last_poll_time.should_not == nil
   end
   
+  it "defaults the starting contact time to 7 AM" do
+    built_user.sms_starting_at.strftime("%H:%M").should == "07:00"
+  end
+  
+  it "defaults the stop contact time to 9 PM" do
+    built_user.sms_ending_at.strftime("%H:%M").should == "21:00"
+  end
+  
   it "can check in to update last poll time anytime" do
     old_time = 1.week.ago
     user = User.create!(:last_poll_time=>old_time)
@@ -30,5 +38,27 @@ describe User do
     user = built_user
     user.update_attributes!(:last_poll_time=>2.minutes.ago)
     user.should_not be_online
+  end
+  
+  describe "available by phone" do
+    let(:user){ User.new }
+    
+    it "fails if time is earlier than range" do
+      Timecop.travel(Time.parse("04:00 AM"))
+      user.available_by_phone?.should == false
+      Timecop.return
+    end
+    
+    it "fails if time is later than range" do
+      Timecop.travel(Time.parse("11:00 PM"))
+      user.available_by_phone?.should == false
+      Timecop.return
+    end
+    
+    it "succeeds if time is inside range" do
+      Timecop.travel(Time.parse("11:00 AM"))
+      user.available_by_phone?.should == true
+      Timecop.return
+    end
   end
 end

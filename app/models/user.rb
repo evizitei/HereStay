@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
     super({})
     self.redeemed_rewards ||= 0.0
     self.last_poll_time ||= Time.zone.now
+    self.sms_starting_at ||= Time.parse("07:00 AM")
+    self.sms_ending_at ||= Time.parse("09:00 PM")
   end
   
   def access_token
@@ -59,6 +61,10 @@ class User < ActiveRecord::Base
   
   def online?
      self.last_poll_time > (Time.zone.now - 1.minutes)
+  end
+  
+  def available_by_phone?
+    Time.zone.now > self.sms_starting_at and Time.zone.now < self.sms_ending_at
   end
   
   private
