@@ -7,6 +7,8 @@
       .title=link_to unit_row.name,rental_unit_path(unit_row.id)
       .description
         = unit_row.description
+        %br
+        == Owner is #{unit_row.user.availability_message}
   -if @user && unit_row.user == @user
     %br
     .admin_buttons.clearfix
