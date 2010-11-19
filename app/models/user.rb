@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
+  serialize :fb_friend_ids, Array
+  
   has_many :discounts
   has_many :rental_units
   has_many :rewards
   has_many :bookings, :through => :rental_units
+  has_many :messages,:class_name=>"BookingMessage",:foreign_key=>"recipient_id"
   
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   
@@ -13,12 +16,15 @@ class User < ActiveRecord::Base
         user.authorize_signature = oauth_obj["access_token"]
         user.session_expires_at = oauth_obj["expires"]
         user.session_key = oauth_obj["session_key"]
-        user.save(:validate => false)
+        user.save(:validate => false) if user.changed?
       end
       
-      # capture user email from FB profile
-      if user and user.email.blank?
-        Delayed::Job.enqueue(FbEmailFetcher.new(user.fb_user_id))
+      if user 
+        # capture user email from FB profile
+        Delayed::Job.enqueue(FbEmailFetcher.new(user.fb_user_id)) if user.email.blank?
+        
+        # capture facebook friend ids
+        Delayed::Job.enqueue(FbFriendsFetcher.new(user.id)) if user.fb_friend_ids.nil?
       end
       
       user
@@ -54,6 +60,7 @@ class User < ActiveRecord::Base
   end
   
   def deliver_message!(message)
+    message.update_attributes!(:recipient=>self)
     if !self.online? and self.phone
       Moonshado::Sms.new(self.phone,message).deliver_sms
     end
@@ -78,6 +85,17 @@ class User < ActiveRecord::Base
     return "available by phone." if available_by_phone?
     "offline."
   end
+  
+  def get_fb_friend_ids
+    res = FacebookProxy.new(self.access_token).get_connections('me', 'friends', :fields => "id")
+    self.fb_friend_ids = res.map{|r| r["id"].to_i}
+  end
+  
+  def get_fb_friend_ids!
+    get_fb_friend_ids
+    save(:validate => false)
+  end
+  
   private
   def need_capture_fb_profile?
     use_fb_profile_changed? && use_fb_profile?
