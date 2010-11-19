@@ -85,4 +85,22 @@ module ApplicationHelper
     url = url_for(options)
     "http://apps.facebook.com/#{fb_app_name}/?redirect_to=#{Rack::Utils.escape(url)}"
   end
+  
+  def slider_labels(min, max, val1, val2)
+    labels = ''
+    min.upto(max) do |i|
+      selected = (i >= val1.to_i && i <= val2.to_i)
+      labels += "<div class ='l#{i} #{'sel' if selected}'>#{i}</div>"
+    end
+    labels.html_safe
+  end
+  
+  def slider_ratings(val1, val2)
+    labels = ''
+    1.upto(10) do |i|
+      selected = (i >= val1.to_i && i <= val2.to_i)
+      labels += "<div class ='l#{i} #{i%2 == 0 ? 'odd': 'even'} #{'sel' if selected}'></div>"
+    end
+    labels.html_safe
+  end
 end

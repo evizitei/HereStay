@@ -163,3 +163,87 @@
 	width:650px;
 	float:right;
 }
+
+#advanced-search{background: #FFC67D;}
+  #advanced-search .cols{}
+  #advanced-search #more-options{display: none;}
+    #advanced-search .cols .date-range{
+      float: left;
+      padding: 10px;
+      margin: 10px;
+    }
+    #advanced-search .cols .date-range .fields{
+      width: 305px;
+      padding: 10px;
+    }
+    #advanced-search .cols .small-col{
+      float: left;
+      padding: 8px;
+      margin:10px;
+      width: 146px;
+    }
+    #advanced-search .cols .small-col .header, #advanced-search .cols .date-range .header{
+      font-weight: bold;
+      text-align: center;
+    }
+    #advanced-search .cols .small-col .labels{
+      height:16px;
+      padding: 0;
+      margin: 0;
+      width: 120px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    #advanced-search .cols .small-col .labels div{
+      float: left;
+      text-align: center;
+      width: 20px;
+      padding-top: 4px;
+    }
+    #advanced-search .cols .small-col .labels div.sel{color:#5C9CCC;}
+    #advanced-search .cols .small-col.bedrooms .labels div{
+      width: 24px;
+    }
+    #advanced-search .cols .small-col.budget .labels{
+      color:#5C9CCC;
+    }
+    #advanced-search .cols .small-col.ratings .labels{background: url("/images/ratings_bg.png") top left no-repeat;}
+    #advanced-search .ratings .labels div.even, #advanced-search .ratings .labels div.odd{
+      float: left;
+      width: 8px;
+      height: 16px;
+      margin: 0;
+      padding-top:0;
+    }
+    #advanced-search .ratings .labels div.even{
+      background: transparent;
+      margin-left: 4px;
+    }
+    #advanced-search .ratings .labels div.even.sel{
+      background: url("/images/star_off.png") top left no-repeat;
+      margin-left:4px;
+    }    
+    
+    #advanced-search .ratings .labels div.odd{
+      background: transparent;
+      background-image: none;
+      margin-right:4px;
+    }
+    #advanced-search .ratings .labels div.odd.sel{
+      background: url("/images/star_off_two.png") top left no-repeat; 
+      margin-right: 4px;
+    }
+    
+    
+    #advanced-search .cols .small-col .slider-container{
+      padding: 10px;
+    }
+#advanced-search .ui-slider-horizontal{
+  width:120px;
+}
+#advanced-search .ui-slider { position: relative; text-align: left; }
+#advanced-search .ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 16px; height: 17px; cursor: default;}
+#advanced-search .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; display:none;}
+
+#advanced-search .ui-state-default{background: url("/images/slider.png") 3px 0px no-repeat; border: 0;} 
+#advanced-search .ui-state-active{background: url("/images/slider.png") 3px 0px no-repeat;}

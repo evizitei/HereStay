@@ -1,11 +1,13 @@
-#search_box{:style=>"height:30px;width:320px;"}
+#search_box
   =form_tag("/") do
-    #search_icon{:style=>"float:left;width:25px;margin:5px;"}
-      =image_submit_tag("search_icon.jpg")
-    #search_text{:style=>"width:175px;height:30px;float:left;margin:5px;"}
-      =text_field_tag :search
-    %label#search_button.fbButton.f_right{:style=>"width:70px;"}
-      =submit_tag "Search"
+    #simple_search{:style=>"height:30px;width:320px;"}
+      #search_icon{:style=>"float:left;width:25px;margin:5px;"}
+        =image_submit_tag("search_icon.jpg")
+      #search_text{:style=>"width:175px;height:30px;float:left;margin:5px;"}
+        =text_field_tag :search
+      %label#search_button.fbButton.f_right{:style=>"width:70px;"}
+        =submit_tag "Search"
+    = render :partial=> "shared/advanced_serach"
 -if @user.nil?
   %br
   %br

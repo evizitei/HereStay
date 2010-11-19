@@ -1,0 +1,165 @@
+.clearfix
+= link_to 'Advanced search', '', :class => 'show-advanced-search-logic', :style => 'margin-left: 100px;'
+#advanced-search{:class => (params[:advanced] == '1' ? '' : 'hidden')}
+  .cols
+    .date-range
+      .header Select date interval
+      .fields
+        .f_left
+          = label_tag 'search_start_date', 'From:'
+          = date_picker_tag 'search_start_date', params[:search_start_date].blank? ? nil : params[:search_start_date].to_date, :class => 'date_picker'
+        .f_right
+          = label_tag 'search_end_date', 'To:'
+          = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker'
+        .clearfix
+    .small-col.bedrooms
+      .header Bedrooms
+      .slider-container
+        .labels=  slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)
+        .clearfix
+        #range_bedrooms
+    .small-col.budget
+      .header Budget
+      .slider-container
+        .labels
+          $
+          %span.from= params[:range_budget_from]||50
+          \-$
+          %span.to= params[:range_budget_to]||1000
+        #range_budget
+    .clearfix
+  .cols
+    .small-col.adults
+      .header Adults
+      .slider-container
+        .labels=  slider_labels(0, 5, params[:range_adults_from]||0, params[:range_adults_to]||5)
+        .clearfix
+        #range_adults
+    .small-col.kids
+      .header Kids
+      .slider-container
+        .labels=  slider_labels(0, 5, params[:range_kids_from]||0, params[:range_kids_to]||5)
+        .clearfix
+        #range_kids
+    .small-col.bathes
+      .header Bathes
+      .slider-container
+        .labels=  slider_labels(0, 5, params[:range_bathes_from]||0, params[:range_bathes_to]||5)
+        .clearfix
+        #range_bathes
+    .small-col.ratings
+      .header Ratings
+      .slider-container
+        .labels=  slider_ratings(params[:range_ratings_from]||0, params[:range_ratings_to]||10)
+        .clearfix
+        .block
+          #range_ratings
+    .clearfix
+  %label#search_button.fbButton.f_right{:style=>"width:70px;"}
+    =submit_tag "Search"
+  =hidden_field_tag 'advanced', params[:advanced]||0
+  =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
+  =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
+  =hidden_field_tag 'range_budget_from', params[:range_budget_from]||50
+  =hidden_field_tag 'range_budget_to', params[:range_budget_to]||1000
+  =hidden_field_tag 'range_adults_from', params[:range_adults_from]||0
+  =hidden_field_tag 'range_adults_to', params[:range_adults_to]||5
+  =hidden_field_tag 'range_kids_from', params[:range_kids_from]||0
+  =hidden_field_tag 'range_kids_to', params[:range_kids_to]||5
+  =hidden_field_tag 'range_bathes_from', params[:range_bathes_from]||0
+  =hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
+  =hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
+  =hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
+:javascript
+  var search_params = {
+    'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
+    'range_budget': [#{params[:range_budget_from]||1},#{params[:range_budget_to]||5}],
+    'range_adults': [#{params[:range_adults_from]||1},#{params[:range_adults_to]||5}],
+    'range_kids': [#{params[:range_kids_from]||1},#{params[:range_kids_to]||5}],
+    'range_bathes': [#{params[:range_bathes_from]||1},#{params[:range_bathes_to]||5}],
+    'range_ratings': [#{params[:range_ratings_from]||1},#{params[:range_ratings_to]||5}]
+  };
+  $(document).ready(function() {
+    $('.show-advanced-search-logic').live('click', function(){
+      $('#advanced-search').toggle();
+      $(this).toggleClass('on');
+      if(parseInt($('#advanced').val()) == 1){
+        $('#advanced').val(0);
+      }else{
+        $('#advanced').val(1);
+      }
+      return false;
+    })
+    $(".date_picker").datepicker();
+    $("#range_bedrooms").slider({
+      min: 1,
+      max: 5,
+      values: search_params.range_bedrooms,
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        for(i=1;i<6;i++){
+          if(i >= ui.values[0] && i <= ui.values[1]){
+            container.find(".l" + i).addClass('sel');
+          }else{
+            container.find(".l" + i).removeClass('sel');
+          }
+        }
+        $('#range_bedrooms_from').val(ui.values[0]);
+        $('#range_bedrooms_to').val(ui.values[1]);
+      }
+    });
+    $("#range_budget").slider({
+      min: 50,
+      max: 1000,
+      values: [50,1000],
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        container.find('.from').html(ui.values[0]);
+        container.find('.to').html(ui.values[1]);
+        $('#range_budget_from').val(ui.values[0]);
+        $('#range_budget_to').val(ui.values[1]);
+      }
+    });
+    $("#range_adults, #range_kids, #range_bathes").slider({
+      min: 0,
+      max: 5,
+      values: [0,5],
+      range: true,
+      slide: function(ivent,ui){
+        var id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        for(i=0;i<6;i++){
+          if(i >= ui.values[0] && i <= ui.values[1]){
+            container.find(".l" + i).addClass('sel');
+          }else{
+            container.find(".l" + i).removeClass('sel');
+          }
+        }
+        $('#' + id +'_from').val(ui.values[0]);
+        $('#' + id +'_to').val(ui.values[1]);
+      }
+    });
+    $("#range_ratings").slider({
+      min: 0,
+      max: 10,
+      values: [0,10],
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parents('.slider-container');
+        for(i=1;i<11;i++){
+          if(i > ui.values[0] && i <= ui.values[1]){
+            container.find(".l" + i).addClass('sel');
+          }else{
+            container.find(".l" + i).removeClass('sel');
+          }
+        }
+        $('#range_ratings_from').val(ui.values[0]);
+        $('#range_ratings_to').val(ui.values[1]);
+      }
+    });
+  });
