@@ -13,8 +13,15 @@ protected
       @rental_units = search_obj.results
       @paginate_obj = search_obj.hits
     else
-      @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
-      @paginate_obj = @rental_units
+      # Lsit friends' listings first if user logged-in and has FB friends
+      if @user && !@user.fb_friend_ids.blank?
+        search_obj = RentalUnit.friends_first(@user.fb_user_id, @user.fb_friend_ids, params[:page] || 1)
+        @rental_units = search_obj.results
+        @paginate_obj = search_obj.hits
+      else
+        @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+        @paginate_obj = @rental_units
+      end
     end
   end
 end
