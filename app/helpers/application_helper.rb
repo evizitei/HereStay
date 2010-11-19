@@ -99,7 +99,7 @@ module ApplicationHelper
     labels = ''
     1.upto(10) do |i|
       selected = (i >= val1.to_i && i <= val2.to_i)
-      labels += "<div class ='l#{i} #{i%2 == 0 ? 'odd': 'even'} #{'sel' if selected}'></div>"
+      labels += "<div class ='l#{i} #{i%2 == 0 ? 'odd' : 'even'} #{'sel' if selected}'></div>"
     end
     labels.html_safe
   end
