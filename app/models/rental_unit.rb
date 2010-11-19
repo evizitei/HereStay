@@ -33,9 +33,41 @@ class RentalUnit < ActiveRecord::Base
     text    :description
     text    :address
     text    :address_2
+    time  :created_at
     string  :city
     string  :state
     string  :zip
+    long :owner_fb_id do |unit|
+      unit.user.fb_user_id
+    end
+    long :fb_friend_ids, :multiple => true do |unit|
+      unit.user.fb_friend_ids
+    end
+  end
+  
+  # List all listings and order the friends' lisitngs first
+  def self.friends_first(fb_seeker_id, friend_ids, page)
+    friend_ids = [0] if friend_ids.blank?
+    self.search do
+      keywords "*:*" do
+        
+        # Boost listing if it belongs to friend
+        boost(3) do
+          with(:fb_friend_ids, fb_seeker_id)
+        end
+        
+        # Boost the listing if it belongs to friend of friends
+        # but do not boost if the listing belongs to seeker
+        boost(2) do
+          with(:fb_friend_ids).any_of(friend_ids)
+          without(:owner_fb_id, fb_seeker_id)
+        end
+      end
+      
+      order_by(:score, :desc)
+      order_by(:created_at, :desc)
+      paginate :page => page
+    end
   end
   
   def initialize(attrs = {})
