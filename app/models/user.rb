@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :rental_units
   has_many :rewards
   has_many :bookings, :through => :rental_units
+  has_many :messages,:class_name=>"BookingMessage",:foreign_key=>"recipient_id"
   
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   

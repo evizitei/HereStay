@@ -93,4 +93,12 @@ describe User do
       Timecop.return
     end
   end
+  
+  describe "incoming messages" do
+    it "can collect all messages addressed to self" do
+      user = Factory(:user)
+      3.times{ BookingMessage.create!(:recipient=>user)}
+      user.messages.size.should == 3
+    end
+  end
 end
