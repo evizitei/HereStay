@@ -82,11 +82,11 @@
 :javascript
   var search_params = {
     'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
-    'range_budget': [#{params[:range_budget_from]||1},#{params[:range_budget_to]||5}],
-    'range_adults': [#{params[:range_adults_from]||1},#{params[:range_adults_to]||5}],
-    'range_kids': [#{params[:range_kids_from]||1},#{params[:range_kids_to]||5}],
-    'range_bathes': [#{params[:range_bathes_from]||1},#{params[:range_bathes_to]||5}],
-    'range_ratings': [#{params[:range_ratings_from]||1},#{params[:range_ratings_to]||5}]
+    'range_budget': [#{params[:range_budget_from]||50},#{params[:range_budget_to]||1000}],
+    'range_adults': [#{params[:range_adults_from]||0},#{params[:range_adults_to]||5}],
+    'range_kids': [#{params[:range_kids_from]||0},#{params[:range_kids_to]||5}],
+    'range_bathes': [#{params[:range_bathes_from]||0},#{params[:range_bathes_to]||5}],
+    'range_ratings': [#{params[:range_ratings_from]||0},#{params[:range_ratings_to]||10}]
   };
   $(document).ready(function() {
     $('.show-advanced-search-logic').live('click', function(){
