@@ -81,19 +81,19 @@
         %hr
     %tr.dataRow
       %th.label Bedrooms:
-      %td.data= f.text_field :bedrooms
+      %td.data= f.text_field :bedrooms, :size => 4, :maxlength => 3
       %td.rightCol
     %tr.dataRow
       %th.label Bathrooms:
-      %td.data= f.text_field :bathrooms
+      %td.data= f.text_field :bathrooms, :size => 4, :maxlength => 3
       %td.rightCol
     %tr.dataRow
       %th.label Adults:
-      %td.data= f.text_field :adults
+      %td.data= f.text_field :adults, :size => 4, :maxlength => 3
       %td.rightCol
     %tr.dataRow
       %th.label Kids:
-      %td.data= f.text_field :kids
+      %td.data= f.text_field :kids, :size => 4, :maxlength => 3
       %td.rightCol
   %tfoot
     %tr.dataRow

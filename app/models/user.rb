@@ -20,9 +20,8 @@ class User < ActiveRecord::Base
       end
       
       if user 
-        # capture user email from FB profile
-        Delayed::Job.enqueue(FbEmailFetcher.new(user.fb_user_id)) if user.email.blank?
-        
+        # capture user email and location from FB profile
+        Delayed::Job.enqueue(FbUserDataFetcher.new(user.id)) if user.email.blank? || user.need_update_fb_location?
         # capture facebook friend ids
         Delayed::Job.enqueue(FbFriendsFetcher.new(user.id)) if user.fb_friend_ids.nil?
       end
@@ -94,6 +93,29 @@ class User < ActiveRecord::Base
   def get_fb_friend_ids!
     get_fb_friend_ids
     save(:validate => false)
+  end
+  
+  # capture FB data from FB profile and retrieve coordinates with Google API if fb_location is present
+  def capture_fb_profile_data!
+    fb_profile = FacebookProxy.new(self.access_token).get_object('me')
+    self.email = fb_profile['email']
+    if fb_profile['location']
+      self.fb_location = fb_profile['location']['name']
+      self.fb_location_update_at = Time.now
+      if self.fb_location_changed?
+        if res = GoogleApi.geocoder(self.fb_location)
+          self.fb_lat = res[:lat]
+          self.fb_lng = res[:long]
+        end
+      end
+    end
+    save(:validate => false)
+  end
+  
+  # return true if fb_location empty or last attempt to update fb_location was run more than 1 day ago
+  # fb_location_update_at will allow don't update more than once a day
+  def need_update_fb_location?
+    fb_location.blank? && (fb_location_update_at.nil? || fb_location_update_at > 1.day.ago)
   end
   
   private

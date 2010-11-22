@@ -182,32 +182,44 @@ class RentalUnit < ActiveRecord::Base
     end
   end
   
-  def self.advanced_search(params)
+  def self.advanced_search(params, user)
     self.search do
       keywords(params[:search])
       paginate(:page =>(params[:page] || 1), :per_page => 5)
+      
       if params[:advanced] == '1'
         if params[:range_bedrooms_to].to_i > 4
           with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1)
         else  
           with(:bedrooms, params[:range_bedrooms_from]..params[:range_bedrooms_to])
         end
+        
         if params[:range_bathes_to].to_i > 4
           with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1)
         else
           with(:bathrooms, params[:range_bathes_from]..params[:range_bathes_to])
         end
+        
         if params[:range_adults_to].to_i > 4
           with(:adults).greater_than(params[:range_adults_from].to_i - 1)
         else
           with(:adults, params[:range_adults_from]..params[:range_adults_to])
         end
+        
         if params[:range_bedrooms_to].to_i > 4
           with(:kids).greater_than(params[:range_kids_from].to_i - 1)
         else
           with(:kids, params[:range_kids_from]..params[:range_kids_to])
         end
+        
+        # Owner should be a friend or friend of friend
+        if params[:friend_only] && user && user.fb_friend_ids.present?
+          friend_ids = user.fb_friend_ids << user.fb_user_id
+          with(:fb_friend_ids).any_of(friend_ids)
+          without(:owner_fb_id, user.fb_user_id)
+        end
       end
+    
     end
   end
 end
