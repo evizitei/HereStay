@@ -60,7 +60,6 @@ class User < ActiveRecord::Base
   end
   
   def deliver_message!(message)
-    message.update_attributes!(:recipient=>self)
     if !self.online? and self.phone
       Moonshado::Sms.new(self.phone,message).deliver_sms
     end

@@ -1,6 +1,6 @@
 class MessagesController < InheritedResources::Base
-  before_filter :oauth_obj,:except=>[:post_chat,:poll_chat]
-  before_filter :login_required,:except=>[:post_chat,:poll_chat]
+  before_filter :oauth_obj,:except=>[:post_chat,:poll_chat,:check_messages]
+  before_filter :login_required,:except=>[:post_chat,:poll_chat,:check_messages]
   
   defaults :resource_class => BookingMessage, :collection_name => 'booking_messages', :instance_name => 'booking_message'
   respond_to :html
@@ -15,9 +15,12 @@ class MessagesController < InheritedResources::Base
     @user = User.find_by_fb_user_id(params[:booking_message][:fb_user_id])
     @user.pulse!
     @booking = Booking.find(params[:booking_message][:booking_id])
-    other = @booking.other_user_than(@user)
     message= BookingMessage.create!(:user_fb_id=>@user.fb_user_id,:booking_id=>@booking.id,:message=>params[:booking_message][:message])
-    other.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(@booking.id,:user_id=>other.id)}") if other
+    other = @booking.other_user_than(@user)
+    if other
+      message.update_attributes!(:recipient=>other)
+      other.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(@booking.id,:user_id=>other.id)}")
+    end
     list = [message]
     list = list.map { |msg| { "user_fb_id" => msg.user_fb_id,
                                "message_class" => msg.html_class, 
@@ -42,6 +45,22 @@ class MessagesController < InheritedResources::Base
                                "message" => msg.message, 
                                "user_fb_id" => msg.user_fb_id,
                                "id" => msg.id } }
+    render :json=>@list.to_json
+  end
+  
+  def check_messages
+    @user = User.find_by_fb_user_id(params[:user])
+    @user.pulse!
+    chats = []
+    if params[:last_message].blank?
+      chats = @user.booking_messages
+    else
+      chats = @user.booking_messages.where(["id > ?",params[:last_message]])
+    end
+    @list = chats.map { |msg| { "sent_at" => msg.created_at.to_formatted_s(:short), 
+                               "message" => msg.message, 
+                               "id" => msg.id,
+                               "url" => discuss_booking_url(msg.booking) } }
     render :json=>@list.to_json
   end
   
