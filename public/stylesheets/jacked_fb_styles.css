@@ -163,3 +163,97 @@
 	width:650px;
 	float:right;
 }
+
+.show-advanced-search-logic{color:#29447E;padding: 2px 5px; background: #FFF;}
+.show-advanced-search-logic.on{}
+#advanced-search{background: #FFF; border:solid 4px #FFF;}
+#advanced-search .block{display: none; background: #FFC67D;padding-bottom: 5px;}
+#advanced-search.active{background: #FFC67D; border:solid 3px #E5E5E5;}
+#advanced-search.active .block{display:block;}
+  #advanced-search .block{display: none;}
+  #advanced-search .cols{}
+  #advanced-search #more-options{display: none;}
+    #advanced-search .cols .date-range{
+      float: left;
+      padding: 8px;
+      margin: 5px 10px;
+    }
+    #advanced-search .cols .date-range .fields{
+      width: 305px;
+      padding: 5px 10px;
+      padding-top: 20px;
+      color:#5C9CCC;
+    }
+    #advanced-search .cols .date-range input{
+      color:#5C9CCC;
+    }
+    #advanced-search .cols .small-col{
+      float: left;
+      padding: 8px;
+      margin: 5px 10px;
+      width: 146px;
+    }
+    #advanced-search .cols .small-col .header, #advanced-search .cols .date-range .header{
+      font-weight: bold;
+      text-align: center;
+    }
+    #advanced-search .cols .small-col .labels{
+      height:16px;
+      padding: 0;
+      margin: 0;
+      width: 120px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    #advanced-search .cols .small-col .labels div{
+      float: left;
+      text-align: center;
+      width: 20px;
+      padding-top: 4px;
+    }
+    #advanced-search .cols .small-col .labels div.sel{color:#5C9CCC;}
+    #advanced-search .cols .small-col.bedrooms .labels div{
+      width: 24px;
+    }
+    #advanced-search .cols .small-col.budget .labels{
+      color:#5C9CCC;
+    }
+    #advanced-search .cols .small-col.ratings .labels{background: url("/images/ratings_bg.png") top left no-repeat;}
+    #advanced-search .ratings .labels div.even, #advanced-search .ratings .labels div.odd{
+      float: left;
+      width: 8px;
+      height: 16px;
+      margin: 0;
+      padding-top:0;
+    }
+    #advanced-search .ratings .labels div.even{
+      background: transparent;
+      background-image: none;
+      margin-left: 4px;
+    }
+    #advanced-search .ratings .labels div.even.sel{
+      background: url("/images/star_off.png") top left no-repeat;
+    }    
+    
+    #advanced-search .ratings .labels div.odd{
+      background: transparent;
+      background-image: none;
+      margin-right:4px;
+    }
+    #advanced-search .ratings .labels div.sel.odd{
+      background: url("/images/star_off_two.png") no-repeat; 
+    }
+    
+    
+    #advanced-search .cols .small-col .slider-container{
+      padding: 10px;
+    }
+    #advanced-search .ui-slider-horizontal{
+      width:120px;
+    }
+    #advanced-search .ui-slider { position: relative; text-align: left; }
+    #advanced-search .ui-slider .ui-slider-handle { position: absolute; z-index: 0; width: 16px; height: 17px; cursor: default;}
+    .ui-slider .ui-slider-range { position: absolute; z-index: 0.5; font-size: .7em; display: block; border: 0; background-position: 0 0; display:none;}
+    #advanced-search .ui-slider .ui-slider-range {z-index: 0; }
+    #advanced-search .ui-state-default{background: url("/images/slider.png") 3px 0px no-repeat; border: 0;} 
+    #advanced-search .ui-state-active{background: url("/images/slider.png") 3px 0px no-repeat;}
