@@ -102,7 +102,8 @@ module ApplicationHelper
       labels += "<div class ='l#{i} #{i%2 == 0 ? 'odd' : 'even'} #{'sel' if selected}'></div>"
     end
     labels.html_safe
-
+  end
+  
   def belongs_to_friend_icon user, rental_unit
     if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
       if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)
