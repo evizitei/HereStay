@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101118102207) do
+ActiveRecord::Schema.define(:version => 20101122132749) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -104,6 +104,10 @@ ActiveRecord::Schema.define(:version => 20101118102207) do
     t.string   "vrbo_id"
     t.integer  "user_id"
     t.string   "country"
+    t.integer  "bedrooms"
+    t.integer  "bathrooms"
+    t.integer  "adults"
+    t.integer  "kids"
   end
 
   add_index "rental_units", ["fb_user_id"], :name => "index_rental_units_on_fb_user_id"

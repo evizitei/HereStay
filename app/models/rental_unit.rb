@@ -21,6 +21,7 @@ class RentalUnit < ActiveRecord::Base
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
   # geocoding address and validate
   validate :geocode_address, :if => :full_address_changed?
+  validates :bedrooms, :bathrooms, :adults, :kids, :numericality => true, :allow_blank => true
   
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
@@ -37,6 +38,10 @@ class RentalUnit < ActiveRecord::Base
     string  :city
     string  :state
     string  :zip
+    integer :bedrooms
+    integer :bathrooms
+    integer :adults
+    integer :kids
     long :owner_fb_id do |unit|
       unit.user.fb_user_id
     end
@@ -174,6 +179,35 @@ class RentalUnit < ActiveRecord::Base
       self.geocoded_at = Time.now
     else
       errors.add(:base, "Sorry, we were unable to geocode that address")
+    end
+  end
+  
+  def self.advanced_search(params)
+    self.search do
+      keywords(params[:search])
+      paginate(:page =>(params[:page] || 1), :per_page => 5)
+      if params[:advanced] == '1'
+        if params[:range_bedrooms_to].to_i > 4
+          with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1)
+        else  
+          with(:bedrooms, params[:range_bedrooms_from]..params[:range_bedrooms_to])
+        end
+        if params[:range_bathes_to].to_i > 4
+          with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1)
+        else
+          with(:bathrooms, params[:range_bathes_from]..params[:range_bathes_to])
+        end
+        if params[:range_adults_to].to_i > 4
+          with(:adults).greater_than(params[:range_adults_from].to_i - 1)
+        else
+          with(:adults, params[:range_adults_from]..params[:range_adults_to])
+        end
+        if params[:range_bedrooms_to].to_i > 4
+          with(:kids).greater_than(params[:range_kids_from].to_i - 1)
+        else
+          with(:kids, params[:range_kids_from]..params[:range_kids_to])
+        end
+      end
     end
   end
 end

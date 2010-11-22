@@ -76,6 +76,25 @@
         = p.hidden_field :primary, :value => true
         %td.data= p.file_field :picture
         %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Bedrooms:
+      %td.data= f.text_field :bedrooms
+      %td.rightCol
+    %tr.dataRow
+      %th.label Bathrooms:
+      %td.data= f.text_field :bathrooms
+      %td.rightCol
+    %tr.dataRow
+      %th.label Adults:
+      %td.data= f.text_field :adults
+      %td.rightCol
+    %tr.dataRow
+      %th.label Kids:
+      %td.data= f.text_field :kids
+      %td.rightCol
   %tfoot
     %tr.dataRow
       %th.label
