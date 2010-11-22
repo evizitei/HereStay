@@ -4,7 +4,9 @@
       -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
         =image_tag(unit_row.primary_photo.picture.url(:thumb))
     .unit_description
-      .title=link_to unit_row.name,rental_unit_path(unit_row.id)
+      %div{:style => 'float:right'}= belongs_to_friend_icon @user, unit_row
+      .title{:style => 'overflow: hidden'}=link_to unit_row.name,rental_unit_path(unit_row.id)
+      .clearfix
       .description
         = unit_row.description
         %br
@@ -19,3 +21,4 @@
       = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
 
   =render(:partial=>"rental_units/share_unit",:object=>unit_row)
+  .clearfix
