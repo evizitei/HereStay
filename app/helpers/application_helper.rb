@@ -85,4 +85,14 @@ module ApplicationHelper
     url = url_for(options)
     "http://apps.facebook.com/#{fb_app_name}/?redirect_to=#{Rack::Utils.escape(url)}"
   end
+  
+  def belongs_to_friend_icon user, rental_unit
+    if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
+      if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)
+        image_tag('icon_friend.png', :title => 'The listing belongs to your friend.')
+      elsif !rental_unit.is_owner?(user) && !(user.fb_friend_ids & rental_unit.user.fb_friend_ids).blank?
+        image_tag('icon_friend_of_friend.png', :title => 'The listing belongs to the friend of your friend.')
+      end
+    end
+  end
 end
