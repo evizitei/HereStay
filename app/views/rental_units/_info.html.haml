@@ -65,6 +65,27 @@
           %td== $#{info.weekly_mid_price}
           %td== $#{info.weekly_low_price}
   %td.rightCol
+- if info.bedrooms?
+  %tr.data_row
+    %th.label Bedrooms
+    %td.data= info.bedrooms
+    %td.rightCol
+- if info.bathrooms?
+  %tr.data_row
+    %th.label Bathrooms
+    %td.data= info.bathrooms
+    %td.rightCol
+- if info.adults?
+  %tr.data_row
+    %th.label Adults
+    %td.data= info.adults
+    %td.rightCol
+- if info.kids?
+  %tr.data_row
+    %th.label Kids
+    %td.data= info.kids
+    %td.rightCol
+
 %style
   :sass
     td, th
