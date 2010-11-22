@@ -189,25 +189,25 @@ class RentalUnit < ActiveRecord::Base
       
       if params[:advanced] == '1'
         if params[:range_bedrooms_to].to_i > 4
-          with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1)
+          with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1) unless params[:range_bedrooms_from].to_i == 1
         else  
           with(:bedrooms, params[:range_bedrooms_from].to_i..params[:range_bedrooms_to].to_i)
         end
         
         if params[:range_bathes_to].to_i > 4
-          with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1)
+          with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1) unless params[:range_bathes_from].to_i == 0
         else
           with(:bathrooms, params[:range_bathes_from].to_i..params[:range_bathes_to].to_i)
         end
         
         if params[:range_adults_to].to_i > 4
-          with(:adults).greater_than(params[:range_adults_from].to_i - 1)
+          with(:adults).greater_than(params[:range_adults_from].to_i - 1) unless params[:range_adults_from].to_i == 0
         else
           with(:adults, params[:range_adults_from].to_i..params[:range_adults_to].to_i)
         end
         
         if params[:range_kids_to].to_i > 4
-          with(:kids).greater_than(params[:range_kids_from].to_i - 1)
+          with(:kids).greater_than(params[:range_kids_from].to_i - 1) unless params[:range_kids_from].to_i == 0
         else
           with(:kids, params[:range_kids_from].to_i..params[:range_kids_to].to_i)
         end
