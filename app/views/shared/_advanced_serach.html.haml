@@ -1,6 +1,6 @@
 .clearfix
-= link_to 'Advanced', '', :class => "show-advanced-search-logic #{params[:advanced] == '1' ? 'on' : ''}", :style => 'margin-left: 245px;'
-#advanced-search{:class => (params[:advanced] == '1' ? 'active' : '')}
+= link_to 'Advanced', '', :class => "show-advanced-search-logic #{params[:advanced] == '1' && 'on'}", :style => 'margin-left: 245px;'
+#advanced-search{:class => params[:advanced] == '1' && 'active'}
   
   .block
     .cols
@@ -56,9 +56,17 @@
           .clearfix
           #range_ratings
       .clearfix
+    .cols
+      .small-col
+        .header
+          %label
+            = check_box_tag 'friend_only', 1, params[:friend_only] == '1'
+            Friends' listings only
+    .clearfix
     %div{:style => 'text-align: center;'}
       .fbButton{:style=>"width:70px;"}=submit_tag "Search"
       .clearfix
+    
     =hidden_field_tag 'advanced', params[:advanced]||0
     =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
     =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
@@ -72,6 +80,7 @@
     =hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
     =hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
     =hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
+
 :javascript
   var search_params = {
     'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
