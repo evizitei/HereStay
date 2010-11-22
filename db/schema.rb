@@ -169,12 +169,16 @@ ActiveRecord::Schema.define(:version => 20101122132749) do
     t.string   "middle_initial"
     t.string   "last_name"
     t.string   "company"
-    t.boolean  "use_fb_profile",      :default => false
+    t.boolean  "use_fb_profile",        :default => false
     t.datetime "last_poll_time"
     t.string   "phone"
     t.time     "sms_starting_at"
     t.time     "sms_ending_at"
     t.text     "fb_friend_ids"
+    t.string   "fb_location"
+    t.datetime "fb_location_update_at"
+    t.string   "fb_lng"
+    t.string   "fb_lat"
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"

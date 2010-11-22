@@ -8,8 +8,11 @@
       %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
     = stylesheet_link_tag "formtastic.css", "formtastic_changes.css", "jacked_fb_styles"
     %link{:type=>"text/css",:href=>"/jquery-ui/css/redmond/jquery-ui-1.8.2.custom.css",:rel=>"stylesheet"}
+    %link{:type=>"text/css",:href=>"/jquery-ui/css/redmond/jquery-ui-1.8.2.custom.css",:rel=>"stylesheet"}
+    %link{:type=>"text/css",:href=>"/fancybox/jquery.fancybox-1.3.4.css",:rel=>"stylesheet" }
     = javascript_include_tag "jquery", "rails"
     %script{:type=>"text/javascript",:src=>"/jquery-ui/js/jquery-ui-1.8.2.custom.min.js"}
+    %script{:type=>"text/javascript",:src=>"/fancybox/jquery.fancybox-1.3.4.pack.js"}
     = csrf_meta_tag
   %body
     -if Rails.env.production?
@@ -20,7 +23,37 @@
           setTimeout(function(){document.body.innerHTML='';},1);
           window.self.onload=function(evt){document.body.innerHTML='';};
         }
-    
+    -if @user
+      :javascript
+        var user_data = {
+            "user" : "#{@user.fb_user_id}",
+            "last_message" : "#{@user.messages.by_date.last.try(:id)}"};
+            
+        function newMessages(data){
+          var messages = "";
+          $.each(data, function(i, item) {
+            messages = messages + "<p>" + item.message +"<a href='"+ item.url +"'>Go To Discussion</a></p>"
+            user_data["last_message"] = item.id;
+          });
+          
+          $.fancybox(('<h2>New Messages!</h2>' + messages),{
+                'autoDimensions'	: true,
+          			'width'         		: 'auto','height'        		: 'auto',
+          			'transitionIn'		: 'swing','transitionOut'		: 'swing'
+          });
+        }
+        
+        $(document).ready(function() {        
+          setInterval(function() {
+            $.ajax({
+              url: "#{chat_check_url}",
+              type: "GET",
+                    data: user_data,
+                    dataType: "json",
+                    success: newMessages,
+            })
+          }, 5000);
+        });
     = link_to image_tag("herestay.png", :border => 0), root_path
     %br
     #fb-root
