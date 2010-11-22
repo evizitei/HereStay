@@ -90,7 +90,7 @@ module ApplicationHelper
     labels = ''
     min.upto(max) do |i|
       selected = (i >= val1.to_i && i <= val2.to_i)
-      labels += "<div class ='l#{i} #{'sel' if selected}'>#{i}</div>"
+      labels += "<div class ='l#{i} #{'sel' if selected}'>#{i}#{'+' if i >= 5}</div>"
     end
     labels.html_safe
   end

@@ -1,7 +1,5 @@
 .clearfix
-= link_to 'Advanced', '', :class => "show-advanced-search-logic #{params[:advanced] == '1' && 'on'}", :style => 'margin-left: 245px;'
-#advanced-search{:class => params[:advanced] == '1' && 'active'}
-  
+#advanced-search{:class => params[:advanced] == '1' && 'active'} 
   .block
     .cols
       .date-range
@@ -135,29 +133,31 @@
         $('#range_budget_to').val(ui.values[1]);
       }
     });
-    $("#range_adults, #range_kids, #range_bathes").slider({
-      min: 0,
-      max: 5,
-      values: [0,5],
-      range: true,
-      slide: function(ivent,ui){
-        var id = $(this).attr('id');
-        var container = $(this).parent('.slider-container');
-        for(i=0;i<6;i++){
-          if(i >= ui.values[0] && i <= ui.values[1]){
-            container.find(".l" + i).addClass('sel');
-          }else{
-            container.find(".l" + i).removeClass('sel');
+    $("#range_adults, #range_kids, #range_bathes").map(function(){
+      var id = $(this).attr('id');
+      $("#" + id).slider({
+        min: 0,
+        max: 5,
+        values: search_params[id],
+        range: true,
+        slide: function(ivent,ui){          
+          var container = $(this).parent('.slider-container');
+          for(i=0;i<6;i++){
+            if(i >= ui.values[0] && i <= ui.values[1]){
+              container.find(".l" + i).addClass('sel');
+            }else{
+              container.find(".l" + i).removeClass('sel');
+            }
           }
+          $('#' + id +'_from').val(ui.values[0]);
+          $('#' + id +'_to').val(ui.values[1]);
         }
-        $('#' + id +'_from').val(ui.values[0]);
-        $('#' + id +'_to').val(ui.values[1]);
-      }
+      });
     });
     $("#range_ratings").slider({
       min: 0,
       max: 10,
-      values: [0,10],
+      values: search_params.range_ratings,
       range: true,
       slide: function(ivent,ui){
         id = $(this).attr('id');

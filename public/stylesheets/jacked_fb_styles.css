@@ -165,7 +165,7 @@
 }
 
 .show-advanced-search-logic{color:#29447E;padding: 2px 5px; background: #FFF;}
-.show-advanced-search-logic.on{background: #E5E5E5;}
+.show-advanced-search-logic.on{}
 #advanced-search{background: #FFF; border:solid 4px #FFF;}
 #advanced-search .block{display: none; background: #FFC67D;padding-bottom: 5px;}
 #advanced-search.active{background: #FFC67D; border:solid 3px #E5E5E5;}
