@@ -191,25 +191,25 @@ class RentalUnit < ActiveRecord::Base
         if params[:range_bedrooms_to].to_i > 4
           with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1)
         else  
-          with(:bedrooms, params[:range_bedrooms_from]..params[:range_bedrooms_to])
+          with(:bedrooms, params[:range_bedrooms_from].to_i..params[:range_bedrooms_to].to_i)
         end
         
         if params[:range_bathes_to].to_i > 4
           with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1)
         else
-          with(:bathrooms, params[:range_bathes_from]..params[:range_bathes_to])
+          with(:bathrooms, params[:range_bathes_from].to_i..params[:range_bathes_to].to_i)
         end
         
         if params[:range_adults_to].to_i > 4
           with(:adults).greater_than(params[:range_adults_from].to_i - 1)
         else
-          with(:adults, params[:range_adults_from]..params[:range_adults_to])
+          with(:adults, params[:range_adults_from].to_i..params[:range_adults_to].to_i)
         end
         
-        if params[:range_bedrooms_to].to_i > 4
+        if params[:range_kids_to].to_i > 4
           with(:kids).greater_than(params[:range_kids_from].to_i - 1)
         else
-          with(:kids, params[:range_kids_from]..params[:range_kids_to])
+          with(:kids, params[:range_kids_from].to_i..params[:range_kids_to].to_i)
         end
         
         # Owner should be a friend or friend of friend
