@@ -219,8 +219,8 @@ class RentalUnit < ActiveRecord::Base
         end
         
         if params[:range_budget_from].to_i > RentalUnit.min_price || params[:range_budget_to].to_i < RentalUnit.max_price
-          with(:search_min_price).greater_than(params[:range_budget_from].to_f)
-          with(:search_max_price).less_than(params[:range_budget_to].to_f)
+          with(:search_min_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
+          with(:search_max_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
         end
         
         # Owner should be a friend or friend of friend
