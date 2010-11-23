@@ -6,6 +6,7 @@ Micasasucasa::Application.routes.draw do
 
   match "/chat_poll"=>"messages#poll_chat"
   match "/chat_post"=>"messages#post_chat"
+  match "/chat_check"=>"messages#check_messages"
 
   match "/canvas"=>"canvas#index"
   match "/canvas/"=>"canvas#index"

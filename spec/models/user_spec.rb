@@ -101,13 +101,4 @@ describe User do
       user.messages.size.should == 3
     end
   end
-  
-  describe "delivering message" do
-    it "assigns the message to the user" do
-      user = Factory(:user)
-      message = Factory(:booking_message)
-      user.deliver_message!(message)
-      message.reload.recipient.should == user
-    end
-  end
 end

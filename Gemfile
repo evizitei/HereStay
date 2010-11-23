@@ -33,6 +33,5 @@ group :development,:test,:cucumber do
   gem 'launchy'
   gem 'shoulda'
   gem 'mocha'
-  gem 'jasmine'
   gem 'timecop'
 end
