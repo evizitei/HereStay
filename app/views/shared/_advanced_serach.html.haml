@@ -23,9 +23,9 @@
         .slider-container
           .labels
             $
-            %span.from>= params[:range_budget_from]||50
+            %span.from>= params[:range_budget_from]||RentalUnit.min_price
             \ - $
-            %span.to>= params[:range_budget_to]||1000
+            %span.to>= params[:range_budget_to]||RentalUnit.max_price
           #range_budget
       .clearfix
     .cols
@@ -68,8 +68,8 @@
     =hidden_field_tag 'advanced', params[:advanced]||0
     =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
     =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
-    =hidden_field_tag 'range_budget_from', params[:range_budget_from]||50
-    =hidden_field_tag 'range_budget_to', params[:range_budget_to]||1000
+    =hidden_field_tag 'range_budget_from', params[:range_budget_from]||RentalUnit.min_price
+    =hidden_field_tag 'range_budget_to', params[:range_budget_to]||RentalUnit.max_price
     =hidden_field_tag 'range_adults_from', params[:range_adults_from]||0
     =hidden_field_tag 'range_adults_to', params[:range_adults_to]||5
     =hidden_field_tag 'range_kids_from', params[:range_kids_from]||0
@@ -82,7 +82,7 @@
 :javascript
   var search_params = {
     'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
-    'range_budget': [#{params[:range_budget_from]||50},#{params[:range_budget_to]||1000}],
+    'range_budget': [#{params[:range_budget_from]||RentalUnit.min_price},#{params[:range_budget_to]||RentalUnit.max_price}],
     'range_adults': [#{params[:range_adults_from]||0},#{params[:range_adults_to]||5}],
     'range_kids': [#{params[:range_kids_from]||0},#{params[:range_kids_to]||5}],
     'range_bathes': [#{params[:range_bathes_from]||0},#{params[:range_bathes_to]||5}],
@@ -120,9 +120,9 @@
       }
     });
     $("#range_budget").slider({
-      min: 50,
-      max: 1000,
-      values: [50,1000],
+      min: #{RentalUnit.min_price},
+      max: #{RentalUnit.max_price},
+      values: search_params.range_budget,
       range: true,
       slide: function(ivent,ui){
         id = $(this).attr('id');

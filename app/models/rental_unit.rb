@@ -48,6 +48,12 @@ class RentalUnit < ActiveRecord::Base
     long :fb_friend_ids, :multiple => true do |unit|
       unit.user.fb_friend_ids
     end
+    integer :search_min_price do |unit|
+      (unit.weekly_low_price.to_f/7).round unless unit.weekly_low_price.blank?
+    end
+    integer :search_max_price do |unit|
+      (unit.weekly_high_price.to_f/7).round unless unit.weekly_high_price.blank?
+    end
   end
   
   # List all listings and order the friends' lisitngs first
@@ -212,6 +218,11 @@ class RentalUnit < ActiveRecord::Base
           with(:kids, params[:range_kids_from].to_i..params[:range_kids_to].to_i)
         end
         
+        if params[:range_budget_from].to_i > RentalUnit.min_price || params[:range_budget_to].to_i < RentalUnit.max_price
+          with(:search_min_price).greater_than(params[:range_budget_from].to_f)
+          with(:search_max_price).less_than(params[:range_budget_to].to_f)
+        end
+        
         # Owner should be a friend or friend of friend
         if params[:friend_only] && user && user.fb_friend_ids.present?
           friend_ids = user.fb_friend_ids << user.fb_user_id
@@ -221,5 +232,15 @@ class RentalUnit < ActiveRecord::Base
       end
     
     end
+  end
+  
+  def self.min_price
+    p = RentalUnit.minimum(:weekly_low_price)
+    (p/7).round unless p.nil?
+  end
+  
+  def self.max_price
+    p = RentalUnit.maximum(:weekly_high_price)
+    (p.to_f/7).round unless p.nil?
   end
 end
