@@ -1,0 +1,25 @@
+#relation_content
+  .wrapper
+    .user_wrapper
+      %h2 You
+      %fb:profile-pic{:size => "small", :uid => @user.fb_user_id}
+      %br
+      %fb:name{:uid => @user.fb_user_id}
+    - if @friend or @mutual_friend
+      .arrow &nbsp;
+      - if  @mutual_friend
+        .user_wrapper
+          %h2 Your Friend
+          %fb:profile-pic{:size => "small", :uid => @mutual_friend}
+          %br
+          %fb:name{:uid => @mutual_friend}
+        .arrow  &nbsp;
+    - else
+      .no_relation  &nbsp;
+    .user_wrapper
+      %h2 Listing Owner
+      %fb:profile-pic{:size => "small", :uid => @owner.fb_user_id}
+      %br
+      %fb:name{:uid => @owner.fb_user_id}
+    .clearfix
+= fb_connect_async_js

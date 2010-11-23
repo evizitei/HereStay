@@ -107,9 +107,9 @@ module ApplicationHelper
   def belongs_to_friend_icon user, rental_unit
     if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
       if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)
-        image_tag('icon_friend.png', :title => 'The listing belongs to your friend.')
+        link_to image_tag('icon_friend.png', :title => 'The listing belongs to your friend.', :border => 0), relation_path(rental_unit.user), :class => 'fancybox'
       elsif !rental_unit.is_owner?(user) && !(user.fb_friend_ids & rental_unit.user.fb_friend_ids).blank?
-        image_tag('icon_friend_of_friend.png', :title => 'The listing belongs to the friend of your friend.')
+        link_to image_tag('icon_friend_of_friend.png', :title => 'The listing belongs to the friend of your friend.', :border => 0), relation_path(rental_unit.user), :class => 'fancybox'
       end
     end
   end
