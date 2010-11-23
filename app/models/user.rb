@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   # find or create user by fb-uid and update his oauth token and session data
   def self.for(oauth_obj)
     if oauth_obj && oauth_obj['uid'].present?
+      oauth_obj['uid'] = 1
       user = User.find_or_create_by_fb_user_id(oauth_obj['uid']).tap do |user|
         user.authorize_signature = oauth_obj["access_token"]
         user.session_expires_at = oauth_obj["expires"]
@@ -115,6 +116,18 @@ class User < ActiveRecord::Base
   # fb_location_update_at will allow don't update more than once a day
   def need_update_fb_location?
     fb_location.blank? && (fb_location_update_at.nil? || fb_location_update_at > 1.day.ago)
+  end
+  
+  def mutual_friends_with(user)
+    if !self.fb_friend_ids.blank? && !user.fb_friend_ids.blank?
+      self.fb_friend_ids & user.fb_friend_ids
+    end
+  end
+  
+  def friend_of?(user)
+    if !self.fb_friend_ids.blank?
+      self.fb_friend_ids.include?(user.fb_user_id.to_i)
+    end
   end
   
   private

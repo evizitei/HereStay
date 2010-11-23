@@ -58,7 +58,7 @@ Micasasucasa::Application.routes.draw do
   end
   
   resource :account, :controller => :account, :only => [:edit, :update, :show]
-  
+  resources :relations, :only => [:show]
   namespace "connectors" do
     resource :twitter, :controller => :twitter do
       get :callback
