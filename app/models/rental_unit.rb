@@ -49,10 +49,10 @@ class RentalUnit < ActiveRecord::Base
       unit.user.fb_friend_ids
     end
     integer :search_min_price do |unit|
-      (unit.weekly_low_price.to_f/7).round unless unit.weekly_low_price.blank?
+      (unit.weekly_low_price.to_f/7).floor unless unit.weekly_low_price.blank?
     end
     integer :search_max_price do |unit|
-      (unit.weekly_high_price.to_f/7).round unless unit.weekly_high_price.blank?
+      (unit.nightly_high_price.to_f).ceil unless unit.weekly_high_price.blank?
     end
     float :lat do |unit|
       unit.lat.to_f unless unit.lat.blank?
@@ -226,8 +226,8 @@ class RentalUnit < ActiveRecord::Base
         end
         
         if params[:range_budget_from].to_i > RentalUnit.min_price || params[:range_budget_to].to_i < RentalUnit.max_price
-          with(:search_min_price).greater_than(params[:range_budget_from].to_f)
-          with(:search_max_price).less_than(params[:range_budget_to].to_f)
+          with(:search_min_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
+          with(:search_max_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
         end
         
         unless params[:location_lat].blank? && params[:location_lng].blank?
@@ -248,12 +248,12 @@ class RentalUnit < ActiveRecord::Base
   #TODO make for min/max methods
   def self.min_price
     p = RentalUnit.minimum(:weekly_low_price)
-    (p/7).round unless p.nil?
+    (p/7).floor unless p.nil?
   end
   
   def self.max_price
-    p = RentalUnit.maximum(:weekly_high_price)
-    (p.to_f/7).round unless p.nil?
+    p = RentalUnit.maximum(:nightly_high_price)
+    (p.to_f).ceil unless p.nil?
   end
 
   def lng
