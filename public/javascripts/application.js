@@ -1,11 +1,12 @@
 $(document).ready(function() {
-	$("a.fancybox").fancybox({
-		'transitionIn'	:	'elastic',
-		'transitionOut'	:	'elastic',
-		'speedIn'		:	600, 
-		'speedOut'		:	200, 
-		'overlayShow'	:	false,
-	  'ajax': { dataType: "script" }
-	});
-	
+  $('a.clueTip').cluetip({
+    showTitle: false,
+    width: 580,
+    height: 'auto',
+    sticky: true,
+    activation: 'click',
+    fx: { open: 'slideDown' },
+    ajaxCache: true,
+    'ajaxSettings': {dataType: 'script'}
+  });
 });

@@ -6,7 +6,6 @@ module ApplicationHelper
   def fb_connect_async_js
     if Rails.env.production? || Rails.env.development?
       js = <<-JAVASCRIPT
-      <script>
         window.fbAsyncInit = function() {
           FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
           FB.Canvas.setAutoResize();
@@ -16,9 +15,8 @@ module ApplicationHelper
           e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
           document.getElementById('fb-root').appendChild(e);
         }());
-      </script>
       JAVASCRIPT
-      js.html_safe
+      javascript_tag(js).html_safe
     else
       ""
     end
@@ -112,9 +110,9 @@ module ApplicationHelper
   def belongs_to_friend_icon user, rental_unit
     if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
       if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)
-        link_to image_tag('icon_friend.png', :title => 'The listing belongs to your friend.', :border => 0), relation_path(rental_unit.user), :class => 'fancybox'
+        link_to image_tag('icon_friend.png', :title => 'The listing belongs to your friend.', :border => 0), relation_path(rental_unit.user), :class => 'clueTip', :rel => relation_path(rental_unit.user)
       elsif !rental_unit.is_owner?(user) && !(user.fb_friend_ids & rental_unit.user.fb_friend_ids).blank?
-        link_to image_tag('icon_friend_of_friend.png', :title => 'The listing belongs to the friend of your friend.', :border => 0), relation_path(rental_unit.user), :class => 'fancybox'
+        link_to image_tag('icon_friend_of_friend.png', :title => 'The listing belongs to the friend of your friend.', :border => 0), relation_path(rental_unit.user), :class => 'clueTip', :rel => relation_path(rental_unit.user)
       end
     end
   end

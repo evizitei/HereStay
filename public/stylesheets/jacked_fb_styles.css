@@ -270,11 +270,11 @@
     #advanced-search .ui-slider .ui-slider-range {z-index: 0; }
     #advanced-search .ui-state-default{background: url("/images/slider.png") 3px 0px no-repeat; border: 0;} 
     #advanced-search .ui-state-active{background: url("/images/slider.png") 3px 0px no-repeat;}
+
 #relation_content{
-/*  border:1px solid #000000;*/
   margin-left:auto;
   margin-right:auto;
-  width:550px;
+  width:580px;
   font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
 }
 #relation_content .wrapper{
@@ -288,8 +288,13 @@
     float:left;
     padding: 10px;
     text-align:center;
+    width: 120px;
   }
-
+  
+  #relation_content .user_wrapper.owner{
+    width: 130px;
+  }
+  
   #relation_content .arrow, #relation_content .no_relation{
     width: 40px;
     float:left;
@@ -301,4 +306,3 @@
   #relation_content .no_relation{
     background: transparent url(/images/bg_no_relation.png) no-repeat center center;
   }
-  
