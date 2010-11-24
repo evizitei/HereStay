@@ -56,47 +56,43 @@
           .clearfix
           #range_ratings
       .clearfix
-    .cols
-      
-      .f_left
-        %div{:style=>"padding: 0 5px 10px 5px"}
-          #map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
-      .small-col
-        .header Radius
-        .slider-container
-          .labels
-            .value 
-          #radius_slider
+    .cols     
       .small-col
         .header
           %label
             = check_box_tag 'friend_only', 1, params[:friend_only] == '1'
             Friends' listings only
-        %div{:style => "margin-top:100px;"}
+        %div{:style => "margin-top:170px;"}
           .fbButton{:style=>"width:70px;"}=submit_tag "Search"
+      .f_right
+        %div{:style=>"padding: 0 5px 10px 5px"}
+          #map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
+      .zoom
+        .header Zoom
+        .slider-container
+          .labels
+            %span.value= zoom_labels(params[:location_zoom]||1)
+            miles 
+          #radius_slider
       .clearfix
-    
-
-    .cols   
-        
-      =hidden_field_tag 'advanced', params[:advanced]||0
-      =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
-      =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
-      =hidden_field_tag 'range_budget_from', params[:range_budget_from]||RentalUnit.min_price
-      =hidden_field_tag 'range_budget_to', params[:range_budget_to]||RentalUnit.max_price
-      =hidden_field_tag 'range_adults_from', params[:range_adults_from]||0
-      =hidden_field_tag 'range_adults_to', params[:range_adults_to]||5
-      =hidden_field_tag 'range_kids_from', params[:range_kids_from]||0
-      =hidden_field_tag 'range_kids_to', params[:range_kids_to]||5
-      =hidden_field_tag 'range_bathes_from', params[:range_bathes_from]||0
-      =hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
-      =hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
-      =hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
       
-      =text_field_tag 'location_lng', params[:location_lng]
-      =text_field_tag 'location_lat', params[:location_lat]
-      =text_field_tag 'location_radius', params[:location_radius]
+    =hidden_field_tag 'advanced', params[:advanced]||0
+    =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
+    =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
+    =hidden_field_tag 'range_budget_from', params[:range_budget_from]||RentalUnit.min_price
+    =hidden_field_tag 'range_budget_to', params[:range_budget_to]||RentalUnit.max_price
+    =hidden_field_tag 'range_adults_from', params[:range_adults_from]||0
+    =hidden_field_tag 'range_adults_to', params[:range_adults_to]||5
+    =hidden_field_tag 'range_kids_from', params[:range_kids_from]||0
+    =hidden_field_tag 'range_kids_to', params[:range_kids_to]||5
+    =hidden_field_tag 'range_bathes_from', params[:range_bathes_from]||0
+    =hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
+    =hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
+    =hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
       
+    =hidden_field_tag 'location_lng', params[:location_lng]
+    =hidden_field_tag 'location_lat', params[:location_lat]
+    =hidden_field_tag 'location_zoom', params[:location_zoom]||1
 
 :javascript
   var search_params = {
@@ -196,38 +192,34 @@
     
     var element = $("#map_canvas");
     var markersArray = []
-    if(element.attr("data-lat").length > 0){
-      var latlng = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
-      var myOptions = {
-        zoom: 8, 
-        center: latlng, 
-        mapTypeId: google.maps.MapTypeId.ROADMAP 
-      };
-      var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
-      //var marker = new google.maps.Marker({position: latlng,map: map,title: element.attr("data-fulladdress")});
+    var latlng = new google.maps.LatLng(#{!params[:location_lat].blank? && !params[:location_lng].blank? ? "#{params[:location_lat]}, #{params[:location_lng]}" : (@user.nil? ? "#{@user.fb_lat}, #{@user.fb_lng}" : "40.72228267283153, -73.9599609375")});
       
-      google.maps.event.addListener(map, 'click', function(event) {
-        clearOverlays();
-        addMarker(event.latLng);
-        map.setCenter(event.latLng)
-        $('#location_lat').val(event.latLng.lat());
-        $('#location_lng').val(event.latLng.lng());
-      });
-
-    }else{
-      $("#map_canvas").html("<h1>Sorry, cannot map this address</h1>");
-    }
+    var myOptions = {
+      zoom: 8, 
+      center: latlng, 
+      mapTypeId: google.maps.MapTypeId.ROADMAP 
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
+    #{"marker = new google.maps.Marker({position: latlng,map: map }); markersArray.push(marker);" if !params[:location_lat].blank? && !params[:location_lng].blank?}
+      
+    google.maps.event.addListener(map, 'click', function(event) {
+      clearOverlays();
+      addMarker(event.latLng);
+      map.setCenter(event.latLng)
+      $('#location_lat').val(event.latLng.lat());
+      $('#location_lng').val(event.latLng.lng());
+    });
     
     $("#radius_slider").slider({
-      min: 5,
-      max: 300,
-      value: #{ params[:location_radius].blank? ? 5 : params[:location_radius]},
+      min: 1,
+      max: 5,
+      value: #{ params[:location_zoom].blank? ? 1 : params[:location_zoom]},
       slide: function(ivent,ui){
-
+        var values = ['', '1.5', '5', '25', '90', '350' ]
         id = $(this).attr('id');
         var container = $(this).parent('.slider-container');
-        container.find('.value').html(ui.value);
-        $('#location_radius').val(ui.value);
+        container.find('.value').html(values[ui.value]);
+        $('#location_zoom').val(ui.value);
       }
     });
     
@@ -247,6 +239,4 @@
         }
       }
     }
-
-
   });

@@ -231,7 +231,9 @@ class RentalUnit < ActiveRecord::Base
         end
         
         unless params[:location_lat].blank? && params[:location_lng].blank?
-          with(:location).near(params[:location_lat], params[:location_lng], :distance => 5)
+          precisions = [nil, 7 , 6 , 5 , 4 , 3, 2, 1]
+          precision = precisions[(params[:location_zoom].to_i||1)]
+          with(:location).near(params[:location_lat], params[:location_lng], :precision => precision)
         end
         
         # Owner should be a friend or friend of friend
@@ -255,12 +257,13 @@ class RentalUnit < ActiveRecord::Base
     p = RentalUnit.maximum(:nightly_high_price)
     (p.to_f).ceil unless p.nil?
   end
-
-  def lng
-    self.long
-  end
   
   def location
     self
+  end
+  
+  public  
+  def lng
+    self.long
   end
 end
