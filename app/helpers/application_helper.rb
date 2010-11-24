@@ -104,6 +104,11 @@ module ApplicationHelper
     labels.html_safe
   end
   
+  def zoom_labels(par)
+    values = ['', '1.5', '5', '25', '90', '350' ]
+    values[par.to_i]
+  end
+  
   def belongs_to_friend_icon user, rental_unit
     if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
       if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)

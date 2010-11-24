@@ -8,7 +8,7 @@
       %label#search_button.fbButton.f_left{:style=>"width:70px;"}
         =submit_tag "Search"
       .f_right{:style=>"width:70px; padding-top:10px;"}= link_to 'Advanced', '', :class => "show-advanced-search-logic #{params[:advanced] == '1' && 'on'}"
-    = render :partial=> "shared/advanced_serach"
+    = render :partial=> "shared/advanced_search"
 -if @user.nil?
   %br
   %br

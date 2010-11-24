@@ -1,4 +1,6 @@
 .clearfix
+=stylesheet_link_tag "spacegallery","custom"
+%script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
 #advanced-search{:class => params[:advanced] == '1' && 'active'} 
   .block
     .cols
@@ -54,17 +56,26 @@
           .clearfix
           #range_ratings
       .clearfix
-    .cols
+    .cols     
       .small-col
         .header
           %label
             = check_box_tag 'friend_only', 1, params[:friend_only] == '1'
             Friends' listings only
-    .clearfix
-    %div{:style => 'text-align: center;'}
-      .fbButton{:style=>"width:70px;"}=submit_tag "Search"
+        %div{:style => "margin-top:170px;"}
+          .fbButton{:style=>"width:70px;"}=submit_tag "Search"
+      .f_right
+        %div{:style=>"padding: 0 5px 10px 5px"}
+          #map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
+      .zoom
+        .header Zoom
+        .slider-container
+          .labels
+            %span.value= zoom_labels(params[:location_zoom]||1)
+            miles 
+          #radius_slider
       .clearfix
-    
+      
     =hidden_field_tag 'advanced', params[:advanced]||0
     =hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
     =hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
@@ -78,6 +89,10 @@
     =hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
     =hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
     =hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
+      
+    =hidden_field_tag 'location_lng', params[:location_lng]
+    =hidden_field_tag 'location_lat', params[:location_lat]
+    =hidden_field_tag 'location_zoom', params[:location_zoom]||1
 
 :javascript
   var search_params = {
@@ -173,4 +188,55 @@
         $('#range_ratings_to').val(ui.values[1]);
       }
     });
+    
+    
+    var element = $("#map_canvas");
+    var markersArray = []
+    var latlng = new google.maps.LatLng(#{!params[:location_lat].blank? && !params[:location_lng].blank? ? "#{params[:location_lat]}, #{params[:location_lng]}" : (@user.nil? ? "#{@user.fb_lat}, #{@user.fb_lng}" : "40.72228267283153, -73.9599609375")});
+      
+    var myOptions = {
+      zoom: 8, 
+      center: latlng, 
+      mapTypeId: google.maps.MapTypeId.ROADMAP 
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
+    #{"marker = new google.maps.Marker({position: latlng,map: map }); markersArray.push(marker);" if !params[:location_lat].blank? && !params[:location_lng].blank?}
+      
+    google.maps.event.addListener(map, 'click', function(event) {
+      clearOverlays();
+      addMarker(event.latLng);
+      map.setCenter(event.latLng)
+      $('#location_lat').val(event.latLng.lat());
+      $('#location_lng').val(event.latLng.lng());
+    });
+    
+    $("#radius_slider").slider({
+      min: 1,
+      max: 5,
+      value: #{ params[:location_zoom].blank? ? 1 : params[:location_zoom]},
+      slide: function(ivent,ui){
+        var values = ['', '1.5', '5', '25', '90', '350' ]
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        container.find('.value').html(values[ui.value]);
+        $('#location_zoom').val(ui.value);
+      }
+    });
+    
+    function addMarker(location) {
+      marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "Search here"
+      });
+      markersArray.push(marker);
+    }
+    
+    function clearOverlays() {
+      if (markersArray) {
+        for (i in markersArray) {
+          markersArray[i].setMap(null);
+        }
+      }
+    }
   });
