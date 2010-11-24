@@ -192,7 +192,7 @@
     
     var element = $("#map_canvas");
     var markersArray = []
-    var latlng = new google.maps.LatLng(#{!params[:location_lat].blank? && !params[:location_lng].blank? ? "#{params[:location_lat]}, #{params[:location_lng]}" : (@user.nil? ? "#{@user.fb_lat}, #{@user.fb_lng}" : "40.72228267283153, -73.9599609375")});
+    var latlng = new google.maps.LatLng(#{!params[:location_lat].blank? && !params[:location_lng].blank? ? "#{params[:location_lat]}, #{params[:location_lng]}" : (@user.nil? ? "40.72228267283153, -73.9599609375" : "#{@user.fb_lat}, #{@user.fb_lng}")});
       
     var myOptions = {
       zoom: 8, 
