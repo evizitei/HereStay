@@ -247,7 +247,7 @@
     #advanced-search .cols .zoom{
       float: right;
       padding: 8px;
-      margin: 5px 0px;
+      margin: 15px 0px;
       width: 146px;
     }
     #advanced-search .cols .zoom .header{text-align:left; padding-left:45px;}
@@ -255,6 +255,7 @@
       padding-top:10px;
       padding-left: 40px;
       color:#5C9CCC;
+      margin-bottom: 5px;
     }
     
     #advanced-search .cols .small-col .slider-container{

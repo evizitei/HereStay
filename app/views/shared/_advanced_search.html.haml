@@ -62,10 +62,10 @@
           %label
             = check_box_tag 'friend_only', 1, params[:friend_only] == '1'
             Friends' listings only
-        %div{:style => "margin-top:170px;"}
+        %div{:style => "margin-top:190px;"}
           .fbButton{:style=>"width:70px;"}=submit_tag "Search"
       .f_right
-        %div{:style=>"padding: 0 5px 10px 5px"}
+        %div{:style=>"padding: 0 35px 10px 5px"}
           #map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
       .zoom
         .header Zoom
