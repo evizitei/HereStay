@@ -54,6 +54,13 @@ class RentalUnit < ActiveRecord::Base
     integer :search_max_price do |unit|
       (unit.nightly_high_price.to_f).ceil unless unit.weekly_high_price.blank?
     end
+    float :lat do |unit|
+      unit.lat.to_f unless unit.lat.blank?
+    end
+    float :lng do |unit|
+      unit.long.to_f unless unit.long.blank?
+    end
+    location :location, :multiple => true
   end
   
   # List all listings and order the friends' lisitngs first
@@ -223,6 +230,12 @@ class RentalUnit < ActiveRecord::Base
           with(:search_max_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
         end
         
+        unless params[:location_lat].blank? && params[:location_lng].blank?
+          precisions = [nil, 7 , 6 , 5 , 4 , 3, 2, 1]
+          precision = precisions[(params[:location_zoom].to_i||1)]
+          with(:location).near(params[:location_lat], params[:location_lng], :precision => precision)
+        end
+        
         # Owner should be a friend or friend of friend
         if params[:friend_only] && user && user.fb_friend_ids.present?
           friend_ids = user.fb_friend_ids << user.fb_user_id
@@ -234,6 +247,7 @@ class RentalUnit < ActiveRecord::Base
     end
   end
   
+  #TODO make for min/max methods
   def self.min_price
     p = RentalUnit.minimum(:weekly_low_price)
     (p/7).floor unless p.nil?
@@ -242,5 +256,14 @@ class RentalUnit < ActiveRecord::Base
   def self.max_price
     p = RentalUnit.maximum(:nightly_high_price)
     (p.to_f).ceil unless p.nil?
+  end
+  
+  def location
+    self
+  end
+  
+  public  
+  def lng
+    self.long
   end
 end

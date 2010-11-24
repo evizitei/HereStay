@@ -193,7 +193,7 @@
       margin: 5px 10px;
       width: 146px;
     }
-    #advanced-search .cols .small-col .header, #advanced-search .cols .date-range .header{
+    #advanced-search .cols .header{
       font-weight: bold;
       text-align: center;
     }
@@ -244,6 +244,18 @@
       background: url("/images/star_off_two.png") no-repeat; 
     }
     
+    #advanced-search .cols .zoom{
+      float: right;
+      padding: 8px;
+      margin: 5px 0px;
+      width: 146px;
+    }
+    #advanced-search .cols .zoom .header{text-align:left; padding-left:45px;}
+    #advanced-search .cols .zoom .labels{
+      padding-top:10px;
+      padding-left: 40px;
+      color:#5C9CCC;
+    }
     
     #advanced-search .cols .small-col .slider-container{
       padding: 10px;
