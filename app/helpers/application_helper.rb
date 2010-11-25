@@ -116,4 +116,18 @@ module ApplicationHelper
       end
     end
   end
+  
+  def gmap_markers(items, center = true)
+    rows = []
+    if center && !params[:location_lat].blank? && !params[:location_lng].blank?
+      rows << "marker = new google.maps.Marker({position: latlng, map: map, title: 'center', icon: image }); markersArray.push(marker);"
+    end
+    items.each do |item|
+      if !item.lng.blank? && !item.lat.blank?
+        rows << "latlng = new google.maps.LatLng(#{item.lat}, #{item.lng});"
+        rows << "marker = new google.maps.Marker({position: latlng, map: map , title: '#{item.name}'}); markersArray.push(marker);"
+      end
+    end
+    rows.join(' ').html_safe
+  end
 end

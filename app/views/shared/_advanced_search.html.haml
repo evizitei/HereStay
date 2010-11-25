@@ -71,7 +71,7 @@
         .header Zoom
         .slider-container
           .labels
-            %span.value= zoom_labels(params[:location_zoom]||1)
+            %span.value= zoom_labels(params[:location_zoom]||5)
             miles 
           #radius_slider
       .clearfix
@@ -195,12 +195,12 @@
     var latlng = new google.maps.LatLng(#{(!params[:location_lat].blank? && !params[:location_lng].blank?) ? "#{params[:location_lat]}, #{params[:location_lng]}" : (!@user.nil? && !@user.fb_lat.blank? && !@user.fb_lng.blank?) ?  "#{@user.fb_lat}, #{@user.fb_lng}" : "40.72228267283153, -73.9599609375" });
       
     var myOptions = {
-      zoom: 8, 
+      zoom: 6, 
       center: latlng, 
       mapTypeId: google.maps.MapTypeId.ROADMAP 
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
-    #{"marker = new google.maps.Marker({position: latlng,map: map }); markersArray.push(marker);" if !params[:location_lat].blank? && !params[:location_lng].blank?}
+    #{gmap_markers(@rental_units)}
       
     google.maps.event.addListener(map, 'click', function(event) {
       clearOverlays();
@@ -213,13 +213,15 @@
     $("#radius_slider").slider({
       min: 1,
       max: 5,
-      value: #{ params[:location_zoom].blank? ? 1 : params[:location_zoom]},
+      value: #{ params[:location_zoom].blank? ? 5 : params[:location_zoom]},
       slide: function(ivent,ui){
         var values = ['', '1.5', '5', '25', '90', '350' ]
+        var zooms = [1,12,11,10,8,6]
         id = $(this).attr('id');
         var container = $(this).parent('.slider-container');
         container.find('.value').html(values[ui.value]);
         $('#location_zoom').val(ui.value);
+        map.setZoom(zooms[ui.value]);
       }
     });
     
