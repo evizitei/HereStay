@@ -18,7 +18,7 @@
           .fields
             .f_left
               = label_tag 'search_start_date', 'From:'
-              = date_picker_tag 'search_start_date', params[:search_start_date].blank? ? nil : params[:search_start_date].to_date, :class => 'date_picker'
+              = date_picker_tag 'search_start_date', params[:search_start_date].blank? ? nil : params[:search_start_date].to_date, :class => 'date_picker from_date'
             .f_right
               = label_tag 'search_end_date', 'To:'
               = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker to_date'
@@ -124,29 +124,21 @@
       return false;
     })
     $(".date_picker").datepicker({
+      minDate: new Date(),
       onSelect: function(dateText, inst) {
-        current_date = new Date();
-        current_date.setHours(0);
-        current_date.setMinutes(0);
-        current_date.setSeconds(0);
-        if($(this).hasClass('to_date')){
-          date_from = $("#search_start_date")
-          if(date_from.val() == ''){
-            alert('Select start date');
-            $(this).val('');
-            return false;
-          }
-          if($(this).datepicker( "getDate") <= (new Date(date_from.val())) ){
-            alert('Must be greater than start date');
-            $(this).val('');
-            return false;
-          }        
+        if($(this).hasClass('from_date')){
+          to_date = $(this).datepicker('getDate');
+          to_date.setDate(to_date.getDate() + 1);
+          $(this).datepicker('setDate', to_date);
+          $('#search_end_date').val($('#search_start_date').val());
+          $(this).datepicker('setDate', (new Date(dateText)));
+          $(this).blur();
         }
-        if(current_date > $(this).datepicker( "getDate")){
-          alert('Must be greater than current date');
-          $(this).val('');
-          $("#search_end_date").val('');
-          return false;
+        if($(this).hasClass('to_date')){
+          if($(this).datepicker('getDate') < new Date($('#search_start_date').val())){
+            alert('Must be greater than start date');
+            $('#search_end_date').val('');
+          }
         }
       }
     });
