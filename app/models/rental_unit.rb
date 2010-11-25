@@ -61,6 +61,14 @@ class RentalUnit < ActiveRecord::Base
       unit.long.to_f unless unit.long.blank?
     end
     location :location, :multiple => true
+    
+    date :busy_on, :multiple => true do |unit|
+      unit.bookings.completed.map do |booking|
+        Range.new(booking.start_date.to_date, booking.stop_date.to_date).to_a.map do |date|
+          Time.utc(date.year, date.mon, date.day)
+        end
+      end.flatten
+    end
   end
   
   # List all listings and order the friends' lisitngs first
@@ -236,6 +244,13 @@ class RentalUnit < ActiveRecord::Base
           with(:location).near(params[:location_lat], params[:location_lng], :precision => precision)
         end
         
+        # filter by start and end dates
+        start_date = params[:search_start_date].to_date rescue nil
+        end_date = params[:search_end_date].to_date rescue nil
+        if start_date && end_date
+          start_date, end_date = end_date, start_date if start_date > end_date
+          without(:busy_on, Range.new(start_date, end_date))
+        end
         # Owner should be a friend or friend of friend
         if params[:friend_only] && user && user.fb_friend_ids.present?
           friend_ids = user.fb_friend_ids << user.fb_user_id
