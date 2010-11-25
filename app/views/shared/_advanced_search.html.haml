@@ -21,7 +21,7 @@
               = date_picker_tag 'search_start_date', params[:search_start_date].blank? ? nil : params[:search_start_date].to_date, :class => 'date_picker'
             .f_right
               = label_tag 'search_end_date', 'To:'
-              = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker'
+              = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker to_date'
             .clearfix
         .small-col.bedrooms
           .header Bedrooms
@@ -123,7 +123,33 @@
       }
       return false;
     })
-    $(".date_picker").datepicker();
+    $(".date_picker").datepicker({
+      onSelect: function(dateText, inst) {
+        current_date = new Date();
+        current_date.setHours(0);
+        current_date.setMinutes(0);
+        current_date.setSeconds(0);
+        if($(this).hasClass('to_date')){
+          date_from = $("#search_start_date")
+          if(date_from.val() == ''){
+            alert('Select start date');
+            $(this).val('');
+            return false;
+          }
+          if($(this).datepicker( "getDate") <= (new Date(date_from.val())) ){
+            alert('Must be greater than start date');
+            $(this).val('');
+            return false;
+          }        
+        }
+        if(current_date > $(this).datepicker( "getDate")){
+          alert('Must be greater than current date');
+          $(this).val('');
+          $("#search_end_date").val('');
+          return false;
+        }
+      }
+    });
     $("#range_bedrooms").slider({
       min: 1,
       max: 5,
