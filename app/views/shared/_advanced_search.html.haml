@@ -75,7 +75,7 @@
             .fbButton{:style=>"width:70px;"}=submit_tag "Search"
         .f_right
           %div{:style=>"padding: 0 35px 10px 5px"}
-            #map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
+            #search_map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
         .zoom
           .header Zoom
           .slider-container
@@ -113,7 +113,7 @@
     'range_ratings': [#{params[:range_ratings_from]||0},#{params[:range_ratings_to]||10}]
   };
   $(document).ready(function() {
-    $('.show-advanced-search-logic').live('click', function(){
+    $('.show-advanced-search-logic').click(function(){
       $('#advanced-search').toggleClass('active');
       $(this).toggleClass('on');
       if(parseInt($('#advanced').val()) == 1){
@@ -217,25 +217,11 @@
     });
     
     
-    var element = $("#map_canvas");
+    var element = $("#search_map_canvas");
     var markersArray = []
-    var latlng = new google.maps.LatLng(#{(!params[:location_lat].blank? && !params[:location_lng].blank?) ? "#{params[:location_lat]}, #{params[:location_lng]}" : (!@user.nil? && !@user.fb_lat.blank? && !@user.fb_lng.blank?) ?  "#{@user.fb_lat}, #{@user.fb_lng}" : "40.72228267283153, -73.9599609375" });
-      
-    var myOptions = {
-      zoom: 6, 
-      center: latlng, 
-      mapTypeId: google.maps.MapTypeId.ROADMAP 
-    };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);
-    #{gmap_markers(@rental_units||[])}
-      
-    google.maps.event.addListener(map, 'click', function(event) {
-      clearOverlays();
-      addMarker(event.latLng);
-      map.setCenter(event.latLng)
-      $('#location_lat').val(event.latLng.lat());
-      $('#location_lng').val(event.latLng.lng());
-    });
+    #{init_gmap('search_map_canvas', params[:location_lat], params[:location_lng], 8, 'search_')}
+    #{gmap_markers(@rental_units||[], 'search_')}
+    #{gmap_event_listener('click', 'markAndCenter', 'search_')}
     
     $("#radius_slider").slider({
       min: 1,
@@ -248,14 +234,22 @@
         var container = $(this).parent('.slider-container');
         container.find('.value').html(values[ui.value]);
         $('#location_zoom').val(ui.value);
-        map.setZoom(zooms[ui.value]);
+        search_map.setZoom(zooms[ui.value]);
       }
     });
     
-    function addMarker(location) {
+    function markAndCenter(event, el){
+      clearOverlays();
+      addMarker(event.latLng, el);
+      el.setCenter(event.latLng)
+      $('#location_lat').val(event.latLng.lat());
+      $('#location_lng').val(event.latLng.lng());    
+    }
+    
+    function addMarker(location, el) {
       marker = new google.maps.Marker({
         position: location,
-        map: map,
+        map: el,
         title: "Search here"
       });
       markersArray.push(marker);

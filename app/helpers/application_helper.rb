@@ -117,18 +117,40 @@ module ApplicationHelper
     end
   end
   
-  def gmap_markers(items, center = true)
-    rows = []
-    if center && !params[:location_lat].blank? && !params[:location_lng].blank?
-      rows << "marker = new google.maps.Marker({position: latlng, map: map, title: 'center', icon: image }); markersArray.push(marker);"
+  def init_gmap(element, lat, lng, zoom, prefix='')
+    if !lat.blank? && !lng.blank?
+      latlng = "#{lat}, #{lng}"
+    elsif @user && !@user.fb_lat.blank? && !@user.fb_lng.blank?
+      latlng = "#{@user.fb_lat}, #{@user.fb_lng}"
+    else  
+      latlng = "40.72228267283153, -73.9599609375"      
     end
-    items.each do |item|
-      if !item.lng.blank? && !item.lat.blank?
-        rows << "latlng = new google.maps.LatLng(#{item.lat}, #{item.lng});"
-        rows << "marker = new google.maps.Marker({position: latlng, map: map , title: '#{item.name}'}); markersArray.push(marker);"
+    
+    "var latlng = new google.maps.LatLng(#{latlng});
+    var #{prefix}gmap_options = { zoom: 6, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
+    var #{prefix}map = new google.maps.Map(document.getElementById('#{element}'),  #{prefix}gmap_options);"    
+  end
+  
+  def gmap_event_listener(event, func, prefix = '')
+    "google.maps.event.addListener(#{prefix}map, '#{event}', function(event) {
+      #{func}(event, #{prefix}map);
+    });"    
+  end
+  
+  def gmap_markers(items, prefix = '', center = true)
+    if params[:advanced] == '1'
+      rows = []
+      if center && !params[:location_lat].blank? && !params[:location_lng].blank?
+        rows << "marker = new google.maps.Marker({position: latlng, map: #{prefix}map, title: 'center'}); markersArray.push(marker);"
       end
+      items.each do |item|
+        if !item.lng.blank? && !item.lat.blank?
+          rows << "latlng = new google.maps.LatLng(#{item.lat}, #{item.lng});"
+          rows << "marker = new google.maps.Marker({position: latlng, map: #{prefix}map , title: '#{item.name}'}); markersArray.push(marker);"
+        end
+      end
+      rows.join(' ').html_safe
     end
-    rows.join(' ').html_safe
   end
   
   def fb_profile_pic(options)
