@@ -1,6 +1,6 @@
 %h2 Video for #{@rental_unit.name}
-= fb_button 'Listing details', rental_unit_path(@rental_unit)
-= fb_button 'My Listings', manage_rental_units_path
+= fb_button 'Property details', rental_unit_path(@rental_unit)
+= fb_button 'My Properties', manage_rental_units_path
 
 %div.colored-bg.clearfix{:style => 'padding:10px'}
   - if @rental_unit.has_video?

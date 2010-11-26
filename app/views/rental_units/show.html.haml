@@ -7,7 +7,7 @@
 - if @user
   = fb_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(@user)
   = fb_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
-  = fb_button 'Manage My Listings', manage_rental_units_path, :class_name => 'f_right'
+  = fb_button 'Manage My Properties', manage_rental_units_path, :class_name => 'f_right'
 - else
   = fb_login_button
   \-- Press here to start booking your vacation!

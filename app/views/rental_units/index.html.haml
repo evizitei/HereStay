@@ -1,6 +1,6 @@
 -if @app_page
   #listings
-    %h1{:style=>"font-size:16pt;"} Featured Listings
+    %h1{:style=>"font-size:16pt;"} Featured Properties
     =render(:partial=>"rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 -else
   =link_to "HereStay","http://apps.facebook.com/#{fb_app_name}/",{:target=>"_top"}
@@ -12,13 +12,13 @@
       %table.dataTable
         %tbody
           %tr.dataRow
-            %th Primary Listing
+            %th Primary Property
             %td.data
             %td.rightCol
           =render(:partial=>"info",:object=>unit)
     %br
     -if @rental_units.size > 0
-      %h2 Here are all my other listings:
+      %h2 Here are all my other properties:
       =render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>false}
   -else
-    %h3 Sorry!  This user has no listings available.
+    %h3 Sorry!  This user has no properties available.

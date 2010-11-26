@@ -4,11 +4,11 @@
   = fb_login_button
   \-- Press here to start using HereStay!
 #listings
-  %h2{:style=>"font-size:16pt;"} Featured Listings
+  %h2{:style=>"font-size:16pt;"} Featured Properties
   %br
   -if @user
     = fb_button 'My Account', account_path, :class_name => 'f_right'
-    = fb_button (@user.rental_units.count > 0 ? 'Manage My Listings' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
+    = fb_button (@user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
   %br
   %br
   %br
@@ -18,4 +18,4 @@
 %br
 -if @user 
   = fb_button 'My Account', account_path, :class_name => 'f_right'
-  = fb_button (@user.rental_units.count > 0 ? 'Manage My Listings' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
+  = fb_button (@user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
