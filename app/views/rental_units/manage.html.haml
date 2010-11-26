@@ -1,6 +1,6 @@
-%fb:profile-pic{:size=>"small",:uid=>@user.fb_user_id}
+=fb_profile_pic(:size=>"small",:uid=>@user.fb_user_id)
 %h2
-  %fb:name{:uid=>@user.fb_user_id,:useyou=>"false",:possessive=>"true"}
+  =fb_name(:uid=>@user.fb_user_id,:useyou=>"false",:possessive=>"true")
   Properties:
 %br
 =render :partial=>"unit_row",:collection=>@rental_units

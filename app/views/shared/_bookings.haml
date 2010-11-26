@@ -34,8 +34,8 @@
           =booking.promotional_fee
         %td{:style=>"padding:3px;font-size:10pt;"}
           -if booking.renter_fb_id
-            %fb:profile-pic{:uid=>booking.renter_fb_id,:size=>"thumb"}
-            %fb:name{:uid=>booking.renter_fb_id}
+            = fb_profile_pic(:uid=>booking.renter_fb_id,:size=>"thumb")
+            = fb_name(:uid=>booking.renter_fb_id)
           -else
             =booking.renter_name
         %td{:style=>"padding:3px;font-size:10pt;"}= booking.description

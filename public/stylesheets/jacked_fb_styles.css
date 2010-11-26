@@ -326,3 +326,6 @@ body{
   #relation_content .no_relation{
     background: transparent url(/images/bg_no_relation.png) no-repeat center center;
   }
+
+.fb-profile-link{color: #29447E; font-weight:normal;}
+.fb-profile-link img{border: 0;}

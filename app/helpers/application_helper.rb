@@ -130,4 +130,18 @@ module ApplicationHelper
     end
     rows.join(' ').html_safe
   end
+  
+  def fb_profile_pic(options)
+    options[:linked] = 'false'
+    content_tag(:a, :href => "http://www.facebook.com/profile.php?id=#{options[:uid]}", :target => 'top', :class => 'fb-profile-link') do
+      content_tag 'fb:profile-pic','', options
+    end
+  end
+  
+  def fb_name(options)
+    options[:linked] = 'false'
+    content_tag(:a, :href => "http://www.facebook.com/profile.php?id=#{options[:uid]}", :target => 'top', :class => 'fb-profile-link') do
+      content_tag 'fb:name', '', options
+    end
+  end
 end

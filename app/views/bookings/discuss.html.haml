@@ -23,9 +23,9 @@
         %br
         %strong=message.message
       
-      %fb:profile-pic{:uid=>message.user_fb_id,:size=>"thumb"}
+      = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
       %br
-      %fb:name{:uid=>message.user_fb_id}
+      = fb_name(:uid => message.user_fb_id)
       
 :javascript
   var polling_data = {
@@ -65,7 +65,7 @@
         }
         
         function appendMessage(item){
-          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<fb:profile-pic uid='"+item.user_fb_id+"' size='thumb'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"'></fb:name>" + "</div>"
+          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"' linked='false'></fb:name></a>" + "</div>"
           $("#booking_messages").append(html_message);
           polling_data["last_message"] = item.id;
         }

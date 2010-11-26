@@ -6,10 +6,10 @@
 #user_info
   %p
     %strong Name:
-    %fb:name{:uid=>@user.fb_user_id}
+    =fb_name(:uid=>@user.fb_user_id)
   %p
     %strong Pic:
-    %fb:profile-pic{:size=>"small",:uid=>@user.fb_user_id}    
+    =fb_profile_pic(:size=>"small",:uid=>@user.fb_user_id)    
   -if @user.email
     %p
       %strong Email:
@@ -56,8 +56,8 @@
             -else
               \----
           %td{:style=>"padding:3px;font-size:10pt;"}
-            %fb:profile-pic{:uid=>booking.owner_fb_id,:size=>"thumb"}
-            %fb:name{:uid=>booking.owner_fb_id}
+            =fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
+            =fb_name(:uid=>booking.owner_fb_id)
           %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
 #others_booking_me
   %h3 Who's staying at my place
@@ -75,12 +75,12 @@
       -@rewards.each do |reward|
         %tr
           %td{:style=>"padding:3px;font-size:10pt;"}
-            %fb:profile-pic{:uid=>reward.booking.owner_fb_id,:size=>"thumb"}
-            %fb:name{:uid=>reward.booking.owner_fb_id}
+            =fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
+            =fb_name(:uid=>reward.booking.owner_fb_id)
           %td{:style=>"padding:3px;font-size:10pt;"}
             -if reward.booking.renter_fb_id
-              %fb:profile-pic{:uid=>reward.booking.renter_fb_id,:size=>"thumb"}
-              %fb:name{:uid=>reward.booking.renter_fb_id}
+              =fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
+              =fb_name(:uid=>reward.booking.renter_fb_id)
             -else
               =reward.booking.renter_name
           %td{:style=>"padding:3px;font-size:10pt;"}

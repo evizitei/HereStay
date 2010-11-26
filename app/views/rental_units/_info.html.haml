@@ -6,8 +6,9 @@
 %tr.data_row
   %th Owner:
   %td.data
-    %fb:profile-pic{:uid=>info.user.fb_user_id,:size=>"thumb"}
-    %fb:name{:uid=>info.user.fb_user_id}
+    %a{:href => "http://www.facebook.com/profile.php?id=#{info.user.fb_user_id}", :target => 'top', :class => 'fb-profile-link'}
+      =fb_profile_pic(:uid=>info.user.fb_user_id,:size=>"thumb")
+      =fb_name(:uid=>info.user.fb_user_id)
     = fb_button 'All Properties', owned_by_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
     ==The owner is #{info.user.availability_message}
@@ -90,3 +91,9 @@
   :sass
     td, th
       :font-size 10pt
+:javascript
+  $(document).ready(function() {
+    $('.fb_link').live('click', function(){
+      return false;
+    })
+  });
