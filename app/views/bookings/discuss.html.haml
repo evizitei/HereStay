@@ -7,15 +7,14 @@
 #header
   =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
-= form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
-  =f.hidden_field :fb_user_id,:value=>current_user.fb_user_id
-  =f.hidden_field :booking_id,:value=>@booking.id
-  =f.text_area :message,{:rows=>6,:cols=>55}
-  %br
-  = fb_button do
-    =f.submit "Send Message"
+.message_form{:style => 'background: #FFC67D; width:705px;padding: 20px;margin-bottom: 10px;'}     
+  = form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
+    =f.text_area :message,{:rows=>6,:cols=>55}
+    %br
+    = fb_button do
+      =f.submit "Send Message"
 
-#booking_messages
+#booking_messages{:style => "height: 400px; width:735px; overflow: auto;border: solid 5px #FFC67D;"}
   -@booking.booking_messages.by_date.each do |message|
     .message{:class=>message.html_class}
       .message_body
@@ -29,26 +28,25 @@
       
 :javascript
   var polling_data = {
-      "user" : "#{current_user.fb_user_id}",
-      "booking" : "#{@booking.id}",
       "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
 
   $(document).ready(function() {
     $("#booking_message_message").focus();        
     setInterval(function() {
       $.ajax({
-        url: "#{chat_poll_url}",
+        url: "#{booking_messages_url(@booking)}",
         type: "GET",
               data: polling_data,
               dataType: "json",
               success: appendMessages,
             })
-          }, 5000);
+          }, 10000);
+        scrollDown();
         });
 
         function onSubmit() {
           $.ajax({
-            url: "#{chat_post_url}",
+            url: "#{booking_messages_url(@booking)}",
             type: "POST",
             dataType: "json",
             data: $("#chat_form").serialize(),
@@ -72,6 +70,6 @@
 
         function scrollDown() {
           FB.XFBML.parse(document.getElementById('booking_messages'));
-          var messages = document.getElementById("messages");
+          var messages = document.getElementById("booking_messages");
           messages.scrollTop = messages.scrollHeight;
         }

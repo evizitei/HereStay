@@ -145,4 +145,9 @@ class Booking < ActiveRecord::Base
   def exists_other_reservations_in_same_period?
     rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at AND booking_id != ?", self.start_date.to_datetime, self.stop_date.to_datetime, self.id||0])
   end
+  
+  before_create :set_owner_fb_id
+  def set_owner_fb_id
+    self.owner_fb_id = self.rental_unit.user.fb_user_id
+  end
 end
