@@ -1,4 +1,4 @@
--if @user.nil?
+- unless logged_in?
   %br
   %br
   = fb_login_button
@@ -6,9 +6,9 @@
 #listings
   %h2{:style=>"font-size:16pt;"} Featured Properties
   %br
-  -if @user
+  -if current_user
     = fb_button 'My Account', account_path, :class_name => 'f_right'
-    = fb_button (@user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
+    = fb_button (current_user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
   %br
   %br
   %br
@@ -16,6 +16,6 @@
   =render(:partial=>"rental_units/unit_row",:collection=>@rental_units,:locals=>{:admin=>false})
 %br
 %br
--if @user 
+-if current_user 
   = fb_button 'My Account', account_path, :class_name => 'f_right'
-  = fb_button (@user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'
+  = fb_button (current_user.rental_units.count > 0 ? 'Manage My Properties' : 'List my Property'), manage_rental_units_path, :class_name => 'f_right'

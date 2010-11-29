@@ -2,7 +2,7 @@
 %h2== Discussion on #{@booking.rental_unit.name}
 
 = form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
-  =f.hidden_field :fb_user_id,:value=>@user.fb_user_id
+  =f.hidden_field :fb_user_id,:value=>current_user.fb_user_id
   =f.hidden_field :booking_id,:value=>@booking.id
   =f.text_area :message,{:rows=>6,:cols=>55}
   %br

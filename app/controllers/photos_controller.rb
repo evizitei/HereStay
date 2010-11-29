@@ -22,7 +22,7 @@ class PhotosController < ApplicationController
   
   protected
     def begin_of_association_chain
-      @user
+      current_user
     end
     
     def update_resource(obj, attributes)

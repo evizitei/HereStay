@@ -19,7 +19,7 @@ class RentalUnitsController < ApplicationController
   end
 
   def manage
-    @rental_units = @user.rental_units
+    @rental_units = current_user.rental_units
   end
 
   def new
@@ -27,11 +27,11 @@ class RentalUnitsController < ApplicationController
   end
 
   def edit
-    @rental_unit = @user.rental_units.find(params[:id])
+    @rental_unit = current_user.rental_units.find(params[:id])
   end
 
   def create
-    @rental_unit = @user.rental_units.build(params[:rental_unit])
+    @rental_unit = current_user.rental_units.build(params[:rental_unit])
     if @rental_unit.save
       flash[:notice] = 'Rental unit was created successfully'
     end
@@ -39,7 +39,7 @@ class RentalUnitsController < ApplicationController
   end
 
   def update
-    @rental_unit = @user.rental_units.find(params[:id])
+    @rental_unit = current_user.rental_units.find(params[:id])
     if @rental_unit.update_attributes(params[:rental_unit])
       flash[:notice] = 'Rental unit was updated successfully'
     end
@@ -57,20 +57,20 @@ class RentalUnitsController < ApplicationController
   end
 
   def destroy
-    @rental_unit = @user.rental_units.find(params[:id])
+    @rental_unit = current_user.rental_units.find(params[:id])
     @rental_unit.destroy
     redirect_to manage_rental_units_url
   end
 
   def load_from_vrbo
-    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit = current_user.rental_units.find(params[:id])
     rental_unit.load_from_vrbo!
     flash[:notice] = "Full listing loaded from Vrbo successfully. Photos will be imported in some minutes."
     redirect_to edit_rental_unit_url(rental_unit)
   end
 
   def import
-    rental_units = RentalUnit.import_from_vrbo!(@user)
+    rental_units = RentalUnit.import_from_vrbo!(current_user)
 
     flash[:notice] = t(:'flash.import.completed')
     flash[:notice] << t(:'flash.import.success', :count => rental_units[:success].size)
@@ -81,14 +81,14 @@ class RentalUnitsController < ApplicationController
 
   def share
     @rental_unit = RentalUnit.find(params[:id])
-    unless @rental_unit.user == @user
+    unless @rental_unit.user == current_user
       redirect_to "http://apps.facebook.com/#{fb_app_name}"
     end
   end
 
   def owned_by
-    @user = User.find params[:user_id]
-    @rental_units = @user.rental_units.paginate(:page => params[:page], :per_page => 1)
+    current_user = User.find params[:user_id]
+    @rental_units = current_user.rental_units.paginate(:page => params[:page], :per_page => 1)
   end
   
   def promotion_form
@@ -97,7 +97,7 @@ class RentalUnitsController < ApplicationController
   
   def promote
     @rental_unit = RentalUnit.find(params[:id])
-    graph = Koala::Facebook::GraphAPI.new(@user.authorize_signature)
+    graph = Koala::Facebook::GraphAPI.new(current_user.authorize_signature)
     graph.put_wall_post("#{params["canned_text"]} -- #{params["Comments"]}",{:name=>@rental_unit.name,
                                                                              :link=>rental_unit_url(@rental_unit.id),
                                                                              :caption=>"Provided by HereStay",

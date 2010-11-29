@@ -1,11 +1,11 @@
 %h2 Edit My Account 
 
 #user_form.colored-bg{:style => "padding: 10px"}
-  = semantic_form_for @user, :url => account_path  do |f|
+  = semantic_form_for current_user, :url => account_path  do |f|
     = f.inputs do
       = f.input :use_fb_profile, :label => "Use Facebook profile"
     
-    #profile{:class => @user.use_fb_profile? && 'hidden'}
+    #profile{:class => current_user.use_fb_profile? && 'hidden'}
       = f.inputs do
         = f.input :first_name
         = f.input :middle_initial
@@ -25,7 +25,7 @@
     %br
     = f.inputs do
       %li
-        - if @user.twitter_name.blank?
+        - if current_user.twitter_name.blank?
           %label &nbsp;
           = link_to 'Add twitter', new_connectors_twitter_path
         - else

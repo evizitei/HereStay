@@ -6,22 +6,22 @@
 #user_info
   %p
     %strong Name:
-    =fb_name(:uid=>@user.fb_user_id)
+    =fb_name(:uid=>current_user.fb_user_id)
   %p
     %strong Pic:
-    =fb_profile_pic(:size=>"small",:uid=>@user.fb_user_id)    
-  -if @user.email
+    =fb_profile_pic(:size=>"small",:uid=>current_user.fb_user_id)    
+  -if current_user.email
     %p
       %strong Email:
-      =@user.email
-  -if @user.vrbo_login
+      =current_user.email
+  -if current_user.vrbo_login
     %p
       %strong VRBO Username:
-      =@user.vrbo_login
-  -if @user.twitter?
+      =current_user.vrbo_login
+  -if current_user.twitter?
     %p
       %strong Twitter:
-      =@user.twitter_name
+      =current_user.twitter_name
 #my_bookings
   %h3 Where I am staying
   %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
@@ -92,6 +92,6 @@
     -rewards_total = @rewards.map{|r| r.amount}.inject(0.0){|amt,r| amt = amt + r}
     == $#{rewards_total}
     %b Total Redeemed:
-    == $#{@user.redeemed_rewards || 0.0}
+    == $#{current_user.redeemed_rewards || 0.0}
     %b Rewards Balance:
-    == $#{rewards_total - (@user.redeemed_rewards || 0.0)}
+    == $#{rewards_total - (current_user.redeemed_rewards || 0.0)}

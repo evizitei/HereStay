@@ -2,7 +2,7 @@
   %th= "About:"
   %td.data= info.name
   %td.rightCol
-    %div{:style => 'float:right'}= belongs_to_friend_icon @user, info
+    %div{:style => 'float:right'}= belongs_to_friend_icon current_user, info
 %tr.data_row
   %th Owner:
   %td.data

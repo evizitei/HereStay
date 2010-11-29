@@ -1,5 +1,5 @@
 = fb_button 'Availability Calendar', [@booking.rental_unit, :reservations], :class_name => 'f_right'
--if @user.id == @booking.rental_unit.user_id
+-if current_user.id == @booking.rental_unit.user_id
   = fb_button "Confirm Booking!", confirm_booking_path(@booking), :class_name => 'f_right'
 
 %h2== Discussion on #{@booking.rental_unit.name}
@@ -8,7 +8,7 @@
   =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
 = form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
-  =f.hidden_field :fb_user_id,:value=>@user.fb_user_id
+  =f.hidden_field :fb_user_id,:value=>current_user.fb_user_id
   =f.hidden_field :booking_id,:value=>@booking.id
   =f.text_area :message,{:rows=>6,:cols=>55}
   %br
@@ -29,7 +29,7 @@
       
 :javascript
   var polling_data = {
-      "user" : "#{@user.fb_user_id}",
+      "user" : "#{current_user.fb_user_id}",
       "booking" : "#{@booking.id}",
       "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
 

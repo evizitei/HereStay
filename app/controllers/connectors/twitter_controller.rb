@@ -30,6 +30,6 @@ class Connectors::TwitterController < ApplicationController
   
   private
     def twitter_wrapper
-      @wrapper = TwitterWrapper.new(@user)
+      @wrapper = TwitterWrapper.new(current_user)
     end
 end

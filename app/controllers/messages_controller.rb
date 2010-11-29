@@ -12,11 +12,11 @@ class MessagesController < InheritedResources::Base
   end
   
   def post_chat 
-    @user = User.find_by_fb_user_id(params[:booking_message][:fb_user_id])
-    @user.pulse!
+    current_user = User.find_by_fb_user_id(params[:booking_message][:fb_user_id])
+    current_user.pulse!
     @booking = Booking.find(params[:booking_message][:booking_id])
-    message= BookingMessage.create!(:user_fb_id=>@user.fb_user_id,:booking_id=>@booking.id,:message=>params[:booking_message][:message])
-    other = @booking.other_user_than(@user)
+    message= BookingMessage.create!(:user_fb_id=>current_user.fb_user_id,:booking_id=>@booking.id,:message=>params[:booking_message][:message])
+    other = @booking.other_user_than(current_user)
     if other
       message.update_attributes!(:recipient=>other)
       other.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(@booking.id,:user_id=>other.id)}")
@@ -32,8 +32,8 @@ class MessagesController < InheritedResources::Base
   
   def poll_chat
     @booking = Booking.find(params[:booking])
-    @user = User.find_by_fb_user_id(params[:user])
-    @user.pulse!
+    current_user = User.find_by_fb_user_id(params[:user])
+    current_user.pulse!
     chats = []
     if params[:last_message].blank?
       chats = @booking.booking_messages
@@ -49,13 +49,13 @@ class MessagesController < InheritedResources::Base
   end
   
   def check_messages
-    @user = User.find_by_fb_user_id(params[:user])
-    @user.pulse!
+    current_user = User.find_by_fb_user_id(params[:user])
+    current_user.pulse!
     chats = []
     if params[:last_message].blank?
-      chats = @user.booking_messages
+      chats = current_user.booking_messages
     else
-      chats = @user.booking_messages.where(["id > ?",params[:last_message]])
+      chats = current_user.booking_messages.where(["id > ?",params[:last_message]])
     end
     @list = chats.map { |msg| { "sent_at" => msg.created_at.to_formatted_s(:short), 
                                "message" => msg.message, 
@@ -67,7 +67,7 @@ class MessagesController < InheritedResources::Base
   protected
   
   def create_resource(object)
-    object.user_fb_id = @user.fb_user_id
+    object.user_fb_id = current_user.fb_user_id
     object.save
   end
 end

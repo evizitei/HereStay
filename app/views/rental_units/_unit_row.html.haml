@@ -4,14 +4,14 @@
       -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
         =image_tag(unit_row.primary_photo.picture.url(:thumb))
     .unit_description
-      %div{:style => 'float:right'}= belongs_to_friend_icon @user, unit_row
+      %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
       .title{:style => 'overflow: hidden'}=link_to unit_row.name,rental_unit_path(unit_row.id)
       .clearfix
       .description
         = unit_row.description
         %br
         == Owner is #{unit_row.user.availability_message}
-  -if @user && unit_row.user == @user
+  - if unit_row.is_owner?(current_user)
     %br
     .admin_buttons.clearfix
       = fb_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'

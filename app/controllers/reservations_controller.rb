@@ -28,7 +28,7 @@ class ReservationsController < ApplicationController
   private
     # Disable not-owner to manage reservations
     def begin_of_association_chain
-      self.action_name != 'index' ? @user : super
+      self.action_name != 'index' ? current_user : super
     end
     
     def collection

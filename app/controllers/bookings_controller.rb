@@ -45,14 +45,14 @@ class BookingsController < ApplicationController
     if params[:id]
       get_booking
     elsif params[:rental_unit_id]
-      # find existing uncomplete booking or create new for user @user
-      @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(@user)
+      # find existing uncomplete booking or create new for user current_user
+      @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
     end
   end
   
   def mobile_discuss
     get_booking
-    @user = User.find(params[:user_id])
+    current_user = User.find(params[:user_id])
     render :layout=>nil
   end
   
@@ -71,7 +71,7 @@ class BookingsController < ApplicationController
   end
   
   def wall_post
-    @booking.wall_post_by_user!(@user)
+    @booking.wall_post_by_user!(current_user)
     redirect_to @booking
   end
   

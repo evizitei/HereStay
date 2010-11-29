@@ -1,7 +1,7 @@
 %h1
   Reservations
 %div
-  - if parent.is_owner?(@user)
+  - if parent.is_owner?(current_user)
     = fb_button 'Create reservation', new_resource_path
     = fb_button 'Import', import_rental_unit_reservations_path(parent), :method => :post
 
@@ -13,7 +13,7 @@
       %th.first{:width => 50} #
       %th{:width => 300} Stay Dates
       %th{:width => 160} Status
-      - if parent.is_owner?(@user)
+      - if parent.is_owner?(current_user)
         %th{:width => 70} Name
         %th &nbsp;
     - for resource in collection
@@ -24,7 +24,7 @@
           \-
           = show_date resource.end_at.to_date
         %td= t resource.status, :scope => "reservation.statuses"
-        - if parent.is_owner?(@user)
+        - if parent.is_owner?(current_user)
           %td= h resource.full_name
           %td
             = fb_button 'edit', edit_resource_path(resource)
