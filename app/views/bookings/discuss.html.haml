@@ -7,24 +7,24 @@
 #header
   =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
 
-.message_form{:style => 'background: #FFC67D; width:705px;padding: 20px;margin-bottom: 10px;'}     
+.message_form{:style => 'background: #FFC67D; width:705px;padding: 20px 20px 10px 20px;margin-bottom: 10px;'}     
   = form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
     =f.text_area :message,{:rows=>6,:cols=>55}
-    %br
+    
     = fb_button do
       =f.submit "Send Message"
-
-#booking_messages{:style => "height: 400px; width:735px; overflow: auto;border: solid 5px #FFC67D;"}
-  -@booking.booking_messages.by_date.each do |message|
-    .message{:class=>message.html_class}
-      .message_body
-        %i= message.created_at.strftime("%m/%d/%Y")
+#resizable{:style => "height: 400px; width:735px; border: solid 5px #FFC67D;overflow: hidden;padding-bottom:10px;"}
+  #booking_messages{:style => "height:100%;width:735px; overflow: auto;"}
+    -@booking.booking_messages.by_date.each do |message|
+      .message{:class=>message.html_class}
+        .message_body
+          %i= message.created_at.strftime("%m/%d/%Y")
+          %br
+          %strong=message.message
+        
+        = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
         %br
-        %strong=message.message
-      
-      = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
-      %br
-      = fb_name(:uid => message.user_fb_id)
+        = fb_name(:uid => message.user_fb_id)
       
 :javascript
   var polling_data = {
@@ -41,6 +41,7 @@
               success: appendMessages,
             })
           }, 10000);
+        $("#resizable").resizable({maxWidth: 735, minWidth: 735, handles: 's,se', minHeight: 150});
         scrollDown();
         });
 
