@@ -13,19 +13,19 @@
     
     = fb_button do
       =f.submit "Send Message"
-#resizable{:style => "height: 400px; width:735px; border: solid 5px #FFC67D;overflow: hidden;padding-bottom:10px;"}
-  #booking_messages{:style => "height:100%;width:735px; overflow: auto;"}
-    -@booking.booking_messages.by_date.each do |message|
-      .message{:class=>message.html_class}
-        .message_body
-          %i= message.created_at.strftime("%m/%d/%Y")
-          %br
-          %strong=message.message
-        
-        = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
+
+#booking_messages
+  -@booking.booking_messages.by_date.each do |message|
+    .message{:class=>message.html_class}
+      .message_body
+        %i= message.created_at.strftime("%m/%d/%Y")
         %br
-        = fb_name(:uid => message.user_fb_id)
-      
+        %strong=message.message
+        
+      = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
+      %br
+      = fb_name(:uid => message.user_fb_id)
+%a{:name => 'bottom'}     
 :javascript
   var polling_data = {
       "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
@@ -41,8 +41,6 @@
               success: appendMessages,
             })
           }, 10000);
-        $("#resizable").resizable({maxWidth: 735, minWidth: 735, handles: 's,se', minHeight: 150});
-        scrollDown();
         });
 
         function onSubmit() {
@@ -57,10 +55,12 @@
         }
         
         function appendMessages(data){
+          var count = 0;
           $.each(data, function(i, item) {
             appendMessage(item);
+            count++;
           });
-          scrollDown();
+          if(count > 0) {scrollDown();}
         }
         
         function appendMessage(item){
@@ -71,6 +71,7 @@
 
         function scrollDown() {
           FB.XFBML.parse(document.getElementById('booking_messages'));
-          var messages = document.getElementById("booking_messages");
-          messages.scrollTop = messages.scrollHeight;
+          //var messages = document.getElementById("booking_messages");
+          //messages.scrollTop = messages.scrollHeight;
+          window.location.href = '#bottom';
         }

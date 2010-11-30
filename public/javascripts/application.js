@@ -11,10 +11,11 @@ function newMessages(data){
   var messages = "";
   var count = 0
   $.each(data, function(i, item) {
-    messages = messages + "<p>" + item.message +"<a href='"+ item.url +"'>Go To Discussion</a></p>"
+    //messages = messages + "<p>" + item.message +"<a href='"+ item.url +"'>Go To Discussion</a></p>"
     user_data["last_message"] = item.id;
     count++;
-    $.jGrowl("<p>" + item.message +"<br/><a href='"+ item.url +"'>Go To Discussion</a></p>");
+    message = "<p><b>You have new message:</b><br/>" + item.message +"<br/><a href='"+ item.url +"'>Click to show</a></p>";
+    $.jGrowl(message, { life: 20000 });
   });
   
   //$.fancybox(('<h2>New Messages!</h2>' + messages),{
