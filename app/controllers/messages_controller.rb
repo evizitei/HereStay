@@ -15,6 +15,7 @@ class MessagesController < InheritedResources::Base
   
   def create
     message = booking.booking_messages.create(params[:booking_message].merge({:user_fb_id=>current_user.fb_user_id}))
+    message.recipient.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(message.booking_id, :user_id => message.recipient_id)}") if message
     render :json=> messages_to_json([message])
   end
   
@@ -26,7 +27,7 @@ class MessagesController < InheritedResources::Base
   protected
     
   def booking
-    @booking ||= Booking.where(["id = ? AND (owner_fb_id = ? OR renter_fb_id = ?) ", params[:booking_id], current_user.fb_user_id, current_user.fb_user_id]).first
+    @booking ||= Booking.for_user(current_user).where("id = ? ", params[:booking_id]).first
   end
   
   def messages_to_json(messages)

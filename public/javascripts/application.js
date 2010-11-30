@@ -14,7 +14,7 @@ function newMessages(data){
     messages = messages + "<p>" + item.message +"<a href='"+ item.url +"'>Go To Discussion</a></p>"
     user_data["last_message"] = item.id;
     count++;
-    $.jGrowl("<p>" + item.message +"<a href='"+ item.url +"'>Go To Discussion</a></p>");
+    $.jGrowl("<p>" + item.message +"<br/><a href='"+ item.url +"'>Go To Discussion</a></p>");
   });
   
   //$.fancybox(('<h2>New Messages!</h2>' + messages),{

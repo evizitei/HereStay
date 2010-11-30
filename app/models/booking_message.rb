@@ -26,9 +26,4 @@ class BookingMessage < ActiveRecord::Base
     recipient_fb_id = self.user_fb_id == self.booking.renter_fb_id ? self.booking.rental_unit.user.fb_user_id : booking.renter_fb_id
     self.recipient = User.where({:fb_user_id => recipient_fb_id}).first
   end
-  
-  #after_create :send_notification  
-  def send_notification
-    #self.recipient.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(self.booking_id, :user_id => self.recipient)}")
-  end
 end

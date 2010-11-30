@@ -15,6 +15,7 @@ class Booking < ActiveRecord::Base
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   scope :completed, where(:status => 'COMPLETE')
   scope :except, lambda{|r| where("id != ?", r.id) }
+  scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
   
   # change status without saving (like aasm)
   def complete

@@ -329,3 +329,6 @@ body{
 
 .fb-profile-link{color: #29447E; font-weight:normal;}
 .fb-profile-link img{border: 0;}
+
+div.jGrowl div.jGrowl-notification{color: #fff;}
+div.jGrowl div.jGrowl-notification a{color: #fff;font-weight:bold;}
