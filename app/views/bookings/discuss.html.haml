@@ -13,7 +13,7 @@
     
     = fb_button do
       =f.submit "Send Message"
-
+%a{:name => 'messages_top'}  
 #booking_messages
   -@booking.booking_messages.by_date.each do |message|
     .message{:class=>message.html_class}
@@ -25,7 +25,7 @@
       = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
       %br
       = fb_name(:uid => message.user_fb_id)
-%a{:name => 'bottom'}     
+%a{:name => 'messages_bottom'}     
 :javascript
   var polling_data = {
       "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
@@ -71,7 +71,11 @@
 
         function scrollDown() {
           FB.XFBML.parse(document.getElementById('booking_messages'));
-          //var messages = document.getElementById("booking_messages");
+          var messages = document.getElementById("booking_messages");
           //messages.scrollTop = messages.scrollHeight;
-          window.location.href = '#bottom';
+          if(parseInt(messages.scrollHeight) > 600){
+            window.location.href = '#messages_bottom';
+          }else{
+            window.location.href = '#messages_top';
+          }
         }
