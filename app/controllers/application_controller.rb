@@ -30,6 +30,15 @@ protected
     current_user.present?
   end
   
+  def subscription_required
+    login_required
+    unless current_user.subscribed?
+      flash.now[:alert] = "Please, select the subscription plane to continue."
+      redirect_to edit_subscription_path
+      return false
+    end
+  end
+  
   # redirect to specified application page.
   def redirect_from_params
     if params[:redirect_to]

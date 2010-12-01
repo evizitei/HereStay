@@ -1,0 +1,54 @@
+%h2 Subscription
+
+#user_form.colored-bg{:style => "padding: 10px"}
+  = semantic_form_for @subscription, :as => :subscription, :url => subscription_path, :html => {:method => :put}  do |f|
+    = f.semantic_errors 
+    = f.inputs do
+      = f.input :plan, :as => :radio, :collection => Subscription::Plans
+
+      - if current_user.subscribed? 
+        = f.input :change_billing_info, :as => :boolean
+      - else
+        = f.input :change_billing_info, :as => :hidden, :input_html => {:value => true}
+
+    = f.inputs :id => 'billing_info', :name => 'Billing info', :class => (current_user.subscribed? && !@subscription.change_billing_info? && 'hidden') do
+      = f.input :first_name
+      = f.input :last_name
+      = f.input :address1
+      = f.input :address2
+      = f.input :city
+      = f.input :state
+      = f.input :zip
+      = f.input :country, :collection => COUNTRY_CODES
+      = f.input :phone, :as => :phone
+      
+      = f.inputs :name => "Credit card" do
+        = f.input :card_number, :label => 'Number', :hint => 'Credit card number, dashes and spaces are okay'
+        = f.input :card_month , :label => 'Month', :hint => "Credit card's expiration date's month", :input_html => {:size => 2}
+        = f.input :card_year, :label => 'Year', :hint => "Credit card's expiration date's 4-digit year", :input_html => {:size => 4}
+        = f.input :card_verification_value, :label => 'CVV Code', :hint => "CVV code on the signature panel, or above the card number on AmEx", :input_html => {:size => 5}
+      
+    = f.buttons do
+      = fb_button do
+        = submit_tag "Save"
+      = fb_button 'Cancel', account_path
+
+  .clearfix
+  
+:javascript
+  $(function(){
+    var checkSubscriptionPlan = function(){
+      var target = $('#billing_info');
+      if($('#subscription_change_billing_info').is(':checked') || $('#subscription_change_billing_info').attr('type')=='hidden'){
+        target.slideDown('slow');
+      }else{
+        target.slideUp('slow');
+      }
+    };
+    
+    $('#subscription_change_billing_info').click(function(){
+      checkSubscriptionPlan();
+    });
+    
+    checkSubscriptionPlan();
+  });

@@ -21,6 +21,7 @@ gem 'dynamic_form'
 gem 'twitter', '0.9.12'
 gem 'bitly'
 gem "moonshado-sms", "1.1.0"
+gem "recurly"
 
 group :development,:test,:cucumber do
   gem 'cucumber'

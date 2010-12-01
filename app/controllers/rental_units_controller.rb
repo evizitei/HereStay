@@ -1,6 +1,7 @@
 class RentalUnitsController < ApplicationController
   before_filter :oauth_obj,  :except => %w(index share owned_by)
   before_filter :login_required, :except => %w(index show share owned_by)
+  before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
 
   def index

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101122132749) do
+ActiveRecord::Schema.define(:version => 20101130092623) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20101122132749) do
     t.datetime "fb_location_update_at"
     t.string   "fb_lng"
     t.string   "fb_lat"
+    t.string   "subscription_plan"
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
