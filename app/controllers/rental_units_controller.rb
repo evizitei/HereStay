@@ -48,12 +48,6 @@ class RentalUnitsController < ApplicationController
 
   def show
     @rental_unit = RentalUnit.find(params[:id])
-    @og_meta = {:title=>@rental_unit.name,
-                :type=>"hotel",
-                :image=> @rental_unit.primary_photo ? @rental_unit.primary_photo.picture.url(:thumb) : nil,
-                :url=>rental_unit_url(@rental_unit),
-                :site_name=>"HereStay",
-                :app_id=>Facebook::APP_ID}
   end
 
   def destroy
@@ -81,42 +75,18 @@ class RentalUnitsController < ApplicationController
 
   def share
     @rental_unit = RentalUnit.find(params[:id])
-    json = {'id' => @rental_unit.id,
-            'name' =>@rental_unit.name, 
-            'description' => @rental_unit.description,
-            'message' => @rental_unit.user_fb_streams.for_user(current_user).first.try(:message)||'',
-            'image' => (@rental_unit.primary_photo ? @rental_unit.primary_photo.picture.url(:medium) : ''),
-            'url' => "http://apps.facebook.com/#{fb_app_name}" + rental_unit_path(@rental_unit)}.to_json
-    render :json => json
+    render :json => @rental_unit.share_json_for(current_user)
   end
   
   def store_last_post
     fb_stream = current_user.fb_streams.find_or_initialize_by_rental_unit_id(params[:id])
     fb_stream.message = current_user.get_stream_publishing(params[:post_id])
-    if fb_stream.save
-      render :text => 'ok'
-    else
-      render :text => 'error'
-    end
+    fb_stream.save
+    render :text => 'ok'
   end
 
   def owned_by
     current_user = User.find params[:user_id]
     @rental_units = current_user.rental_units.paginate(:page => params[:page], :per_page => 1)
-  end
-  
-  def promotion_form
-    @rental_unit = RentalUnit.find(params[:id])
-  end
-  
-  def promote
-    @rental_unit = RentalUnit.find(params[:id])
-    graph = Koala::Facebook::GraphAPI.new(current_user.authorize_signature)
-    graph.put_wall_post("#{params["canned_text"]} -- #{params["Comments"]}",{:name=>@rental_unit.name,
-                                                                             :link=>rental_unit_url(@rental_unit.id),
-                                                                             :caption=>"Provided by HereStay",
-                                                                             :description=>@rental_unit.description,
-                                                                             :picture=>@rental_unit.primary_photo.picture.url(:medium)})
-    redirect_to manage_rental_units_path
   end
 end

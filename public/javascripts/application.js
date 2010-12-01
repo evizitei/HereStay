@@ -50,7 +50,7 @@ function checkNewMessages(chat_check_url){
 function rentalUnitShare(data){
   var share = {
     method: 'stream.publish',
-    display: 'popup',
+    display: 'iframe',
     user_message_prompt: 'Share your thoughts about this property',
     message: data.message,
     attachment: {
@@ -77,6 +77,7 @@ function rentalUnitShare(data){
       })
     }
   });
+  
 }
 
 $(document).ready(function() {
@@ -96,11 +97,16 @@ $(document).ready(function() {
   });
   
   $('.fb_share a').click(function(){
+    var el = $(this);
     $.ajax({
       url: this.href,
       type: "GET",
       dataType: "json",
-      success: rentalUnitShare
+      success: function(data){
+        rentalUnitShare(data);        
+        $('.fb_dialog').prepend('<a name="fb_bottom" style="position:absolute;top:-100px;z-index:9999999999999;"></a>');
+        window.location.href = '#fb_bottom';
+      }
     })
     return false;
   })

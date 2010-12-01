@@ -147,7 +147,8 @@ class RentalUnit < ActiveRecord::Base
   
   # TODO: Dry it using fb_url helper
   def fb_url
-    "http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(rental_unit_path(self))}"
+    #"http://apps.facebook.com/#{Facebook::APP_NAME}/?redirect_to=#{Rack::Utils.escape(rental_unit_path(self))}"
+    "http://apps.facebook.com/#{Facebook::APP_NAME}" + rental_unit_path(self)
   end
   
   # load attributes from vrbo listing
@@ -281,5 +282,14 @@ class RentalUnit < ActiveRecord::Base
   public  
   def lng
     self.long
+  end
+  
+  def share_json_for(user)
+    json = {'id' => self.id,
+            'name' =>self.name, 
+            'description' => self.description,
+            'message' => self.user_fb_streams.for_user(user).first.try(:message)||'',
+            'image' => (self.primary_photo ? self.primary_photo.picture.url(:medium) : ''),
+            'url' => self.fb_url}.to_json
   end
 end
