@@ -47,6 +47,38 @@ function checkNewMessages(chat_check_url){
   }
 }
 
+function rentalUnitShare(data){
+  var share = {
+    method: 'stream.publish',
+    display: 'popup',
+    user_message_prompt: 'Share your thoughts about this property',
+    message: data.message,
+    attachment: {
+      name: data.name,
+      description: data.description,
+      href: data.url,
+      media: [
+        {
+          type: 'image', 
+          src: data.image,
+          href: data.url
+         }
+      ]
+    }
+  };
+  FB.ui(share, function(response) {
+    if (response && response.post_id) {
+      url = '/rental_units/' + data.id + '/store_last_post'
+      $.ajax({
+        url: url,
+        data: {post_id: response.post_id},
+        type: "POST",
+        dataType: "json",
+      })
+    }
+  });
+}
+
 $(document).ready(function() {
   /* Initial new message poll */
   checkNewMessages();
@@ -62,4 +94,15 @@ $(document).ready(function() {
     ajaxCache: true,
     'ajaxSettings': {dataType: 'script'}
   });
+  
+  $('.fb_share a').click(function(){
+    $.ajax({
+      url: this.href,
+      type: "GET",
+      dataType: "json",
+      success: rentalUnitShare
+    })
+    return false;
+  })
 });
+

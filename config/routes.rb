@@ -24,6 +24,8 @@ Micasasucasa::Application.routes.draw do
       put :load_from_vrbo
       get :promotion_form
       post :promote
+      get :share
+      post :store_last_post
     end
     
     resources :bookings do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130035609) do
+ActiveRecord::Schema.define(:version => 20101130212449) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -143,6 +143,14 @@ ActiveRecord::Schema.define(:version => 20101130035609) do
     t.integer  "user_id"
     t.integer  "booking_id"
     t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_fb_streams", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "rental_unit_id"
+    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

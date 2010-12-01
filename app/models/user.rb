@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :rewards
   has_many :bookings, :through => :rental_units
   has_many :messages,:class_name=>"BookingMessage",:foreign_key=>"recipient_id"
+  has_many :fb_streams, :class_name => "UserFbStream"
   
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   
@@ -140,5 +141,12 @@ class User < ActiveRecord::Base
     self.last_name = fb_profile['last_name']
     self.middle_initial = nil
     self.company = nil
+  end
+  
+  public
+  def get_stream_publishing(post_id)
+    if post = FacebookProxy.new(self.access_token).get_object(post_id)
+      post['message']
+    end  
   end
 end

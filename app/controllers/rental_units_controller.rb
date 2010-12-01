@@ -1,6 +1,6 @@
 class RentalUnitsController < ApplicationController
-  before_filter :oauth_obj,  :except => %w(index share owned_by)
-  before_filter :login_required, :except => %w(index show share owned_by)
+  before_filter :oauth_obj,  :except => %w(index owned_by)
+  before_filter :login_required, :except => %w(index show owned_by)
   respond_to :html
 
   def index
@@ -81,8 +81,22 @@ class RentalUnitsController < ApplicationController
 
   def share
     @rental_unit = RentalUnit.find(params[:id])
-    unless @rental_unit.user == current_user
-      redirect_to "http://apps.facebook.com/#{fb_app_name}"
+    json = {'id' => @rental_unit.id,
+            'name' =>@rental_unit.name, 
+            'description' => @rental_unit.description,
+            'message' => @rental_unit.user_fb_streams.for_user(current_user).first.try(:message)||'',
+            'image' => (@rental_unit.primary_photo ? @rental_unit.primary_photo.picture.url(:medium) : ''),
+            'url' => "http://apps.facebook.com/#{fb_app_name}" + rental_unit_path(@rental_unit)}.to_json
+    render :json => json
+  end
+  
+  def store_last_post
+    fb_stream = current_user.fb_streams.find_or_initialize_by_rental_unit_id(params[:id])
+    fb_stream.message = current_user.get_stream_publishing(params[:post_id])
+    if fb_stream.save
+      render :text => 'ok'
+    else
+      render :text => 'error'
     end
   end
 
