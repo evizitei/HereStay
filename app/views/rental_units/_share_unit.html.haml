@@ -1,4 +1,3 @@
 .share_box
-  %label.fbButton.fb_share
-    %a{:href => share_rental_unit_path(share_unit)}
-      %input{:type => 'button', :value => 'Share'}
+  /%fb:like{:href=>rental_unit_url(share_unit)}
+  =fb_button("Share", share_rental_unit_path(share_unit), :class_name => 'fb_share')
