@@ -130,6 +130,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def subscribed?
+    subscription_plan
+  end
+  
   private
   def need_capture_fb_profile?
     use_fb_profile_changed? && use_fb_profile?

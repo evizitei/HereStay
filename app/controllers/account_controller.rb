@@ -1,5 +1,6 @@
 class AccountController < ApplicationController
   before_filter :oauth_obj
+  before_filter :login_required
   respond_to :html
   
   def show

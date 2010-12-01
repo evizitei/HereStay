@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20101130212449) do
     t.datetime "fb_location_update_at"
     t.string   "fb_lng"
     t.string   "fb_lat"
+    t.string   "subscription_plan"
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"

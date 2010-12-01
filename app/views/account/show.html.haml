@@ -1,6 +1,8 @@
-= fb_button 'Edit Account', edit_account_path, :class_name => 'f_left'
-= fb_button 'My Properties', manage_rental_units_path, :class_name => 'f_left'
-= fb_button "Subscribe for Full Features","https://herestay-test.recurly.com/subscribe/basic",:class_name=>"f_left"
+.f_left
+  = fb_button 'Edit Account', edit_account_path
+  = fb_button 'My Properties', manage_rental_units_path
+  - unless current_user.subscribed?
+    = fb_button "Subscribe for Full Features", edit_subscription_path
 %br
 %br
 #user_info
@@ -22,6 +24,13 @@
     %p
       %strong Twitter:
       =current_user.twitter_name
+  - if current_user.subscribed?
+    %p
+      %strong Subscription plane:
+      = current_user.subscription_plan.humanize
+      %br
+      = fb_button "Change subscription plane", edit_subscription_path
+      = fb_button "Cancel subscription", subscription_path, :method => :delete
 #my_bookings
   %h3 Where I am staying
   %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
