@@ -33,7 +33,7 @@ protected
   def subscription_required
     login_required
     unless current_user.subscribed?
-      flash.now[:alert] = "Please, select the subscription plane to continue."
+      flash[:alert] = "Please, select the subscription plane to continue."
       redirect_to edit_subscription_path
       return false
     end
