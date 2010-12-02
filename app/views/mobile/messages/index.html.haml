@@ -1,20 +1,20 @@
-=javascript_include_tag "jquery"
 %h2 Discussion on #{@booking.rental_unit.name}
 
-= form_for :booking_message, :url=> mobile_booking_messages_url(@booking),:html=>{:id=>"chat_form",:onsubmit2=>"onSubmit(); return false;"} do |f|
+= form_for :booking_message, :url => collection_path, :html=> {:id=>"chat_form", :onsubmit2 => "onSubmit(); return false;"} do |f|
   =f.text_area :message,{:rows=>6,:cols=>55}
   %br
   =f.submit "Send Message"
 
 #booking_messages
-  -@booking.booking_messages.by_date.each do |message|
+  - @booking.booking_messages.by_date.each do |message|
     .message{:class=>message.html_class}
       .message_body
         %i= show_date message.created_at, :us_date
         %br
         %strong=message.message
       
-%a{:name => 'messages_bottom'}     
+%a{:name => 'messages_bottom'}
+
 :javascript
   var polling_data = {
     "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"
@@ -24,7 +24,7 @@
     $("#booking_message_message").focus();        
     setInterval(function() {
       $.ajax({
-        url: "#{mobile_booking_messages_url(@booking)}",
+        url: "#{collection_path}",
         type: "GET",
               data: polling_data,
               dataType: "json",
@@ -35,7 +35,7 @@
 
         function onSubmit() {
           $.ajax({
-            url: "#{mobile_booking_messages_url(@booking)}",
+            url: "#{collection_path}",
             type: "POST",
             dataType: "json",
             data: $("#chat_form").serialize(),

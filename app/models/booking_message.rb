@@ -1,4 +1,5 @@
 class BookingMessage < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
   belongs_to :booking
   belongs_to :recipient,:class_name=>"User"
   has_one :rental_unit, :through => "booking"
@@ -30,6 +31,7 @@ class BookingMessage < ActiveRecord::Base
   
   # send SMS to recipient if he is offline
   def send_sms!
-    recipient.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(message.booking_id, :user_id => message.recipient_id)}") if !recipient.online? and recipient.available_by_phone?
+    msg =  "You have a new message in HereStay: #{mobile_booking_messages_url(self.booking_id, :host => ActionMailer::Base.default_url_options[:host])}"
+    recipient.deliver_message!(msg) if !recipient.online? and recipient.available_by_phone?
   end
 end
