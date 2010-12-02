@@ -4,8 +4,7 @@ class SubscriptionsController < ApplicationController
   respond_to :html
   
   def edit
-    @subscription = Subscription.new({:plan => current_user.subscription_plan})
-    @subscription.user = current_user
+    @subscription = current_user.subscription
   end
   
   def update
@@ -20,8 +19,7 @@ class SubscriptionsController < ApplicationController
   end
   
   def destroy
-    @subscription = Subscription.new({:user => current_user})
-    @subscription.destroy
+    current_user.subscription.destroy
     flash[:notice] = "Your subscription was canceled."
     respond_with(:location => account_path)
   end

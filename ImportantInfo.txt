@@ -18,7 +18,7 @@ user_name: herestay
 password: 8OtHAjYswvXuSF3Z
 
 Recurly:
-url: https://app.recurly.com/login
+url:https://here-stay-test.recurly.com/overview
 login: dr.demax@gmail.com
 pass: G5fFW6Ex
 valid CC number: 4111-1111-1111-1111

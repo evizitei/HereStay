@@ -130,6 +130,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def subscription
+    Subscription.new({:plan => self.subscription_plan, :user => self})
+  end
+  
   def subscribed?
     subscription_plan
   end
