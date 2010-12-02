@@ -13,6 +13,7 @@ class BookingMessage < ActiveRecord::Base
   
   after_create do |message| 
     Delayed::Job.enqueue(BookingMessageNotifier.new(message))
+    self.send_sms!
   end
   before_create :set_recipient
   
@@ -25,5 +26,10 @@ class BookingMessage < ActiveRecord::Base
   def set_recipient
     recipient_fb_id = self.user_fb_id == self.booking.renter_fb_id ? self.booking.rental_unit.user.fb_user_id : booking.renter_fb_id
     self.recipient = User.where({:fb_user_id => recipient_fb_id}).first
+  end
+  
+  # send SMS to recipient if he is offline
+  def send_sms!
+    recipient.deliver_message!("You have a new message in HereStay: #{mobile_discuss_booking_url(message.booking_id, :user_id => message.recipient_id)}") if !recipient.online? and recipient.available_by_phone?
   end
 end

@@ -22,6 +22,7 @@ gem 'twitter', '0.9.12'
 gem 'bitly'
 gem "moonshado-sms", "1.1.0"
 gem "recurly"
+gem 'has_scope'
 
 group :development,:test,:cucumber do
   gem 'cucumber'

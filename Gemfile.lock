@@ -210,6 +210,7 @@ DEPENDENCIES
   factory_girl_rails
   formtastic
   haml
+  has_scope
   httparty
   inherited_resources (= 1.1.2)
   koala

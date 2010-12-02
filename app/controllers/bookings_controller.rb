@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :oauth_obj
+  before_filter :login_required
   before_filter :get_rental_unit, :only => %w(index new create)
   before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
   
@@ -48,12 +48,7 @@ class BookingsController < ApplicationController
       # find existing uncomplete booking or create new for user current_user
       @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
     end
-  end
-  
-  def mobile_discuss
-    get_booking
-    current_user = User.find(params[:user_id])
-    render :layout=>nil
+    redirect_to [@booking, :messages]
   end
   
   def confirm

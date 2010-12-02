@@ -57,6 +57,17 @@ Micasasucasa::Application.routes.draw do
     resources :messages
   end
   
+  namespace :mobile do
+    resources :bookings do
+      member do
+        get :discuss
+        get :confirm
+        put :exec_confirm
+      end
+      resources :messages
+    end
+  end
+  
   resource :account, :controller => :account, :only => [:edit, :update, :show]
   resource :subscription, :only => [:edit, :update, :destroy]
   

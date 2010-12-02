@@ -1,40 +1,42 @@
-= fb_button 'Availability Calendar', [@booking.rental_unit, :reservations], :class_name => 'f_right'
--if current_user.id == @booking.rental_unit.user_id
-  = fb_button "Confirm Booking!", confirm_booking_path(@booking), :class_name => 'f_right'
+= fb_button 'Availability Calendar', [parent.rental_unit, :reservations], :class_name => 'f_right'
+-if parent.rental_unit.is_owner?(current_user)
+  = fb_button "Confirm Booking!", confirm_booking_path(parent), :class_name => 'f_right'
 
-%h2== Discussion on #{@booking.rental_unit.name}
+%h2 Discussion on #{parent.rental_unit.name}
 
 #header
-  =render(:partial=>"rental_units/unit_row",:object=>@booking.rental_unit,:locals=>{:admin=>false})
+  =render(:partial=>"rental_units/unit_row",:object=>parent.rental_unit,:locals=>{:admin=>false})
 
-.message_form{:style => 'background: #FFC67D; width:705px;padding: 20px 20px 10px 20px;margin-bottom: 10px;'}     
-  = form_for :booking_message,:url=> "#",:html=>{:id=>"chat_form",:onsubmit=>"onSubmit(); return false;"} do |f|
+.message_form.colored-bg{:style => 'width:705px;padding: 20px 20px 10px 20px;margin-bottom: 10px;'}
+  = form_for :booking_message, :url=> collection_path, :html => {:method => :post, :id => "chat_form", :onsubmit => "onSubmit(); return false;"} do |f|
     =f.text_area :message,{:rows=>6,:cols=>55}
-    
     = fb_button do
       =f.submit "Send Message"
-%a{:name => 'messages_top'}  
+
+%a{:name => 'messages_top'}
 #booking_messages
-  -@booking.booking_messages.by_date.each do |message|
+  - parent.booking_messages.by_date.each do |message|
     .message{:class=>message.html_class}
       .message_body
-        %i= message.created_at.strftime("%m/%d/%Y")
+        %i= show_date message.created_at, :us_date
         %br
         %strong=message.message
         
       = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
       %br
       = fb_name(:uid => message.user_fb_id)
-%a{:name => 'messages_bottom'}     
+
+%a{:name => 'messages_bottom'}
+
 :javascript
   var polling_data = {
-      "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"};
+      "last_message" : "#{parent.booking_messages.by_date.last.try(:id)}"};
 
   $(document).ready(function() {
-    $("#booking_message_message").focus();        
+    $("#booking_message_message").focus();
     setInterval(function() {
       $.ajax({
-        url: "#{booking_messages_url(@booking)}",
+        url: "#{collection_url}",
         type: "GET",
               data: polling_data,
               dataType: "json",
@@ -45,7 +47,7 @@
 
         function onSubmit() {
           $.ajax({
-            url: "#{booking_messages_url(@booking)}",
+            url: "#{collection_url}",
             type: "POST",
             dataType: "json",
             data: $("#chat_form").serialize(),

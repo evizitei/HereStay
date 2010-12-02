@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   helper_method :fb_app_name, :current_user, :logged_in?
   
   before_filter :redirect_from_params
-
+  before_filter :oauth_obj
 protected
   
   def oauth_obj
@@ -17,7 +17,7 @@ protected
   
   def login_required
     unless current_user
-      render "shared/login_required", :layout => 'canvas'
+      render "shared/login_required"
       return false
     end
   end
@@ -44,5 +44,10 @@ protected
     if params[:redirect_to]
       redirect_to params[:redirect_to]
     end
+  end
+  
+  
+  def user_puls
+    current_user.pulse! if current_user
   end
 end
