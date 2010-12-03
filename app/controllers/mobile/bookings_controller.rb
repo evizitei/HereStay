@@ -6,15 +6,15 @@ class Mobile::BookingsController < InheritedResources::Base
   actions :show, :update, :edit
   
   def update
-    update!(:notice => 'Booking was confirmed.')    
+    update!(:notice => 'Booking was confirmed.')
   end
   
   protected
-  def resource
-    @booking ||= current_user.bookings.find(params[:id])
+  def begin_of_association_chain
+    current_user
   end
   
   def update_resource(object, attributes)
-    object.save
+    object.update_attributes_and_confirm(attributes)
   end
 end

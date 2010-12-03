@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :discounts
   has_many :rental_units
   has_many :rewards
-  has_many :bookings, :through => :rental_units
+  has_many :bookings, :through => :rental_units, :readonly => false
   has_many :messages,:class_name=>"BookingMessage",:foreign_key=>"recipient_id"
   has_many :fb_streams, :class_name => "UserFbStream"
   
