@@ -34,10 +34,12 @@ class MessagesController < ApplicationController
   end
   
   protected
-  # FIXME: This method is not called by InheritResources
-  # We should find the way to disallow user to view message for somebody else's bookings
   def parent
     @booking = Booking.for_user(current_user).find(params[:booking_id])
+  end
+  
+  def begin_of_association_chain
+    parent
   end
   
   def create_resource(object)
