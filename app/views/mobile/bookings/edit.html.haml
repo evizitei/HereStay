@@ -23,11 +23,11 @@
         %tbody
           %tr.dataRow
             %th.label Start Date:
-            %td.data=date_picker_tag("booking[start_date]",resource.start_date)
+            %td.data=f.date_select :start_date
             %td.rightCol
           %tr.dataRow
             %th.label Stop Date:
-            %td.data=date_picker_tag("booking[stop_date]",resource.stop_date)
+            %td.data=f.date_select :stop_date
             %td.rightCol
           %tr.dataRow
             %th.label Amount:
