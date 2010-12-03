@@ -1,4 +1,6 @@
 %h2 Discussion on #{@booking.rental_unit.name}
+-if parent.rental_unit.is_owner?(current_user)
+  = fb_button "Confirm Booking!", edit_mobile_booking_path(parent), :class_name => 'f_right'
 
 = form_for :booking_message, :url => collection_path, :html=> {:id=>"chat_form", :onsubmit2 => "onSubmit(); return false;"} do |f|
   =f.text_area :message,{:rows=>6,:cols=>55}

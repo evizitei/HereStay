@@ -1,6 +1,11 @@
 module ApplicationHelper
   def fb_login_button
-    "<fb:login-button onlogin=\"window.top.location.href='http://apps.facebook.com/#{Facebook::APP_NAME}/'\"  perms=\"publish_stream,offline_access,user_birthday,email,user_location\"></fb:login-button>".html_safe
+    url = request.url  =~ /mobile/ ? request.url : "http://apps.facebook.com/#{Facebook::APP_NAME}/"
+    "<fb:login-button onlogin=\"window.top.location.href='#{url}'\"  perms=\"publish_stream,offline_access,user_birthday,email,user_location\"></fb:login-button>".html_safe
+  end
+  
+  def fb_mobile_login_button
+    "<fb:login-button onlogin=\"window.top.location.href='#{controller.request.uri}'\"  perms=\"publish_stream,offline_access,user_birthday,email,user_location\"></fb:login-button>".html_safe
   end
   
   def fb_connect_async_js
