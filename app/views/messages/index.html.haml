@@ -1,6 +1,6 @@
 = fb_button 'Availability Calendar', [parent.rental_unit, :reservations], :class_name => 'f_right'
 -if parent.rental_unit.is_owner?(current_user)
-  = fb_button "Confirm Booking!", confirm_booking_path(parent), :class_name => 'f_right'
+  = fb_button "Confirm Booking!", [:confirm, parent.rental_unit, parent ], :class_name => 'f_right'
 
 %h2 Discussion on #{parent.rental_unit.name}
 

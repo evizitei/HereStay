@@ -1,62 +1,37 @@
 class BookingsController < ApplicationController
+  inherit_resources
+  
   before_filter :login_required
-  before_filter :get_rental_unit, :only => %w(index new create)
-  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
+  
+  defaults :resource_class => Booking, :collection_name => 'bookings', :instance_name => 'booking'
+  respond_to :html
+  belongs_to :rental_unit
+  actions :index, :new, :create, :edit, :update, :show, :confirm, :exec_confirm
+  helper_method :parent
   
   rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
-  respond_to :html
-  def index
-    @bookings = @rental_unit.bookings
-  end
-  
-  def show
-  end
-  
-  def new
-    @booking = @rental_unit.bookings.build
-  end
   
   def create
-    @booking = @rental_unit.bookings.build(params[:booking])
-    @booking.complete
-    respond_to do |format|
-      if @booking.save
-        flash[:notice] = 'Booking was created successfully.'
-        format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
-      else
-        format.html{render 'new'}
-      end
-    end
-  end
-  
-  def edit
-     @rental_unit = @booking.rental_unit
+    create!(:location => collection_url, :notice => 'Booking was created successfully.')
   end
   
   def update
-    if @booking.update_attributes(params[:booking])
-      flash[:notice] = 'Booking was updated successfully.'
-    end
-    respond_with(@booking, :location => rental_unit_bookings_url(@booking.rental_unit))
+    update!(:location => collection_url, :notice => 'Booking was created successfully.')
   end
-  
+ 
   # TODO: move to message controller
   def discuss
-    if params[:id]
-      get_booking
-    elsif params[:rental_unit_id]
-      # find existing uncomplete booking or create new for user current_user
-      @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
-    end
+    @rental_unit =  RentalUnit.find(params[:rental_unit_id])
+    @booking = @rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
     redirect_to [@booking, :messages]
   end
-  
+
   def confirm
   end
   
   def exec_confirm
     respond_to do |format|
-      if  @booking.update_attributes_and_confirm(params[:booking])
+      if  resource.update_attributes_and_confirm(params[:booking])
         flash[:notice] = 'Booking was confirmed.'
         format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
       else
@@ -76,13 +51,19 @@ class BookingsController < ApplicationController
   end
   
   private
-    def get_rental_unit
-      @rental_unit = RentalUnit.find(params[:rental_unit_id])
-    end
-    
-    def get_booking
-      @booking = Booking.find(params[:id])
-    end
+  def parent
+    @rental_unit ||= current_user.rental_units.find(params[:rental_unit_id])
+  end
+  
+  def begin_of_association_chain
+    parent
+  end  
+  
+  def create_resource(object)
+    object.complete
+    object.save
+  end
+
     
     # Handle errors occure in after_save callback (post to wall, post Vrbo reservation)
     def confirmation_error
