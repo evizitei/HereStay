@@ -1,63 +1,31 @@
 class RentalUnitsController < ApplicationController
-  before_filter :oauth_obj,  :except => %w(index owned_by availabilities)
+  inherit_resources
+  
   before_filter :login_required, :except => %w(index show owned_by availabilities)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
-
   respond_to :html
 
-  def index
-    @app_page = (params[:profile_id].to_s == "123982284313527")
-    if @app_page
-      offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
-      @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
-    else
-      @rental_units = RentalUnit.find_all_by_fb_user_id(params[:profile_id])
-      if @rental_units.size == 0
-        @app_page = true
-        offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
-        @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
-      end
-    end
-  end
-
-  def manage
-    @rental_units = current_user.rental_units
-  end
-
-  def new
-    @rental_unit = RentalUnit.new()
-  end
-
-  def edit
-    @rental_unit = current_user.rental_units.find(params[:id])
-  end
-
   def create
-    @rental_unit = current_user.rental_units.build(params[:rental_unit])
-    if @rental_unit.save
-      flash[:notice] = 'Rental unit was created successfully'
-    end
-    respond_with(@rental_unit, :location => manage_rental_units_url)
+    create!(:notice => 'Rental unit was created successfully', :location => manage_rental_units_url)
   end
 
   def update
-    @rental_unit = current_user.rental_units.find(params[:id])
-    if @rental_unit.update_attributes(params[:rental_unit])
-      flash[:notice] = 'Rental unit was updated successfully'
-    end
-    respond_with(@rental_unit, :location => manage_rental_units_url)
-  end
-
-  def show
-    @rental_unit = RentalUnit.find(params[:id])
+    update!(:notice => 'Rental unit was updated successfully', :location => manage_rental_units_url)
   end
 
   def destroy
-    @rental_unit = current_user.rental_units.find(params[:id])
-    @rental_unit.destroy
-    redirect_to manage_rental_units_url
+    destroy!(:notice => 'Rental unit was destroyed successfully', :location => manage_rental_units_url)
   end
-
+  
+  def owned_by
+    @rental_units = collection
+  end
+  
+  def manage
+    @rental_units = collection
+  end
+  
+  
   def load_from_vrbo
     rental_unit = current_user.rental_units.find(params[:id])
     rental_unit.load_from_vrbo!
@@ -87,11 +55,6 @@ class RentalUnitsController < ApplicationController
     render :text => 'ok'
   end
 
-  def owned_by
-    current_user = User.find params[:user_id]
-    @rental_units = current_user.rental_units.paginate(:page => params[:page], :per_page => 1)
-  end
-  
   def availabilities
     @rental_unit = RentalUnit.find(params[:id])
     respond_to do |format|
@@ -99,4 +62,21 @@ class RentalUnitsController < ApplicationController
       format.js{render :partial => 'calendar.html.haml', :object => @rental_unit}
     end
   end
+  
+  protected
+    # Disable not-owner to manage reservations
+    def begin_of_association_chain
+      # raise self.action_name.inspect
+      case self.action_name
+        when 'index', 'show' : super
+        when 'owned_by' :
+          @user=User.find(params[:user_id])
+        else
+          current_user
+      end
+    end
+    
+    def collection
+      @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+    end
 end

@@ -1,7 +1,7 @@
-= fb_profile_pic(:size=>"small",:uid=>current_user.fb_user_id)
-%fb:header
+= fb_profile_pic(:size=>"small",:uid=>@user.fb_user_id)
+%h1
   Properties belonging to 
-  = fb_name(:uid=>current_user.fb_user_id,:useyou=>"false")
+  = fb_name(:uid=>@user.fb_user_id,:useyou=>"false")
 %br
-=render :partial=>"unit_row",:collection=>@rental_units,:locals=>{:admin=>false}
-=will_paginate(@rental_units,:renderer=>"FacebookLinkRenderer")
+=render :partial=>"unit_row", :collection=>collection
+=will_paginate(collection,:renderer=>"FacebookLinkRenderer")
