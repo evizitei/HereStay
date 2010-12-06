@@ -1,6 +1,6 @@
 class RentalUnitsController < ApplicationController
-  before_filter :oauth_obj,  :except => %w(index owned_by)
-  before_filter :login_required, :except => %w(index show owned_by)
+  before_filter :oauth_obj,  :except => %w(index owned_by availabilities)
+  before_filter :login_required, :except => %w(index show owned_by availabilities)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
 
   respond_to :html
@@ -90,5 +90,13 @@ class RentalUnitsController < ApplicationController
   def owned_by
     current_user = User.find params[:user_id]
     @rental_units = current_user.rental_units.paginate(:page => params[:page], :per_page => 1)
+  end
+  
+  def availabilities
+    @rental_unit = RentalUnit.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js{render :partial => 'calendar.html.haml', :object => @rental_unit}
+    end
   end
 end

@@ -85,6 +85,22 @@ $(document).ready(function() {
   checkNewMessages();
   
   /* Initial clue Tips */
+  $('a.availabilities_button').cluetip({
+    showTitle: false,
+    width: 350,
+    height: 'auto',
+    sticky: true,
+    activation: 'click',
+    fx: { open: 'slideDown' },
+    ajaxCache: true,
+    'ajaxSettings': {dataType: 'script'},
+    onShow: function(ct, c){
+      $('.calendar').fullCalendar('today');
+    },
+    topOffset: -100
+  });
+  
+  /* Initial clue Tips */
   $('a.clueTip').cluetip({
     showTitle: false,
     width: 580,
@@ -110,5 +126,7 @@ $(document).ready(function() {
     })
     return false;
   })
+  
+  
 });
 

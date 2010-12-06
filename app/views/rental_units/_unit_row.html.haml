@@ -20,5 +20,8 @@
       = fb_button 'Bookings', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
       = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
 
-  =render(:partial=>"rental_units/share_unit",:object=>unit_row)
+  %div
+    .f_left=render(:partial=>"rental_units/share_unit",:object=>unit_row)
+    .f_left= fb_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
+    .clearfix
   .clearfix

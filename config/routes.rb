@@ -24,11 +24,16 @@ Micasasucasa::Application.routes.draw do
       put :load_from_vrbo
       get :share
       post :store_last_post
+      get :availabilities
     end
     
     resources :bookings do
       collection do
         get :discuss
+      end
+      member do
+        get :confirm
+        put :exec_confirm
       end
     end
     resources :photos
@@ -55,6 +60,7 @@ Micasasucasa::Application.routes.draw do
       get :renter_confirm
     end
     resources :messages
+    match "confirmation"=>"confirmations#index"
   end
   
   namespace :mobile do

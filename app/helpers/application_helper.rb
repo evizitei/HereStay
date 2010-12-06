@@ -35,7 +35,7 @@ module ApplicationHelper
       text = args.first
       url = args.second
       options = args.third || {}
-      link = link_to(url, :method => options[:method],:title=>text ){ "<input type=button value=\"#{text}\">" }
+      link = link_to(url, :method => options[:method],:title=>text ,:rel => options[:rel], :class => options[:link_class]){ "<input type=button value=\"#{text}\">" }
       "<label class='fbButton #{options[:class_name]}'>#{link}</label>".html_safe
     end
   end
@@ -170,5 +170,14 @@ module ApplicationHelper
     content_tag(:a, :href => "http://www.facebook.com/profile.php?id=#{options[:uid]}", :target => 'top', :class => 'fb-profile-link') do
       content_tag 'fb:name', '', options
     end
+  end
+  
+  def rental_unit_availabilities(rental_unit)
+    row = "{title: 'Not available', end: new Date('#{Time.now.strftime("%m/%d/%Y")}')}#{',' if rental_unit.reservations.size > 0}"
+    rental_unit.reservations.each_with_index do |reservation, i|
+      start_at = (i == 0 && reservation.start_at.to_date <= Time.now.to_date) ? Time.now.to_date + 1.day : reservation.start_at
+      row += "{title: 'Not available', start: new Date('#{start_at.strftime("%m/%d/%Y")}'), end: new Date('#{reservation.end_at.strftime("%m/%d/%Y")}')}#{',' if (i+1) < (rental_unit.reservations.size)}"
+    end
+    row
   end
 end
