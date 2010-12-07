@@ -46,10 +46,10 @@
       -@my_bookings.each do |booking|
         %tr
           %td{:style=>"padding:3px;font-size:10pt;"}
-            = link_to booking.id, booking
+            = link_to booking.id, [booking.rental_unit, booking]
           %td{:style=>"padding:3px;font-size:10pt;"}
             -if booking.status != "COMPLETE"
-              = link_to "Discussion", discuss_booking_path(booking)
+              = link_to "Discussion", booking_messages_path(booking)
             -else
               \--Closed--
           %td{:style=>"padding:3px;font-size:10pt;"}
