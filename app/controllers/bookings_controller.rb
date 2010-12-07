@@ -31,7 +31,7 @@ class BookingsController < ApplicationController
   
   def exec_confirm
     respond_to do |format|
-      if  resource.update_attributes_and_confirm(params[:booking])
+      if  resource.update_attributes_and_reserve(params[:booking])
         flash[:notice] = 'Booking was confirmed.'
         format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
       else
@@ -60,7 +60,7 @@ class BookingsController < ApplicationController
   end  
   
   def create_resource(object)
-    object.complete
+    object.reserve
     object.save
   end
 

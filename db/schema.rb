@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130212449) do
+ActiveRecord::Schema.define(:version => 20101207090754) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"

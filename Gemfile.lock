@@ -9,6 +9,12 @@ GIT
     sunspot_rails (1.2.rc4)
       sunspot (= 1.2.rc4)
 
+GIT
+  remote: https://github.com/rubyist/aasm.git
+  revision: 5d715307571786212a516ebae20423b0ef0e2a92
+  specs:
+    aasm (2.2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -199,6 +205,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm!
   addressable
   aws-s3
   bitly

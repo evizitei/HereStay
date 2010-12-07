@@ -23,6 +23,7 @@ gem 'bitly'
 gem "moonshado-sms", "1.1.0"
 gem "recurly"
 gem 'has_scope'
+gem "aasm", :git => 'https://github.com/rubyist/aasm.git'
 
 group :development,:test,:cucumber do
   gem 'cucumber'

@@ -48,7 +48,7 @@
           %td{:style=>"padding:3px;font-size:10pt;"}
             = link_to booking.id, [booking.rental_unit, booking]
           %td{:style=>"padding:3px;font-size:10pt;"}
-            -if booking.status != "COMPLETE"
+            -unless booking.reserved?
               = link_to "Discussion", booking_messages_path(booking)
             -else
               \--Closed--

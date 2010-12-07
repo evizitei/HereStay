@@ -15,6 +15,6 @@ class Mobile::BookingsController < InheritedResources::Base
   end
   
   def update_resource(object, attributes)
-    object.update_attributes_and_confirm(attributes)
+    object.update_attributes_and_reserve(attributes)
   end
 end

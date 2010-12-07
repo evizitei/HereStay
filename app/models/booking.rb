@@ -1,5 +1,21 @@
 require 'httparty'
 class Booking < ActiveRecord::Base
+  include AASM
+  
+  aasm_column :status
+  aasm_initial_state :created  
+  aasm_state :created # just created
+  aasm_state :reserved, :enter => :do_reserve!  # reserved by owner
+  aasm_state :canceled # canceled by renter
+  
+  aasm_event :reserve do
+    transitions :to => :reserved, :from => [:created]
+  end
+  
+  aasm_event :cancel do
+    transitions :to => :canceled, :from => [:created, :reserved]
+  end
+  
   belongs_to :rental_unit
   has_many :booking_messages, :dependent => :destroy
   has_many :discounts
@@ -9,34 +25,17 @@ class Booking < ActiveRecord::Base
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
   
-  before_save :update_reservation, :unless => :recently_confirmed?
-  after_save :run_on_confirm, :if => :recently_confirmed?
+  before_save :update_reservation, :unless => :recently_reserved?
   
-  scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
-  scope :completed, where(:status => 'COMPLETE')
+  scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'reserved']
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
   
-  # change status without saving (like aasm)
-  def complete
-    self.status = "COMPLETE"
-  end
-  
-  def confirm!
-    UserMailer.booking_confirmation(self).deliver
-    self.complete
-    self.save!
-  end
-  
-  def confirmed?
-    self.status == "COMPLETE"
-  end
-  
-  # upadate record and confirm
-  def update_attributes_and_confirm(attributes)
+  # upadate record and reserve
+  def update_attributes_and_reserve(attributes)
     self.attributes = attributes
-    complete
-    save
+    self.reserve
+    self.save
   end
   
   def promotional_fee
@@ -97,20 +96,14 @@ class Booking < ActiveRecord::Base
       :picture=> rental_unit.picture(:medium) || ''
     )
   end
-  
-  def run_on_confirm
-    create_reservation
-    rented_wall_post
-    TwitterWrapper.post_unit_rented(self)
-  end
-  
-  def recently_confirmed?
-    status_changed? && self.confirmed?
+
+  def recently_reserved?
+    status_changed? && self.reserved?
   end
   
   # validate dates for other booking or reservation in this period when booking confirmed and dates are changes
   def require_validate_dates?
-    self.confirmed? && (self.status_changed? || start_date_changed? || stop_date_changed?)
+    self.reserved? && (self.status_changed? || start_date_changed? || stop_date_changed?)
   end
   
   # don't allow to start_at be greater than end_at
@@ -133,7 +126,7 @@ class Booking < ActiveRecord::Base
   end
   
   def exists_other_booking_in_same_period?
-    rental_unit.bookings.completed.exists?([" stop_date > ? AND start_date < ? AND id != ? ", self.start_date.to_s(:db), self.stop_date.to_s(:db), self.id || 0])
+    rental_unit.bookings.reserved.exists?([" stop_date > ? AND start_date < ? AND id != ? ", self.start_date.to_s(:db), self.stop_date.to_s(:db), self.id || 0])
   end
   
   # don't allow create more than one reservation with status UNAVAILABLE or RESERVE in same period
@@ -150,5 +143,12 @@ class Booking < ActiveRecord::Base
   before_create :set_owner_fb_id
   def set_owner_fb_id
     self.owner_fb_id = self.rental_unit.user.fb_user_id
+  end
+  
+  def do_reserve! 
+    create_reservation
+    rented_wall_post
+    TwitterWrapper.post_unit_rented(self)    
+    UserMailer.booking_confirmation(self).deliver
   end
 end
