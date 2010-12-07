@@ -27,9 +27,11 @@ class Booking < ActiveRecord::Base
   
   before_save :update_reservation, :unless => :recently_reserved?
   
-  scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'reserved']
+  scope :not_reserved, :conditions => ["status != 'reserved'"]
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  scope :confirmed, :conditions => ["confirmed_by_renter_at IS NOT NULL"]
+  scope :not_confirmed, :conditions => ["confirmed_by_renter_at IS NULL"]
   
   # upadate record and reserve
   def update_attributes_and_reserve(attributes)
