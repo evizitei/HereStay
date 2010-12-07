@@ -88,7 +88,7 @@ $(document).ready(function() {
   $('a.availabilities_button').cluetip({
     showTitle: false,
     width: 350,
-    height: 'auto',
+    height: 380,
     sticky: true,
     activation: 'click',
     fx: { open: 'slideDown' },
@@ -96,8 +96,7 @@ $(document).ready(function() {
     'ajaxSettings': {dataType: 'script'},
     onShow: function(ct, c){
       $('.calendar').fullCalendar('today');
-    },
-    topOffset: -100
+    }
   });
   
   /* Initial clue Tips */
