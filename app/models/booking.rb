@@ -5,17 +5,22 @@ class Booking < ActiveRecord::Base
   has_many :discounts
   has_many :rewards
   has_one  :reservation, :dependent => :destroy
+  has_many :booking_charges, :dependent => :destroy, :as => :document
   
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
   
   before_save :update_reservation, :unless => :recently_confirmed?
   after_save :run_on_confirm, :if => :recently_confirmed?
-  
+
   scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
   scope :completed, where(:status => 'COMPLETE')
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
+  scope :confirmed, where({:status => "COMPLETE"})
+  scope :with_pending_charges, joins(:booking_charges).where(:funds => {:state => 'pending' })
+  scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = "Booking" AND "funds"."type" = "BookingCharge"').where({:funds => {:id => nil}})
   
   # change status without saving (like aasm)
   def complete
@@ -71,6 +76,10 @@ class Booking < ActiveRecord::Base
   def other_user_than(user)
     fb_id = [self.owner_fb_id,self.renter_fb_id].select{|id| id != user.fb_user_id}.first
     User.find_by_fb_user_id(fb_id)
+  end
+  
+  def cents
+    (amount*100).to_i
   end
   
   private
@@ -145,6 +154,15 @@ class Booking < ActiveRecord::Base
   
   def exists_other_reservations_in_same_period?
     rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at AND booking_id != ?", self.start_date.to_datetime, self.stop_date.to_datetime, self.id||0])
+  end
+  
+  # Charge booking fee
+  # Find all confirmed booking which does not have booking charges
+  # Should be run by cron every day
+  def self.charge_booking_fee
+    Booking.confirmed.started.without_booking_charges.each do |booking|
+      booking.booking_charges.create!
+    end
   end
   
   before_create :set_owner_fb_id
