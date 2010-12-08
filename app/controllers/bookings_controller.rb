@@ -9,6 +9,12 @@ class BookingsController < ApplicationController
   actions :index, :new, :create, :edit, :update, :show, :confirm, :exec_confirm
   helper_method :parent
   
+  has_scope :not_confirmed, :type => :boolean, :default => true, :only =>[:index] do |controller, scope, value|
+    controller.params[:confirmed].blank? ? scope.not_confirmed : scope
+  end
+  has_scope :confirmed, :only =>[:index]
+  
+  
   rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
   
   def create
