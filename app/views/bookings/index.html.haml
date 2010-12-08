@@ -4,5 +4,7 @@
 
 %br
 %br
+=link_to 'Reserved', rental_unit_bookings_url(@rental_unit)
+=link_to 'Confirmed', rental_unit_bookings_url(@rental_unit, :confirmed => '1')
 =render(:partial=>"shared/bookings",:locals=>{:booking_collection=>collection})
 = fb_button "Back to My Properties", manage_rental_units_path

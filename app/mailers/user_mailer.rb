@@ -5,7 +5,7 @@ class UserMailer < ActionMailer::Base
     @message = message
     @rental_unit = message.booking.rental_unit
     owner = User.find_by_fb_user_id(message.booking.rental_unit.fb_user_id)
-    if owner.email
+    if owner && owner.email
       mail(:to=>owner.email)
     end
   end
@@ -14,7 +14,7 @@ class UserMailer < ActionMailer::Base
     @message = message
     @rental_unit = message.booking.rental_unit
     renter = User.find_by_fb_user_id(message.booking.renter_fb_id)
-    if renter.email
+    if renter && renter.email
       mail(:to=>renter.email)
     end
   end
@@ -23,7 +23,7 @@ class UserMailer < ActionMailer::Base
     @booking = booking
     @rental_unit = booking.rental_unit
     renter = User.find_by_fb_user_id(@booking.renter_fb_id)
-    if renter.email
+    if renter && renter.email
       mail(:to=>renter.email)
     end
   end
