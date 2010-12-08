@@ -75,4 +75,9 @@ Micasasucasa::Application.routes.draw do
       get :callback
     end
   end
+  
+  namespace "admin" do
+    root :to => "funds#index"
+    resources :funds
+  end
 end
