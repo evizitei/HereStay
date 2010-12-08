@@ -58,6 +58,20 @@ ActiveRecord::Schema.define(:version => 20101207090754) do
     t.datetime "updated_at"
   end
 
+  create_table "funds", :force => true do |t|
+    t.string   "type"
+    t.string   "state"
+    t.integer  "user_id"
+    t.integer  "document_id"
+    t.string   "document_type"
+    t.integer  "cents",          :default => 0, :null => false
+    t.string   "transaction_id"
+    t.text     "description"
+    t.datetime "processed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "photos", :force => true do |t|
     t.integer  "rental_unit_id"
     t.string   "picture_file_name"

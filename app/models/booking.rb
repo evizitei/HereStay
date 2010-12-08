@@ -26,6 +26,7 @@ class Booking < ActiveRecord::Base
   has_many :discounts
   has_many :rewards
   has_one  :reservation, :dependent => :destroy
+  has_many :booking_charges, :dependent => :destroy, :as => :document
   
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
@@ -34,6 +35,9 @@ class Booking < ActiveRecord::Base
   
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
+  scope :confirmed, where({:status => "COMPLETE"})
+  scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = "Booking" AND "funds"."type" = "BookingCharge"').where({:funds => {:id => nil}})
   
   scope :not_reserved, :conditions => {:status => 'created'}
   scope :confirmed, :conditions => ["confirmed_by_renter_at IS NOT NULL"]
@@ -92,6 +96,10 @@ class Booking < ActiveRecord::Base
   
   def can_be_canceled?
     self.created? || (self.reserved? && self.reservation && Time.now < self.reservation.start_at)    
+  end
+  
+  def cents
+    (amount*100).to_i
   end
   
   private
@@ -162,6 +170,15 @@ class Booking < ActiveRecord::Base
     rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at AND booking_id != ?", self.start_date.to_datetime, self.stop_date.to_datetime, self.id||0])
   end
   
+  # Charge booking fee
+  # Find all reserved booking which does not have booking charges
+  # Should be run by cron every day
+  def self.charge_booking_fee
+    Booking.reserved.started.without_booking_charges.each do |booking|
+      booking.booking_charges.create!
+    end
+  end
+  
   before_create :set_owner_fb_id
   def set_owner_fb_id
     self.owner_fb_id = self.rental_unit.user.fb_user_id
@@ -171,7 +188,7 @@ class Booking < ActiveRecord::Base
     create_reservation
     rented_wall_post
     TwitterWrapper.post_unit_rented(self)
-    UserMailer.booking_confirmation(self).deliver
+    # UserMailer.booking_confirmation(self).deliver
   end
   
   def do_cancel_by_renter!
