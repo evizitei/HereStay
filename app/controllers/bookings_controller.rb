@@ -12,11 +12,11 @@ class BookingsController < ApplicationController
   rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
   
   def create
-    create!(:location => collection_url, :notice => 'Booking was created successfully.')
+    create!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
   
   def update
-    update!(:location => collection_url, :notice => 'Booking was created successfully.')
+    update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
  
   # TODO: move to message controller
