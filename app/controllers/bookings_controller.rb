@@ -5,18 +5,18 @@ class BookingsController < ApplicationController
   
   defaults :resource_class => Booking, :collection_name => 'bookings', :instance_name => 'booking'
   respond_to :html
-  belongs_to :rental_unit
+  belongs_to :rental_unit, :optional => true
   actions :index, :new, :create, :edit, :update, :show, :confirm, :exec_confirm
   helper_method :parent
   
   rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
   
   def create
-    create!(:location => collection_url, :notice => 'Booking was created successfully.')
+    create!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
   
   def update
-    update!(:location => collection_url, :notice => 'Booking was created successfully.')
+    update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
  
   # TODO: move to message controller
@@ -57,12 +57,9 @@ class BookingsController < ApplicationController
   end
   
   private
-  def parent
-    @rental_unit ||= current_user.rental_units.find(params[:rental_unit_id])
-  end
   
   def begin_of_association_chain
-    parent
+    current_user
   end
   
   def create_resource(object)

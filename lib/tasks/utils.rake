@@ -7,4 +7,9 @@ namespace :utils do
       end
     end
   end
+  
+  desc "Charge booking fee."
+  task :charge_booking_fee => :environment do
+    Booking.charge_booking_fee
+  end
 end

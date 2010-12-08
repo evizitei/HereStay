@@ -4,6 +4,7 @@ describe MessagesController do
   describe "Chat polling" do
 
     before(:each) do
+      pending
       owner = Factory(:user,:fb_user_id=>"12345")
       unit = Factory(:rental_unit,:user_id=>owner.id)
       @booking = Factory(:booking,:rental_unit=>unit)

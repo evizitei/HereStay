@@ -1,0 +1,22 @@
+%h1 Funds
+
+%table
+  %tr
+    %th Date
+    %th Type
+    %th Owner
+    %th Fee
+    %th State
+    %th Description
+  - for resource in collection
+    %tr
+      %td= show_date resource.created_at, :us_date
+      %td= resource.type.humanize
+      %td
+        = resource.document.rental_unit.user.first_name
+        = resource.document.rental_unit.user.last_name
+      %td= number_to_currency(resource.cents/100.0)
+      %td= resource.state.humanize
+      %td= resource.description
+      
+= will_paginate collection
