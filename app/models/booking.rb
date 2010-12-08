@@ -6,14 +6,19 @@ class Booking < ActiveRecord::Base
   aasm_initial_state :created  
   aasm_state :created # just created
   aasm_state :reserved, :enter => :do_reserve!  # reserved by owner
-  aasm_state :canceled # canceled by renter
+  aasm_state :canceled_by_owner, :enter => :do_cancel_by_owner!
+  aasm_state :canceled_by_renter, :enter => :do_cancel_by_renter!
   
   aasm_event :reserve do
     transitions :to => :reserved, :from => [:created]
   end
   
-  aasm_event :cancel do
-    transitions :to => :canceled, :from => [:created, :reserved]
+  aasm_event :cancel_by_renter do
+    transitions :to => :canceled_by_renter, :from => [:created, :reserved]
+  end
+  
+  aasm_event :cancel_by_owner do
+    transitions :to => :canceled_by_owner, :from => [:created, :reserved]
   end
   
   belongs_to :rental_unit
@@ -25,13 +30,16 @@ class Booking < ActiveRecord::Base
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
   
-  before_save :update_reservation, :unless => :recently_reserved?
+  before_save :update_reservation, :unless => :status_changed?
   
-  scope :not_reserved, :conditions => ["status != 'reserved'"]
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  
+  scope :not_reserved, :conditions => {:status => 'created'}
   scope :confirmed, :conditions => ["confirmed_by_renter_at IS NOT NULL"]
   scope :not_confirmed, :conditions => ["confirmed_by_renter_at IS NULL"]
+  scope :canceled, :conditions => {:status => ['canceled_by_owner', 'canceled_by_renter']}
+  scope :active, :conditions => {:status => ['created', 'reserved']}
   
   # upadate record and reserve
   def update_attributes_and_reserve(attributes)
@@ -72,6 +80,18 @@ class Booking < ActiveRecord::Base
   def other_user_than(user)
     fb_id = [self.owner_fb_id,self.renter_fb_id].select{|id| id != user.fb_user_id}.first
     User.find_by_fb_user_id(fb_id)
+  end
+  
+  def cancel_by(user)
+    if self.owner_fb_id == user.fb_user_id
+      self.cancel_by_owner! 
+    elsif self.renter_fb_id == user.fb_user_id
+      self.cancel_by_renter!
+    end      
+  end
+  
+  def can_be_canceled?
+    self.created? || (self.reserved? && self.reservation && Time.now < self.reservation.start_at)    
   end
   
   private
@@ -150,7 +170,17 @@ class Booking < ActiveRecord::Base
   def do_reserve! 
     create_reservation
     rented_wall_post
-    TwitterWrapper.post_unit_rented(self)    
+    TwitterWrapper.post_unit_rented(self)
     UserMailer.booking_confirmation(self).deliver
+  end
+  
+  def do_cancel_by_renter!
+    UserMailer.booking_canceled_notification(self, self.renter_fb_id).deliver
+    UserMailer.booking_canceled_by_renter_notification(self).deliver
+  end
+  
+  def do_cancel_by_owner!
+    UserMailer.booking_canceled_notification(self, self.owner_fb_id).deliver
+    UserMailer.booking_canceled_by_owner_notification(self).deliver
   end
 end

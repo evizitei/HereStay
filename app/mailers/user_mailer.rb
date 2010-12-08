@@ -27,4 +27,34 @@ class UserMailer < ActionMailer::Base
       mail(:to=>renter.email)
     end
   end
+  
+  def booking_canceled_notification(booking, fb_user_id)
+    @booking = booking
+    @rental_unit = booking.rental_unit
+    if user = User.find_by_fb_user_id(fb_user_id)
+      if user.email
+        mail(:to=>user.email)
+      end
+    end
+  end
+  
+  def booking_canceled_by_renter_notification(booking)
+    @booking = booking
+    @rental_unit = booking.rental_unit
+    if owner = User.find_by_fb_user_id(@booking.owner_fb_id)
+      if owner.email
+        mail(:to=>owner.email)
+      end
+    end
+  end
+  
+  def booking_canceled_by_owner_notification(booking)
+    @booking = booking
+    @rental_unit = booking.rental_unit
+    if renter = User.find_by_fb_user_id(@booking.renter_fb_id)
+      if renter.email
+        mail(:to=>renter.email)
+      end
+    end
+  end
 end

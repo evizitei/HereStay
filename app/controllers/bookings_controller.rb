@@ -50,6 +50,12 @@ class BookingsController < ApplicationController
     render :action=>:show
   end
   
+  def cancel
+    @booking = Booking.active.find params[:id]
+    flash[:notice] = "Booking was canceled!" if @booking.cancel_by(current_user)
+    redirect_to :back
+  end
+  
   private
   def parent
     @rental_unit ||= current_user.rental_units.find(params[:rental_unit_id])
@@ -57,13 +63,16 @@ class BookingsController < ApplicationController
   
   def begin_of_association_chain
     parent
-  end  
+  end
   
   def create_resource(object)
     object.reserve
     object.save
   end
-
+  
+  def collection
+      @booking ||= end_of_association_chain.active
+  end
     
     # Handle errors occure in after_save callback (post to wall, post Vrbo reservation)
     def confirmation_error

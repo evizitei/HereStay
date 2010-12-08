@@ -37,4 +37,7 @@
             = fb_name(:uid=>booking.renter_fb_id)
           -else
             =booking.renter_name
+          - if booking.can_be_canceled?
+            %div
+              = link_to 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
         %td{:style=>"padding:3px;font-size:10pt;"}= booking.description

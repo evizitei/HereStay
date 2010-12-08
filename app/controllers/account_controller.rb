@@ -4,8 +4,8 @@ class AccountController < ApplicationController
   respond_to :html
   
   def show
-    @my_bookings = Booking.where(:renter_fb_id => current_user.fb_user_id)
-    @bookings = current_user.bookings
+    @my_bookings = Booking.active.where(:renter_fb_id => current_user.fb_user_id)
+    @bookings = current_user.bookings.active
     @rewards = current_user.rewards
   end
    

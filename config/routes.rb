@@ -34,6 +34,7 @@ Micasasucasa::Application.routes.draw do
       member do
         get :confirm
         put :exec_confirm
+        post :cancel
       end
     end
     resources :photos
@@ -58,6 +59,7 @@ Micasasucasa::Application.routes.draw do
       put :exec_confirm
       post :wall_post
       get :renter_confirm
+      post :cancel
     end
     resources :messages
     match "confirmation"=>"confirmations#index"
