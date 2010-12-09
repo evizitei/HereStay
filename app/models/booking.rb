@@ -37,7 +37,7 @@ class Booking < ActiveRecord::Base
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
   scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
   scope :confirmed, where({:status => "COMPLETE"})
-  scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = "Booking" AND "funds"."type" = "BookingCharge"').where({:funds => {:id => nil}})
+  scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = \'Booking\' AND "funds"."type" = \'BookingCharge\'').where({:funds => {:id => nil}})
   
   scope :not_reserved, :conditions => {:status => 'created'}
   scope :confirmed, :conditions => ["confirmed_by_renter_at IS NOT NULL"]
