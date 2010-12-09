@@ -332,3 +332,10 @@ body{
 
 div.jGrowl div.jGrowl-notification{color: #fff;}
 div.jGrowl div.jGrowl-notification a{color: #fff;font-weight:bold;}
+
+
+.submenu{border: solid 1px #FFC67D;  margin-bottom: 10px;background: #FFF;}
+  .submenu .item{padding: 10px 20px; float: left;}
+    .submenu .item a{color: #29447E;}
+  .submenu .item.cur{background: #FFC67D;}
+    .submenu .item.cur a{font-weight: bold; text-decoration: none;}

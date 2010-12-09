@@ -1,0 +1,33 @@
+= render :partial => 'header'
+#my_bookings
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px; text-align: left; width:25%;"} Property
+        %th{:style=>"padding:3px; text-align: left; width:35%;"} Owner
+        %th{:style=>"padding:3px; text-align: left; width:20%;"} Arrive
+        %th{:style=>"padding:3px; text-align: left; width:20%;"} Depart
+    %tbody
+      -@my_bookings.each do |booking|
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;padding-bottom:20px;"}
+            -if booking.rental_unit.primary_photo && booking.rental_unit.primary_photo.picture.file?
+              =image_tag(booking.rental_unit.primary_photo.picture.url(:thumb))
+            -else
+              =booking.rental_unit.name
+            %div
+              = fb_button 'Details', rental_unit_path(booking.rental_unit)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            .f_left= fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
+            .f_left
+              %div=fb_name(:uid=>booking.owner_fb_id)
+              %div= fb_button 'Contact Me', booking_messages_path(booking)
+              - if booking.can_be_canceled?
+                %div= fb_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
+            .clearfix
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.start_date
+              = booking.start_date.strftime("%m/%d/%Y")
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.stop_date
+              = booking.stop_date.strftime("%m/%d/%Y")

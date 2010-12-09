@@ -1,0 +1,34 @@
+= render :partial => 'header'
+#my_rewards
+  %h3 My rewards
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px;"} Owner
+        %th{:style=>"padding:3px;"} Renter
+        %th{:style=>"padding:3px;"} Unit
+        %th{:style=>"padding:3px;"} Reward
+    %tbody
+      -@rewards.each do |reward|
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
+            =fb_name(:uid=>reward.booking.owner_fb_id)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if reward.booking.renter_fb_id
+              =fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
+              =fb_name(:uid=>reward.booking.renter_fb_id)
+            -else
+              =reward.booking.renter_name
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =link_to reward.booking.rental_unit.name,rental_unit_path(reward.booking.rental_unit.id)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            ==$#{reward.amount || 0.0}
+  %span
+    %b Total Rewards:
+    -rewards_total = @rewards.map{|r| r.amount}.inject(0.0){|amt,r| amt = amt + r}
+    == $#{rewards_total}
+    %b Total Redeemed:
+    == $#{current_user.redeemed_rewards || 0.0}
+    %b Rewards Balance:
+    == $#{rewards_total - (current_user.redeemed_rewards || 0.0)}
