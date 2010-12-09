@@ -6,7 +6,7 @@ class BookingsController < ApplicationController
   defaults :resource_class => Booking, :collection_name => 'bookings', :instance_name => 'booking'
   respond_to :html
   belongs_to :rental_unit, :optional => true
-  actions :index, :new, :create, :edit, :update, :show, :confirm, :exec_confirm
+  actions :index, :new, :create, :edit, :update, :show, :reserve, :exec_reserve
   helper_method :parent
   
   has_scope :not_confirmed, :type => :boolean, :default => true, :only =>[:index] do |controller, scope, value|
@@ -15,7 +15,7 @@ class BookingsController < ApplicationController
   has_scope :confirmed, :only =>[:index]
   
   
-  rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
+  rescue_from ActiveRecord::RecordNotSaved, :with => :reservation_error
   
   def create
     create!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
@@ -32,16 +32,16 @@ class BookingsController < ApplicationController
     redirect_to [@booking, :messages]
   end
 
-  def confirm
+  def reserve
   end
   
-  def exec_confirm
+  def exec_reserve
     respond_to do |format|
       if  resource.update_attributes_and_reserve(params[:booking])
-        flash[:notice] = 'Booking was confirmed.'
+        flash[:notice] = 'Booking was reserved.'
         format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
       else
-        format.html{render 'confirm'}
+        format.html{render 'reserve'}
       end
     end
   end
@@ -51,7 +51,8 @@ class BookingsController < ApplicationController
     redirect_to @booking
   end
   
-  def renter_confirm
+  def confirm
+    @booking = Booking.active.find params[:id]
     @booking.confirm_by_renter!
     render :action=>:show
   end
@@ -69,8 +70,8 @@ class BookingsController < ApplicationController
   end
   
   def create_resource(object)
-    object.reserve
-    object.save
+    object.reserve! if object.save
+     
   end
   
   def collection
@@ -78,9 +79,9 @@ class BookingsController < ApplicationController
   end
     
     # Handle errors occure in after_save callback (post to wall, post Vrbo reservation)
-    def confirmation_error
-      @booking.errors.add_to_base('Can\'t confirm booking.')
-      source_page = self.action_name == 'exec_confirm' ? 'confirm' : 'new'
+    def reservation_error
+      @booking.errors.add_to_base('Can\'t reserve booking.')
+      source_page = self.action_name == 'exec_reserve' ? 'reserve' : 'new'
       render source_page
     end
 end

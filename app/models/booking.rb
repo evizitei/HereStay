@@ -10,7 +10,7 @@ class Booking < ActiveRecord::Base
   aasm_state :canceled_by_renter, :enter => :do_cancel_by_renter!
   
   aasm_event :reserve do
-    transitions :to => :reserved, :from => [:created]
+    transitions :to => :reserved, :from => [:created], :guard => :valid?
   end
   
   aasm_event :cancel_by_renter do
@@ -36,7 +36,6 @@ class Booking < ActiveRecord::Base
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
   scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
-  scope :confirmed, where({:status => "COMPLETE"})
   scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = \'Booking\' AND "funds"."type" = \'BookingCharge\'').where({:funds => {:id => nil}})
   
   scope :not_reserved, :conditions => {:status => 'created'}
@@ -47,9 +46,7 @@ class Booking < ActiveRecord::Base
   
   # upadate record and reserve
   def update_attributes_and_reserve(attributes)
-    self.attributes = attributes
-    self.reserve
-    self.save
+    self.reserve! if self.update_attributes(attributes)
   end
   
   def promotional_fee
@@ -133,7 +130,7 @@ class Booking < ActiveRecord::Base
   
   # validate dates for other booking or reservation in this period when booking confirmed and dates are changes
   def require_validate_dates?
-    self.reserved? && (self.status_changed? || start_date_changed? || stop_date_changed?)
+    (self.created? || self.reserved?) && (start_date_changed? || stop_date_changed?)
   end
   
   # don't allow to start_at be greater than end_at
@@ -188,7 +185,7 @@ class Booking < ActiveRecord::Base
     create_reservation
     rented_wall_post
     TwitterWrapper.post_unit_rented(self)
-    UserMailer.booking_confirmation(self).deliver
+    UserMailer.booking_confirmation(self).deliver if self.renter_fb_id
   end
   
   def do_cancel_by_renter!

@@ -32,8 +32,8 @@ Micasasucasa::Application.routes.draw do
         get :discuss
       end
       member do
-        get :confirm
-        put :exec_confirm
+        get :reserve
+        put :exec_reserve
         post :cancel
       end
     end
@@ -55,10 +55,10 @@ Micasasucasa::Application.routes.draw do
     member do
       get :discuss
       get :mobile_discuss
-      get :confirm
-      put :exec_confirm
+      get :reserve
+      put :exec_reserve
       post :wall_post
-      get :renter_confirm
+      get :confirm
       post :cancel
     end
     resources :messages

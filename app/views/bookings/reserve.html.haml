@@ -18,7 +18,7 @@
 = error_messages_for resource
 .pal.grayArea.gray_box.noborder.colored-bg
   #booking_form
-    =form_for :booking, :url=> [:exec_confirm, parent, resource], :html => {:method => :put} do |f|
+    =form_for :booking, :url=> [:exec_reserve, parent, resource], :html => {:method => :put} do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
