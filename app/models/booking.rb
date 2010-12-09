@@ -188,7 +188,7 @@ class Booking < ActiveRecord::Base
     create_reservation
     rented_wall_post
     TwitterWrapper.post_unit_rented(self)
-    # UserMailer.booking_confirmation(self).deliver
+    UserMailer.booking_confirmation(self).deliver
   end
   
   def do_cancel_by_renter!
