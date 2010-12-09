@@ -1,0 +1,160 @@
+@charset "UTF-8";
+/* line 14, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+/* line 17, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+
+/* line 19, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 21, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+/* line 23, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 25, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: "" "";
+}
+/* line 96, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+}
+
+/* line 27, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 7, ../../app/stylesheets/master.sass */
+#sidebar {
+  width: 170px;
+  height: 300px;
+  float: left;
+}
+
+/* line 12, ../../app/stylesheets/master.sass */
+#main {
+  float: left;
+  border: 1px solid black;
+  width: 530px;
+  padding: 20px;
+}
+
+/* line 18, ../../app/stylesheets/master.sass */
+#header {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+/* line 22, ../../app/stylesheets/master.sass */
+#logo {
+  float: left;
+  margin-right: 20px;
+}
+
+/* line 26, ../../app/stylesheets/master.sass */
+#like-button {
+  float: left;
+  width: 200px;
+  margin-top: 15px;
+}
+
+/* line 32, ../../app/stylesheets/master.sass */
+#search_box {
+  border: 1px solid black;
+  width: 100%;
+  padding: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/* line 38, ../../app/stylesheets/master.sass */
+#search_box form {
+  float: left;
+}
+
+/* line 41, ../../app/stylesheets/master.sass */
+#expander {
+  float: left;
+  margin-right: 20px;
+  margin-top: 3px;
+}
+/* line 45, ../../app/stylesheets/master.sass */
+#expander a {
+  display: inline-block;
+  width: 19px;
+  color: transparent;
+}
+/* line 49, ../../app/stylesheets/master.sass */
+#expander a.minimized {
+  background: transparent url(/images/u11.png) 0 0 no-repeat;
+}
+/* line 51, ../../app/stylesheets/master.sass */
+#expander a.maximized {
+  background: transparent url(/images/u10.png) 0 0 no-repeat;
+}
+
+/* line 54, ../../app/stylesheets/master.sass */
+#search-field-wrapper {
+  border: 1px solid #b4b4b4;
+  width: 425px;
+  padding: 2px;
+  padding-left: 23px;
+  background: transparent url(/images/u53.png) 2px 2px no-repeat;
+}
+/* line 60, ../../app/stylesheets/master.sass */
+#search-field-wrapper input {
+  border: 0;
+  width: 420px;
+  background: transparent;
+}
+
+/* line 66, ../../app/stylesheets/master.sass */
+#menu {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/* line 69, ../../app/stylesheets/master.sass */
+#menu li {
+  float: left;
+  width: 104px;
+  text-align: center;
+}
+
+/* line 75, ../../app/stylesheets/master.sass */
+#content {
+  clear: both;
+}

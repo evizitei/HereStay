@@ -1,4 +1,5 @@
 class CanvasController < ApplicationController
+  layout 'application'
   before_filter :oauth_obj
   
   def index

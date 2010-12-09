@@ -1,7 +1,6 @@
-!!!
 %html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
   %head
-    %title HereStay
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8'}
     -if @og_meta
       %meta{:property=>"og:title",:content=>@og_meta[:title]}
       %meta{:property=>"og:type",:content=>@og_meta[:type]}
@@ -9,6 +8,44 @@
       %meta{:property=>"og:url",:content=>@og_meta[:url]}
       %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
       %meta{:property=>"og:app_id",:content=>@og_meta[:app_id]}
+
+    = stylesheet_link_tag 'master'
+
+    = javascript_include_tag "jquery", "rails", "/jquery-ui/js/jquery-ui-1.8.2.custom.min.js", "/fancybox/jquery.fancybox-1.3.4.pack.js", "cluetip/jquery.hoverIntent.js", 'cluetip/jquery.cluetip.js', "application", 'jquery.jgrowl', '/fullcalendar/fullcalendar.min.js'
     = csrf_meta_tag
+
+    -if current_user && ENV['NO_CHAT'].blank?
+      :javascript
+        var user_data = {
+          "user" : "#{current_user.fb_user_id}",
+          "last_message" : "#{current_user.messages.by_date.last.try(:id)}",
+          "chat_check_url": "#{chat_check_url}",
+          "except_chat": "#{@booking.id if @booking}"
+        };
   %body
-    = yield 
+    = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
+    %a{:name=>'top'}
+    #sidebar
+    #main
+      #header
+        #logo= link_to image_tag('herestay.png'), root_path
+        #like-button
+          = render 'shared/like_button'            
+      = display_flashes
+      #search_box
+        #expander
+          = link_to 'advanced', '#', :class => 'minimized'
+          Filter
+        = form_tag '/' do
+          #search-field-wrapper
+            = text_field_tag :search
+      #menu
+        %ul
+          %li= link_to 'My Posts', '#' 
+          %li= link_to 'My Account', '#' 
+          %li= link_to 'New Post', '#' 
+          %li= link_to 'Inquiries', '#' 
+          %li= link_to 'Reservations', '#' 
+      #content
+        = yield
+      = fb_connect_async_js
