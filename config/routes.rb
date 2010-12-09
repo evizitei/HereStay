@@ -74,7 +74,11 @@ Micasasucasa::Application.routes.draw do
     end
   end
   
-  resource :account, :controller => :account, :only => [:edit, :update, :show]
+  resource :account, :controller => :account, :only => [:edit, :update, :show] do
+    get :my_stays
+    get :my_place
+    get :my_rewards
+  end
   resource :subscription, :only => [:edit, :update, :destroy]
   
   resources :relations, :only => [:show]
