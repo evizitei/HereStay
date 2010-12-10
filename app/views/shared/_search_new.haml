@@ -3,8 +3,9 @@
     .expander
       = link_to 'advanced', '#', :class => 'minimized'
       Filter
-    .search-field-wrapper
+    .search-wrapper
       = text_field_tag :search
+    = submit_tag "Search"
   #advanced-search{:class => params[:advanced] == '1' && 'active'} 
     .friends
       %label

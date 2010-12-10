@@ -126,22 +126,25 @@ a img {
   background: transparent url(/images/u10.png) 0 0 no-repeat;
 }
 /* line 50, ../../app/stylesheets/master.sass */
-#simple-search .search-field-wrapper {
+#simple-search .search-wrapper {
   border: 1px solid #b4b4b4;
-  width: 413px;
   padding: 2px;
   padding-left: 23px;
   background: transparent url(/images/u53.png) 2px 2px no-repeat;
   float: left;
 }
-/* line 57, ../../app/stylesheets/master.sass */
-#simple-search .search-field-wrapper input {
+/* line 56, ../../app/stylesheets/master.sass */
+#simple-search .search-wrapper input[type=text] {
   border: 0;
-  width: 420px;
+  width: 354px;
   background: transparent;
 }
+/* line 60, ../../app/stylesheets/master.sass */
+#simple-search input[type=submit] {
+  margin: 2px;
+}
 
-/* line 64, ../../app/stylesheets/master.sass */
+/* line 65, ../../app/stylesheets/master.sass */
 #advanced-search {
   display: none;
   clear: both;
@@ -149,51 +152,51 @@ a img {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 70, ../../app/stylesheets/master.sass */
+/* line 71, ../../app/stylesheets/master.sass */
 #advanced-search .friends {
   margin-bottom: 10px;
 }
-/* line 73, ../../app/stylesheets/master.sass */
+/* line 74, ../../app/stylesheets/master.sass */
 #advanced-search .date-range p, #advanced-search .left p {
   padding: 5px;
 }
-/* line 75, ../../app/stylesheets/master.sass */
+/* line 76, ../../app/stylesheets/master.sass */
 #advanced-search .date-range label, #advanced-search .left label {
   display: inline-block;
   width: 76px;
   text-align: right;
 }
-/* line 79, ../../app/stylesheets/master.sass */
+/* line 80, ../../app/stylesheets/master.sass */
 #advanced-search .date-range input, #advanced-search .left input {
   width: 110px !important;
 }
-/* line 81, ../../app/stylesheets/master.sass */
+/* line 82, ../../app/stylesheets/master.sass */
 #advanced-search .date-range {
   margin-bottom: 10px;
 }
-/* line 83, ../../app/stylesheets/master.sass */
+/* line 84, ../../app/stylesheets/master.sass */
 #advanced-search .left {
   float: left;
 }
-/* line 85, ../../app/stylesheets/master.sass */
+/* line 86, ../../app/stylesheets/master.sass */
 #advanced-search .right {
   float: left;
   padding-left: 30px;
 }
 
-/* line 90, ../../app/stylesheets/master.sass */
+/* line 91, ../../app/stylesheets/master.sass */
 #menu {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 93, ../../app/stylesheets/master.sass */
+/* line 94, ../../app/stylesheets/master.sass */
 #menu li {
   float: left;
   width: 104px;
   text-align: center;
 }
 
-/* line 99, ../../app/stylesheets/master.sass */
+/* line 100, ../../app/stylesheets/master.sass */
 #content {
   clear: both;
 }
