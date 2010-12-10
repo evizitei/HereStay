@@ -182,4 +182,12 @@ module ApplicationHelper
     end
     row
   end
+  
+  def user_online_status(user)
+    if user
+      return image_tag('user_online.png', :title => 'User online') if user.online?
+      return "(available by phone)" if user.available_by_phone?
+      image_tag('user_offline.png', :title => 'User offline')
+    end    
+  end
 end

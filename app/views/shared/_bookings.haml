@@ -1,43 +1,36 @@
 %table{:style=>"background-color:#FFC67D;font-size:12pt;", :width => "100%"}
   %thead
     %tr
-      %th{:style=>"padding:3px;"} ID
-      %th{:style=>"padding:3px;"} Discussion
-      %th{:style=>"padding:3px;"} Arrive
-      %th{:style=>"padding:3px;"} Depart
-      %th{:style=>"padding:3px;"} Amount
-      %th{:style=>"padding:3px;"} Fee
-      %th{:style=>"padding:3px;"} Renter
-      %th{:style=>"padding:3px;"} Description
+      %th{:style=>"padding:3px; text-align: left; width:25%;"} Property
+      %th{:style=>"padding:3px; text-align: left; width:35%;"} Renter
+      %th{:style=>"padding:3px; text-align: left; width:20%;"} Arrive
+      %th{:style=>"padding:3px; text-align: left; width:20%;"} Depart
   %tbody
-    -booking_collection.each do |booking|
+    -booking_collection.each.each do |booking|
       %tr
-        %td{:style=>"padding:3px;font-size:10pt;"}
-          = link_to booking.id, edit_rental_unit_booking_path(booking.rental_unit, booking)
-        %td{:style=>"padding:3px;font-size:10pt;"}
-          = link_to "Discussion", booking_messages_path(booking)
-        %td{:style=>"padding:3px;font-size:10pt;"}
+        %td{:style=>"padding:3px;font-size:10pt;padding-bottom:20px;"}
+          -if booking.rental_unit.primary_photo && booking.rental_unit.primary_photo.picture.file?
+            =image_tag(booking.rental_unit.primary_photo.picture.url(:thumb))
+          -else
+            =booking.rental_unit.name
+          %div
+            = fb_button 'Details', rental_unit_path(booking.rental_unit)
+        %td{:style=>"padding:3px;font-size:10pt; vertical-align: top;"}
+          .f_left= fb_profile_pic(:uid=>booking.renter_fb_id, :size=>"thumb")
+          .f_left
+            - if booking.renter_fb_id
+              %div{:style=>"margin-left:5px;"}
+                =fb_name(:uid=>booking.renter_fb_id)
+                =user_online_status(booking.renter)
+              %div= fb_button 'Contact Me', booking_messages_path(booking)
+            - else
+              = booking.renter_name
+            - if booking.can_be_canceled?
+              %div= fb_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
+          .clearfix
+        %td{:style=>"padding:3px;font-size:10pt; vertical-align: top;"}
           -if booking.start_date
             = booking.start_date.strftime("%m/%d/%Y")
-        %td{:style=>"padding:3px;font-size:10pt;"}
+        %td{:style=>"padding:3px;font-size:10pt; vertical-align: top;"}
           -if booking.stop_date
             = booking.stop_date.strftime("%m/%d/%Y")
-        %td{:style=>"padding:3px;font-size:10pt;"}
-          $
-          -if booking.amount
-            =booking.amount
-          -else
-            \----
-        %td{:style=>"padding:3px;font-size:10pt;"}
-          $
-          =booking.promotional_fee
-        %td{:style=>"padding:3px;font-size:10pt;"}
-          -if booking.renter_fb_id
-            = fb_profile_pic(:uid=>booking.renter_fb_id,:size=>"thumb")
-            = fb_name(:uid=>booking.renter_fb_id)
-          -else
-            =booking.renter_name
-          - if booking.can_be_canceled?
-            %div
-              = link_to 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
-        %td{:style=>"padding:3px;font-size:10pt;"}= booking.description

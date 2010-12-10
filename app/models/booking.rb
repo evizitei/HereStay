@@ -99,6 +99,14 @@ class Booking < ActiveRecord::Base
     (amount*100).to_i
   end
   
+  def owner
+    rental_unit.user
+  end
+  
+  def renter
+    User.find_by_fb_user_id(self.renter_fb_id)
+  end
+  
   private
   
   def create_reservation
