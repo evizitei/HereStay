@@ -5,13 +5,15 @@ class RentalUnit < ActiveRecord::Base
   @@per_page = 5
   attr_accessor :remote_images
   
+  MAX_PRICE = 200
+  MIN_PRICE = 0
+  
   has_many :photos, :dependent => :destroy
   has_one :primary_photo, :class_name => 'Photo', :conditions => {:primary => true }
   
   accepts_nested_attributes_for :photos, :allow_destroy => true
   accepts_nested_attributes_for :primary_photo, :allow_destroy => true, :reject_if => proc { |attributes| attributes['picture'].blank? }
-  
-  
+    
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
@@ -267,12 +269,12 @@ class RentalUnit < ActiveRecord::Base
   #TODO make for min/max methods
   def self.min_price
     p = RentalUnit.minimum(:weekly_low_price)
-    (p/7).floor unless p.nil?
+    p.nil? ? MIN_PRICE : (p/7).floor
   end
   
   def self.max_price
     p = RentalUnit.maximum(:nightly_high_price)
-    (p.to_f).ceil unless p.nil?
+    p.nil? ? MAX_PRICE : (p.to_f).ceil
   end
   
   def location

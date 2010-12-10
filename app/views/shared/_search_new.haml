@@ -43,9 +43,37 @@
         = image_tag '/images/u51.png'
     .right
       = image_tag '/images/map_fake.png'
-  
+      
+    = hidden_field_tag 'advanced', params[:advanced]||0
+    = hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
+    = hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5
+    = hidden_field_tag 'range_budget_from', params[:range_budget_from]||RentalUnit.min_price
+    = hidden_field_tag 'range_budget_to', params[:range_budget_to]||RentalUnit.max_price
+    = hidden_field_tag 'range_adults_from', params[:range_adults_from]||0
+    = hidden_field_tag 'range_adults_to', params[:range_adults_to]||5
+    = hidden_field_tag 'range_kids_from', params[:range_kids_from]||0
+    = hidden_field_tag 'range_kids_to', params[:range_kids_to]||5
+    = hidden_field_tag 'range_bathes_from', params[:range_bathes_from]||0
+    = hidden_field_tag 'range_bathes_to', params[:range_bathes_to]||5
+    = hidden_field_tag 'range_ratings_from', params[:ratings_bathes_from]||0
+    = hidden_field_tag 'range_ratings_to', params[:ratings_bathes_to]||10
+       
+    = hidden_field_tag 'location_lng', params[:location_lng]
+    = hidden_field_tag 'location_lat', params[:location_lat]
+    = hidden_field_tag 'location_zoom', params[:location_zoom]||1
+
 :javascript
+  var search_params = {
+    'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
+    'range_budget': [#{params[:range_budget_from]||RentalUnit.min_price},#{params[:range_budget_to]||RentalUnit.max_price}],
+    'range_adults': [#{params[:range_adults_from]||0},#{params[:range_adults_to]||5}],
+    'range_kids': [#{params[:range_kids_from]||0},#{params[:range_kids_to]||5}],
+    'range_bathes': [#{params[:range_bathes_from]||0},#{params[:range_bathes_to]||5}],
+    'range_ratings': [#{params[:range_ratings_from]||0},#{params[:range_ratings_to]||10}]
+  };
+
   $(document).ready(function() {
+
     $('#simple-search .expander a').toggle(
       function(){
         $(this).addClass('maximized').removeClass('minimized');  
@@ -56,4 +84,158 @@
         $('#advanced-search').slideUp();
       }
     );
+
+    $('.show-advanced-search-logic').click(function(){
+      $('#advanced-search').toggleClass('active');
+      $(this).toggleClass('on');
+      if(parseInt($('#advanced').val()) == 1){
+        $('#advanced').val(0);
+      }else{
+        $('#advanced').val(1);
+      }
+      return false;
+    });
+
+    $(".date_picker").datepicker({
+      minDate: new Date(),
+      onSelect: function(dateText, inst) {
+        if($(this).hasClass('from_date')){
+          to_date = $(this).datepicker('getDate');
+          to_date.setDate(to_date.getDate() + 1);
+          $(this).datepicker('setDate', to_date);
+          $('#search_end_date').val($('#search_start_date').val());
+          $(this).datepicker('setDate', (new Date(dateText)));
+          $(this).blur();
+        }
+        if($(this).hasClass('to_date')){
+          if($(this).datepicker('getDate') < new Date($('#search_start_date').val())){
+            alert('Must be greater than start date');
+            $('#search_end_date').val('');
+          }
+        }
+      }
+    });
+    
+    $("#range_bedrooms").slider({
+      min: 1,
+      max: 5,
+      values: search_params.range_bedrooms,
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        for(i=1;i<6;i++){
+          if(i >= ui.values[0] && i <= ui.values[1]){
+            container.find(".l" + i).addClass('sel');
+          }else{
+            container.find(".l" + i).removeClass('sel');
+          }
+        }
+        $('#range_bedrooms_from').val(ui.values[0]);
+        $('#range_bedrooms_to').val(ui.values[1]);
+      }
+    });
+    
+    $("#range_budget").slider({
+      min: #{RentalUnit.min_price},
+      max: #{RentalUnit.max_price},
+      values: search_params.range_budget,
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        container.find('.from').html(ui.values[0]);
+        container.find('.to').html(ui.values[1]);
+        $('#range_budget_from').val(ui.values[0]);
+        $('#range_budget_to').val(ui.values[1]);
+      }
+    });
+    
+    $("#range_adults, #range_kids, #range_bathes").map(function(){
+      var id = $(this).attr('id');
+      $("#" + id).slider({
+        min: 0,
+        max: 5,
+        values: search_params[id],
+        range: true,
+        slide: function(ivent,ui){          
+          var container = $(this).parent('.slider-container');
+          for(i=0;i<6;i++){
+            if(i >= ui.values[0] && i <= ui.values[1]){
+              container.find(".l" + i).addClass('sel');
+            }else{
+              container.find(".l" + i).removeClass('sel');
+            }
+          }
+          $('#' + id +'_from').val(ui.values[0]);
+          $('#' + id +'_to').val(ui.values[1]);
+        }
+      });
+    });
+    
+    $("#range_ratings").slider({
+      min: 0,
+      max: 10,
+      values: search_params.range_ratings,
+      range: true,
+      slide: function(ivent,ui){
+        id = $(this).attr('id');
+        var container = $(this).parents('.slider-container');
+        for(i=1;i<11;i++){
+          if(i > ui.values[0] && i <= ui.values[1]){
+            container.find(".l" + i).addClass('sel');
+          }else{
+            container.find(".l" + i).removeClass('sel');
+          }
+        }
+        $('#range_ratings_from').val(ui.values[0]);
+        $('#range_ratings_to').val(ui.values[1]);
+      }
+    });
+
+    var element = $("#search_map_canvas");
+    var markersArray = []
+    #{init_gmap('search_map_canvas', params[:location_lat], params[:location_lng], 8, 'search_')}
+    #{gmap_markers(@rental_units||[], 'search_')}
+    #{gmap_event_listener('click', 'markAndCenter', 'search_')}
+
+    $("#radius_slider").slider({
+      min: 1,
+      max: 5,
+      value: #{ params[:location_zoom].blank? ? 5 : params[:location_zoom]},
+      slide: function(ivent,ui){
+        var values = ['', '1.5', '5', '25', '90', '350' ]
+        var zooms = [1,12,11,10,8,6]
+        id = $(this).attr('id');
+        var container = $(this).parent('.slider-container');
+        container.find('.value').html(values[ui.value]);
+        $('#location_zoom').val(ui.value);
+        search_map.setZoom(zooms[ui.value]);
+      }
+    });
+
+    function markAndCenter(event, el){
+      clearOverlays();
+      addMarker(event.latLng, el);
+      el.setCenter(event.latLng)
+      $('#location_lat').val(event.latLng.lat());
+      $('#location_lng').val(event.latLng.lng());    
+    }
+
+    function addMarker(location, el) {
+      marker = new google.maps.Marker({
+        position: location,
+        map: el,
+        title: "Search here"
+      });
+      markersArray.push(marker);
+    }
+
+    function clearOverlays() {
+      if (markersArray) {
+        for (i in markersArray) {
+          markersArray[i].setMap(null);
+        }
+      }
+    }
   });
