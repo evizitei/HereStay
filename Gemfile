@@ -24,6 +24,7 @@ gem "moonshado-sms", "1.1.0"
 gem "recurly"
 gem 'has_scope'
 gem "aasm", :git => 'https://github.com/rubyist/aasm.git'
+gem 'compass', '0.10.6'
 
 group :development,:test,:cucumber do
   gem 'cucumber'

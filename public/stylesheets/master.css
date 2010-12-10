@@ -1,0 +1,199 @@
+@charset "UTF-8";
+/* line 14, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+/* line 17, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+
+/* line 19, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 21, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+/* line 23, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 25, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: "" "";
+}
+/* line 96, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+}
+
+/* line 27, ../../../../../.rvm/gems/ree-1.8.7-2010.02/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 5, ../../app/stylesheets/master.sass */
+#sidebar {
+  width: 170px;
+  height: 300px;
+  float: left;
+}
+
+/* line 10, ../../app/stylesheets/master.sass */
+#main {
+  float: left;
+  border: 1px solid black;
+  width: 530px;
+  padding: 20px;
+}
+
+/* line 16, ../../app/stylesheets/master.sass */
+#header {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+/* line 20, ../../app/stylesheets/master.sass */
+#logo {
+  float: left;
+  margin-right: 20px;
+}
+
+/* line 24, ../../app/stylesheets/master.sass */
+#like-button {
+  float: left;
+  width: 200px;
+  margin-top: 15px;
+}
+
+/* line 30, ../../app/stylesheets/master.sass */
+#search-form {
+  border: 1px solid black;
+  padding: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+/* line 36, ../../app/stylesheets/master.sass */
+#simple-search {
+  overflow: hidden;
+}
+/* line 38, ../../app/stylesheets/master.sass */
+#simple-search .expander {
+  float: left;
+  margin-right: 20px;
+  margin-top: 3px;
+}
+/* line 42, ../../app/stylesheets/master.sass */
+#simple-search .expander a {
+  display: inline-block;
+  width: 19px;
+  color: transparent;
+}
+/* line 46, ../../app/stylesheets/master.sass */
+#simple-search .expander a.minimized {
+  background: transparent url(/images/u11.png) 0 0 no-repeat;
+}
+/* line 48, ../../app/stylesheets/master.sass */
+#simple-search .expander a.maximized {
+  background: transparent url(/images/u10.png) 0 0 no-repeat;
+}
+/* line 50, ../../app/stylesheets/master.sass */
+#simple-search .search-field-wrapper {
+  border: 1px solid #b4b4b4;
+  width: 413px;
+  padding: 2px;
+  padding-left: 23px;
+  background: transparent url(/images/u53.png) 2px 2px no-repeat;
+  float: left;
+}
+/* line 57, ../../app/stylesheets/master.sass */
+#simple-search .search-field-wrapper input {
+  border: 0;
+  width: 420px;
+  background: transparent;
+}
+
+/* line 64, ../../app/stylesheets/master.sass */
+#advanced-search {
+  display: none;
+  clear: both;
+  padding: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/* line 70, ../../app/stylesheets/master.sass */
+#advanced-search .friends {
+  margin-bottom: 10px;
+}
+/* line 73, ../../app/stylesheets/master.sass */
+#advanced-search .date-range p, #advanced-search .left p {
+  padding: 5px;
+}
+/* line 75, ../../app/stylesheets/master.sass */
+#advanced-search .date-range label, #advanced-search .left label {
+  display: inline-block;
+  width: 76px;
+  text-align: right;
+}
+/* line 79, ../../app/stylesheets/master.sass */
+#advanced-search .date-range input, #advanced-search .left input {
+  width: 110px !important;
+}
+/* line 81, ../../app/stylesheets/master.sass */
+#advanced-search .date-range {
+  margin-bottom: 10px;
+}
+/* line 83, ../../app/stylesheets/master.sass */
+#advanced-search .left {
+  float: left;
+}
+/* line 85, ../../app/stylesheets/master.sass */
+#advanced-search .right {
+  float: left;
+  padding-left: 30px;
+}
+
+/* line 90, ../../app/stylesheets/master.sass */
+#menu {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/* line 93, ../../app/stylesheets/master.sass */
+#menu li {
+  float: left;
+  width: 104px;
+  text-align: center;
+}
+
+/* line 99, ../../app/stylesheets/master.sass */
+#content {
+  clear: both;
+}

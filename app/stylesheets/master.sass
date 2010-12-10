@@ -1,0 +1,100 @@
+@import "compass/reset"
+@import "compass/css3"
+
+//--------------------- [ layout ] ---------------------//
+#sidebar
+  width: 170px
+  height: 300px
+  float: left
+
+#main
+  float: left
+  border: 1px solid black
+  width: 530px
+  padding: 20px
+
+#header
+  margin-bottom: 10px
+  overflow: hidden
+
+#logo
+  float: left
+  margin-right: 20px
+
+#like-button
+  float: left
+  width: 200px
+  margin-top: 15px
+
+//--------------------- [ simple search ] ---------------------//
+#search-form
+  border: 1px solid black
+  padding: 5px
+  overflow: hidden
+  margin-bottom: 10px
+
+#simple-search
+  overflow: hidden      
+  .expander
+    float: left
+    margin-right: 20px
+    margin-top: 3px
+    a
+      display: inline-block
+      width: 19px
+      color: transparent
+      &.minimized
+        background: transparent url(/images/u11.png) 0 0 no-repeat
+      &.maximized
+        background: transparent url(/images/u10.png) 0 0 no-repeat
+  .search-field-wrapper
+    border: 1px solid #B4B4B4
+    width: 413px
+    padding: 2px
+    padding-left: 23px
+    background: transparent url(/images/u53.png) 2px 2px no-repeat
+    float: left
+    input
+      border: 0
+      width: 420px
+      background: transparent    
+    
+//--------------------- [ advanced search ] ---------------------//
+
+#advanced-search  
+  display: none
+  clear: both
+  padding: 10px
+  overflow: hidden
+  margin-bottom: 10px  
+  .friends
+    margin-bottom: 10px
+  .date-range, .left
+    p
+      padding: 5px
+    label
+      display: inline-block
+      width: 76px
+      text-align: right
+    input
+      width: 110px !important
+  .date-range
+    margin-bottom: 10px
+  .left
+    float: left
+  .right
+    float: left
+    padding-left: 30px
+      
+//--------------------- [ menu ] ---------------------//
+#menu
+  overflow: hidden
+  margin-bottom: 10px  
+  li
+    float: left
+    width: 104px
+    text-align: center
+  
+//--------------------- [ content ] ---------------------//
+#content
+  clear: both
