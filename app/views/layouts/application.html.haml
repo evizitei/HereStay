@@ -35,11 +35,11 @@
       = render 'shared/search_new'
       #menu
         %ul
-          %li= submit_tag 'My Posts'
-          %li= submit_tag 'My Account'
-          %li= submit_tag 'New Post'
-          %li= submit_tag 'Inquiries'
-          %li= submit_tag 'Reservations'
+          %li= simple_button 'My Posts', manage_rental_units_url
+          %li= simple_button 'My Account', account_url
+          %li= simple_button 'New Post', new_rental_unit_url
+          %li= simple_button 'Inquiries'
+          %li= simple_button 'Reservations'
       #content
         = yield
       #fb-root

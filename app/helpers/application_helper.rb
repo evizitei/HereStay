@@ -40,6 +40,19 @@ module ApplicationHelper
     end
   end
   
+  def simple_button(*args, &block)
+    if block_given?
+      options = args.first || {}
+      "<label class='#{options[:class_name]}'>#{capture(&block)}</label>".html_safe
+    else
+      text = args.first
+      url = args.second
+      options = args.third || {}
+      link = link_to(url, :method => options[:method],:title=>text ,:rel => options[:rel], :class => options[:link_class], :confirm => options[:confirm]){ "<input type=button value=\"#{text}\">" }
+      "<label class='#{options[:class_name]}'>#{link}</label>".html_safe
+    end
+  end
+  
   def get_flash_message
     if flash[:alert]
       wrap_flash_message flash[:alert], :alert

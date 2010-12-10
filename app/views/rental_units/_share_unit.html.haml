@@ -1,3 +1,2 @@
 .share_box
-  /%fb:like{:href=>rental_unit_url(share_unit)}
-  =fb_button("Share", share_rental_unit_path(share_unit), :class_name => 'fb_share')
+  = link_to image_tag('share.png', :border => 0), share_rental_unit_path(share_unit), :class => 'fb_share'

@@ -3,7 +3,7 @@
   =fb_name(:uid=>current_user.fb_user_id,:useyou=>"false",:possessive=>"true")
   Properties:
 %br
-=render :partial=>"unit_row",:collection=>@rental_units
+=render :partial=>"unit_row_old",:collection=>@rental_units
 %br
 = fb_button 'My Account', account_path, :class_name => 'f_left logged_in'
 = fb_button 'Add Property', new_rental_unit_path, :class_name => 'f_left logged_in'

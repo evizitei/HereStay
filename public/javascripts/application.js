@@ -111,7 +111,7 @@ $(document).ready(function() {
     'ajaxSettings': {dataType: 'script'}
   });
   
-  $('.fb_share a').click(function(){
+  $('a.fb_share').click(function(){
     var el = $(this);
     $.ajax({
       url: this.href,

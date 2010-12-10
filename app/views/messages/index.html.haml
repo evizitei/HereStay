@@ -5,7 +5,7 @@
 %h2 Discussion on #{parent.rental_unit.name}
 
 #header
-  =render(:partial=>"rental_units/unit_row",:object=>parent.rental_unit,:locals=>{:admin=>false})
+  =render(:partial=>"rental_units/unit_row_old",:object=>parent.rental_unit,:locals=>{:admin=>false})
 
 .message_form.colored-bg{:style => 'width:705px;padding: 20px 20px 10px 20px;margin-bottom: 10px;'}
   = form_for :booking_message, :url=> collection_path, :html => {:method => :post, :id => "chat_form", :onsubmit => "onSubmit(); return false;"} do |f|

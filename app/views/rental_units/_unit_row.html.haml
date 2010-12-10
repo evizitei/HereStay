@@ -1,27 +1,21 @@
-.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
-  .unit_box
-    .unit_picture
-      -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
-        =image_tag(unit_row.primary_photo.picture.url(:thumb))
-    .unit_description
-      %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
-      .title{:style => 'overflow: hidden'}=link_to unit_row.name,rental_unit_path(unit_row.id)
+.property{:style => "width: 485px; border: solid 1px #B4B4B4; margin-top: 10px; padding: 10px;"}
+  .picture{:style => "width: 100px; float: left; margin-right: 10px;"}
+    -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
+      %div{:style => 'min-height: 100px; margin-bottom: 10px;'}=image_tag(unit_row.primary_photo.picture.url(:thumb))
+    -else
+      %div{:style => 'min-height: 100px; margin-bottom: 10px;'}
+    %div{:style => 'margin-bottom: 10px;'}= simple_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
+    %div= simple_button 'Contact', discuss_rental_unit_bookings_path(unit_row)
+  .details{:style => "width: 370px; float: left; font-size: 12px;"}
+    %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
+    .title{:style => 'overflow: hidden; font-weight: bold; font-size: 13px;'}
+      == #{unit_row.name} 
+      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
       .clearfix
-      .description
-        = unit_row.description
-        %br
-        == Owner is #{unit_row.user.availability_message}
-  - if unit_row.is_owner?(current_user)
-    %br
-    .admin_buttons.clearfix
-      = fb_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Photos', rental_unit_photos_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Video', rental_unit_video_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Bookings', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
-
-  %div
-    .f_left=render(:partial=>"rental_units/share_unit",:object=>unit_row)
-    .f_left= fb_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
-    .clearfix
+    .description{:style => 'margin: 10px 0;'}
+      = truncate(unit_row.description, :length => 150, :separator => ' ')
+    .f_right{:style => 'margin-bottom: -15px;'}=render(:partial=>"rental_units/share_unit",:object=>unit_row)
+    
+    .comments
+      %fb:comments{:xid => "here_stay_unit_#{unit_row.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => unit_row.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
   .clearfix
