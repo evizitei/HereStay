@@ -1,0 +1,58 @@
+= form_tag '/', :id => 'search-form' do
+  #simple-search
+    .expander
+      = link_to 'advanced', '#', :class => 'minimized'
+      Filter
+    .search-field-wrapper
+      = text_field_tag :search
+  #advanced-search{:class => params[:advanced] == '1' && 'active'} 
+    .friends
+      %label
+        = check_box_tag 'friends_only', 1, params[:friends_only] == '1'
+        Friends Only
+      %label
+        = check_box_tag 'friends_of_friends_only', 1, params[:friends_of_friends_only] == '1'
+        Friends of Friends Only
+    
+    .date-range  
+      %p
+        = label_tag 'search_start_date', 'Arrive:'
+        = date_picker_tag 'search_start_date', params[:search_start_date].blank? ? nil : params[:search_start_date].to_date, :class => 'date_picker from_date'
+    
+        = label_tag 'search_end_date', 'Depart:'
+        = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker to_date'
+    .left
+      %p
+        = label_tag 'bedrooms', 'Bedrooms:' 
+        = text_field_tag :bedrooms
+      %p
+        = label_tag 'budget', 'Budget:'
+        = text_field_tag :budget
+      %p
+        = label_tag 'adults', 'Adults:'
+        = text_field_tag :adults
+      %p
+        = label_tag 'kids', 'Kids:'
+        = text_field_tag :kids
+      %p
+        = label_tag 'bathrooms', 'Bathrooms:'
+        = text_field_tag :bathrooms
+      %p
+        = label_tag 'rating', 'Rating:'
+        = image_tag '/images/u51.png'
+    .right
+      = image_tag '/images/map_fake.png'
+  
+:javascript
+  $(document).ready(function() {
+    $('#simple-search .expander a').toggle(
+      function(){
+        $(this).addClass('maximized').removeClass('minimized');  
+        $('#advanced-search').slideDown();
+      },
+      function(){
+        $(this).addClass('minimized').removeClass('maximized');  
+        $('#advanced-search').slideUp();
+      }
+    );
+  });

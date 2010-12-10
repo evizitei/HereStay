@@ -30,22 +30,16 @@
       #header
         #logo= link_to image_tag('herestay.png'), root_path
         #like-button
-          = render 'shared/like_button'            
+          = render 'shared/like_button_new'
       = display_flashes
-      #search_box
-        #expander
-          = link_to 'advanced', '#', :class => 'minimized'
-          Filter
-        = form_tag '/' do
-          #search-field-wrapper
-            = text_field_tag :search
+      = render 'shared/search_new'
       #menu
         %ul
-          %li= link_to 'My Posts', '#' 
-          %li= link_to 'My Account', '#' 
-          %li= link_to 'New Post', '#' 
-          %li= link_to 'Inquiries', '#' 
-          %li= link_to 'Reservations', '#' 
+          %li= submit_tag 'My Posts'
+          %li= submit_tag 'My Account'
+          %li= submit_tag 'New Post'
+          %li= submit_tag 'Inquiries'
+          %li= submit_tag 'Reservations'
       #content
         = yield
       = fb_connect_async_js

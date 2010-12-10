@@ -59,14 +59,14 @@ a img {
   border: none;
 }
 
-/* line 7, ../../app/stylesheets/master.sass */
+/* line 5, ../../app/stylesheets/master.sass */
 #sidebar {
   width: 170px;
   height: 300px;
   float: left;
 }
 
-/* line 12, ../../app/stylesheets/master.sass */
+/* line 10, ../../app/stylesheets/master.sass */
 #main {
   float: left;
   border: 1px solid black;
@@ -74,87 +74,126 @@ a img {
   padding: 20px;
 }
 
-/* line 18, ../../app/stylesheets/master.sass */
+/* line 16, ../../app/stylesheets/master.sass */
 #header {
   margin-bottom: 10px;
   overflow: hidden;
 }
 
-/* line 22, ../../app/stylesheets/master.sass */
+/* line 20, ../../app/stylesheets/master.sass */
 #logo {
   float: left;
   margin-right: 20px;
 }
 
-/* line 26, ../../app/stylesheets/master.sass */
+/* line 24, ../../app/stylesheets/master.sass */
 #like-button {
   float: left;
   width: 200px;
   margin-top: 15px;
 }
 
-/* line 32, ../../app/stylesheets/master.sass */
-#search_box {
+/* line 30, ../../app/stylesheets/master.sass */
+#search-form {
   border: 1px solid black;
-  width: 100%;
   padding: 5px;
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 38, ../../app/stylesheets/master.sass */
-#search_box form {
-  float: left;
-}
 
-/* line 41, ../../app/stylesheets/master.sass */
-#expander {
+/* line 36, ../../app/stylesheets/master.sass */
+#simple-search {
+  overflow: hidden;
+}
+/* line 38, ../../app/stylesheets/master.sass */
+#simple-search .expander {
   float: left;
   margin-right: 20px;
   margin-top: 3px;
 }
-/* line 45, ../../app/stylesheets/master.sass */
-#expander a {
+/* line 42, ../../app/stylesheets/master.sass */
+#simple-search .expander a {
   display: inline-block;
   width: 19px;
   color: transparent;
 }
-/* line 49, ../../app/stylesheets/master.sass */
-#expander a.minimized {
+/* line 46, ../../app/stylesheets/master.sass */
+#simple-search .expander a.minimized {
   background: transparent url(/images/u11.png) 0 0 no-repeat;
 }
-/* line 51, ../../app/stylesheets/master.sass */
-#expander a.maximized {
+/* line 48, ../../app/stylesheets/master.sass */
+#simple-search .expander a.maximized {
   background: transparent url(/images/u10.png) 0 0 no-repeat;
 }
-
-/* line 54, ../../app/stylesheets/master.sass */
-#search-field-wrapper {
+/* line 50, ../../app/stylesheets/master.sass */
+#simple-search .search-field-wrapper {
   border: 1px solid #b4b4b4;
-  width: 425px;
+  width: 413px;
   padding: 2px;
   padding-left: 23px;
   background: transparent url(/images/u53.png) 2px 2px no-repeat;
+  float: left;
 }
-/* line 60, ../../app/stylesheets/master.sass */
-#search-field-wrapper input {
+/* line 57, ../../app/stylesheets/master.sass */
+#simple-search .search-field-wrapper input {
   border: 0;
   width: 420px;
   background: transparent;
 }
 
-/* line 66, ../../app/stylesheets/master.sass */
+/* line 64, ../../app/stylesheets/master.sass */
+#advanced-search {
+  display: none;
+  clear: both;
+  padding: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+/* line 70, ../../app/stylesheets/master.sass */
+#advanced-search .friends {
+  margin-bottom: 10px;
+}
+/* line 73, ../../app/stylesheets/master.sass */
+#advanced-search .date-range p, #advanced-search .left p {
+  padding: 5px;
+}
+/* line 75, ../../app/stylesheets/master.sass */
+#advanced-search .date-range label, #advanced-search .left label {
+  display: inline-block;
+  width: 76px;
+  text-align: right;
+}
+/* line 79, ../../app/stylesheets/master.sass */
+#advanced-search .date-range input, #advanced-search .left input {
+  width: 110px !important;
+}
+/* line 81, ../../app/stylesheets/master.sass */
+#advanced-search .date-range {
+  margin-bottom: 10px;
+}
+/* line 83, ../../app/stylesheets/master.sass */
+#advanced-search .left {
+  float: left;
+}
+/* line 85, ../../app/stylesheets/master.sass */
+#advanced-search .right {
+  float: left;
+  padding-left: 30px;
+}
+
+/* line 90, ../../app/stylesheets/master.sass */
 #menu {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 69, ../../app/stylesheets/master.sass */
+/* line 93, ../../app/stylesheets/master.sass */
 #menu li {
   float: left;
   width: 104px;
   text-align: center;
 }
 
-/* line 75, ../../app/stylesheets/master.sass */
+/* line 99, ../../app/stylesheets/master.sass */
 #content {
   clear: both;
 }
