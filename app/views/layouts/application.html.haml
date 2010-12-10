@@ -9,7 +9,7 @@
       %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
       %meta{:property=>"og:app_id",:content=>@og_meta[:app_id]}
 
-    = stylesheet_link_tag 'master'
+    = stylesheet_link_tag "formtastic.css", "formtastic_changes.css", "jacked_fb_styles", '/javascripts/cluetip/jquery.cluetip.css', '/jquery-ui/css/redmond/jquery-ui-1.8.2.custom.css', '/fancybox/jquery.fancybox-1.3.4.css', 'jquery.jgrowl', '/fullcalendar/fullcalendar.css', 'master'
 
     = javascript_include_tag "jquery", "rails", "/jquery-ui/js/jquery-ui-1.8.2.custom.min.js", "/fancybox/jquery.fancybox-1.3.4.pack.js", "cluetip/jquery.hoverIntent.js", 'cluetip/jquery.cluetip.js', "application", 'jquery.jgrowl', '/fullcalendar/fullcalendar.min.js'
     = csrf_meta_tag
