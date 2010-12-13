@@ -5,8 +5,8 @@ class RentalUnit < ActiveRecord::Base
   @@per_page = 5
   attr_accessor :remote_images
   
-  MAX_PRICE = 200
-  MIN_PRICE = 0
+  DEFAULT_MAX_PRICE = 200
+  DEFAULT_MIN_PRICE = 0
   
   has_many :photos, :dependent => :destroy
   has_one :primary_photo, :class_name => 'Photo', :conditions => {:primary => true }
@@ -269,12 +269,12 @@ class RentalUnit < ActiveRecord::Base
   #TODO make for min/max methods
   def self.min_price
     p = RentalUnit.minimum(:weekly_low_price)
-    p.nil? ? MIN_PRICE : (p/7).floor
+    p.nil? ? DEFAULT_MIN_PRICE : (p/7).floor
   end
   
   def self.max_price
     p = RentalUnit.maximum(:nightly_high_price)
-    p.nil? ? MAX_PRICE : (p.to_f).ceil
+    p.nil? ? DEFAULT_MAX_PRICE : (p.to_f).ceil
   end
   
   def location
