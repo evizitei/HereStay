@@ -26,24 +26,37 @@
       .field-box
         = label_tag 'bedrooms', 'Bedrooms:' 
         .slider-container
-          .labels= slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)
-          .clearfix
+          .labels= slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)          
           #range_bedrooms
-      %p
+      .field-box
         = label_tag 'budget', 'Budget:'
-        = text_field_tag :budget
-      %p
+        .slider-container
+          .labels.budget
+            %span $
+            %span.from>= params[:range_budget_from]||RentalUnit.min_price
+            %span - $
+            %span.to>= params[:range_budget_to]||RentalUnit.max_price
+          #range_budget
+      .field-box
         = label_tag 'adults', 'Adults:'
-        = text_field_tag :adults
-      %p
+        .slider-container
+          .labels.with-zero= slider_labels(0, 5, params[:range_adults_from]||0, params[:range_adults_to]||5)
+          #range_adults
+      .field-box
         = label_tag 'kids', 'Kids:'
-        = text_field_tag :kids
-      %p
+        .slider-container
+          .labels.with-zero= slider_labels(0, 5, params[:range_kids_from]||0, params[:range_kids_to]||5)
+          #range_kids
+      .field-box
         = label_tag 'bathrooms', 'Bathrooms:'
-        = text_field_tag :bathrooms
-      %p
+        .slider-container
+          .labels.with-zero= slider_labels(0, 5, params[:range_bathes_from]||0, params[:range_bathes_to]||5)
+          #range_bathes
+      .field-box
         = label_tag 'rating', 'Rating:'
-        = image_tag '/images/u51.png'
+        .slider-container
+          .labels.rating= slider_ratings(params[:range_ratings_from]||0, params[:range_ratings_to]||10)
+          #range_ratings
     .right
       = image_tag '/images/map_fake.png'
       

@@ -161,61 +161,109 @@ a img {
 }
 /* line 75, ../../app/stylesheets/master.sass */
 #advanced-search .date-range label, #advanced-search .left label {
-  display: block;
-  float: left;
+  display: inline-block;
   width: 76px;
   text-align: right;
 }
-/* line 80, ../../app/stylesheets/master.sass */
+/* line 79, ../../app/stylesheets/master.sass */
 #advanced-search .date-range input, #advanced-search .left input {
   width: 110px !important;
 }
-/* line 82, ../../app/stylesheets/master.sass */
+/* line 81, ../../app/stylesheets/master.sass */
 #advanced-search .date-range {
   margin-bottom: 10px;
 }
-/* line 84, ../../app/stylesheets/master.sass */
+/* line 83, ../../app/stylesheets/master.sass */
 #advanced-search .left {
   float: left;
   width: 220px;
 }
-/* line 87, ../../app/stylesheets/master.sass */
+/* line 86, ../../app/stylesheets/master.sass */
 #advanced-search .right {
   float: left;
   padding-left: 30px;
 }
-/* line 90, ../../app/stylesheets/master.sass */
+/* line 89, ../../app/stylesheets/master.sass */
 #advanced-search .field-box {
   overflow: hidden;
+  padding: 5px 0;
 }
 /* line 92, ../../app/stylesheets/master.sass */
+#advanced-search .field-box label {
+  display: block;
+  float: left;
+}
+/* line 95, ../../app/stylesheets/master.sass */
 #advanced-search .field-box .slider-container {
   float: left;
   margin-left: 15px;
 }
-/* line 96, ../../app/stylesheets/master.sass */
+/* line 98, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels {
+  overflow: hidden;
+  height: 16px;
+  margin: 0 0 5px;
+  padding: 0;
+  width: 126px;
+}
+/* line 104, ../../app/stylesheets/master.sass */
 #advanced-search .field-box .slider-container .labels div {
   float: left;
   width: 25px;
+  height: 16px;
 }
-/* line 99, ../../app/stylesheets/master.sass */
+/* line 108, ../../app/stylesheets/master.sass */
 #advanced-search .field-box .slider-container .labels div.sel {
   color: #5c9ccc;
 }
+/* line 110, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels span {
+  color: #5c9ccc;
+}
+/* line 112, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.budget {
+  text-align: center;
+}
+/* line 115, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.rating div {
+  width: 8px;
+}
+/* line 117, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.rating div.even {
+  margin-left: 4px;
+  background: url("/images/star_on.png") no-repeat scroll left top transparent;
+}
+/* line 120, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.rating div.even.sel {
+  background: url("/images/star_off.png") no-repeat scroll left top transparent;
+}
+/* line 122, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.rating div.odd {
+  margin-right: 4px;
+  background: url("/images/star_on_two.png") no-repeat scroll left top transparent;
+}
+/* line 125, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.rating div.odd.sel {
+  background: url("/images/star_off_two.png") no-repeat scroll 0 0 transparent;
+}
+/* line 128, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels.with-zero div {
+  width: 21px;
+}
 
-/* line 103, ../../app/stylesheets/master.sass */
+/* line 132, ../../app/stylesheets/master.sass */
 #menu {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 106, ../../app/stylesheets/master.sass */
+/* line 135, ../../app/stylesheets/master.sass */
 #menu li {
   float: left;
   width: 104px;
   text-align: center;
 }
 
-/* line 112, ../../app/stylesheets/master.sass */
+/* line 141, ../../app/stylesheets/master.sass */
 #content {
   clear: both;
 }

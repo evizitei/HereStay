@@ -73,8 +73,7 @@
     p
       padding: 5px
     label
-      display: block
-      float: left
+      display: inline-block
       width: 76px
       text-align: right
     input
@@ -89,15 +88,45 @@
     padding-left: 30px
   .field-box
     overflow: hidden
+    padding: 5px 0
+    label
+      display: block
+      float: left
     .slider-container
       float: left
       margin-left: 15px
       .labels
+        overflow: hidden
+        height: 16px
+        margin: 0 0 5px
+        padding: 0
+        width: 126px
         div
           float: left
           width: 25px
+          height: 16px
           &.sel
             color: #5C9CCC
+        span
+          color: #5C9CCC
+        &.budget
+          text-align: center
+        &.rating
+          div            
+            width: 8px
+            &.even
+              margin-left: 4px
+              background: url("/images/star_on.png") no-repeat scroll left top transparent
+              &.sel
+                background: url("/images/star_off.png") no-repeat scroll left top transparent
+            &.odd
+              margin-right: 4px
+              background: url("/images/star_on_two.png") no-repeat scroll left top transparent
+              &.sel
+                background: url("/images/star_off_two.png") no-repeat scroll 0 0 transparent
+        &.with-zero
+          div
+            width: 21px
       
 //--------------------- [ menu ] ---------------------//
 #menu
