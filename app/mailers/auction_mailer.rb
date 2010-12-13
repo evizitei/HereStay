@@ -3,7 +3,7 @@ class AuctionMailer < ActionMailer::Base
   
   def lot_created(lot)
     mail(:to => lot.property.user.email) do |format|
-      format.html { render :text => "<p>You have created new autcion lot.</p> Lot details: #{auction_lot_url(lot)}" }
+      format.html { render :text => "<p>You have created new auction lot.</p> Lot details: #{auction_lot_url(lot)}" }
     end
   end
   
@@ -21,12 +21,12 @@ class AuctionMailer < ActionMailer::Base
   
   def lot_finished(lot)
     if lot.bids.present?
-      text = "<p>Your auction lot has finished. The win bid is #{Money.new(lot.bids.last.cents)}.</p>"
+      text = "The win bid is #{Money.new(lot.bids.last.cents).format}."
     else
-      text = "<p>Your auction lot has finished. There are no bids.</p>"
+      text = "There are no bids."
     end
     mail(:to => lot.property.user.email) do |format|
-      format.html { render :text => "#{text} Lot details: #{auction_lot_url(lot)}" }
+      format.html { render :text => "<p>Your auction lot has been finished. #{text}</p> Lot details: #{auction_lot_url(lot)}" }
     end
   end
   

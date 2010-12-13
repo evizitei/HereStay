@@ -67,11 +67,11 @@ class Lot < ActiveRecord::Base
   end
   
   def check_dates_on_create
-    errors.add(:end_at, "should be greater than now") if start_at && start_at < Time.zone.now
+    errors.add(:start_at, "should be greater than now") if start_at && start_at < Time.zone.now
   end
   
   def check_dates_on_update
-    errors.add(:end_at, "should be greater than now") if start_at && start_at_changed? && start_at < start_at_was
+    errors.add(:start_at, "should be greater than now") if start_at && start_at_changed? && start_at < start_at_was
   end
   
   def validate_creator
@@ -84,7 +84,7 @@ class Lot < ActiveRecord::Base
   end
   
   def run_created_callbacks
-    AuctionMailer.win_confirmation_to_renter(self).deliver
+    AuctionMailer.lot_created(self).deliver
     post_to_twitter
     post_to_wall
   end

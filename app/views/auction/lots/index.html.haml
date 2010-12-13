@@ -19,3 +19,5 @@
 - if collection.blank?
   There are no lots yet.
   = link_to 'Create the lot.', new_resource_path
+- else
+  %p= link_to 'Add new lot.', new_resource_path
