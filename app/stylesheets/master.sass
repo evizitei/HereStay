@@ -65,7 +65,6 @@
 #advanced-search  
   display: none
   clear: both
-  padding: 10px
   overflow: hidden
   margin-bottom: 10px  
   .friends
@@ -74,7 +73,8 @@
     p
       padding: 5px
     label
-      display: inline-block
+      display: block
+      float: left
       width: 76px
       text-align: right
     input
@@ -83,9 +83,21 @@
     margin-bottom: 10px
   .left
     float: left
+    width: 220px
   .right
     float: left
     padding-left: 30px
+  .field-box
+    overflow: hidden
+    .slider-container
+      float: left
+      margin-left: 15px
+      .labels
+        div
+          float: left
+          width: 25px
+          &.sel
+            color: #5C9CCC
       
 //--------------------- [ menu ] ---------------------//
 #menu

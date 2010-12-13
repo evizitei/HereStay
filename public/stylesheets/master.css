@@ -148,21 +148,21 @@ a img {
 #advanced-search {
   display: none;
   clear: both;
-  padding: 10px;
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 71, ../../app/stylesheets/master.sass */
+/* line 70, ../../app/stylesheets/master.sass */
 #advanced-search .friends {
   margin-bottom: 10px;
 }
-/* line 74, ../../app/stylesheets/master.sass */
+/* line 73, ../../app/stylesheets/master.sass */
 #advanced-search .date-range p, #advanced-search .left p {
   padding: 5px;
 }
-/* line 76, ../../app/stylesheets/master.sass */
+/* line 75, ../../app/stylesheets/master.sass */
 #advanced-search .date-range label, #advanced-search .left label {
-  display: inline-block;
+  display: block;
+  float: left;
   width: 76px;
   text-align: right;
 }
@@ -177,26 +177,45 @@ a img {
 /* line 84, ../../app/stylesheets/master.sass */
 #advanced-search .left {
   float: left;
+  width: 220px;
 }
-/* line 86, ../../app/stylesheets/master.sass */
+/* line 87, ../../app/stylesheets/master.sass */
 #advanced-search .right {
   float: left;
   padding-left: 30px;
 }
+/* line 90, ../../app/stylesheets/master.sass */
+#advanced-search .field-box {
+  overflow: hidden;
+}
+/* line 92, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container {
+  float: left;
+  margin-left: 15px;
+}
+/* line 96, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels div {
+  float: left;
+  width: 25px;
+}
+/* line 99, ../../app/stylesheets/master.sass */
+#advanced-search .field-box .slider-container .labels div.sel {
+  color: #5c9ccc;
+}
 
-/* line 91, ../../app/stylesheets/master.sass */
+/* line 103, ../../app/stylesheets/master.sass */
 #menu {
   overflow: hidden;
   margin-bottom: 10px;
 }
-/* line 94, ../../app/stylesheets/master.sass */
+/* line 106, ../../app/stylesheets/master.sass */
 #menu li {
   float: left;
   width: 104px;
   text-align: center;
 }
 
-/* line 100, ../../app/stylesheets/master.sass */
+/* line 112, ../../app/stylesheets/master.sass */
 #content {
   clear: both;
 }

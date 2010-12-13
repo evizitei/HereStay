@@ -23,9 +23,12 @@
         = label_tag 'search_end_date', 'Depart:'
         = date_picker_tag 'search_end_date', params[:search_end_date].blank? ? nil : params[:search_end_date].to_date, :class => 'date_picker to_date'
     .left
-      %p
+      .field-box
         = label_tag 'bedrooms', 'Bedrooms:' 
-        = text_field_tag :bedrooms
+        .slider-container
+          .labels= slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)
+          .clearfix
+          #range_bedrooms
       %p
         = label_tag 'budget', 'Budget:'
         = text_field_tag :budget
