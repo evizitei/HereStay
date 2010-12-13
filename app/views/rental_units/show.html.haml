@@ -1,69 +1,93 @@
-=stylesheet_link_tag "spacegallery","custom"
-/%script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
-=javascript_include_tag "eye","utils","spacegallery","layout"
-
-= fb_button 'Availabilities', [:availabilities, @rental_unit], :class_name => 'f_right', :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(@rental_unit)
-
-- if current_user
-  = fb_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(current_user)
-  = fb_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
-  = fb_button 'Manage My Properties', manage_rental_units_path, :class_name => 'f_right'
-- else
+- unless current_user
   = fb_login_button
   \-- Press here to start booking your vacation!
-
 %h2= @rental_unit.name
-%br
-%br
-=render(:partial=>"share_unit",:object=>@rental_unit)
-#tab_content.pal.grayArea.gray_box.noborder.colored-bg
-  %table.dataTable
-    %tbody
-      %tr.dataRow
-        %td{:colspan=>3}=render(:partial=>"info",:object=>@rental_unit)
-      %tr.spacer
-        %td{:colspan=>3}
-          %hr
-      %tr.dataRow
-        %td{:colspan=>3}
-          %h3 Gallery
-          #myGallery.spacegallery
-            - @rental_unit.photos.each do |photo|
-              = image_tag photo.picture.url(:medium)
-      %tr.spacer
-        %td{:colspan=>3}
-          %hr
-      %tr.dataRow
-        %td{:colspan=>3}
-          #map_wrapper{:style=>"width:600px;height:400px;"}
-            %h3 Map
-            #map_canvas{:style=>"width:100%; height:90%",:data=>{:canmap=>(@rental_unit.geocoding_success ? "true" : "false"),:lat=>@rental_unit.lat,:long=>@rental_unit.long,:fulladdress=>@rental_unit.geocoded_address}} 
-      %tr.spacer
-        %td{:colspan=>3}
-          %hr
-      -if @rental_unit.has_video?
-        %tr.dataRow
-          %td{:colspan=>3}
-            %h3 Video
-            %object{:style=>"height: 344px; width: 425px"}
-              %param{:name=>"movie",:value=>"http://www.youtube.com/v/#{@rental_unit.video_id}"}
-              %param{:name=>"allowFullScreen",:value=>"true"}
-              %param{:name=>"allowScriptAccess",:value=>"always"}
-              %embed{:src=>"http://www.youtube.com/v/#{@rental_unit.video_id}",:type=>"application/x-shockwave-flash",:allowfullscreen=>"true",:allowScriptAccess=>"always",:width=>"425",:height=>"344"}
-      %tr.spacer
-        %td{:colspan=>3}
-          %hr
-  %fb:comments{:xid=>"here_stay_unit_#{@rental_unit.id}",:canpost=>"true",:candelete=>"false",:showform=>"true",:send_notification_uid=>@rental_unit.fb_user_id,:publish_feed=>"true"}
-
-:javascript
-  $(document).ready(function(){
-    var element = $("#map_canvas");
-    if(element.attr("data-lat").length > 0){
-      var latlng = new google.maps.LatLng(parseFloat(element.attr("data-lat")),parseFloat(element.attr("data-long")));
-      var myOptions = {zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
-      var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-      var marker = new google.maps.Marker({position: latlng,map: map,title: element.attr("data-fulladdress")});
-    }else{
-      $("#map_canvas").html("<h1>Sorry, cannot map this address</h1>");
-    }
-  });
+.property
+  .left-column
+    -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
+      .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
+    -else
+      .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'} 
+    %div=render(:partial=>"rental_units/share_unit",:object=>@rental_unit)
+  .right-column
+    .f_right= belongs_to_friend_icon current_user, @rental_unit
+    .title
+      == #{@rental_unit.name} 
+      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>@rental_unit.user.fb_user_id)}
+      .clearfix
+    .description{:style => 'margin: 10px 0;'}
+      = @rental_unit.description
+  .clearfix
+  .amenities 
+    = form_for @rental_unit do |f|
+      .left-col
+        .left-col
+          .row
+            = f.check_box :balcony, :disabled => true
+            = f.label :balcony, 'Balcony:'
+          .row
+            = f.check_box :dishwasher, :disabled => true
+            = f.label :dishwasher, 'Dishwasher:'
+          .row
+            = f.check_box :fireplace, :disabled => true
+            = f.label :fireplace, 'Fireplace:'
+          .row
+            = f.check_box :hardwood_floors, :disabled => true
+            = f.label :hardwood_floors, 'Hardwood Floors:'
+        .left-col
+          .row
+            = f.check_box :patio, :disabled => true
+            = f.label :patio, 'Patio:'
+          .row
+            = f.check_box :refrigerator, :disabled => true
+            = f.label :refrigerator, 'Refrigerator:'
+          .row
+            = f.check_box :microwave, :disabled => true
+            = f.label :microwave, 'Microwave:'
+          .row
+            = f.check_box :washer_dryer, :disabled => true
+            = f.label :washer_dryer, 'Washer/Dryer:'
+        .clearfix
+      .left-col
+        .left-col
+          .row
+            = f.check_box :clubhouse, :disabled => true
+            = f.label :clubhouse, 'Clubhouse:'
+          .row
+            = f.check_box :exercise_room, :disabled => true
+            = f.label :exercise_room, 'Exercise Room:'
+          .row
+            = f.check_box :on_site_laundry, :disabled => true
+            = f.label :on_site_laundry, 'On Site Laundry:'
+          .row
+            = f.check_box :on_site_manager, :disabled => true
+            = f.label :on_site_manager, 'On Site Manager:'
+        .left-col
+          .row
+            = f.check_box :security_gate, :disabled => true
+            = f.label :security_gate, 'Security Gate:'
+          .row
+            = f.check_box :swimming_pool, :disabled => true
+            = f.label :swimming_pool, 'Swimming Pool:'
+          .row
+            = f.check_box :tennis_courts, :disabled => true
+            = f.label :tennis_courts, 'Tennis Courts:'
+          .row
+            = f.check_box :parking, :disabled => true
+            = f.label :parking, 'Parking:'
+          .row
+            = f.check_box :wifi, :disabled => true
+            = f.label :wifi, 'WiFi:'
+        .clearfix
+      .clearfix
+  .left-column 
+    %br
+  .right-column
+    .comments
+      %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
+  .clearfix
+- if current_user
+  = simple_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(current_user)
+  = simple_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
+  = simple_button 'Manage My Properties', manage_rental_units_path, :class_name => 'f_right'
+  .clearfix
