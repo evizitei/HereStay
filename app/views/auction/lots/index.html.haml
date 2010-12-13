@@ -1,0 +1,21 @@
+%h1 Auction
+%h2 Lots
+- for resource in collection
+  %h3
+    = link_to resource.title, resource_path(resource)
+    - if current_user && resource.belongs_to?(current_user)
+      %span= link_to 'edit', edit_resource_path(resource)
+    
+  %p start from #{number_to_currency(resource.min_bid_cents/100.0)}
+  - if resource.active?
+    %p
+      %b Lot is not active
+  - else
+    %p 
+      %b Time left:
+      = distance_of_time_in_words_to_now resource.end_at
+= will_paginate collection
+
+- if collection.blank?
+  There are no lots yet.
+  = link_to 'Create the lot.', new_resource_path

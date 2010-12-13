@@ -1,0 +1,11 @@
+= f.inputs do
+  = f.input :title
+  = f.input :property_id, :as => :select, :collection => current_user.rental_units.map{|u| [u.name, u.id]}
+  = f.input :start_at, :as => :datetimepicker
+  = f.input :end_at,  :as => :datetimepicker
+  = f.input :min_bid_cents
+  = f.input :min_nights
+  = f.input :cancel_bid_policy
+  = f.input :terms, :label => "Terms and conditions"
+  = f.input :socially_connected
+  = f.input :stayed_before

@@ -126,6 +126,7 @@ GEM
     mime-types (1.16)
     mocha (0.9.9)
       rake
+    money (3.1.5)
     moonshado-sms (1.1.0)
       rest-client (= 1.6.0)
       yajl-ruby (= 0.7.7)
@@ -225,6 +226,7 @@ DEPENDENCIES
   launchy
   mechanize
   mocha
+  money
   moonshado-sms (= 1.1.0)
   nokogiri
   paperclip
