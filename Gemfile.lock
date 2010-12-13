@@ -10,6 +10,14 @@ GIT
       sunspot (= 1.2.rc4)
 
 GIT
+  remote: https://github.com/neonlex/hassle.git
+  revision: 4996fea736584d337b4ff18f7e795601ca37ef19
+  specs:
+    hassle (0.0.1)
+      haml
+      rack
+
+GIT
   remote: https://github.com/rubyist/aasm.git
   revision: 5d715307571786212a516ebae20423b0ef0e2a92
   specs:
@@ -222,6 +230,7 @@ DEPENDENCIES
   formtastic
   haml
   has_scope
+  hassle!
   httparty
   inherited_resources (= 1.1.2)
   koala
