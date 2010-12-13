@@ -5,15 +5,23 @@
     = link_to resource.title, resource_path(resource)
     - if current_user && resource.belongs_to?(current_user)
       %span= link_to 'edit', edit_resource_path(resource)
-    
-  %p start from #{number_to_currency(resource.min_bid_cents/100.0)}
+  %p
+    %b #{resource.current_bids.empty? ? 'Starting price' : 'Current bid'}:
+    #{resource.current_bid.format}
   - if resource.active?
     %p
-      %b Lot is not active
-  - else
-    %p 
       %b Time left:
       = distance_of_time_in_words_to_now resource.end_at
+  - elsif resource.finished?
+    %p
+      %b Lot is finished
+    - unless resource.current_bids.empty?
+      %p
+        %b Max. bid is #{resource.current_bid.format}
+  - else
+    %p
+      %b Lot is not active
+
 = will_paginate collection
 
 - if collection.blank?
