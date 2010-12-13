@@ -3,7 +3,7 @@
   %br
   = fb_login_button
   \-- Press here to start using HereStay!
-.properties{:style => 'border: solid 1px #B4B4B4; padding: 10px;'}
+.properties
   %h2{:style=>"font-size:16pt;"} Featured Properties
   =render(:partial => "rental_units/unit_row", :collection => @rental_units, :locals => {:admin => false})
   =will_paginate(@paginate_obj,:renderer=>"FacebookLinkRenderer")

@@ -1,104 +1,156 @@
 = error_messages_for @rental_unit
-%table.dataTable
-  %tbody
-    %tr.dataRow
-      %th.label Property Name:
-      %td.data= f.text_field :name
-      %td.rightCol
-    %tr.dataRow
-      %th.label Description:
-      %td.data= f.text_area :description,:rows=>5
-      %td.rightCol
-    %tr.spacer
-      %td{:colspan=>3}
-        %hr
-    %tr.dataRow
-      %th.label Address Line 1:
-      %td.data= f.text_field :address
-      %td.rightCol
-    %tr.dataRow
-      %th.label Address Line 2:
-      %td.data= f.text_field :address_2
-      %td.rightCol
-    %tr.dataRow
-      %th.label City:
-      %td.data= f.text_field :city
-      %td.rightCol
-        =f.label :state,"State:"
-        =f.text_field :state
-    %tr.dataRow
-      %th.label Country:
-      %td.data= f.text_field :country
-      %td.rightCol
-    %tr.dataRow
-      %th.label Zip:
-      %td.data= f.text_field :zip
-      %td.rightCol
-    %tr.dataRow
-      %th.label VRBO ID:
-      %td.data= f.text_field :vrbo_id,:rows=>5
-      %td.rightCol
-    %tr.spacer
-      %td{:colspan=>3}
-        %hr
-    %tr.dataRow
-      %th.label Pricing:
-      %td.data
-        %table
-          %tbody
-            %tr
-              %th
-              %th High
-              %th Mid
-              %th Low
-            %tr
-              %td Nightly
-              %td= f.text_field :nightly_high_price,:size=>6
-              %td= f.text_field :nightly_mid_price,:size=>6
-              %td= f.text_field :nightly_low_price,:size=>6
-            %tr
-              %td Weekly
-              %td= f.text_field :weekly_high_price,:size=>6
-              %td= f.text_field :weekly_mid_price,:size=>6
-              %td= f.text_field :weekly_low_price,:size=>6
-      %td.rightCol
-    %tr.dataRow
-      %th.label Pricing Description:
-      %td.data= f.text_area :pricing,:rows=>5
-      %td.rightCol
-    %tr.spacer
-      %td{:colspan=>3}
-        %hr
-    %tr.dataRow
-      %th.label Photo:
-      - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
-      = f.fields_for :primary_photo do |p|
-        = p.hidden_field :primary, :value => true
-        %td.data= p.file_field :picture
-        %td.rightCol
-    %tr.spacer
-      %td{:colspan=>3}
-        %hr
-    %tr.dataRow
-      %th.label Bedrooms:
-      %td.data= f.text_field :bedrooms, :size => 4, :maxlength => 3
-      %td.rightCol
-    %tr.dataRow
-      %th.label Bathrooms:
-      %td.data= f.text_field :bathrooms, :size => 4, :maxlength => 3
-      %td.rightCol
-    %tr.dataRow
-      %th.label Adults:
-      %td.data= f.text_field :adults, :size => 4, :maxlength => 3
-      %td.rightCol
-    %tr.dataRow
-      %th.label Kids:
-      %td.data= f.text_field :kids, :size => 4, :maxlength => 3
-      %td.rightCol
-  %tfoot
-    %tr.dataRow
-      %th.label
-      %td.data
-        %label.fbButton= f.submit "Save Changes"
-        %label.fbButton
-          =link_to content_tag(:input,nil,{:type=>"button",:value=>"Cancel"}),manage_rental_units_path
+.clearfix
+.dataRow
+  .image{:style => 'float: left; width: 180px;'}
+    - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
+    = f.fields_for :primary_photo do |p|
+      = p.hidden_field :primary, :value => true
+      /= p.file_field :picture, :size => 10
+      %div= f.label :name, 'Photo:'
+      = file_field_tag 'rental_unit[primary_photo_attributes][picture]', :size => 10
+  .address{:style => 'float: right;text-align: right; width: 300px;'}
+    .row
+      = f.label :name, 'Property Name:'
+      = f.text_field :name
+    .row
+      = f.label :address, 'Address:'
+      = f.text_field :address
+    .row
+      = f.label :city, 'City:'
+      = f.text_field :city
+    .row
+      = f.label :zip, 'Zip:'
+      = f.text_field :zip
+  .clearfix
+.dataRow
+  .f_left= f.label :name, 'Description:'
+  .f_right= f.text_area :description,:rows=>5
+  .clearfix
+.dataRow.price
+  %h3 Price:
+  .row
+    %h4 Nightly:
+    .col
+      = f.label :nightly_high_price, 'High Season:'
+      = f.text_field :nightly_high_price, :class => 'small'
+    .col
+      = f.label :nightly_mid_price, 'Med Season:'
+      = f.text_field :nightly_mid_price, :class => 'small'
+    .col
+      = f.label :nightly_low_price, 'Low Season:'
+      = f.text_field :nightly_low_price, :class => 'small'
+    .clearfix  
+  .row
+    %h4 Weekly:
+    .col
+      = f.label :weekly_high_price, 'High Season:'
+      = f.text_field :weekly_high_price, :class => 'small'
+    .col
+      = f.label :weekly_mid_price, 'Med Season:'
+      = f.text_field :weekly_mid_price, :class => 'small'
+    .col
+      = f.label :weekly_low_price, 'Low Season:'
+      = f.text_field :weekly_low_price, :class => 'small'
+    .clearfix
+.dataRow
+  %h3 Features:
+  .right-col
+    .row
+      = f.label :floors, 'Floors on Building:'
+      = f.text_field :floors, :class => 'med'
+    .row
+      = f.label :located_on_floor, 'Located on Floor #:'
+      = f.text_field :located_on_floor, :class => 'med'
+    .row
+      = f.label :name, 'Year Built:'
+      = f.text_field :year_built, :class => 'med'
+  .right-col
+    .row
+      = f.label :bathrooms, 'Bathrooms:'
+      = f.text_field :bathrooms, :class => 'med'
+    .row
+      = f.label :bedrooms, 'Bedrooms:'
+      = f.text_field :bedrooms, :class => 'med'
+    .row
+      = f.label :sq_footage, 'Sq Footage:'
+      = f.text_field :sq_footage, :class => 'med'
+  .clearfix
+.dataRow{:style => 'font-size: 12px;'}   
+  .left-col
+    .left-col
+      .row
+        = f.check_box :balcony
+        = f.label :balcony, 'Balcony:'
+      .row
+        = f.check_box :dishwasher
+        = f.label :dishwasher, 'Dishwasher:'
+      .row
+        = f.check_box :fireplace
+        = f.label :fireplace, 'Fireplace:'
+      .row
+        = f.check_box :hardwood_floors
+        = f.label :hardwood_floors, 'Hardwood Floors:'
+    .left-col
+      .row
+        = f.check_box :patio
+        = f.label :patio, 'Patio:'
+      .row
+        = f.check_box :refrigerator
+        = f.label :refrigerator, 'Refrigerator:'
+      .row
+        = f.check_box :microwave
+        = f.label :microwave, 'Microwave:'
+      .row
+        = f.check_box :washer_dryer
+        = f.label :washer_dryer, 'Washer/Dryer:'
+    .clearfix
+  .left-col
+    .left-col
+      .row
+        = f.check_box :clubhouse
+        = f.label :clubhouse, 'Clubhouse:'
+      .row
+        = f.check_box :exercise_room
+        = f.label :exercise_room, 'Exercise Room:'
+      .row
+        = f.check_box :on_site_laundry
+        = f.label :on_site_laundry, 'On Site Laundry:'
+      .row
+        = f.check_box :on_site_manager
+        = f.label :on_site_manager, 'On Site Manager:'
+    .left-col
+      .row
+        = f.check_box :security_gate
+        = f.label :security_gate, 'Security Gate:'
+      .row
+        = f.check_box :swimming_pool
+        = f.label :swimming_pool, 'Swimming Pool:'
+      .row
+        = f.check_box :tennis_courts
+        = f.label :tennis_courts, 'Tennis Courts:'
+      .row
+        = f.check_box :parking
+        = f.label :parking, 'Parking:'
+      .row
+        = f.check_box :wifi
+        = f.label :wifi, 'WiFi:'
+    .clearfix
+  .clearfix
+  .right-col
+    = f.label :unit_other, 'Other:'
+    = f.text_field :unit_other, :class => 'med'
+  .right-col
+    = f.label :building_other, 'Other:'
+    = f.text_field :building_other, :class => 'med'
+  .clearfix
+.dataRow
+  .left-col
+  .right-col
+    %div{:style => 'border: solid 1px #000;width: 100px; height:50px; text-align: center; vertical-align: middlle;'}
+      Upload Video
+  .clearfix
+.dataRow
+  .left-col
+  .right-col
+    = f.submit "Post It"
+  .clearfix

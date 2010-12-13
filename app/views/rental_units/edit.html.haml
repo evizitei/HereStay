@@ -1,9 +1,9 @@
-%h2 Editing #{@rental_unit.name}
-
-.pal.grayArea.gray_box.noborder.colored-bg
-  #rental_unit_form
-    = form_for @rental_unit, :rental_unit, :url => rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
-      = render 'form', {:f => f}
-      
-= fb_button 'VRBO Calendar', rental_unit_reservations_path(@rental_unit), :class_name => 'f_right'
-= fb_button 'Load VRBO Full Property', load_from_vrbo_rental_unit_path, :class_name => 'f_right', :method => :put
+= simple_button 'VRBO Calendar', rental_unit_reservations_path(@rental_unit), :class_name => 'f_right'
+= simple_button 'Load VRBO Full Property', load_from_vrbo_rental_unit_path, :class_name => 'f_right', :method => :put
+#h2{:style => 'font-weight: bold;'} 
+  New Post
+  %span{:style => 'font-weight: normal;'} > Preview / Save Changes 
+.clearfix
+.property_form{:style => 'border: solid 1px #B4B4B4; padding: 10px;'}
+  = form_for @rental_unit, :rental_unit, :url => rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
+    = render 'form', {:f => f}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101207090754) do
+ActiveRecord::Schema.define(:version => 20101210075255) do
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -122,6 +122,29 @@ ActiveRecord::Schema.define(:version => 20101207090754) do
     t.integer  "bathrooms"
     t.integer  "adults"
     t.integer  "kids"
+    t.boolean  "balcony",              :default => false
+    t.boolean  "dishwasher",           :default => false
+    t.boolean  "fireplace",            :default => false
+    t.boolean  "hardwood_floors",      :default => false
+    t.boolean  "patio",                :default => false
+    t.boolean  "refrigerator",         :default => false
+    t.boolean  "microwave",            :default => false
+    t.boolean  "washer_dryer",         :default => false
+    t.boolean  "clubhouse",            :default => false
+    t.boolean  "exercise_room",        :default => false
+    t.boolean  "on_site_laundry",      :default => false
+    t.boolean  "on_site_manager",      :default => false
+    t.boolean  "security_gate",        :default => false
+    t.boolean  "swimming_pool",        :default => false
+    t.boolean  "tennis_courts",        :default => false
+    t.boolean  "parking",              :default => false
+    t.boolean  "wifi",                 :default => false
+    t.string   "unit_other"
+    t.string   "building_other"
+    t.integer  "floors"
+    t.integer  "located_on_floor"
+    t.string   "year_built"
+    t.string   "sq_footage"
   end
 
   add_index "rental_units", ["fb_user_id"], :name => "index_rental_units_on_fb_user_id"

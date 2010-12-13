@@ -1,18 +1,20 @@
-.property{:style => "width: 485px; border: solid 1px #B4B4B4; margin-top: 10px; padding: 10px;"}
-  .picture{:style => "width: 100px; float: left; margin-right: 10px;"}
+.property
+  .left-column
     -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
-      %div{:style => 'min-height: 100px; margin-bottom: 10px;'}=image_tag(unit_row.primary_photo.picture.url(:thumb))
+      .picture
+        =link_to image_tag(unit_row.primary_photo.picture.url(:thumb)), rental_unit_path(unit_row)
     -else
-      %div{:style => 'min-height: 100px; margin-bottom: 10px;'}
-    %div{:style => 'margin-bottom: 10px;'}= simple_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
+      %a{:href => rental_unit_path(unit_row)}
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+    %div= simple_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
     %div= simple_button 'Contact', discuss_rental_unit_bookings_path(unit_row)
-  .details{:style => "width: 370px; float: left; font-size: 12px;"}
+  .right-column
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
-    .title{:style => 'overflow: hidden; font-weight: bold; font-size: 13px;'}
+    .title
       == #{unit_row.name} 
       %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
       .clearfix
-    .description{:style => 'margin: 10px 0;'}
+    .description
       = truncate(unit_row.description, :length => 150, :separator => ' ')
     .f_right{:style => 'margin-bottom: -15px;'}=render(:partial=>"rental_units/share_unit",:object=>unit_row)
     
