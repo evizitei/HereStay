@@ -25,6 +25,7 @@ gem "recurly"
 gem 'has_scope'
 gem "aasm", :git => 'https://github.com/rubyist/aasm.git'
 gem 'compass', '0.10.6'
+gem 'hassle', :git => 'https://github.com/neonlex/hassle.git'
 gem "money"
 
 group :development,:test,:cucumber do
