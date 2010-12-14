@@ -5,8 +5,8 @@
   = render 'fields', :f => f
   = f.buttons do
     = fb_button do
-      = f.submit 'Edit'
-    = fb_button 'Cancel', collection_path
+      = f.submit 'Save'
+    = fb_button 'Cancel', resource_path
 
 = javascript_include_tag 'jquery-ui-timepicker-addon'
 :javascript

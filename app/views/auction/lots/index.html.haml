@@ -7,7 +7,7 @@
       %span= link_to 'edit', edit_resource_path(resource)
   %p
     %b #{resource.current_bids.empty? ? 'Starting price' : 'Current bid'}:
-    #{resource.current_bid.format}
+    #{resource.current_bid_amount.format}
   - if resource.active?
     %p
       %b Time left:

@@ -2,6 +2,7 @@ class Auction::LotsController < Auction::BaseController
   inherit_resources
   before_filter :login_required, :except => %w(index show)
   before_filter :access_denied, :only => %w(edit update finish destroy)
+    before_filter :format_money_params, :only => %w(create update)
   
   def finish
     resource.finish!

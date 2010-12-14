@@ -5,12 +5,17 @@ class Lot < ActiveRecord::Base
   belongs_to :property, :class_name => 'RentalUnit', :foreign_key => :property_id
   has_many :bids, :dependent => :destroy
   
-  validates :title, :start_at, :end_at, :min_bid_cents, :terms, :property_id, :presence => true
-  validate :check_dates, :validate_creator
-  validate :check_dates_on_create, :on => :create
-  validate :check_dates_on_update, :on => :update
+  validates :title, :start_at, :end_at, :min_bid_cents, :terms, :property_id, :min_bid_amount, :presence => true
+  validates_numericality_of :min_bid_amount, :greater_than => 0, :allow_blank => :true
   
-  composed_of :amount, :class_name => "Money", :mapping => %w(min_bid_cents cents)
+  validate :check_dates, :validate_creator
+  validate :validate_min_bid_amount, :on => :update
+  # validate :check_dates_on_create, :on => :create
+  # validate :check_dates_on_update, :on => :update
+  
+  composed_of :min_bid_amount, :class_name => "Money", :mapping => %w(min_bid_cents cents)
+  # composed_of :current_bid_amount, :class_name => "Money", :mapping => %w(current_bid_cents cents)
+  # composed_of :next_bid_amount, :class_name => "Money", :mapping => %w(next_bid_cents cents)
   
   after_create :run_created_callbacks
   
@@ -18,23 +23,31 @@ class Lot < ActiveRecord::Base
     property.user == user
   end
   
+  def current_bids
+    self.bids(true).by_cents
+  end
+  
+  def current_bid
+    self.bids(true).by_cents.first
+  end
+  
+  # latest bid or start bid in cents
   def current_bid_cents
-    if current_bids.blank?
+    if self.current_bids.blank?
       min_bid_cents
     else
-      self.bids(true).last.cents + 1000
+      self.bids(true).by_cents.first.cents
     end
   end
   memoize :current_bid_cents
-  
-  def current_bids
-    self.bids(true)
+
+  # current bid + $10
+  def next_bid_cents
+    current_bid_cents + 1000
   end
   
-  
-  def current_bid
-    Money.new(current_bid_cents)
-  end
+  def current_bid_amount; Money.new(current_bid_cents); end
+  def next_bid_amount; Money.new(next_bid_cents); end
   
   def finish!
     self.end_at = Time.now
@@ -66,12 +79,17 @@ class Lot < ActiveRecord::Base
     errors.add(:end_at, "should be greater than start date") if start_at && end_at && start_at >= end_at
   end
   
-  def check_dates_on_create
-    errors.add(:start_at, "should be greater than now") if start_at && start_at < Time.zone.now
-  end
+  # Disable validation
+  # def check_dates_on_create
+  #   errors.add(:start_at, "should be greater than now") if start_at && start_at < Time.zone.now
+  # end
+  # 
+  # def check_dates_on_update
+  #   errors.add(:start_at, "should be greater than now") if start_at && start_at_changed? && start_at < start_at_was
+  # end
   
-  def check_dates_on_update
-    errors.add(:start_at, "should be greater than now") if start_at && start_at_changed? && start_at < start_at_was
+  def validate_min_bid_amount
+    errors.add(:min_bid_amount, "can't be changed when the lot has bids") if min_bid_cents_changed? && self.bids.present?
   end
   
   def validate_creator

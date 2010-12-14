@@ -25,10 +25,4 @@ class Auction::BidsController < Auction::BaseController
       object.user = current_user
       object.save
     end
-    
-    def format_money_params
-      if params[:bid] && params[:bid][:amount]
-        params[:bid][:amount] = params[:bid][:amount].to_money
-      end
-    end
 end

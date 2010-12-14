@@ -10,10 +10,20 @@
         %span= link_to 'edit', edit_resource_path(resource)
     %h3= resource.property.name
     %p= resource.property.description
+    - if resource.arrive_on || resource.depart_on
+      %p
+        - if resource.arrive_on
+          %div
+            %b Arrive date:
+            = resource.arrive_on.to_s(:short_date_with_year)
+        - if resource.depart_on
+          %div
+            %b Depart date:
+            = resource.depart_on.to_s(:short_date_with_year)
     %p= link_to 'View property details', rental_unit_path(resource.property)
 %p 
-  %b #{resource.current_bids.empty? ? 'Starting price' : 'Current bid'}:
-  #{resource.current_bid.format}
+  %b #{resource.current_bids.empty? ? 'Starting bid' : 'Current bid'}:
+  #{resource.current_bid_amount.format}
 
 %p
   %b Bid history:
@@ -31,7 +41,7 @@
       = fb_button do
         = f.submit 'Place bid'
       %br
-      (Enter #{resource.current_bid.format} or more)
+      (Enter #{resource.next_bid_amount.format} or more)
     
     %p
       = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
@@ -41,7 +51,7 @@
     %b Lot is finished
   - unless resource.current_bids.empty?
     %p
-      %b Max. bid is #{resource.current_bid.format}
+      %b Max. bid is #{resource.current_bid_amount.format}
 - else
   %p
     %b Lot is not active

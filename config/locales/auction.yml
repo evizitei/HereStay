@@ -3,3 +3,10 @@ en:
     attributes:
       bid:
         cents: Bid
+      lot:
+        min_bid_cents: Start auction bidding at
+        min_bid_amount: Start auction bidding at
+        start_at: Start auction at
+        end_at: End auction at
+        arrive_on: Arrive date
+        depart_on: Depart date

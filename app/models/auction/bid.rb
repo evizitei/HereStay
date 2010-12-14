@@ -11,9 +11,11 @@ class Bid < ActiveRecord::Base
   
   composed_of :amount, :class_name => "Money", :mapping => %w(cents cents)
   
+  scope :by_cents, order('cents')
+  
   private
   def validate_cents
-    errors.add(:cents, "should be greater or equal #{lot.current_bid.format}") if self.cents && self.cents < lot.current_bid_cents
+    errors.add(:cents, "should be greater or equal #{lot.next_bid_amount.format}") if self.cents && self.cents < lot.next_bid_cents
   end
   
   def validate_lot
