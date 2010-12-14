@@ -126,6 +126,20 @@ $(document).ready(function() {
     return false;
   })
   
+  $('.to_back_logic').live('click', function(){
+    $('#new_rental_unit').attr('action','');
+    $('#edit_rental_unit').val(1);
+    $('#new_rental_unit').submit();
+    return false;
+  })
+  
+  $('#rental_unit_primary_photo_attributes_picture').change(function(){
+    $('#preview_image_id').val('');
+  })
+  
+  $('#rental_unit_primary_photo_attributes_picture').focus(function(){
+    $(this).click();
+  })
   
 });
 
