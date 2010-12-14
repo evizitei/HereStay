@@ -19,6 +19,11 @@ class Lot < ActiveRecord::Base
   
   after_create :run_created_callbacks
   
+  def initialize(attrs = {})
+    super(attrs)
+    self.min_bid_cents ||= 0
+  end
+  
   def belongs_to?(user)
     property.user == user
   end
@@ -93,7 +98,7 @@ class Lot < ActiveRecord::Base
   end
   
   def validate_creator
-    errors.add(:property_id, "the property belongs to another user") if creator && !self.belongs_to?(creator)
+    errors.add(:property_id, "the property belongs to another user") if creator && property && !self.belongs_to?(creator)
   end
   
   def run_finish_callbacks
