@@ -63,6 +63,18 @@ class RentalUnitsController < ApplicationController
     end
   end
   
+  def preview
+    @rental_unit = RentalUnit.new(params[:rental_unit])
+    set_preview_image
+    respond_to do |format|
+      if params[:edit_rental_unit].blank? && @rental_unit.valid?
+        format.html
+      else
+        format.html{ render :action => :new}
+      end
+    end
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain
@@ -78,5 +90,18 @@ class RentalUnitsController < ApplicationController
     
     def collection
       @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+    end
+    
+    def set_preview_image
+      if params[:preview_image_id].blank?
+        @rental_unit.primary_photo.save
+      else
+        @rental_unit.primary_photo = Photo.find(params[:preview_image_id])
+      end
+    end
+    
+    def create_resource(object)
+      set_preview_image
+      object.save
     end
 end

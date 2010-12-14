@@ -18,6 +18,7 @@ Micasasucasa::Application.routes.draw do
       post :save
       get :owned_by
       post :import
+      post :preview
     end
     
     member do

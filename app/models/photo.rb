@@ -33,7 +33,7 @@ class Photo < ActiveRecord::Base
     
     def assign_primary
       if self.primary?
-        reset_primary
+        reset_primary if self.rental_unit
       elsif !self.rental_unit.photos.primary.exists?
         self.primary = true
       end

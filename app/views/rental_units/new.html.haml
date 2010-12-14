@@ -1,6 +1,6 @@
 %h2
   %b New Post
   %span > Preview / Save Changes 
-.property_form
-  = form_for @rental_unit, :rental_unit, :url => rental_units_path, :html => { :multipart => true } do |f|
+#property_form.property_form
+  = form_for @rental_unit, :rental_unit, :url => preview_rental_units_path, :html => { :multipart => true } do |f|
     = render 'form', {:f => f}
