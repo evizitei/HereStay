@@ -1,6 +1,6 @@
 %h2= pluralize(@rental_units.size, 'post')
 .properties
-  =@rental_units.each do |rental_unit|
+  -@rental_units.each do |rental_unit|
     .property
       .left-column
         -if rental_unit.primary_photo && rental_unit.primary_photo.picture.file?
@@ -35,3 +35,4 @@
         .comments
           %fb:comments{:xid => "here_stay_unit_#{rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => rental_unit.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
       .clearfix
+  =will_paginate(@rental_units,:renderer=>"FacebookLinkRenderer")

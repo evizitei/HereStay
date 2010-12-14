@@ -5,9 +5,14 @@
     - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
     = f.fields_for :primary_photo do |p|
       = p.hidden_field :primary, :value => true
-      /= p.file_field :picture, :size => 10
-      %div= f.label :name, 'Photo:'
-      = file_field_tag 'rental_unit[primary_photo_attributes][picture]', :size => 10
+      .preview_img_btn
+        %div{:style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"}
+          =file_field_tag 'rental_unit[primary_photo_attributes][picture]', :size => 1, :style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"
+      -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
+        .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
+        = hidden_field_tag 'preview_image_id', @rental_unit.primary_photo.id
+      -else
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
   .address{:style => 'float: right;text-align: right; width: 300px;'}
     .row
       = f.label :name, 'Property Name:'
