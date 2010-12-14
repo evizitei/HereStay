@@ -6,8 +6,8 @@ class Lot < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   
   validates :title, :start_at, :end_at, :min_bid_cents, :terms, :property_id, :min_bid_amount, :presence => true
-  validates_numericality_of :min_bid_amount, :greater_than_or_equal_to => 0, :allow_blank => :true, :if => Proc.new{|l| l.accept_bids_under_minimum_to_lots?}
-  validates_numericality_of :min_bid_amount, :greater_than => 0, :allow_blank => :true, :unless => Proc.new{|l| l.accept_bids_under_minimum_to_lots?}
+  validates_numericality_of :min_bid_amount, :greater_than_or_equal_to => 0, :allow_blank => :true, :if => Proc.new{|l| l.accept_bids_under_minimum?}
+  validates_numericality_of :min_bid_amount, :greater_than => 0, :allow_blank => :true, :unless => Proc.new{|l| l.accept_bids_under_minimum?}
   
   validate :check_dates, :validate_creator
   validate :validate_min_bid_amount, :on => :update
@@ -48,7 +48,7 @@ class Lot < ActiveRecord::Base
   # current bid + $10
   def next_bid_cents
     if current_bid.blank?
-      accept_bids_under_minimum_to_lots? ? 0 : min_bid_cents
+      accept_bids_under_minimum? ? 0 : min_bid_cents
     else
       current_bid_cents + 1000
     end
@@ -97,7 +97,7 @@ class Lot < ActiveRecord::Base
   # end
   
   def validate_min_bid_amount
-    errors.add(:min_bid_amount, "can't be changed when the lot has bids") if min_bid_cents_changed? && self.bids.present?
+    errors.add(:min_bid_amount, "can't be changed when the auction has bids") if min_bid_cents_changed? && self.bids.present?
   end
   
   def validate_creator

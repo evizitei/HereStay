@@ -3,19 +3,19 @@ class AuctionMailer < ActionMailer::Base
   
   def lot_created(lot)
     mail(:to => lot.property.user.email) do |format|
-      format.html { render :text => "<p>You have created new auction lot.</p> Lot details: #{auction_lot_url(lot)}" }
+      format.html { render :text => "<p>You have created new auction.</p> Auction details: #{auction_lot_url(lot)}" }
     end
   end
   
   def bid_created_to_owner(bid)
     mail(:to => bid.lot.property.user.email) do |format|
-      format.html { render :text => "<p>You have a new bid.</p> Lot details: #{auction_lot_url(bid.lot)}" }
+      format.html { render :text => "<p>You have a new bid.</p> Auction details: #{auction_lot_url(bid.lot)}" }
     end
   end
   
   def bid_created_to_renter(bid)
     mail(:to => bid.user.email) do |format|
-      format.html { render :text => "<p>You have created a new bid.</p> Lot details: #{auction_lot_url(bid.lot)}" }
+      format.html { render :text => "<p>You have created a new bid.</p> Auction details: #{auction_lot_url(bid.lot)}" }
     end
   end
   
@@ -26,14 +26,14 @@ class AuctionMailer < ActionMailer::Base
       text = "There are no bids."
     end
     mail(:to => lot.property.user.email) do |format|
-      format.html { render :text => "<p>Your auction lot has been finished. #{text}</p> Lot details: #{auction_lot_url(lot)}" }
+      format.html { render :text => "<p>Your auction has been finished. #{text}</p> Auction details: #{auction_lot_url(lot)}" }
     end
   end
   
   def win_confirmation_to_renter(lot)
     bid = lot.bids.last
     mail(:to => bid.user.email) do |format|
-      format.html { render :text => "<p>You have won the auction lot.</p> Lot details: #{auction_lot_url(lot)}" }
+      format.html { render :text => "<p>You have won the auction.</p> Auction details: #{auction_lot_url(lot)}" }
     end
   end
   

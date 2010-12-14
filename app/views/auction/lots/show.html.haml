@@ -1,4 +1,4 @@
-%h1 Auction
+%h1 Auctions
 %p
   - if resource.property.picture
     .image{:style => 'float:left; padding:5px; padding-top:1.2em'}
@@ -54,13 +54,13 @@
     
 - elsif resource.finished?
   %p
-    %b Lot is finished
+    %b Auction is finished
   - unless resource.current_bids.empty?
     %p
       %b Max. bid is #{resource.current_bid_amount.format}
 - else
   %p
-    %b Lot is not active
+    %b Auction is not active
     
 %p
   %b Terms and conditions
@@ -68,4 +68,4 @@
 %p
   %b Cancel bid policy
   %p= resource.cancel_bid_policy
-= link_to 'Show other lots', auction_lots_path
+= link_to 'Show other auctions', auction_lots_path

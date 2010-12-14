@@ -30,13 +30,13 @@ describe Lot do
   # end
   
   it "should allow save with zero min bid" do
-    lot = Lot.new(@attributes.merge(:min_bid_cents => 0, :accept_bids_under_minimum_to_lots => true))
+    lot = Lot.new(@attributes.merge(:min_bid_cents => 0, :accept_bids_under_minimum => true))
     lot.stubs(:run_created_callbacks)
     lot.save.should be_true
   end
   
   it "should disallow save with zero min bid" do
-    lot = Lot.new(@attributes.merge(:min_bid_cents => 0, :accept_bids_under_minimum_to_lots => false))
+    lot = Lot.new(@attributes.merge(:min_bid_cents => 0, :accept_bids_under_minimum => false))
     lot.stubs(:run_created_callbacks)
     lot.save.should be_false
   end

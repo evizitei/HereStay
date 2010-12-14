@@ -1,5 +1,7 @@
 en:
   activerecord:
+    model:
+      lot: Auction
     attributes:
       bid:
         cents: Bid

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214152424) do
+ActiveRecord::Schema.define(:version => 20101214162139) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20101214152424) do
     t.datetime "updated_at"
     t.date     "arrive_on"
     t.date     "depart_on"
-    t.boolean  "accept_bids_under_minimum_to_lots", :default => false, :null => false
+    t.boolean  "accept_bids_under_minimum", :default => false, :null => false
     t.text     "cancel_bid_policy"
   end
 

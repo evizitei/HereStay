@@ -21,9 +21,9 @@ describe Bid do
     bid.valid?.should be_false
   end
   
-  it "should create if the bid is less than lot's accept_bids_under_minimum_to_lots is true" do
+  it "should create if the bid is less than lot's accept_bids_under_minimum is true" do
     Bid.any_instance.stubs(:creation_notification)
-    @lot.update_attribute(:accept_bids_under_minimum_to_lots, true)
+    @lot.update_attribute(:accept_bids_under_minimum, true)
     bid = @lot.bids.build(:cents => 2900, :user_id => 2)
     bid.valid?.should be_true
   end

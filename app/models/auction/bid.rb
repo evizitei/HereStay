@@ -20,7 +20,7 @@ class Bid < ActiveRecord::Base
   end
   
   def validate_lot
-    errors.add(:base, "Auction lot should be active") unless self.lot.active?
+    errors.add(:base, "Auction should be active") unless self.lot.active?
   end
   
   def creation_notification
