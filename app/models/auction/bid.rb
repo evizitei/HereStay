@@ -11,7 +11,7 @@ class Bid < ActiveRecord::Base
   
   composed_of :amount, :class_name => "Money", :mapping => %w(cents cents)
   
-  scope :by_cents, order('cents')
+  scope :by_cents, order('cents DESC')
   
   private
   def validate_cents

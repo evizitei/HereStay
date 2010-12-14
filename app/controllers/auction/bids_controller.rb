@@ -25,4 +25,8 @@ class Auction::BidsController < Auction::BaseController
       object.user = current_user
       object.save
     end
+    
+    def collection
+      @collection = end_of_association_chain.by_cents
+    end
 end
