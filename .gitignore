@@ -10,3 +10,5 @@ solr/*
 .rvmrc
 autotest/*
 .DS_Store
+public/stylesheets/master.css
+public/stylesheets/temparry.css
