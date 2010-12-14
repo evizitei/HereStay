@@ -1,0 +1,63 @@
+%h1 Auction
+%p
+  -if resource.property.picture
+    .image{:style => 'float:left; padding:5px; padding-top:1.2em'}
+      = image_tag(resource.property.picture(:thumb))
+  .property{:style => 'overflow:auto'}
+    %h2
+      = resource.title
+      - if current_user && resource.belongs_to?(current_user)
+        %span= link_to 'edit', edit_resource_path(resource)
+    %h3= resource.property.name
+    %p= resource.property.description
+    - if resource.arrive_on || resource.depart_on
+      %p
+        - if resource.arrive_on
+          %div
+            %b Arrive date:
+            = resource.arrive_on.to_s(:short_date_with_year)
+        - if resource.depart_on
+          %div
+            %b Depart date:
+            = resource.depart_on.to_s(:short_date_with_year)
+    %p= link_to 'View property details', rental_unit_path(resource.property)
+%p 
+  %b #{resource.current_bids.empty? ? 'Starting bid' : 'Current bid'}:
+  #{resource.current_bid_amount.format}
+
+%p
+  %b Bid history:
+  = link_to pluralize(resource.bids.count, 'bid'), auction_lot_bids_path(resource)
+
+- if resource.active?
+  %p
+    %b Time left:
+    = distance_of_time_in_words_to_now resource.end_at
+  %p
+    = form_for @bid || resource.bids.build, :url => auction_lot_bids_path(resource) do |f|
+      = f.error_messages
+      = f.label :amount, 'Your max bid'
+      = f.text_field :amount, :size => 5, :value => f.object.cents? ? Money.new(f.object.cents) : nil
+      = fb_button do
+        = f.submit 'Place bid'
+      %br
+      (Enter #{resource.next_bid_amount.format} or more)
+    
+    %p
+      = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
+    
+- elsif resource.finished?
+  %p
+    %b Lot is finished
+  - unless resource.current_bids.empty?
+    %p
+      %b Max. bid is #{resource.current_bid_amount.format}
+- else
+  %p
+    %b Lot is not active
+    
+%p
+  %b Terms and conditions
+  %p= resource.terms
+  
+= link_to 'Show other lots', auction_lots_path

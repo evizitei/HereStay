@@ -1,0 +1,28 @@
+%h1 Auction
+= link_to 'back to the lot description', parent_path(parent)
+%h2
+  Bid history
+
+%b Bidders:
+= collection.map{|b| b.user_id}.uniq.size
+%b Bids: 
+= collection.size
+%b Time left:
+= distance_of_time_in_words_to_now parent.end_at
+
+#bids
+  %table
+    %tr
+      %th Bidder
+      %th Bid amount
+      %th Bid Time
+    - for resource in collection
+      %tr
+        %td= fb_name(:uid=>resource.user.fb_user_id)
+        %td= number_to_currency(resource.cents/100.0)
+        %td= resource.created_at.to_s(:us_long_datetime)
+
+    %tr
+      %td Starting price
+      %td= number_to_currency(parent.min_bid_cents/100.0)
+      %td= parent.start_at.to_s(:us_long_datetime)

@@ -1,6 +1,34 @@
 @import "compass/reset"
 @import "compass/css3"
 
+//--------------------- [ typo ] ---------------------//
+h2
+  font-size: 18px
+  
+h3
+  font-size: 16px
+  margin-bottom: 5px
+  font-weight: bold
+
+h4
+  font-size: 13px
+  font-weight: bold
+
+//--------------------- [ basic classes ] ---------------------//
+.f_right
+  float: right
+  
+.f_left
+  float: left
+  
+.clearfix
+  clear: both
+  
+.sButton
+  a
+    font-size: 13px
+    text-decoration: none
+
 //--------------------- [ layout ] ---------------------//
 #sidebar
   width: 170px
@@ -86,6 +114,13 @@
   .right
     float: left
     padding-left: 30px
+    .zoom-box
+      text-align: center
+      margin-top: 20px
+      .labels
+        color: #5C9CCC
+      .ui-slider
+        margin: 0 auto
   .field-box
     overflow: hidden
     padding: 5px 0
@@ -140,3 +175,61 @@
 //--------------------- [ content ] ---------------------//
 #content
   clear: both
+  border: solid 1px #B4B4B4
+  padding: 10px
+  font-size: 13px
+  
+//--------------------- [ rental utils ] ---------------------//
+.property, .property_form
+  .left-column
+    width: 100px
+    float: left
+    margin-right: 10px
+    div
+      margin-bottom: 5px
+  .right-column
+    width: 370px
+    float: left  
+  .left-col
+    float: left
+    width: 50%
+  .right-col
+    float: right
+    width: 50%  
+    text-align: right
+  label 
+    font-weight: normal
+     
+.property
+  width: 485px
+  border: solid 1px #B4B4B4
+  margin-top: 10px
+  padding: 10px
+  .description
+    text-align: justify
+    margin: 10px 0  
+  .amenities
+    margin: 20px 0 
+  .title
+    overflow: hidden
+    font-weight: bold
+    font-size: 13px
+      
+.property_form
+  border: solid 1px #B4B4B4
+  padding: 10px
+  input.med
+    width: 130px
+  input.small
+    width: 70px
+  .row
+    margin-bottom: 5px
+  .dataRow
+    margin-bottom: 20px
+    vertical-align: top
+  .dataRow.price
+    .row
+      margin-left: 10px
+    .col
+      float: left
+      width: 33%

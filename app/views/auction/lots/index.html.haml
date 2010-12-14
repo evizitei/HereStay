@@ -1,0 +1,31 @@
+%h1 Auction
+%h2 Lots
+- for resource in collection
+  %h3
+    = link_to resource.title, resource_path(resource)
+    - if current_user && resource.belongs_to?(current_user)
+      %span= link_to 'edit', edit_resource_path(resource)
+  %p
+    %b #{resource.current_bids.empty? ? 'Starting price' : 'Current bid'}:
+    #{resource.current_bid_amount.format}
+  - if resource.active?
+    %p
+      %b Time left:
+      = distance_of_time_in_words_to_now resource.end_at
+  - elsif resource.finished?
+    %p
+      %b Lot is finished
+    - unless resource.current_bids.empty?
+      %p
+        %b Max. bid is #{resource.current_bid.format}
+  - else
+    %p
+      %b Lot is not active
+
+= will_paginate collection
+
+- if collection.blank?
+  There are no lots yet.
+  = link_to 'Create the lot.', new_resource_path
+- else
+  %p= link_to 'Add new lot.', new_resource_path

@@ -1,3 +1,4 @@
+%script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
 = form_tag '/', :id => 'search-form' do
   #simple-search
     .expander
@@ -57,8 +58,16 @@
         .slider-container
           .labels.rating= slider_ratings(params[:range_ratings_from]||0, params[:range_ratings_to]||10)
           #range_ratings
-    .right
-      = image_tag '/images/map_fake.png'
+    .right      
+      #search_map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
+      .zoom-box
+        .header Zoom:
+        .slider-container
+          .labels
+            %span.value= zoom_labels(params[:location_zoom]||5)
+            miles
+          #radius_slider
+        
       
     = hidden_field_tag 'advanced', params[:advanced]||0
     = hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
