@@ -1,6 +1,6 @@
 %h1 Auction
 %p
-  -if resource.property.picture
+  - if resource.property.picture
     .image{:style => 'float:left; padding:5px; padding-top:1.2em'}
       = image_tag(resource.property.picture(:thumb))
   .property{:style => 'overflow:auto'}
@@ -22,8 +22,13 @@
             = resource.depart_on.to_s(:short_date_with_year)
     %p= link_to 'View property details', rental_unit_path(resource.property)
 %p 
-  %b #{resource.current_bids.empty? ? 'Starting bid' : 'Current bid'}:
-  #{resource.current_bid_amount.format}
+  %b Min bid amount:
+  #{resource.min_bid_amount.format}
+
+- if resource.current_bid.present?
+  %p
+    %b Current bid:
+    #{resource.current_bid_amount.format}
 
 %p
   %b Bid history:
@@ -36,12 +41,13 @@
   %p
     = form_for @bid || resource.bids.build, :url => auction_lot_bids_path(resource) do |f|
       = f.error_messages
-      = f.label :amount, 'Your max bid'
+      = f.label :amount, 'Your bid'
       = f.text_field :amount, :size => 5, :value => f.object.cents? ? Money.new(f.object.cents) : nil
       = fb_button do
         = f.submit 'Place bid'
-      %br
-      (Enter #{resource.next_bid_amount.format} or more)
+      - if resource.next_bid_amount > 0
+        %br
+        (Enter #{resource.next_bid_amount.format} or more)
     
     %p
       = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put

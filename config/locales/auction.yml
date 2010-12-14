@@ -4,9 +4,9 @@ en:
       bid:
         cents: Bid
       lot:
-        min_bid_cents: Start auction bidding at
-        min_bid_amount: Start auction bidding at
-        start_at: Start auction at
-        end_at: End auction at
+        min_bid_cents: Min bid amount
+        min_bid_amount: Min bid amount
+        start_at: Auction start date
+        end_at: Expiration date
         arrive_on: Arrive date
         depart_on: Depart date

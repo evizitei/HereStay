@@ -6,7 +6,8 @@ class Lot < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   
   validates :title, :start_at, :end_at, :min_bid_cents, :terms, :property_id, :min_bid_amount, :presence => true
-  validates_numericality_of :min_bid_amount, :greater_than => 0, :allow_blank => :true
+  validates_numericality_of :min_bid_amount, :greater_than_or_equal_to => 0, :allow_blank => :true, :if => Proc.new{|l| l.accept_bids_under_minimum_to_lots?}
+  validates_numericality_of :min_bid_amount, :greater_than => 0, :allow_blank => :true, :unless => Proc.new{|l| l.accept_bids_under_minimum_to_lots?}
   
   validate :check_dates, :validate_creator
   validate :validate_min_bid_amount, :on => :update
@@ -14,8 +15,6 @@ class Lot < ActiveRecord::Base
   # validate :check_dates_on_update, :on => :update
   
   composed_of :min_bid_amount, :class_name => "Money", :mapping => %w(min_bid_cents cents)
-  # composed_of :current_bid_amount, :class_name => "Money", :mapping => %w(current_bid_cents cents)
-  # composed_of :next_bid_amount, :class_name => "Money", :mapping => %w(next_bid_cents cents)
   
   after_create :run_created_callbacks
   
@@ -33,7 +32,7 @@ class Lot < ActiveRecord::Base
   end
   
   def current_bid
-    self.bids(true).by_cents.first
+    current_bids.first
   end
   
   # latest bid or start bid in cents
@@ -45,10 +44,14 @@ class Lot < ActiveRecord::Base
     end
   end
   memoize :current_bid_cents
-
+  
   # current bid + $10
   def next_bid_cents
-    current_bid_cents + 1000
+    if current_bid.blank?
+      accept_bids_under_minimum_to_lots? ? 0 : min_bid_cents
+    else
+      current_bid_cents + 1000
+    end
   end
   
   def current_bid_amount; Money.new(current_bid_cents); end
@@ -107,7 +110,7 @@ class Lot < ActiveRecord::Base
   end
   
   def run_created_callbacks
-    AuctionMailer.lot_created(self).deliver
+    # AuctionMailer.lot_created(self).deliver
     post_to_twitter
     post_to_wall
   end

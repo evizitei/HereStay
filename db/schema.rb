@@ -10,7 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101210075255) do
+ActiveRecord::Schema.define(:version => 20101214122714) do
+
+  create_table "bids", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "cents"
+    t.integer  "lot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -70,6 +78,24 @@ ActiveRecord::Schema.define(:version => 20101210075255) do
     t.datetime "processed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "lots", :force => true do |t|
+    t.string   "title"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "min_bid_cents"
+    t.integer  "min_nights"
+    t.integer  "cancel_bid_policy"
+    t.text     "terms"
+    t.boolean  "socially_connected"
+    t.boolean  "stayed_before"
+    t.integer  "property_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "arrive_on"
+    t.date     "depart_on"
+    t.boolean  "accept_bids_under_minimum_to_lots", :default => false, :null => false
   end
 
   create_table "photos", :force => true do |t|
