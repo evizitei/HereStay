@@ -1,12 +1,12 @@
-%h1 Auctions
-%h2 New Auction
-
-= semantic_form_for resource, :url => collection_path do |f|
-  = render 'fields', :f => f
-  = f.buttons do
-    = fb_button do
-      = f.submit 'Add'
-    = fb_button 'Cancel', collection_path
+%h1= link_to 'Auctions', auction_root_path
+.property
+  %h2 New Auction
+  = semantic_form_for resource, :url => collection_path do |f|
+    = render 'fields', :f => f
+    = f.buttons do
+      = fb_button do
+        = f.submit 'Add'
+      = fb_button 'Cancel', collection_path
 
 = javascript_include_tag 'jquery-ui-timepicker-addon'
 :javascript
