@@ -1,5 +1,5 @@
 class Auction::BaseController < ApplicationController
-
+  layout 'application'
   private
   def format_money_params
     if params[:bid] && params[:bid][:amount]

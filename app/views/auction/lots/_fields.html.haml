@@ -1,6 +1,6 @@
 = f.inputs do
   = f.input :title
-  = f.input :property_id, :as => :select, :collection => current_user.rental_units.map{|u| [u.name, u.id]}, :required => true
+  = f.input :property_id, :as => :select, :collection => current_user.rental_units.map{|u| [truncate(u.name, :length => 50), u.id]}, :required => true
   = f.input :start_at, :as => :datetimepicker
   = f.input :end_at,  :as => :datetimepicker
   = f.input :min_bid_amount

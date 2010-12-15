@@ -1,28 +1,34 @@
-%h1 Auctions
-= link_to 'back to the auction description', parent_path(parent)
-%h2
-  Bid history
+%h1= link_to 'Auctions', auction_root_path
+.property
+  = link_to 'back to the auction details', parent_path(parent)
+  %h2
+    Bid history
+  .bids_summary{:style => "margin: 5px 0"}
+    %b Bidders:
+    = collection.map{|b| b.user_id}.uniq.size
+    &nbsp; &nbsp;
+    %b Bids:
+    = collection.size
+    &nbsp; &nbsp;
+    - if parent.active?
+      %b Time left:
+      = distance_of_time_in_words_to_now parent.end_at
+    - else
+      %b Auction #{parent.status}
 
-%b Bidders:
-= collection.map{|b| b.user_id}.uniq.size
-%b Bids: 
-= collection.size
-%b Time left:
-= distance_of_time_in_words_to_now parent.end_at
-
-#bids
-  %table
-    %tr
-      %th Bidder
-      %th Bid amount
-      %th Bid Time
-    - for resource in collection
+  #bids
+    %table{:width => '100%'}
       %tr
-        %td= fb_name(:uid=>resource.user.fb_user_id)
-        %td= number_to_currency(resource.cents/100.0)
-        %td= resource.created_at.to_s(:us_long_datetime)
+        %th Bidder
+        %th Bid amount
+        %th Bid Time
+      - for resource in collection
+        %tr
+          %td= fb_name(:uid=>resource.user.fb_user_id)
+          %td= number_to_currency(resource.cents/100.0)
+          %td= resource.created_at.to_s(:us_long_datetime)
 
-    %tr
-      %td Starting price
-      %td= number_to_currency(parent.min_bid_cents/100.0)
-      %td= parent.start_at.to_s(:us_long_datetime)
+      %tr{:style => "background-color: #e0e0e0"}
+        %td Starting price
+        %td= number_to_currency(parent.min_bid_cents/100.0)
+        %td= parent.start_at.to_s(:us_long_datetime)
