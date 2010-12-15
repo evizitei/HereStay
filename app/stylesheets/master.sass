@@ -1,6 +1,10 @@
 @import "compass/reset"
 @import "compass/css3"
 
+//--------------------- [ colors ] ---------------------//
+$light_gray = #DDD
+$border = 1px solid #B4B4B4
+
 //--------------------- [ typo ] ---------------------//
 h2
   font-size: 18px
@@ -29,11 +33,20 @@ h4
     font-size: 13px
     text-decoration: none
 
+.border
+  border: 1px solid #B4B4B4  
+
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
   height: 0.5em
+  
+form.formtastic label
+  font-weight: normal
 
 //--------------------- [ layout ] ---------------------//
+body
+  font-family: sans-serif
+
 #sidebar
   width: 170px
   height: 300px
@@ -167,7 +180,7 @@ h4
           div
             width: 21px
       
-//--------------------- [ menu ] ---------------------//
+//--------------------- [ menu & submenu ] ---------------------//
 #menu
   overflow: hidden
   margin-bottom: 10px  
@@ -175,6 +188,28 @@ h4
     float: left
     width: 104px
     text-align: center
+
+.sub-menu
+  overflow: hidden
+  border: 0
+  border-bottom: 1px solid #B4B4B4
+  &.reservations
+    border: 1px solid #B4B4B4
+    margin-bottom: 10px
+  li
+    display: block 
+    float: left
+    a
+      padding: 8px
+      display: inline-block
+      border: 1px solid transparent      
+      text-decoration: none
+      color: #8B8B8B
+      &.current
+        background: $light_gray
+        color: #8B8B8B
+        font-weight: 600
+        border: 1px solid $light_gray
   
 //--------------------- [ content ] ---------------------//
 #content
@@ -237,3 +272,58 @@ h4
     .col
       float: left
       width: 33%
+
+.preview_img_btn
+  background: url('/images/save_img_button.png') top right no-repeat
+  width: 100px
+  height: 17px
+  overflow: hidden
+  z-index: 1
+  position: relative 
+  margin-bottom: -17px
+
+//--------------------- [ account pages ] ---------------------//
+#account-header
+  overflow: hidden
+  margin-bottom: 10px
+  .fb-profile-link
+    float: left
+    margin-right: 10px
+
+#account-content
+  border: $border
+  
+//--------------------- [ bookings table ] ---------------------//
+table.bookings
+  margin: 10px
+  border-top: $border
+  border-left: $border
+  width: 485px
+  td, th
+    border-right: $border
+    border-bottom: $border
+    padding: 10px
+    text-align: center
+  td
+    vertical-align: top
+    &.first
+      width: 100px
+    &.second
+      width: 175px
+
+//--------------------- [ edit account ] ---------------------//
+#user-form
+  overflow: hidden
+  padding: 10px  
+  .f_left
+    padding: 10px
+    padding-right: 0
+  p
+    padding: 5px
+    text-align: center
+  label
+    text-align: right
+    font-size: 12px
+  fieldset.buttons
+    margin-top: 80px
+    float: right

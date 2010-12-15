@@ -1,17 +1,24 @@
-%h1 Auctions
-%p
-  - if resource.property.picture
-    .image{:style => 'float:left; padding:5px; padding-top:1.2em'}
-      = image_tag(resource.property.picture(:thumb))
-  .property{:style => 'overflow:auto'}
-    %h2
+%h1= link_to 'Auctions', auction_root_path
+.property
+  .left-column
+    - if resource.property.picture
+      .picture
+        = link_to image_tag(resource.property.picture(:thumb)), resource_path(resource)
+    - else
+      %a{:href => resource_path(resource)}
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+  .right-column
+    .title
       = resource.title
       - if current_user && resource.belongs_to?(current_user)
         %span= link_to 'edit', edit_resource_path(resource)
-    %h3= resource.property.name
-    %p= resource.property.description
+    .property_details{:style => 'padding: 5px 0px'}
+      .title= resource.property.name
+      %p= resource.property.description
+      %p= link_to 'View property details', rental_unit_path(resource.property)
+
     - if resource.arrive_on || resource.depart_on
-      %p
+      .property_dates{:style => 'padding: 5px 0px'}
         - if resource.arrive_on
           %div
             %b Arrive date:
@@ -20,52 +27,53 @@
           %div
             %b Depart date:
             = resource.depart_on.to_s(:short_date_with_year)
-    %p= link_to 'View property details', rental_unit_path(resource.property)
-%p 
-  %b Min bid amount:
-  #{resource.min_bid_amount.format}
 
-- if resource.current_bid.present?
-  %p
-    %b Current bid:
-    #{resource.current_bid_amount.format}
+    %p
+      %b Min bid amount:
+      #{resource.min_bid_amount.format}
 
-%p
-  %b Bid history:
-  = link_to pluralize(resource.bids.count, 'bid'), auction_lot_bids_path(resource)
+    - if resource.current_bid.present?
+      %p
+        %b Current bid:
+        #{resource.current_bid_amount.format}
 
-- if resource.active?
-  %p
-    %b Time left:
-    = distance_of_time_in_words_to_now resource.end_at
-  %p
-    = form_for @bid || resource.bids.build, :url => auction_lot_bids_path(resource) do |f|
-      = f.error_messages
-      = f.label :amount, 'Your bid'
-      = f.text_field :amount, :size => 5, :value => f.object.cents? ? Money.new(f.object.cents) : nil
-      = fb_button do
-        = f.submit 'Place bid'
-      - if resource.next_bid_amount > 0
-        %br
-        (Enter #{resource.next_bid_amount.format} or more)
+    %p
+      %b Bid history:
+      = link_to pluralize(resource.bids.count, 'bid'), auction_lot_bids_path(resource)
+
+    - if resource.active?
+      %p
+        %b Time left:
+        = distance_of_time_in_words_to_now resource.end_at
+      %p
+        = form_for @bid || resource.bids.build, :url => auction_lot_bids_path(resource) do |f|
+          = f.error_messages
+          .div{:style => 'margin: 7px 0px; float:left'}
+            = f.label :amount, 'Your bid'
+            = f.text_field :amount, :size => 5, :value => f.object.cents? ? Money.new(f.object.cents) : nil
+          = fb_button do
+            = f.submit 'Place bid'
+          .clearfix
+          - if resource.next_bid_amount > 0
+            (Enter #{resource.next_bid_amount.format} or more)
+
+        %p
+          = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
+
+    - elsif resource.finished?
+      %p
+        %b Auction is finished
+      - unless resource.current_bids.empty?
+        %p
+          %b Max. bid is #{resource.current_bid_amount.format}
+    - else
+      %p
+        %b Auction is not active
     
     %p
-      = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
-    
-- elsif resource.finished?
-  %p
-    %b Auction is finished
-  - unless resource.current_bids.empty?
+      %b Terms and conditions
+      %p= resource.terms
     %p
-      %b Max. bid is #{resource.current_bid_amount.format}
-- else
-  %p
-    %b Auction is not active
-    
-%p
-  %b Terms and conditions
-  %p= resource.terms
-%p
-  %b Cancel bid policy
-  %p= resource.cancel_bid_policy
-= link_to 'Show other auctions', auction_lots_path
+      %b Cancel bid policy
+      %p= resource.cancel_bid_policy
+  .clearfix

@@ -1,28 +1,30 @@
 = render :partial => 'header'
-#my_rewards
-  %h3 My rewards
-  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
+
+#account-content
+  = render 'submenu'
+
+  %table.bookings
     %thead
       %tr
-        %th{:style=>"padding:3px;"} Owner
-        %th{:style=>"padding:3px;"} Renter
-        %th{:style=>"padding:3px;"} Unit
-        %th{:style=>"padding:3px;"} Reward
+        %th Owner
+        %th Renter
+        %th Unit
+        %th Reward
     %tbody
       -@rewards.each do |reward|
         %tr
-          %td{:style=>"padding:3px;font-size:10pt;"}
-            =fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
-            =fb_name(:uid=>reward.booking.owner_fb_id)
-          %td{:style=>"padding:3px;font-size:10pt;"}
-            -if reward.booking.renter_fb_id
-              =fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
-              =fb_name(:uid=>reward.booking.renter_fb_id)
-            -else
-              =reward.booking.renter_name
-          %td{:style=>"padding:3px;font-size:10pt;"}
-            =link_to reward.booking.rental_unit.name,rental_unit_path(reward.booking.rental_unit.id)
-          %td{:style=>"padding:3px;font-size:10pt;"}
+          %td
+            = fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
+            = fb_name(:uid=>reward.booking.owner_fb_id)
+          %td
+            - if reward.booking.renter_fb_id
+              = fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
+              = fb_name(:uid=>reward.booking.renter_fb_id)
+            - else
+              = reward.booking.renter_name
+          %td
+            = link_to reward.booking.rental_unit.name,rental_unit_path(reward.booking.rental_unit.id)
+          %td
             ==$#{reward.amount || 0.0}
   %span
     %b Total Rewards:

@@ -1,2 +1,5 @@
-= render :partial => 'header'
-=render(:partial=>"shared/bookings",:locals=>{:booking_collection => @bookings})
+= render 'header'
+
+#account-content
+  = render 'submenu'
+  = render :partial => 'shared/bookings', :locals => {:booking_collection => @bookings}

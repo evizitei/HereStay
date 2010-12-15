@@ -203,4 +203,8 @@ module ApplicationHelper
       image_tag('user_offline.png', :title => 'User offline')
     end    
   end
+  
+  def action?(action)
+    controller.action_name == action
+  end
 end
