@@ -96,7 +96,7 @@ Micasasucasa::Application.routes.draw do
   
   namespace "auction" do
     root :to => "lots#index"
-    resources :lots do
+    resources :lots, :path => 'auctions' do
       member do
         put :finish
       end

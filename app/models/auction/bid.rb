@@ -2,9 +2,10 @@ class Bid < ActiveRecord::Base
   belongs_to :lot
   belongs_to :user
   
-  validates :cents, :user_id, :lot_id, :presence => true
-  validates :cents, :numericality => true, :allow_blank => true
+  validates :user_id, :lot_id, :presence => true
   validate :validate_cents, :validate_lot
+  validates_numericality_of :cents, :greater_than => 0, :allow_blank => :false
+  
   before_update :raise_read_only
   before_destroy :raise_read_only
   after_create :creation_notification
@@ -19,7 +20,7 @@ class Bid < ActiveRecord::Base
   end
   
   def validate_lot
-    errors.add(:base, "Auction lot should be active") unless self.lot.active?
+    errors.add(:base, "Auction should be active") unless self.lot.active?
   end
   
   def creation_notification

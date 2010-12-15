@@ -1,5 +1,4 @@
-%h1 Auction
-%h2 Lots
+%h1 Auctions
 - for resource in collection
   %h3
     = link_to resource.title, resource_path(resource)
@@ -14,18 +13,18 @@
       = distance_of_time_in_words_to_now resource.end_at
   - elsif resource.finished?
     %p
-      %b Lot is finished
+      %b Auction is finished
     - unless resource.current_bids.empty?
       %p
         %b Max. bid is #{resource.current_bid.format}
   - else
     %p
-      %b Lot is not active
+      %b Auction is not active
 
 = will_paginate collection
 
 - if collection.blank?
-  There are no lots yet.
-  = link_to 'Create the lot.', new_resource_path
+  There are no auctions yet.
+  = link_to 'Create the Auction.', new_resource_path
 - else
-  %p= link_to 'Add new lot.', new_resource_path
+  %p= link_to 'Add new Auction.', new_resource_path
