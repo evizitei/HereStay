@@ -3,6 +3,7 @@
 
 //--------------------- [ colors ] ---------------------//
 $light_gray = #DDD
+$border = 1px solid #B4B4B4
 
 //--------------------- [ typo ] ---------------------//
 h2
@@ -31,6 +32,9 @@ h4
   a
     font-size: 13px
     text-decoration: none
+
+.border
+  border: 1px solid #B4B4B4  
 
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
@@ -186,6 +190,9 @@ body
   overflow: hidden
   border: 0
   border-bottom: 1px solid #B4B4B4
+  &.reservations
+    border: 1px solid #B4B4B4
+    margin-bottom: 10px
   li
     display: block 
     float: left
@@ -272,20 +279,22 @@ body
     margin-right: 10px
 
 #account-content
-  border: 1px solid #B4B4B4
-  table
-    margin: 10px
-    border-top: 1px solid #B4B4B4
-    border-left: 1px solid #B4B4B4
-    width: 485px
-    td, th
-      border-right: 1px solid #B4B4B4
-      border-bottom: 1px solid #B4B4B4 !important
-      padding: 10px
-      text-align: center
-    td
-      vertical-align: top
-      &.first
-        width: 100px
-      &.second
-        width: 175px
+  border: $border
+  
+//--------------------- [ bookings table ] ---------------------//
+table.bookings
+  margin: 10px
+  border-top: $border
+  border-left: $border
+  width: 485px
+  td, th
+    border-right: $border
+    border-bottom: $border
+    padding: 10px
+    text-align: center
+  td
+    vertical-align: top
+    &.first
+      width: 100px
+    &.second
+      width: 175px
