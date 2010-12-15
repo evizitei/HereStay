@@ -11,6 +11,9 @@ class BookingMessage < ActiveRecord::Base
   scope :except, lambda { |b_id| 
     where(["booking_id != ?", b_id.to_i]) unless b_id.blank?
   }
+  scope :for_bookings, lambda{|ids|
+    where({:booking_id => ids})
+  }
   
   after_create do |message| 
     Delayed::Job.enqueue(BookingMessageNotifier.new(message))

@@ -50,6 +50,11 @@ Micasasucasa::Application.routes.draw do
         post :import
       end
     end
+    resources :inquiries, :only => [:index] do
+      collection do
+        get :messages
+      end
+    end
   end
   
   resources :bookings do
@@ -86,6 +91,12 @@ Micasasucasa::Application.routes.draw do
   namespace "connectors" do
     resource :twitter, :controller => :twitter do
       get :callback
+    end
+  end
+  
+  resources :inquiries, :only => [:index] do
+    collection do
+      get :messages
     end
   end
   
