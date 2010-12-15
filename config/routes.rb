@@ -100,7 +100,12 @@ Micasasucasa::Application.routes.draw do
       member do
         put :finish
       end
-      resources :bids
+      resources :bids do
+        member do
+          put :win
+          get :win
+        end
+      end
     end
   end
 end

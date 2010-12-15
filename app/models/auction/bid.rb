@@ -14,6 +14,10 @@ class Bid < ActiveRecord::Base
   
   scope :by_cents, order('cents DESC')
   
+  def win!
+    AuctionMailer.win_confirmation_to_renter(self).deliver
+  end
+  
   private
   def validate_cents
     errors.add(:cents, "should be greater or equal #{lot.next_bid_amount.format}") if self.cents && self.cents < lot.next_bid_cents

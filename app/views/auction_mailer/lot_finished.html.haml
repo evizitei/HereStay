@@ -1,0 +1,14 @@
+%p
+  Your auction has been finished.
+  %p
+    - if @lot.current_bid
+      - if @lot.current_bid.cents >= @lot.min_bid_cents
+        The win bid is #{@lot.current_bid.amount.format}.
+      - elsif @lot.accept_bids_under_minimum? && @lot.current_bid.cents < @lot.min_bid_cents
+        The maximum bid is #{@lot.current_bid.amount.format}.
+        Click #{link_to 'here', win_auction_lot_bid_url(@lot, @lot.current_bid)} to accept this bid as winning.
+      - else
+        There are no win bids.
+    - else
+      There are no bids.
+Auction details: #{auction_lot_url(@lot)}

@@ -16,6 +16,13 @@ class Auction::BidsController < Auction::BaseController
     end
   end
   
+  def win
+    raise 'Error 403. Access denied.' unless parent.belongs_to?(current_user)
+    resource.win!
+    flash[:notice] = 'The bid marked as winning.'
+    redirect_to parent_url
+  end
+  
   protected
     def resource
       @replace_resource || super
