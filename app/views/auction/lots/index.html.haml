@@ -17,8 +17,7 @@
             %span= link_to 'edit', edit_resource_path(resource)
         .description
           = truncate resource.property.description, :length => 200
-          %br
-          = link_to 'more about property', resource.property
+          = link_to 'more', resource.property
         %p
           %b Min bid amount:
           = resource.min_bid_amount.format
