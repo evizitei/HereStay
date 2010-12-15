@@ -1,0 +1,92 @@
+.properties
+  -collection.each do |booking|
+    .property
+      .left-column
+        -if booking.rental_unit.primary_photo && booking.rental_unit.primary_photo.picture.file?
+          .picture
+            =link_to image_tag(booking.rental_unit.primary_photo.picture.url(:thumb)), rental_unit_path(booking.rental_unit)
+        -else
+          %a{:href => rental_unit_path(booking.rental_unit)}
+            .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+        
+      .right-column
+        .f_right= belongs_to_friend_icon current_user, booking.rental_unit
+        .title
+          = booking.rental_unit.name
+          %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid => booking.rental_unit.user.fb_user_id)}
+          .clearfix
+        .description
+          = truncate(booking.rental_unit.description, :length => 150, :separator => ' ')
+        .buttons
+          .f_left= render(:partial=>"rental_units/share_unit",:object => booking.rental_unit)
+          -if booking.rental_unit.is_owner?(current_user) && booking.created?
+            =simple_button 'Reserve Property', [:reserve, booking ], :class => 'f_left'
+      .clearfix
+      .messages{:id => "booking_#{booking.id}"}
+        .listing
+          - booking.booking_messages.by_date.each do |message|
+            .message{:class=>message.html_class, :id => "message_#{message.id}"}
+              .user
+                = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
+              .arrow
+                %br
+              .body
+                %strong=message.message
+              .clearfix
+        .form
+          %a{:name => "messages_box_#{booking.id}", :style => "position:relative;top:-100px;z-index:9999999999999;"}
+          = form_for :booking_message, :url=> booking_messages_path(booking), :html => {:method => :post, :id => "chat_form", :onsubmit => "onSubmit(); return false;"} do |f|
+            .f_right= f.submit "Comment"
+            .f_right=f.text_area :message
+            .f_right= fb_profile_pic(:uid => current_user.fb_user_id, :size => "thumb")
+            .clearfix
+:javascript
+  var polling_data = {
+      "last_message" : "#{current_user.messages.by_date.last.try(:id)}"};
+
+  $(document).ready(function() {
+    $("#booking_message_message").focus();
+    setInterval(function() {
+      $.ajax({
+        url: "#{messages_inquiries_path}",
+        type: "GET",
+              data: polling_data,
+              dataType: "json",
+              success: appendMessages,
+        })
+      }, 10000);
+      
+      $('.form form').submit(function(){
+        $.ajax({
+            url: $(this).attr('action'),
+            type: "POST",
+            dataType: "json",
+            data: $(this).serialize(),
+            success: appendMessages,
+          });
+          $(this).find('textarea').val("").focus();
+        return false;
+      })
+    });
+
+        function appendMessages(data){
+          var count = 0;
+          $.each(data, function(i, item) {
+            appendMessage(item);
+            count++;
+          });
+          if(count > 0) {scrollDown(data[(count - 1)].booking_id);}
+        }
+        
+        function appendMessage(item){
+          var html_message = "<div class=\"message " + item.message_class + "\" id=\"message_" + item.id + "\"> " + "<div class=\"user\"><a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "</a></div>" + "<div class=\"arrow\"><br></div><div class=\"body\"><strong>" + item.message + "</strong>" + "</div>" + "<div class=\"clearfix\"></div></div>"
+          if(!$('#message_' + item.id)[0]){
+            $('#booking_' + item.booking_id + ' .listing').append(html_message);
+          }
+          FB.XFBML.parse(document.getElementById('booking_' + item.booking_id));
+          polling_data["last_message"] = item.id;
+        }
+
+        function scrollDown(id) {
+          window.location.href = '#messages_box_' + id;
+        }

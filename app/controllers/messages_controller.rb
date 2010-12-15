@@ -55,7 +55,8 @@ class MessagesController < ApplicationController
        "sent_at" => msg.created_at.to_formatted_s(:short), 
        "message" => msg.message,
        "id" => msg.id,
-       "url" => booking_messages_path(msg.booking)
+       "url" => booking_messages_path(msg.booking),
+       "booking_id" => msg.booking_id
     }}.to_json
   end
 end
