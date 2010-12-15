@@ -1,14 +1,7 @@
-= fb_button "Create Booking", new_rental_unit_booking_path(@rental_unit), :class_name => 'f_right'
+%ul.sub-menu.reservations
+  %li= link_to 'Reserved', rental_unit_bookings_url(@rental_unit), :class => params[:confirmed].blank? ? 'current' : ''
+  %li= link_to "Confirmed(#{@rental_unit.bookings.active.confirmed.size})", rental_unit_bookings_url(@rental_unit, :confirmed => '1'), :class => params[:confirmed].blank? ? '' : 'current'
 
-%h1{:style=>"font-size:16pt;"}== Bookings for "#{@rental_unit.name}"
-
-%br
-%br
-%div{:style => 'border: solid 1px #FFC67D; margin-bottom: 10px;'}
-  .f_left{:style => "padding:10px 20px; #{'background: #FFC67D;' if params[:confirmed].blank?}"}
-    =link_to 'Reserved', rental_unit_bookings_url(@rental_unit)
-  .f_left{:style => "padding:10px 20px; #{'background: #FFC67D;' unless params[:confirmed].blank?}"}
-    =link_to "Confirmed(#{@rental_unit.bookings.active.confirmed.size})", rental_unit_bookings_url(@rental_unit, :confirmed => '1')
-  .clearfix
-=render(:partial=>"shared/bookings",:locals=>{:booking_collection=>collection})
-= fb_button "Back to My Properties", manage_rental_units_path
+.border
+  =render :partial => 'shared/bookings', :locals => {:booking_collection=>collection}
+  -#= fb_button "Back to My Properties", manage_rental_units_path

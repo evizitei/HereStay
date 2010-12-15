@@ -1,4 +1,6 @@
 class AccountController < ApplicationController
+  layout 'application'
+  
   before_filter :oauth_obj
   before_filter :login_required
   respond_to :html

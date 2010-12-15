@@ -1,5 +1,6 @@
 class BookingsController < ApplicationController
   inherit_resources
+  layout 'application'
   
   before_filter :login_required
   
