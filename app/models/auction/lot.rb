@@ -106,7 +106,10 @@ class Lot < ActiveRecord::Base
   
   def run_finish_callbacks
     AuctionMailer.lot_finished(self).deliver
-    AuctionMailer.win_confirmation_to_renter(self).deliver if self.bids.present?
+    
+    if current_bid && current_bid.cents >= min_bid_cents
+      current_bid.win!
+    end
   end
   
   def run_created_callbacks

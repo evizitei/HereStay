@@ -2,7 +2,7 @@ class Auction::LotsController < Auction::BaseController
   inherit_resources
   before_filter :login_required, :except => %w(index show)
   before_filter :access_denied, :only => %w(edit update finish destroy)
-    before_filter :format_money_params, :only => %w(create update)
+  before_filter :format_money_params, :only => %w(create update)
   
   def finish
     resource.finish!
@@ -15,7 +15,7 @@ class Auction::LotsController < Auction::BaseController
     end
     
     def access_denied
-      raise 'Error 403' unless resource.belongs_to?(current_user)
+      raise 'Error 403. Access denied.' unless resource.belongs_to?(current_user)
     end
     
     def create_resource(object)
