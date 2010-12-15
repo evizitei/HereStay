@@ -207,4 +207,13 @@ module ApplicationHelper
   def action?(action)
     controller.action_name == action
   end
+  
+  def confirmed_bookings_count(rental_unit = nil)
+    count = if rental_unit
+      rental_unit.bookings.active.confirmed.size
+    else
+      Booking.for_user(current_user).active.confirmed.size
+    end
+    "(#{count})"
+  end
 end

@@ -1,6 +1,6 @@
 %ul.sub-menu.reservations
-  %li= link_to 'Reserved', rental_unit_bookings_url(@rental_unit), :class => params[:confirmed].blank? ? 'current' : ''
-  %li= link_to "Confirmed(#{@rental_unit.bookings.active.confirmed.size})", rental_unit_bookings_url(@rental_unit, :confirmed => '1'), :class => params[:confirmed].blank? ? '' : 'current'
+  %li= link_to 'Reserved', collection_url, :class => params[:confirmed].blank? ? 'current' : ''
+  %li= link_to "Confirmed#{confirmed_bookings_count(parent)}", collection_url(:confirmed => '1'), :class => params[:confirmed].blank? ? '' : 'current'
 
 .border
   =render :partial => 'shared/bookings', :locals => {:booking_collection=>collection}

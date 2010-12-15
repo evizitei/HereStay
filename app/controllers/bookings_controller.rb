@@ -10,11 +10,11 @@ class BookingsController < ApplicationController
   actions :index, :new, :create, :edit, :update, :show, :reserve, :exec_reserve
   helper_method :parent
   
+  has_scope :reserved, :only =>[:index], :type => :boolean, :default => true
   has_scope :not_confirmed, :type => :boolean, :default => true, :only =>[:index] do |controller, scope, value|
     controller.params[:confirmed].blank? ? scope.not_confirmed : scope
   end
-  has_scope :confirmed, :only =>[:index]
-  
+  has_scope :confirmed, :only =>[:index]  
   
   rescue_from ActiveRecord::RecordNotSaved, :with => :reservation_error
   
