@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101214162139) do
+ActiveRecord::Schema.define(:version => 20101215130459) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20101214162139) do
     t.integer  "lot_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "winning",    :default => false, :null => false
   end
 
   create_table "booking_messages", :force => true do |t|

@@ -17,7 +17,6 @@ describe Lot do
   
   it "should return current bid, current bids, next bid cents" do
     lot = Lot.new(@attributes)
-    lot.current_bid_cents.should == 3000
     lot.next_bid_cents.should == 3000
     lot.current_bids.should be_empty
     lot.current_bid.should be_nil
@@ -90,7 +89,6 @@ describe Lot do
     end
     
     it "should return current bid, current bids, next bid cents" do
-      @lot.current_bid_cents.should == 4000
       @lot.next_bid_cents.should == 5000
       @lot.current_bids.should have(1).record
       @lot.current_bid.should_not be_nil
