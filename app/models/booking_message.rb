@@ -35,6 +35,8 @@ class BookingMessage < ActiveRecord::Base
   # send SMS to recipient if he is offline
   def send_sms!
     msg =  "You have a new message in HereStay: #{mobile_booking_messages_url(self.booking_id, :host => ActionMailer::Base.default_url_options[:host])}"
-    recipient.deliver_message!(msg) if !recipient.online? and recipient.available_by_phone?
+    if recipient
+      recipient.deliver_message!(msg) if !recipient.online? and recipient.available_by_phone?
+    end
   end
 end

@@ -6,7 +6,7 @@ class InquiriesController < ApplicationController
   
   defaults :resource_class => Booking, :collection_name => 'bookings', :instance_name => 'booking'
   actions :index, :create
-  respond_to :html, :only => [:index, :create]
+  respond_to :html, :only => [:index, :new]
   belongs_to :rental_unit, :optional => true
   respond_to :json
   
@@ -16,6 +16,12 @@ class InquiriesController < ApplicationController
     booking_ids = Booking.created.for_user(current_user)
     messages = apply_scopes(BookingMessage.for_bookings( booking_ids))
     render :json => messages_to_json(messages)
+  end
+  
+  def new
+    @rental_unit =  RentalUnit.find(params[:rental_unit_id])
+    @booking = @rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
+    redirect_to rental_unit_inquiries_url @rental_unit
   end
   
   protected    

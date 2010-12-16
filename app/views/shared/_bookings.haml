@@ -22,7 +22,7 @@
               %div
                 = fb_name(:uid=>booking.renter_fb_id)
                 = user_online_status(booking.renter)
-              %div= simple_button 'Contact Me', booking_messages_path(booking)
+              %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit)
             - else
               = booking.renter_name
             - if booking.can_be_canceled?

@@ -1,7 +1,9 @@
 - unless current_user
   = fb_login_button
   \-- Press here to start booking your vacation!
-%h2= @rental_unit.name
+.f_right= simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)
+%h2{:style => 'width: 420px;'}= @rental_unit.name
+.clearfix
 .property
   .left-column
     -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
@@ -85,9 +87,4 @@
   .right-column
     .comments
       %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
-  .clearfix
-- if current_user
-  = simple_button 'Edit', edit_rental_unit_path(@rental_unit), :class_name => 'f_right' if @rental_unit.is_owner?(current_user)
-  = simple_button 'Book', discuss_rental_unit_bookings_path(@rental_unit), :class_name => 'f_right'
-  = simple_button 'Manage My Properties', manage_rental_units_path, :class_name => 'f_right'
   .clearfix

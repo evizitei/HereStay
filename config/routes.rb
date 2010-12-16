@@ -55,7 +55,7 @@ Micasasucasa::Application.routes.draw do
         post :import
       end
     end
-    resources :inquiries, :only => [:index] do
+    resources :inquiries, :only => [:index, :new] do
       collection do
         get :messages
       end

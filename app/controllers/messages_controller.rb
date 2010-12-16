@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   inherit_resources
-  
+  layout 'application'
   before_filter :login_required
   after_filter :user_puls
   
@@ -17,6 +17,7 @@ class MessagesController < ApplicationController
   def index
     index! do |format|
       format.json { render :json => messages_to_json(collection) }
+      format.js {render :partial => 'shared/chat', :object => parent}
       format.html
     end
   end

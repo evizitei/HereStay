@@ -25,13 +25,6 @@ class BookingsController < ApplicationController
   def update
     update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
- 
-  # TODO: move to message controller
-  def discuss
-    @rental_unit =  RentalUnit.find(params[:rental_unit_id])
-    @booking = @rental_unit.find_uncompleted_booking_for_user_or_create(current_user)
-    redirect_to [@booking, :messages]
-  end
 
   def reserve
   end
