@@ -1,7 +1,10 @@
 %ul.sub-menu.reservations
   %li= link_to 'Reserved', collection_url, :class => params[:confirmed].blank? ? 'current' : ''
-  %li= link_to "Confirmed#{confirmed_bookings_count(parent)}", collection_url(:confirmed => '1'), :class => params[:confirmed].blank? ? '' : 'current'
-
+  %li.with-counter
+    = link_to "Confirmed", collection_url(:confirmed => '1'), :class => params[:confirmed].blank? ? '' : 'current'
+    .counter= confirmed_bookings_count(parent)
+  .clearfix
+    
 .border
   =render :partial => 'shared/bookings', :locals => {:booking_collection=>collection}
   -#= fb_button "Back to My Properties", manage_rental_units_path
