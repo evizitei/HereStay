@@ -294,4 +294,14 @@ class RentalUnit < ActiveRecord::Base
             'image' => (self.primary_photo ? self.primary_photo.picture.url(:medium) : ''),
             'url' => self.fb_url}.to_json
   end
+  
+  def set_primary_photo(params)
+    unless params[:preview_image_id].blank?
+      if self.new_record?
+        self.primary_photo = Photo.where("rental_unit_id IS NULL").find(params[:preview_image_id])
+      else
+        self.primary_photo = Photo.where("rental_unit_id IS NULL OR rental_unit_id = ?", self.id).find(params[:preview_image_id])
+      end
+    end
+  end
 end

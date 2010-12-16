@@ -65,7 +65,7 @@ class RentalUnitsController < ApplicationController
   
   def preview
     @rental_unit = RentalUnit.new(params[:rental_unit])
-    set_preview_image
+    @rental_unit.set_primary_photo(params)
     respond_to do |format|
       if params[:edit_rental_unit].blank? && @rental_unit.valid?
         format.html
@@ -92,16 +92,14 @@ class RentalUnitsController < ApplicationController
       @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
     end
     
-    def set_preview_image
-      if params[:preview_image_id].blank?
-        @rental_unit.primary_photo.save
-      else
-        @rental_unit.primary_photo = Photo.find(params[:preview_image_id])
-      end
+    def create_resource(object)
+      object.set_primary_photo(params)
+      object.save
     end
     
-    def create_resource(object)
-      set_preview_image
+    def update_resource(object, attributes)
+      object.attributes = attributes
+      object.set_primary_photo(params)
       object.save
     end
 end
