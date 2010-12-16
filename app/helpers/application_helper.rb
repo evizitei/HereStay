@@ -40,7 +40,7 @@ module ApplicationHelper
     end
   end
   
-  def simple_button(*args, &block)
+  def simple_button(*args, &block)    
     if block_given?
       options = args.first || {}
       "<label class='#{options[:class_name]} simple-button'>#{capture(&block)}</label>".html_safe
@@ -49,10 +49,10 @@ module ApplicationHelper
       url = args.second
       options = args.third || {}
       link = link_to(url, :method => options[:method],:title=>text ,:rel => options[:rel], :class => options[:link_class], :confirm => options[:confirm]){ "<input type=button value=\"#{text}\">" }
-      "<label class='#{options[:class_name]} simple-button'>#{link}</label>".html_safe
+      "<label class='#{options[:class_name]} simple-button #{current_page?(url) ? 'current' : ''}'>#{link}</label>".html_safe
     end
   end
-  
+    
   def get_flash_message
     if flash[:alert]
       wrap_flash_message flash[:alert], :alert
@@ -209,11 +209,10 @@ module ApplicationHelper
   end
   
   def confirmed_bookings_count(rental_unit = nil)
-    count = if rental_unit
+    if rental_unit
       rental_unit.bookings.active.confirmed.size
     else
       Booking.for_user(current_user).active.confirmed.size
     end
-    "(#{count})"
   end
 end

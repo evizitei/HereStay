@@ -4,6 +4,8 @@
   New Post
   %span{:style => 'font-weight: normal;'} > Preview / Save Changes 
 .clearfix
-.property_form{:style => 'border: solid 1px #B4B4B4; padding: 10px;'}
+.property_form
+  = error_messages_for @rental_unit
+  = render :partial => 'upload_photo'
   = form_for @rental_unit, :rental_unit, :url => rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
     = render 'form', {:f => f}

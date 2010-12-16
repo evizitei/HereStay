@@ -20,6 +20,7 @@ class Photo < ActiveRecord::Base
   after_destroy :reassign_primary, :if => :primary?
   
   scope :primary, where(:primary => true)
+  scope :unlinked_or_for_rental_unit, lambda{|r| where("rental_unit_id IS NULL OR rental_unit_id = ?", r.id) }
   
   def primary!
     reset_primary
@@ -34,7 +35,7 @@ class Photo < ActiveRecord::Base
     def assign_primary
       if self.primary?
         reset_primary if self.rental_unit
-      elsif !self.rental_unit.photos.primary.exists?
+      elsif !self.rental_unit || !self.rental_unit.photos.primary.exists?
         self.primary = true
       end
     end

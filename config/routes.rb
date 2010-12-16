@@ -1,6 +1,11 @@
 Micasasucasa::Application.routes.draw do
   root :to => "canvas#index"
-  resources :photos
+  resources :photos do
+    collection do
+      post :ajaxupload
+    end      
+  end
+  
   resources :delayed_jobs
   resources :unit_photos
 

@@ -32,6 +32,10 @@ h4
   a
     font-size: 13px
     text-decoration: none
+  &.current
+    input
+      color: blue
+      font-weight: 700
 
 .border
   border: 1px solid #B4B4B4  
@@ -190,7 +194,6 @@ body
     text-align: center
 
 .sub-menu
-  overflow: hidden
   border: 0
   border-bottom: 1px solid #B4B4B4
   &.reservations
@@ -199,6 +202,22 @@ body
   li
     display: block 
     float: left
+    &.with-counter
+      display: block
+      position: relative
+      .counter
+        position: absolute
+        background: transparent url(/images/u80.png) no-repeat
+        left: 0
+        top: 0
+        color: white
+        font-size: 12px
+        padding-top: 5px
+        padding-left: 7px
+        width: 20px
+        height: 20px
+        margin-left: 60px
+        margin-top: -9px
     a
       padding: 8px
       display: inline-block
@@ -253,6 +272,52 @@ body
     overflow: hidden
     font-weight: bold
     font-size: 13px
+  .share_box
+    padding: 1px 10px
+  .messages
+    .fb-profile-link 
+      img
+        width: 30px
+    border: solid 1px #bfbfbf
+    padding: 10px
+    .form
+      width: 470px
+      textarea
+        width: 280px
+        height: 50px
+        font-size: 13px
+      div
+        margin-right: 5px
+    .message
+      .body
+        width: 270px
+        padding: 5px 10px
+        -moz-border-radius: 5px 
+        -webkit-border-radius: 5px
+        font-weight: bold
+        color: #333
+    .user
+      width: 30px
+    .arrow
+      width: 20px
+    .message.owner_message
+      .user
+        float: left
+      .arrow
+        float: left
+        background: transparent url('/images/mess_arrow_owner.png')
+      .body
+        float: left
+        background: #E8FF85
+    .message.renter_message
+      .user
+        float: right
+      .arrow
+        float: right
+        background: transparent url('/images/mess_arrow_renter.png')
+      .body
+        float: right
+        background: #D7D7D7
       
 .property_form
   border: solid 1px #B4B4B4
@@ -272,6 +337,22 @@ body
     .col
       float: left
       width: 33%
+      
+.booking_form
+  border: solid 1px #bfbfbf
+  padding: 10px
+  .row
+    margin-bottom: 10px
+    .col
+      float: left
+    .col.label
+      width: 100px
+      font-weight: bold
+    .col.fee
+      margin-left: 80px
+      font-weight: bold
+      span
+        font-weight: normal
 
 .preview_img_btn
   background: url('/images/save_img_button.png') top right no-repeat
@@ -280,7 +361,7 @@ body
   overflow: hidden
   z-index: 1
   position: relative 
-  margin-bottom: -17px
+  margin-bottom: -35px
 
 //--------------------- [ account pages ] ---------------------//
 #account-header

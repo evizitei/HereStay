@@ -1,0 +1,5 @@
+=form_for :photo, :url => ajaxupload_photos_url, :html => { :multipart => true, :target => 'uploadframe'} do |f|
+  .preview_img_btn
+    %div{:style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"}
+      =file_field_tag 'photo[picture]', :size => 1, :style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"
+%iframe#uploadframe{:name => 'uploadframe', :src => "about:blank", :height => "0", :frameborder => "0", :width => "0"}
