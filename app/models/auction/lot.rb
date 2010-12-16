@@ -1,5 +1,6 @@
 class Lot < ActiveRecord::Base
-  extend ActiveSupport::Memoizable
+  include Rails.application.routes.url_helpers
+
   attr_accessor :creator
   
   belongs_to :property, :class_name => 'RentalUnit', :foreign_key => :property_id
@@ -86,6 +87,13 @@ class Lot < ActiveRecord::Base
     current_bid if self.finished? && accept_bids_under_minimum? && current_bid && current_bid.cents < min_bid_cents
   end
   
+  def fb_url
+    "http://apps.facebook.com/#{Facebook::APP_NAME}" + auction_lot_path(self)
+  end
+  
+  def user
+    self.property.user
+  end
   private
   
   def check_dates
@@ -119,19 +127,21 @@ class Lot < ActiveRecord::Base
   
   def run_created_callbacks
     # AuctionMailer.lot_created(self).deliver
-    post_to_twitter
-    post_to_wall
-  end
-  
-  def post_to_twitter
-    # TODO
-    # post to HereStay's twitter
-    # post to Owner's twitter
-  end
-  
-  def post_to_wall
-    # TODO
-    # post to HereStay's wall
-    # post to Owner's wall
+    TwitterWrapper.post_auction_added(self)
+    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed",
+      :message => "Auction #{self.title} has been added.",
+      :link => self.fb_url,
+      :name => 'view auction details',
+      :picture=> self.property.picture(:medium) || ''
+    )
+    
+    if user.subscribed? && user.subscription_plan == 'advanced'
+      FacebookProxy.new(self.property.user.access_token).put_object('me', "feed",
+        :message => "Auction #{self.title} has been added.",
+        :link => self.fb_url,
+        :name => 'view auction details',
+        :picture=> self.property.picture(:medium) || ''
+      )
+    end
   end
 end
