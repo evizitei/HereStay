@@ -12,7 +12,7 @@
         .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
       -else
         .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
-      = hidden_field_tag 'preview_image_id', @rental_unit.primary_photo.id
+      = hidden_field_tag 'preview_image_id', (@rental_unit.primary_photo ? @rental_unit.primary_photo.id : nil)
     .right-column
       .f_right= belongs_to_friend_icon current_user, @rental_unit
       .title
@@ -83,7 +83,6 @@
             = f.label :wifi, 'WiFi:'
         .clearfix
       .clearfix
-  = file_field_tag 'rental_unit[primary_photo_attributes][picture]', :size => 10
         
   = f.hidden_field :name
   = f.hidden_field :address

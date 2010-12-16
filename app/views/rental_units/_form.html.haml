@@ -1,19 +1,13 @@
-= error_messages_for @rental_unit
 .clearfix
 .dataRow
-  .image{:style => 'float: left; width: 180px;'}
+  .image{:style => 'float: left; width: 140px;'}
     - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
-    = f.fields_for :primary_photo do |p|
-      = p.hidden_field :primary, :value => true
-      .preview_img_btn
-        %div{:style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"}
-          =file_field_tag 'rental_unit[primary_photo_attributes][picture]', :size => 1, :style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"
-      -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
-        .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
-        = hidden_field_tag 'preview_image_id', @rental_unit.primary_photo.id
-      -else
-        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
-  .address{:style => 'float: right;text-align: right; width: 300px;'}
+    -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
+      .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb), :id => 'preview_img')
+    -else
+      .picture=image_tag('no_photo.png', :id => 'preview_img')
+    = hidden_field_tag 'preview_image_id', (@rental_unit.primary_photo ? @rental_unit.primary_photo.id : nil)
+  .address{:style => 'float: right;text-align: right; width: 340px;'}
     .row
       = f.label :name, 'Property Name:'
       = f.text_field :name

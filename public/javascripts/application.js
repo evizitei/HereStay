@@ -133,8 +133,9 @@ $(document).ready(function() {
     return false;
   })
   
-  $('#rental_unit_primary_photo_attributes_picture').change(function(){
-    $('#preview_image_id').val('');
+  $('#photo_picture').change(function(){
+    $(this).parents('form').submit();
+    $('#preview_img').attr('src', '/images/ajax_small.gif')
   })
   
   $('#rental_unit_primary_photo_attributes_picture').focus(function(){
