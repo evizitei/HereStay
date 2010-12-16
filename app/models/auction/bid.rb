@@ -6,16 +6,19 @@ class Bid < ActiveRecord::Base
   validate :validate_cents, :validate_lot
   validates_numericality_of :cents, :greater_than => 0, :allow_blank => :false
   
-  before_update :raise_read_only
-  before_destroy :raise_read_only
   after_create :creation_notification
   
   composed_of :amount, :class_name => "Money", :mapping => %w(cents cents)
   
   scope :by_cents, order('cents DESC')
+  scope :winning, where(:winning => true)
   
   def win!
-    AuctionMailer.win_confirmation_to_renter(self).deliver
+    unless self.lot.bids.winning.exists?
+      self.winning = true
+      self.save(:validate => false)
+      AuctionMailer.win_confirmation_to_renter(self).deliver
+    end
   end
   
   private
@@ -31,5 +34,5 @@ class Bid < ActiveRecord::Base
     AuctionMailer.bid_created_to_owner(self).deliver
     AuctionMailer.bid_created_to_renter(self).deliver
   end
-
+  
 end

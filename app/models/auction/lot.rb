@@ -3,7 +3,7 @@ class Lot < ActiveRecord::Base
   attr_accessor :creator
   
   belongs_to :property, :class_name => 'RentalUnit', :foreign_key => :property_id
-  has_many :bids, :dependent => :destroy
+  has_many :bids, :dependent => :destroy, :order => 'cents DESC'
   
   validates :title, :start_at, :end_at, :min_bid_cents, :terms, :property_id, :min_bid_amount, :presence => true
   validates_numericality_of :min_bid_amount, :greater_than_or_equal_to => 0, :allow_blank => :true, :if => Proc.new{|l| l.accept_bids_under_minimum?}
@@ -28,33 +28,23 @@ class Lot < ActiveRecord::Base
   end
   
   def current_bids
-    self.bids(true).by_cents
+    self.bids(true)
   end
   
+  # latest bid
   def current_bid
     current_bids.first
   end
-  
-  # latest bid or start bid in cents
-  def current_bid_cents
-    if self.current_bids.blank?
-      min_bid_cents
-    else
-      self.bids(true).by_cents.first.cents
-    end
-  end
-  memoize :current_bid_cents
   
   # current bid + $10
   def next_bid_cents
     if current_bid.blank?
       accept_bids_under_minimum? ? 0 : min_bid_cents
     else
-      current_bid_cents + 1000
+      current_bid.cents + 1000
     end
   end
   
-  def current_bid_amount; Money.new(current_bid_cents); end
   def next_bid_amount; Money.new(next_bid_cents); end
   
   def finish!
@@ -79,6 +69,21 @@ class Lot < ActiveRecord::Base
   
   def finished?
     status == 'finished'
+  end
+  
+  def winning_bid
+    if self.finished?
+      bids.winning.first || not_confirmed_winning_bid
+    end
+  end
+  
+  # current bid which is greater than min_bid_cents not marked as winning
+  def not_confirmed_winning_bid
+    current_bid if current_bid && current_bid.cents >= min_bid_cents
+  end
+  
+  def supposed_winning_bid
+    current_bid if self.finished? && accept_bids_under_minimum? && current_bid && current_bid.cents < min_bid_cents
   end
   
   private

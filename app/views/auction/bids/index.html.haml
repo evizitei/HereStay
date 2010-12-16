@@ -22,13 +22,21 @@
         %th Bidder
         %th Bid amount
         %th Bid Time
+        %th &nbsp;
       - for resource in collection
         %tr
           %td= fb_name(:uid=>resource.user.fb_user_id)
           %td= number_to_currency(resource.cents/100.0)
           %td= resource.created_at.to_s(:us_long_datetime)
-
+          %td
+          - if parent.winning_bid == resource
+            %td Winning
+          - elsif parent.belongs_to?(current_user) && parent.supposed_winning_bid && parent.supposed_winning_bid == resource
+            %td= link_to 'Accept as winning', win_auction_lot_bid_path(parent, resource)
+          - else
+            &nbsp;
       %tr{:style => "background-color: #e0e0e0"}
         %td Starting price
         %td= number_to_currency(parent.min_bid_cents/100.0)
         %td= parent.start_at.to_s(:us_long_datetime)
+        %td &nbsp;

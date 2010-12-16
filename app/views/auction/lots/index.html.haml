@@ -21,20 +21,21 @@
         %p
           %b Min bid amount:
           = resource.min_bid_amount.format
-          - unless resource.current_bids.empty?
-            %br
-            %b Current bid
-            #{resource.current_bid_amount.format}
+          
         - if resource.active?
           %p
+          - if resource.current_bid
+            %b Current bid
+            #{resource.current_bid.amount.format}
+            %br
             %b Time left:
             = distance_of_time_in_words_to_now resource.end_at
         - elsif resource.finished?
           %p
             %b Auction is finished
-          - unless resource.current_bids.empty?
+          - if resource.winning_bid
             %p
-              %b Max. bid is #{resource.current_bid.format}
+              %b Winning bid is #{resource.winning_bid.amount.format}
         - else
           %p
             %b Auction is not active

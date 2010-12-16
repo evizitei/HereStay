@@ -32,16 +32,15 @@
       %b Min bid amount:
       #{resource.min_bid_amount.format}
 
-    - if resource.current_bid.present?
-      %p
-        %b Current bid:
-        #{resource.current_bid_amount.format}
-
     %p
       %b Bid history:
       = link_to pluralize(resource.bids.count, 'bid'), auction_lot_bids_path(resource)
 
     - if resource.active?
+      - if resource.current_bid.present?
+        %p
+          %b Current bid:
+          #{resource.current_bid.amount.format}
       %p
         %b Time left:
         = distance_of_time_in_words_to_now resource.end_at
@@ -56,24 +55,28 @@
           .clearfix
           - if resource.next_bid_amount > 0
             (Enter #{resource.next_bid_amount.format} or more)
-
-        %p
-          = fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
+        - if resource.belongs_to?(current_user)
+          %p= fb_button 'Finish', finish_auction_lot_path(resource), :method => :put
 
     - elsif resource.finished?
       %p
         %b Auction is finished
-      - unless resource.current_bids.empty?
+      - if resource.winning_bid
         %p
-          %b Max. bid is #{resource.current_bid_amount.format}
+          %b Winning bid is #{resource.winning_bid.amount.format}
+      - elsif resource.belongs_to?(current_user) && resource.supposed_winning_bid
+        %p
+          %b Supposed winning bid is
+          #{resource.supposed_winning_bid.amount.format}
+          %br (The bid that is less than Min bid amount and can be winning)
     - else
       %p
         %b Auction is not active
-    
-    %p
-      %b Terms and conditions
-      %p= resource.terms
-    %p
-      %b Cancel bid policy
-      %p= resource.cancel_bid_policy
+    .auction_details{:style => "margin-top: 20px"}
+      %p
+        %b Terms and conditions
+        %p= resource.terms
+      %p
+        %b Cancel bid policy
+        %p= resource.cancel_bid_policy
   .clearfix
