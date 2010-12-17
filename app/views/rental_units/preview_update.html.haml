@@ -1,0 +1,9 @@
+= form_for @rental_unit, :rental_unit, :url => rental_unit_path(@rental_unit), :html => { :multipart => true, :method => :put } do |f|
+  .f_right= f.submit "Save It"
+  .f_right= simple_button 'Edit', '', :link_class => 'to_back_logic'
+  = hidden_field_tag :edit_rental_unit, nil
+  %h2
+    Edit Post
+    %b > Preview / Save Changes 
+  .clearfix
+  = render 'preview', {:f => f}
