@@ -87,8 +87,8 @@ $(document).ready(function() {
   /* Initial clue Tips */
   $('a.availabilities_button').cluetip({
     showTitle: false,
-    width: 350,
-    height: 380,
+    width: 300,
+    height: 360,
     sticky: true,
     activation: 'click',
     fx: { open: 'slideDown' },
