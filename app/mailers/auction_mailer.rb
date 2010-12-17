@@ -30,4 +30,11 @@ class AuctionMailer < ActionMailer::Base
     end
   end
   
+  def booking_error_to_owner(bid, booking)
+    @bid = bid
+    @booking = booking
+    @lot = bid.lot
+    
+    mail(:to => @lot.property.user.email, :subject => "Booking was not created")
+  end
 end
