@@ -4,7 +4,7 @@ require 'open-uri'
 class Photo < ActiveRecord::Base
   attr_accessor :image_url
   
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>" },
+  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :mini => "50x50>" },
                       :storage => :s3,:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
                       :path => "child/:attachment/:id/:style/:basename.:extension",
                       :s3_host_alias => "s3.micasa-fb.com", 

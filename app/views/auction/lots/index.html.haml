@@ -1,50 +1,61 @@
 %h1= link_to 'Auctions', auction_root_path
-.properties
-  - for resource in collection
-    .property
-      .left-column
-        - if resource.property.picture
-          .picture
-            = link_to image_tag(resource.property.picture(:thumb)), resource_path(resource)
-        - else
-          %a{:href => resource_path(resource)}
-            .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+:css
+  .auctions table{width: 100%; margin: 5px 0px; border-collapse: collapse;}
+  .auctions table th, .auctions td{padding: 3px; font-size: 12px; text-align: center; border: 1px solid #a0a0a0}
+  .auctions table th{color: #606060}
+  .auctions table tr.head{background-color: #e4e4e4}
+  .auctions table td.left{text-align: left}
+  .auctions .pagination{margin-bottom: 5px}
+  .auctions .auction_ends{color: red}
+  .auctions .highest_bid{color: green}
+  .auctions .days, .auctions .reserve{font-size: 16px}
 
-      .right-column
-        .title
-          = link_to resource.title, resource_path(resource)
-          - if current_user && resource.belongs_to?(current_user)
-            %span= link_to 'edit', edit_resource_path(resource)
-        .description
-          = truncate resource.property.description, :length => 200
-          = link_to 'more', resource.property
-        %p
-          %b Min bid amount:
-          = resource.min_bid_amount.format
-          
-        - if resource.active?
-          %p
-          - if resource.current_bid
-            %b Current bid
-            #{resource.current_bid.amount.format}
-            %br
-            %b Time left:
-            = distance_of_time_in_words_to_now resource.end_at
-        - elsif resource.finished?
-          %p
-            %b Auction is finished
-          - if resource.winning_bid
-            %p
-              %b Winning bid is #{resource.winning_bid.amount.format}
-        - else
-          %p
-            %b Auction is not active
-      .clearfix
+.auctions
+  %table
+    %tr.head
+      %th Auction Ends
+      %th Check In
+      %th Days
+      %th Reserve
+      %th Highest Bid
+      %th Property
 
+    - for resource in collection
+      %tr
+        %td.auction_ends
+          - if resource.active?
+            = distance_of_time_in_words_to_now resource.end_at, true
+          - elsif resource.finished?
+            Expired
+          - else
+            Not active yet
+        %td
+          - if resource.arrive_on
+            = resource.arrive_on.to_s(:us_date)
+        %td.days
+          - if resource.arrive_on && resource.depart_on
+            = resource.depart_on - resource.arrive_on
+        %td.reserve Y
+        %td.highest_bid= resource.highest_bid_amount.format
+        %td.left
+          .left-column{:style => 'float: left'}
+            - if resource.property.picture
+              .picture{:style => 'padding:3px'}
+                = link_to image_tag(resource.property.picture(:mini)), resource_path(resource)
+          .right-column{:style => 'overflow: auto'}
+            .title
+              = link_to resource.property.name, resource_path(resource)
+            .description
+              = truncate resource.property.description, :length => 200
+          .clearfix
+    - if collection.blank?
+      %tr
+        %td{:colspan => '6'}
+          There are no auctions.
+  
   = will_paginate collection
 
-  - if collection.blank?
-    There are no auctions yet.
-    = link_to 'Create the Auction', new_resource_path
-  - else
-    %p= link_to 'Add new Auction', new_resource_path
+
+  = link_to 'New Auction', new_resource_path
+  = link_to 'History', collection_path(:expired => true)
+  = link_to 'Upcoming', collection_path(:upcoming => true)

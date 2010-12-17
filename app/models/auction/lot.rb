@@ -22,6 +22,8 @@ class Lot < ActiveRecord::Base
   
   scope :not_completed, where(:completed => false)
   scope :expired, where(["end_at < ?", Time.zone.now])
+  scope :closest, order('end_at').where(['end_at > :now AND start_at < :now', {:now => Time.zone.now}])
+  scope :upcoming, order('end_at').where(['start_at > ? ', Time.zone.now])
   
   def initialize(attrs = {})
     super(attrs)
@@ -49,8 +51,17 @@ class Lot < ActiveRecord::Base
       current_bid.cents + 1000
     end
   end
+
+  def highest_bid_cents
+    if current_bid
+      current_bid.cents + 1000
+    else
+      min_bid_cents
+    end
+  end
   
   def next_bid_amount; Money.new(next_bid_cents); end
+  def highest_bid_amount; Money.new(highest_bid_cents); end
   
   def finish!
     self.end_at = Time.now # TODO: remove Finish button and this line before release.
