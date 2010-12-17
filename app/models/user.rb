@@ -108,6 +108,15 @@ class User < ActiveRecord::Base
           self.fb_lng = res[:long]
         end
       end
+    elsif fb_profile['hometown']
+      self.fb_location = fb_profile['hometown']['name']
+      self.fb_location_update_at = Time.now
+      if self.fb_location_changed?
+        if res = GoogleApi.geocoder(self.fb_location)
+          self.fb_lat = res[:lat]
+          self.fb_lng = res[:long]
+        end
+      end
     end
     save(:validate => false)
   end
@@ -156,5 +165,12 @@ class User < ActiveRecord::Base
     if post = FacebookProxy.new(self.access_token).get_object(post_id)
       post['message']
     end  
+  end
+  
+  def get_latlng
+    if self.fb_lat.blank? || self.fb_lng.blank?
+      self.capture_fb_profile_data!
+    end
+    true if !self.fb_lat.blank? && !self.fb_lng.blank?
   end
 end
