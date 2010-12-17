@@ -110,17 +110,6 @@
       }
     );
 
-    $('.show-advanced-search-logic').click(function(){
-      $('#advanced-search').toggleClass('active');
-      $(this).toggleClass('on');
-      if(parseInt($('#advanced').val()) == 1){
-        $('#advanced').val(0);
-      }else{
-        $('#advanced').val(1);
-      }
-      return false;
-    });
-
     $(".date_picker").datepicker({
       minDate: new Date(),
       onSelect: function(dateText, inst) {
