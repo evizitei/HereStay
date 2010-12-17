@@ -127,9 +127,9 @@ $(document).ready(function() {
   })
   
   $('.to_back_logic').live('click', function(){
-    $('#new_rental_unit').attr('action','');
+    $(this).parents('form').attr('action','');
     $('#edit_rental_unit').val(1);
-    $('#new_rental_unit').submit();
+    $(this).parents('form').submit();
     return false;
   })
   

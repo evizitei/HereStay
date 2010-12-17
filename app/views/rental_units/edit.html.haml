@@ -1,11 +1,11 @@
 = simple_button 'VRBO Calendar', rental_unit_reservations_path(@rental_unit), :class_name => 'f_right'
 = simple_button 'Load VRBO Full Property', load_from_vrbo_rental_unit_path, :class_name => 'f_right', :method => :put
 #h2{:style => 'font-weight: bold;'} 
-  New Post
+  Edit Post
   %span{:style => 'font-weight: normal;'} > Preview / Save Changes 
 .clearfix
 .property_form
   = error_messages_for @rental_unit
   = render :partial => 'upload_photo'
-  = form_for @rental_unit, :rental_unit, :url => rental_unit_path(@rental_unit), :html => { :multipart => true } do |f|
+  = form_for @rental_unit, :rental_unit, :url => preview_update_rental_unit_path(@rental_unit), :html => { :multipart => true} do |f|
     = render 'form', {:f => f}
