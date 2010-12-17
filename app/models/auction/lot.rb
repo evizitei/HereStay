@@ -20,6 +20,9 @@ class Lot < ActiveRecord::Base
   
   after_create :run_created_callbacks
   
+  scope :not_completed, where(:completed => false)
+  scope :expired, where(["end_at < ?", Time.zone.now])
+  
   def initialize(attrs = {})
     super(attrs)
     self.min_bid_cents ||= 0
@@ -50,7 +53,8 @@ class Lot < ActiveRecord::Base
   def next_bid_amount; Money.new(next_bid_cents); end
   
   def finish!
-    self.end_at = Time.now
+    self.end_at = Time.now # TODO: remove Finish button and this line before release.
+    self.completed = true
     save(:validate => false)
     run_finish_callbacks
   end
@@ -98,7 +102,13 @@ class Lot < ActiveRecord::Base
   
   def editable?
     end_date = end_at_changed? ? end_at_was : end_at
-    end_date > Time.now
+    !completed? and end_date > Time.now
+  end
+  
+  def self.finish!
+    Lot.expired.not_completed.all.each do |lot|
+      lot.finish!
+    end
   end
   
   private
