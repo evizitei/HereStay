@@ -12,6 +12,7 @@ class Lot < ActiveRecord::Base
   
   validate :check_dates, :validate_creator
   validate :validate_min_bid_amount, :on => :update
+  validate :validate_expiration, :on => :update
   # validate :check_dates_on_create, :on => :create
   # validate :check_dates_on_update, :on => :update
   
@@ -94,6 +95,12 @@ class Lot < ActiveRecord::Base
   def user
     self.property.user
   end
+  
+  def editable?
+    end_date = end_at_changed? ? end_at_was : end_at
+    end_date > Time.now
+  end
+  
   private
   
   def check_dates
@@ -115,6 +122,10 @@ class Lot < ActiveRecord::Base
   
   def validate_creator
     errors.add(:property_id, "the property belongs to another user") if creator && property && !self.belongs_to?(creator)
+  end
+  
+  def validate_expiration
+    errors.add(:base, 'Auction is finished and is not editable') unless editable?
   end
   
   def run_finish_callbacks
