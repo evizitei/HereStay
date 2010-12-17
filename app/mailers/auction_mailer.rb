@@ -2,7 +2,7 @@ class AuctionMailer < ActionMailer::Base
   default :from => "donotreply@here-stay.com"
   
   def lot_created(lot)
-    mail(:to => lot.property.user.email) do |format|
+    mail(:to => lot.property.user.email, :subject => "Auction created") do |format|
       format.html { render :text => "<p>You have created new auction.</p> Auction details: #{auction_lot_url(lot)}" }
     end
   end
@@ -21,7 +21,7 @@ class AuctionMailer < ActionMailer::Base
   
   def lot_finished(lot)
     @lot = lot
-    mail(:to => lot.property.user.email)
+    mail(:to => lot.property.user.email, :subject => "Auction finished")
   end
   
   def win_confirmation_to_renter(bid)
