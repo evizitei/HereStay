@@ -6,7 +6,6 @@
       .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
     = hidden_field_tag 'preview_image_id', (@rental_unit.primary_photo ? @rental_unit.primary_photo.id : nil)
   .right-column
-    .f_right= belongs_to_friend_icon current_user, @rental_unit
     .title
       == #{@rental_unit.name} 
       %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>current_user.fb_user_id)}
