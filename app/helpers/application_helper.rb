@@ -138,7 +138,7 @@ module ApplicationHelper
   def init_gmap(element, lat, lng, zoom, prefix='')
     if !lat.blank? && !lng.blank?
       latlng = "#{lat}, #{lng}"
-    elsif logged_in? && !current_user.fb_lat.blank? && !current_user.fb_lng.blank?
+    elsif logged_in? && current_user.get_latlng
       latlng = "#{current_user.fb_lat}, #{current_user.fb_lng}"
     else  
       latlng = "40.72228267283153, -73.9599609375"      
