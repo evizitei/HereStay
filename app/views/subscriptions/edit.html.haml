@@ -28,10 +28,8 @@
         = f.input :card_year, :label => 'Year', :hint => "Credit card's expiration date's 4-digit year", :input_html => {:size => 4}
         = f.input :card_verification_value, :label => 'CVV Code', :hint => "CVV code on the signature panel, or above the card number on AmEx", :input_html => {:size => 5}
       
-    = f.buttons do
-      = fb_button do
-        = submit_tag "Save"
-      = fb_button 'Cancel', account_path
+    = submit_tag "Save"
+    = simple_button 'Cancel', account_path
 
   .clearfix
   
