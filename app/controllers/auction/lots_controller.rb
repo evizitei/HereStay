@@ -1,13 +1,13 @@
 class Auction::LotsController < Auction::BaseController
   inherit_resources
-  actions :except => [:destroy]
+  actions :all, :except => [:destroy]
   before_filter :login_required, :except => %w(index show)
   before_filter :access_denied, :only => %w(edit update finish destroy)
   before_filter :format_money_params, :only => %w(create update)
   
-  has_scope :closest, :default => 'true'
-  has_scope :upcoming
-  has_scope :expired
+  has_scope :closest, :default => 'true', :only => [:index]
+  has_scope :upcoming, :only => [:index]
+  has_scope :expired, :only => [:index]
   
   
   def finish
