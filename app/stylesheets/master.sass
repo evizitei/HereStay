@@ -47,6 +47,9 @@ h4
 .hidden
   display: none
 
+.fb-profile-link
+  color: #3B5998
+
 #errorExplanation
   border: 2px solid red
   background-color: #fff
@@ -178,9 +181,11 @@ div.jGrowl div.jGrowl-notification a
   display: none
   clear: both
   overflow: hidden
-  margin-bottom: 10px  
+  margin: 10px 0  
   .friends
     margin-bottom: 10px
+    label
+      font-size: 13px
   .date-range, .left
     p
       padding: 5px
@@ -188,6 +193,7 @@ div.jGrowl div.jGrowl-notification a
       display: inline-block
       width: 76px
       text-align: right
+      font-size: 13px
     input
       width: 110px !important
   .date-range
@@ -363,24 +369,26 @@ div.jGrowl div.jGrowl-notification a
       width: 30px
     .arrow
       width: 20px
-    .message.owner_message
-      .user
-        float: left
-      .arrow
-        float: left
-        background: transparent url('/images/mess_arrow_owner.png')
-      .body
-        float: left
-        background: #E8FF85
-    .message.renter_message
-      .user
-        float: right
-      .arrow
-        float: right
-        background: transparent url('/images/mess_arrow_renter.png')
-      .body
-        float: right
-        background: #D7D7D7
+    .message
+      margin: 10px
+      &.owner_message      
+        .user
+          float: left
+        .arrow
+          float: left
+          background: transparent url('/images/mess_arrow_owner.png')
+        .body
+          float: left
+          background: #E8FF85
+      &.renter_message
+        .user
+          float: right
+        .arrow
+          float: right
+          background: transparent url('/images/mess_arrow_renter.png')
+        .body
+          float: right
+          background: #D7D7D7
       
 .property_form
   border: solid 1px #B4B4B4
