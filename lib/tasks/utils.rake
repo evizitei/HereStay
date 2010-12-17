@@ -12,4 +12,9 @@ namespace :utils do
   task :charge_booking_fee => :environment do
     Booking.charge_booking_fee
   end
+  
+  desc "Finish expired auctions."
+  task :finish_auctions => :environment do
+    Lot.finish!
+  end
 end

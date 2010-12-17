@@ -12,12 +12,16 @@ class Lot < ActiveRecord::Base
   
   validate :check_dates, :validate_creator
   validate :validate_min_bid_amount, :on => :update
+  validate :validate_expiration, :on => :update
   # validate :check_dates_on_create, :on => :create
   # validate :check_dates_on_update, :on => :update
   
   composed_of :min_bid_amount, :class_name => "Money", :mapping => %w(min_bid_cents cents)
   
   after_create :run_created_callbacks
+  
+  scope :not_completed, where(:completed => false)
+  scope :expired, where(["end_at < ?", Time.zone.now])
   
   def initialize(attrs = {})
     super(attrs)
@@ -49,7 +53,8 @@ class Lot < ActiveRecord::Base
   def next_bid_amount; Money.new(next_bid_cents); end
   
   def finish!
-    self.end_at = Time.now
+    self.end_at = Time.now # TODO: remove Finish button and this line before release.
+    self.completed = true
     save(:validate => false)
     run_finish_callbacks
   end
@@ -94,6 +99,18 @@ class Lot < ActiveRecord::Base
   def user
     self.property.user
   end
+  
+  def editable?
+    end_date = end_at_changed? ? end_at_was : end_at
+    !completed? and end_date > Time.now
+  end
+  
+  def self.finish!
+    Lot.expired.not_completed.all.each do |lot|
+      lot.finish!
+    end
+  end
+  
   private
   
   def check_dates
@@ -115,6 +132,10 @@ class Lot < ActiveRecord::Base
   
   def validate_creator
     errors.add(:property_id, "the property belongs to another user") if creator && property && !self.belongs_to?(creator)
+  end
+  
+  def validate_expiration
+    errors.add(:base, 'Auction is finished and is not editable') unless editable?
   end
   
   def run_finish_callbacks

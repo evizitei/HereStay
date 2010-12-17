@@ -40,6 +40,28 @@ h4
 .border
   border: 1px solid #B4B4B4  
 
+.share_box
+  min-height: 20px
+  min-width: 60px
+
+.hidden
+  display: none
+
+#errorExplanation
+  border: 2px solid red
+  background-color: #fff
+  padding: 5px
+  margin-bottom: 5px
+  h2
+    font-size: 1.2em
+  ul
+    list-style-type: none
+    padding-left: 20px
+  li
+    padding-left: 20px
+    margin: 0
+    padding: 0
+
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
   height: 0.5em
@@ -74,6 +96,47 @@ body
   float: left
   width: 200px
   margin-top: 15px
+
+//--------------------- [ UIObject ] ---------------------//
+.UIObjectListing_Title
+  font-size: 13px
+  font-weight: bold
+
+.UIObjectListing
+  border-bottom: 1px solid #e5e5e5
+  min-height: 50px
+  padding: 2px 0px
+
+//--------------------- [ jGrowl ] ---------------------//
+div.jGrowl div.jGrowl-notification
+  color: #fff
+  
+div.jGrowl div.jGrowl-notification a
+  color: #fff
+  font-weight: bold
+
+//--------------------- [ flash ] ---------------------//
+#flash .flash
+  border: 3px solid #FFC67D
+  color: #000
+  font-weight: bold
+  margin: 10px 0
+  padding: 10px
+  font-size: 1.2em
+
+#flash .flash.alert
+  border: 3px solid red
+  color: red
+  font-weight: bold
+  margin: 10px 0
+  padding: 10px
+
+//--------------------- [ odd / even ] ---------------------//
+.odd
+  background-color: #FFC67D
+    
+.even
+  background-color: #E5D7C4
 
 //--------------------- [ simple search ] ---------------------//
 #search-form
@@ -408,3 +471,14 @@ table.bookings
   fieldset.buttons
     margin-top: 80px
     float: right
+//--------------------[ availabilities calendar fixes ]
+.calendar 
+  .fc-header 
+    .ui-state-default
+      padding: 2
+  .fc-event
+    border: 0
+    a
+      font-size: 10px
+      background: #bfbfbf
+      border: 0 
