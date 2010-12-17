@@ -75,6 +75,19 @@ class RentalUnitsController < ApplicationController
     end
   end
   
+  def preview_update
+    @rental_unit = current_user.rental_units.find(params[:id])
+    @rental_unit.attributes = params[:rental_unit]
+    @rental_unit.set_primary_photo(params)
+    respond_to do |format|
+      if params[:edit_rental_unit].blank? && @rental_unit.valid?
+        format.html
+      else
+        format.html{ render :action => :edit}
+      end
+    end
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain

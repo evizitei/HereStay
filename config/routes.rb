@@ -31,6 +31,7 @@ Micasasucasa::Application.routes.draw do
       get :share
       post :store_last_post
       get :availabilities
+      put :preview_update
     end
     
     resources :bookings do

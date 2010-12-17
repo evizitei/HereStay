@@ -48,7 +48,7 @@ module ApplicationHelper
       text = args.first
       url = args.second
       options = args.third || {}
-      link = link_to(url, :method => options[:method],:title=>text ,:rel => options[:rel], :class => options[:link_class], :confirm => options[:confirm]){ "<input type=button value=\"#{text}\">" }
+      link = link_to(url, :method => options[:method],:title=>text ,:rel => options[:rel], :class => options[:link_class], :confirm => options[:confirm], :title => ''){ "<input type=button value=\"#{text}\">" }
       "<label class='#{options[:class_name]} simple-button #{current_page?(url) ? 'current' : ''}'>#{link}</label>".html_safe
     end
   end

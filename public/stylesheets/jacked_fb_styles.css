@@ -1,133 +1,8 @@
-body{
-  border-spacing:0;
-  color:#000000;
-  cursor:auto;
-  direction:ltr;
-  font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
-  font-size:11px;
-  font-style:normal;
-  font-variant:normal;
-  font-weight:normal;
-  letter-spacing:normal;
-  line-height:1;
-  text-align:left;
-  text-decoration:none;
-  text-indent:0;
-  text-shadow:none;
-  text-transform:none;
-  white-space:normal;
-  word-spacing:normal;
-}
-.UIObjectListing_Title {
-  font-size: 13px;
-  font-weight: bold; }
-
-.UIObjectListing {
-  border-bottom: 1px solid #e5e5e5;
-  min-height: 50px;
-  padding: 2px 0px; }
-
-.unit_row {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 7px;
-  padding: 7px; }
-
-.fbButton {
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-	color: white;
-	font-size: 15px;
-	background-color: #5B74A8;
-	background-position: 0 -48px;
-	border-color: #29447E #29447E #1A356E;
-	-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-	background:url("/images/fb_btn_sprite.png") repeat scroll 0 -48 #EEEEEE;
-	border-style:solid;
-	border-width:1px;
-	cursor:pointer;
-	display:inline-block;
-	font-weight:bold;
-	line-height:normal !important;
-	padding:2px 6px;
-	text-align:center;
-	vertical-align:top;
-	white-space:nowrap;
-	margin: 5px;
-}
-
-.fbButton a{
-	text-decoration: none;
-}
-
-.fbButton input{
-	margin-bottom: -1px;
-	color: #FFFFFF;
-	background: none repeat scroll 0 0 transparent;
-	border: 0 none;
-	cursor:pointer;
-	display:inline-block;
-	font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
-	font-size:11px;
-	font-weight:bold;
-	margin:0;
-	outline:medium none;
-	padding:1px 0 2px;
-	white-space:nowrap;
-}
-
-.f_right{
-	float:right;
-}
-.f_left{
-	float:left;
-}
-
-.colored-bg{
-  background-color:#FFC67D;
-}
-
-#flash .flash{
-  border:3px solid #FFC67D;
-  color:#000;
-  font-weight:bold;
-  margin:10px 0;
-  padding:10px;
-  font-size: 1.2em;
-}
-
-#flash .flash.alert{
-  border: 3px solid red;
-  color: red;
-  font-weight:bold;
-  margin:10px 0;
-  padding:10px;
-}
-.odd{ background-color:#FFC67D; }
-.even{ background-color:#E5D7C4; }
-.unit_box{ height:100px;}
-.unit_picture{ width:100px;float:left;}
-.unit_description{ width:500px;float:right;}
-.unit_description .title{ font-size:12pt;font-weight:bold;}
-.unit_description .description{ margin-top:7px;font-size:10pt;}
-.admin_buttons{ height:40px;}
-
-.nice_form{
-	background-color:#E5D7C4;
-	padding:5px;
-}
-
-#user_info{
-	background-color:#FFC67D;
-}
-
-.share_box{
-	min-height: 20px;
-	min-width: 60px;
-}
-
 .tbl_reservation{
   width: 100%;
   border-spacing: 0px 2px;
 }
+
 .tbl_reservation th{
   font-size: 12px;
 }
@@ -136,160 +11,20 @@ body{
   padding:5px;
   font-size: 12px;
 }
+
 .tbl_reservation td.first{
   text-align: center;
 }
-.clearfix{
-  clear: both;
-}
-.hidden{
-  display:none;
-}
 
-#errorExplanation{
-  border: 2px solid red;
-  background-color: #fff;
-  padding: 5px;
-  margin-bottom: 5px;
+#advanced-search .ui-slider-horizontal{
+  width:120px;
 }
-#errorExplanation h2{
-  font-size: 1.2em;
-}
-#errorExplanation ul{
-  list-style-type: none;
-  padding-left:20px;
-}
-#errorExplanation li{
-  padding-left:20px;
-  margin: 0;
-  padding: 0;
-}
-
-.message{
-	margin:7px;
-	padding:7px;
-	font-size:10pt;
-}
-
-.owner_message{
-	background-color:"#A3E03A";
-}
-
-.renter_message{
-	background-color:"#E5D7C4";
-}
-
-.message_body{
-	width:400px;
-	float:right;
-}
-
-.show-advanced-search-logic{color:#29447E;padding: 2px 5px; background: #FFF;}
-.show-advanced-search-logic.on{}
-#advanced-search{background: #FFF; border:solid 4px #FFF;}
-#advanced-search .block{display: none; background: #FFC67D;padding-bottom: 5px;}
-#advanced-search.active{background: #FFC67D; border:solid 3px #E5E5E5;}
-#advanced-search.active .block{display:block;}
-  #advanced-search .block{display: none;}
-  #advanced-search .cols{}
-  #advanced-search #more-options{display: none;}
-    #advanced-search .cols .date-range{
-      float: left;
-      padding: 8px;
-      margin: 5px 10px;
-    }
-    #advanced-search .cols .date-range .fields{
-      width: 305px;
-      padding: 5px 10px;
-      padding-top: 20px;
-      color:#5C9CCC;
-    }
-    #advanced-search .cols .date-range input{
-      color:#5C9CCC;
-    }
-    #advanced-search .cols .small-col{
-      float: left;
-      padding: 8px;
-      margin: 5px 10px;
-      width: 146px;
-    }
-    #advanced-search .cols .header{
-      font-weight: bold;
-      text-align: center;
-    }
-    #advanced-search .cols .small-col .labels{
-      height:16px;
-      padding: 0;
-      margin: 0;
-      width: 120px;
-      text-align: center;
-      margin-bottom: 5px;
-    }
-    #advanced-search .cols .small-col .labels div{
-      float: left;
-      text-align: center;
-      width: 20px;
-      padding-top: 4px;
-    }
-    #advanced-search .cols .small-col .labels div.sel{color:#5C9CCC;}
-    #advanced-search .cols .small-col.bedrooms .labels div{
-      width: 24px;
-    }
-    #advanced-search .cols .small-col.budget .labels{
-      color:#5C9CCC;
-    }
-    #advanced-search .cols .small-col.ratings .labels{background: url("/images/ratings_bg.png") top left no-repeat;}
-    #advanced-search .ratings .labels div.even, #advanced-search .ratings .labels div.odd{
-      float: left;
-      width: 8px;
-      height: 16px;
-      margin: 0;
-      padding-top:0;
-    }
-    #advanced-search .ratings .labels div.even{
-      background: transparent;
-      background-image: none;
-      margin-left: 4px;
-    }
-    #advanced-search .ratings .labels div.even.sel{
-      background: url("/images/star_off.png") top left no-repeat;
-    }    
-    
-    #advanced-search .ratings .labels div.odd{
-      background: transparent;
-      background-image: none;
-      margin-right:4px;
-    }
-    #advanced-search .ratings .labels div.sel.odd{
-      background: url("/images/star_off_two.png") no-repeat; 
-    }
-    
-    #advanced-search .cols .zoom{
-      float: right;
-      padding: 8px;
-      margin: 15px 0px;
-      width: 146px;
-    }
-    #advanced-search .cols .zoom .header{text-align:left; padding-left:45px;}
-    #advanced-search .cols .zoom .labels{
-      padding-top:10px;
-      padding-left: 40px;
-      color:#5C9CCC;
-      margin-bottom: 5px;
-    }
-    
-    #advanced-search .cols .small-col .slider-container{
-      padding: 10px;
-    }
-    #advanced-search .ui-slider-horizontal{
-      width:120px;
-    }
-    #advanced-search .ui-slider { position: relative; text-align: left; }
-    #advanced-search .ui-slider .ui-slider-handle { position: absolute; z-index: 0; width: 16px; height: 17px; cursor: default;}
-    .ui-slider .ui-slider-range { position: absolute; z-index: 0.5; font-size: .7em; display: block; border: 0; background-position: 0 0; display:none;}
-    #advanced-search .ui-slider .ui-slider-range {z-index: 0; }
-    #advanced-search .ui-state-default{background: url("/images/slider.png") 3px 0px no-repeat; border: 0;} 
-    #advanced-search .ui-state-active{background: url("/images/slider.png") 3px 0px no-repeat;}
+#advanced-search .ui-slider { position: relative; text-align: left; }
+#advanced-search .ui-slider .ui-slider-handle { position: absolute; z-index: 0; width: 16px; height: 17px; cursor: default;}
+.ui-slider .ui-slider-range { position: absolute; z-index: 0.5; font-size: .7em; display: block; border: 0; background-position: 0 0; display:none;}
+#advanced-search .ui-slider .ui-slider-range {z-index: 0; }
+#advanced-search .ui-state-default{background: url("/images/slider.png") 3px 0px no-repeat; border: 0;} 
+#advanced-search .ui-state-active{background: url("/images/slider.png") 3px 0px no-repeat;}
 
 #relation_content{
   margin-left:auto;
@@ -326,16 +61,3 @@ body{
   #relation_content .no_relation{
     background: transparent url(/images/bg_no_relation.png) no-repeat center center;
   }
-
-.fb-profile-link{color: #29447E; font-weight:normal;}
-.fb-profile-link img{border: 0;}
-
-div.jGrowl div.jGrowl-notification{color: #fff;}
-div.jGrowl div.jGrowl-notification a{color: #fff;font-weight:bold;}
-
-
-.submenu{border: solid 1px #FFC67D;  margin-bottom: 10px;background: #FFF;}
-  .submenu .item{padding: 10px 20px; float: left;}
-    .submenu .item a{color: #29447E;}
-  .submenu .item.cur{background: #FFC67D;}
-    .submenu .item.cur a{font-weight: bold; text-decoration: none;}

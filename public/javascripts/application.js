@@ -87,8 +87,8 @@ $(document).ready(function() {
   /* Initial clue Tips */
   $('a.availabilities_button').cluetip({
     showTitle: false,
-    width: 350,
-    height: 380,
+    width: 300,
+    height: 360,
     sticky: true,
     activation: 'click',
     fx: { open: 'slideDown' },
@@ -127,9 +127,9 @@ $(document).ready(function() {
   })
   
   $('.to_back_logic').live('click', function(){
-    $('#new_rental_unit').attr('action','');
+    $(this).parents('form').attr('action','');
     $('#edit_rental_unit').val(1);
-    $('#new_rental_unit').submit();
+    $(this).parents('form').submit();
     return false;
   })
   
