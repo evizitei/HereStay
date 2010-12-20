@@ -99,8 +99,8 @@ class RentalUnit < ActiveRecord::Base
     end
   end
   
-  def self.advanced_search(params, user)
-    self.search do
+  def self._search(params, user, search_method)
+    self.send(search_method) do
       keywords(params[:search])
       paginate(:page =>(params[:page] || 1), :per_page => 5)
       
@@ -154,67 +154,14 @@ class RentalUnit < ActiveRecord::Base
           without(:owner_fb_id, user.fb_user_id)
         end
       end
-    
     end
   end
   
+  def self.advanced_search(params, user)
+    self._search(params, user, 'search')
+  end
   def self.advanced_search_ids(params, user)
-    self.solr_search_ids do
-      keywords(params[:search])
-      paginate(:page =>1, :per_page => 1000)
-      
-      if params[:advanced] == '1'
-        if params[:range_bedrooms_to].to_i > 4
-          with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1) unless params[:range_bedrooms_from].to_i == 1
-        else
-          with(:bedrooms, params[:range_bedrooms_from].to_i..params[:range_bedrooms_to].to_i)
-        end
-        
-        if params[:range_bathes_to].to_i > 4
-          with(:bathrooms).greater_than(params[:range_bathes_from].to_i - 1) unless params[:range_bathes_from].to_i == 0
-        else
-          with(:bathrooms, params[:range_bathes_from].to_i..params[:range_bathes_to].to_i)
-        end
-        
-        if params[:range_adults_to].to_i > 4
-          with(:adults).greater_than(params[:range_adults_from].to_i - 1) unless params[:range_adults_from].to_i == 0
-        else
-          with(:adults, params[:range_adults_from].to_i..params[:range_adults_to].to_i)
-        end
-        
-        if params[:range_kids_to].to_i > 4
-          with(:kids).greater_than(params[:range_kids_from].to_i - 1) unless params[:range_kids_from].to_i == 0
-        else
-          with(:kids, params[:range_kids_from].to_i..params[:range_kids_to].to_i)
-        end
-        
-        if params[:range_budget_from].to_i > RentalUnit.min_price || params[:range_budget_to].to_i < RentalUnit.max_price
-          with(:search_min_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
-          with(:search_max_price, params[:range_budget_from].to_f..params[:range_budget_to].to_f)
-        end
-        
-        unless params[:location_lat].blank? && params[:location_lng].blank?
-          precisions = [nil, 7 , 6 , 5 , 4 , 3, 2, 1]
-          precision = precisions[(params[:location_zoom].to_i||1)]
-          with(:location).near(params[:location_lat], params[:location_lng], :precision => precision)
-        end
-        
-        # filter by start and end dates
-        start_date = params[:search_start_date].to_date rescue nil
-        end_date = params[:search_end_date].to_date rescue nil
-        if start_date && end_date
-          start_date, end_date = end_date, start_date if start_date > end_date
-          without(:busy_on, Range.new(start_date, end_date))
-        end
-        # Owner should be a friend or friend of friend
-        if params[:friend_only] && user && user.fb_friend_ids.present?
-          friend_ids = user.fb_friend_ids << user.fb_user_id
-          with(:fb_friend_ids).any_of(friend_ids)
-          without(:owner_fb_id, user.fb_user_id)
-        end
-      end
-    
-    end
+    self._search(params, user, 'solr_search_ids')
   end
   
   def initialize(attrs = {})
