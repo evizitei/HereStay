@@ -1,4 +1,4 @@
-%h1= link_to 'Auctions', auction_root_path
+= render 'submenu'
 .property
   .left-column
     - if resource.property.picture
@@ -44,10 +44,10 @@
       %p
         %b Time left:
         = distance_of_time_in_words_to_now resource.end_at
-      %p
+      %div{:style => "margin: 5px 0px;"}
         = form_for @bid || resource.bids.build, :url => auction_lot_bids_path(resource) do |f|
           = f.error_messages
-          .div{:style => 'margin: 7px 0px; float:left'}
+          .div{:style => 'float:left'}
             = f.label :amount, 'Your bid'
             = f.text_field :amount, :size => 5, :value => f.object.cents? ? Money.new(f.object.cents) : nil
           = fb_button do
