@@ -117,6 +117,9 @@ Micasasucasa::Application.routes.draw do
       member do
         put :finish
       end
+      collection do
+        get :search
+      end
       resources :bids do
         member do
           put :win

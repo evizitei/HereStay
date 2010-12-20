@@ -215,6 +215,14 @@ module ApplicationHelper
       Booking.for_user(current_user).active.confirmed.size
     end
   end
+
+  def advanced_search_path
+    if ['lots', 'bids'].include?(controller_name)
+      search_auction_lots_path
+    else
+      root_path
+    end
+  end
   
   def li_link_to(*args)
     text = args.first

@@ -24,7 +24,8 @@ class Lot < ActiveRecord::Base
   scope :expired, where(["end_at < ?", Time.zone.now])
   scope :closest, order('end_at').where(['end_at > :now AND start_at < :now', {:now => Time.zone.now}])
   scope :upcoming, order('end_at').where(['start_at > ? ', Time.zone.now])
-  
+  scope :with_property_ids, lambda{|property_ids| where(:property_id => property_ids )}
+
   def initialize(attrs = {})
     super(attrs)
     self.min_bid_cents ||= 0
