@@ -11,6 +11,7 @@ class InquiriesController < ApplicationController
   respond_to :json
   
   has_scope :last_messages, :as => :last_message
+  has_scope :created, :type => :boolean, :default => true
   
   def messages
     booking_ids = Booking.created.for_user(current_user)
@@ -26,7 +27,7 @@ class InquiriesController < ApplicationController
   
   protected    
   def collection
-      @booking ||= end_of_association_chain.created.for_user(current_user)
+      @bookings ||= end_of_association_chain.for_user(current_user)
   end
   
   # TODO: Move to model
