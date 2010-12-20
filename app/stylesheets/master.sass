@@ -80,6 +80,16 @@ body
   width: 170px
   height: 300px
   float: left
+  font-size: 13px
+  .current-user
+    margin-bottom: 20px
+    .fb-profile-link 
+      img
+        width: 30px
+        padding-right: 5px
+    a
+      font-weight: bold
+      text-decoration: none
 
 #main
   float: left
@@ -254,14 +264,33 @@ div.jGrowl div.jGrowl-notification a
             width: 21px
       
 //--------------------- [ menu & submenu ] ---------------------//
-#menu
-  overflow: hidden
-  margin-bottom: 10px  
-  li
-    float: left
-    width: 104px
-    text-align: center
-
+#sidebar
+  #menu
+    overflow: hidden
+    ul
+      li
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+        padding: 5px 0px 0px 35px
+        height: 24px
+        a
+          text-decoration: none
+          color: #000
+        border: 0
+      li.all-properties
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      li.my-properties
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      li.account
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      li.inquiries
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      li.reservations
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      li.new-property
+        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+        margin-top: 20px
+      li.current
+        background-color: #D8DEEA
 .sub-menu
   border: 0
   border-bottom: 1px solid #B4B4B4
@@ -489,4 +518,4 @@ table.bookings
     a
       font-size: 10px
       background: #bfbfbf
-      border: 0 
+      border: 0

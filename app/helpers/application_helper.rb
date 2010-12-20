@@ -215,4 +215,13 @@ module ApplicationHelper
       Booking.for_user(current_user).active.confirmed.size
     end
   end
+  
+  def li_link_to(*args)
+    text = args.first
+    url = args.second
+    options = args.third || {}
+    content_tag(:li, :class =>"#{options[:class]} #{current_page?(url) ? 'current' : ''}") do
+      link_to text, url
+    end
+  end
 end

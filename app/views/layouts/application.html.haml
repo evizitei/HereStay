@@ -26,6 +26,20 @@
     = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
     %a{:name=>'top'}
     #sidebar
+      -if current_user
+        .current-user
+          .f_left= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"thumb")
+          .f_left= fb_name(:uid => current_user.fb_user_id, :useyou => false)
+          .clearfix
+      #menu
+        %ul
+          = li_link_to('All Properties', rental_units_url, :class => 'all-properties')
+          = li_link_to('My Properties', manage_rental_units_url, :class => 'my-properties')
+          = li_link_to('My Account', account_url, :class => 'account')
+          = li_link_to('Inquiries', inquiries_url, :class => 'inquiries')
+          = li_link_to('Reservations', bookings_url, :class => 'reservations')
+          = li_link_to('New Property', new_rental_unit_url, :class => 'new-property')
+          
     #main
       #header
         #logo= link_to image_tag('herestay.png'), root_path
@@ -33,13 +47,6 @@
           = render 'shared/like_button'
       = display_flashes
       = render 'shared/search_new'
-      #menu
-        %ul
-          %li= simple_button 'My Posts', manage_rental_units_url
-          %li= simple_button 'My Account', account_url
-          %li= simple_button 'New Post', new_rental_unit_url
-          %li= simple_button 'Inquiries', inquiries_url
-          %li= simple_button 'Reservations', bookings_url
       #content
         = yield
       #fb-root
