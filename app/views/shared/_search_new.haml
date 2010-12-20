@@ -1,11 +1,11 @@
 %script{:type=>"text/javascript",:src=>"http://maps.google.com/maps/api/js?sensor=false"}
-= form_tag '/', :id => 'search-form' do
+= form_tag advanced_search_path, :id => 'search-form', :method => :get do
   #simple-search
     .expander
       = link_to 'advanced', '#', :class => 'minimized'
       Filter
     .search-wrapper
-      = text_field_tag :search
+      = text_field_tag :search, params[:search]
     = submit_tag "Search"
   #advanced-search{:class => params[:advanced] == '1' && 'active'} 
     .friends

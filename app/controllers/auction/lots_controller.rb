@@ -15,6 +15,12 @@ class Auction::LotsController < Auction::BaseController
     redirect_to resource_url
   end
   
+  def search
+    result = RentalUnit.advanced_search_ids(params, current_user)
+    @lots = Lot.closest.with_property_ids(result).paginate(:page => params[:page], :per_page => 10)
+    render 'index'
+  end
+  
   protected
     def collection
       @lots ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 10)
