@@ -1,3 +1,8 @@
+=content_for :submenu do
+  %ul
+    %li.current= link_to 'Recent', collection_url
+    %li= link_to 'Auction'
+  .clearfix
 #listings
   %h1 Featured Properties
   = render :partial => 'unit_row', :collection => collection

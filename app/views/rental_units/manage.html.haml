@@ -1,3 +1,7 @@
+=content_for :submenu do
+  %ul
+    %li.current= link_to 'My Property'
+    .clearfix
 %h2= pluralize(@rental_units.size, 'post')
 .properties
   -@rental_units.each do |rental_unit|

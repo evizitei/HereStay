@@ -98,9 +98,9 @@ body
 #header
   margin-bottom: 10px
   overflow: hidden
-  background: #EDEEF3
   padding: 20px
-  border-bottom: solid 3px #DCDEE7
+  padding-bottom: 0
+  background: #EDEEF3 url('/images/dot3.gif') left bottom repeat-x
 
 #logo
   float: left
@@ -335,6 +335,23 @@ div.jGrowl div.jGrowl-notification a
         color: #8B8B8B
         font-weight: 600
         border: 1px solid $light_gray
+.submenu
+  margin-top: 20px
+  li
+    display: block 
+    float: left
+    background: #D8DEEC
+    padding: 5px 15px 5px 15px
+    margin-right: 10px
+    border: solid 3px #DCDEE7
+    margin-bottom: -3px
+    a
+      color: #4D5085
+      text-decoration: none
+      font-weight: bold
+    &.current
+      background: #FFF
+      border-bottom: solid 3px #FFF
   
 //--------------------- [ content ] ---------------------//
 #content
