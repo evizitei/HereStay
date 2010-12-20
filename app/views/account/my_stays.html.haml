@@ -23,7 +23,7 @@
             .f_left= fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
             .f_left
               %div= fb_name(:uid=>booking.owner_fb_id)
-              %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit)
+              %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit, :created => 'false')
               - if booking.can_be_canceled?
                 %div= simple_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
             .clearfix
