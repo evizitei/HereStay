@@ -223,4 +223,13 @@ module ApplicationHelper
       root_path
     end
   end
+  
+  def li_link_to(*args)
+    text = args.first
+    url = args.second
+    options = args.third || {}
+    content_tag(:li, :class =>"#{options[:class]} #{current_page?(url) ? 'current' : ''}") do
+      link_to text, url
+    end
+  end
 end
