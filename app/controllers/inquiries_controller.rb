@@ -10,12 +10,11 @@ class InquiriesController < ApplicationController
   belongs_to :rental_unit, :optional => true
   respond_to :json
   
-  has_scope :last_messages, :as => :last_message
   has_scope :created, :type => :boolean, :default => true
   
   def messages
     booking_ids = Booking.created.for_user(current_user)
-    messages = apply_scopes(BookingMessage.for_bookings( booking_ids))
+    messages = BookingMessage.last_messages(params[:last_message]).for_bookings( booking_ids)
     render :json => messages_to_json(messages)
   end
   
