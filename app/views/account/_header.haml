@@ -1,5 +1,12 @@
 - edit = false unless edit
 
+- content_for :submenu do
+  %ul
+    %li.current= link_to 'My Info'
+    %li= link_to 'My History'
+    %li= link_to 'My Rewards'
+  .clearfix  
+
 #account-header
   = fb_profile_pic :size => 'small', :uid => current_user.fb_user_id
   = fb_name :uid => current_user.fb_user_id
