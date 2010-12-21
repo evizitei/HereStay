@@ -3,6 +3,7 @@
 
 //--------------------- [ colors ] ---------------------//
 $light_gray = #DDD
+$lite_gray = #edeef4
 $border = 1px solid #B4B4B4
 
 //--------------------- [ typo ] ---------------------//
@@ -49,6 +50,7 @@ h4
 
 .fb-profile-link
   color: #3B5998
+  margin-right: 10px
 
 #errorExplanation
   border: 2px solid red
@@ -506,6 +508,8 @@ table.bookings
   border-top: $border
   border-left: $border
   width: 485px
+  th
+    background: $lite_gray
   td, th
     border-right: $border
     border-bottom: $border
@@ -516,7 +520,9 @@ table.bookings
     &.first
       width: 100px
     &.second
-      width: 175px
+      width: 150px
+    &.third
+      width: 100px
 
 //--------------------- [ edit account ] ---------------------//
 #user-form
@@ -534,6 +540,7 @@ table.bookings
   fieldset.buttons
     margin-top: 80px
     float: right
+    
 //--------------------[ availabilities calendar fixes ] ---------------------//
 .calendar 
   .fc-header 

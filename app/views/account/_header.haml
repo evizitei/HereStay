@@ -2,20 +2,21 @@
 
 - content_for :submenu do
   %ul
-    %li.current= link_to 'My Info'
-    %li= link_to 'My History'
-    %li= link_to 'My Rewards'
+    %li{:class => action?('show') ? 'current' : ''}= link_to 'My Info'
+    %li{:class => action?('my_history') ? 'current' : ''}= link_to 'My History', my_history_account_url
+    %li{:class => action?('my_rewards') ? 'current' : ''}= link_to 'My Rewards', my_rewards_account_url
   .clearfix  
 
-#account-header
-  = fb_profile_pic :size => 'small', :uid => current_user.fb_user_id
-  = fb_name :uid => current_user.fb_user_id
-  - if edit
-    .f_right
-      = simple_button 'Upgrade to More Features'
-      = simple_button 'Back to My Account', account_url
-  - else
-    .f_right= simple_button 'Edit My Account', edit_account_path
+/
+  #account-header
+    = fb_profile_pic :size => 'small', :uid => current_user.fb_user_id
+    = fb_name :uid => current_user.fb_user_id
+    - if edit
+      .f_right
+        = simple_button 'Upgrade to More Features'
+        = simple_button 'Back to My Account', account_url
+    - else
+      .f_right= simple_button 'Edit My Account', edit_account_path
     
     
   
