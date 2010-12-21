@@ -1,4 +1,4 @@
-%h1= link_to 'Auctions', auction_root_path
+= render 'submenu'
 .property
   %h2 Edit auction: #{resource.title}
 
@@ -6,9 +6,8 @@
     = f.semantic_errors
     = render 'fields', :f => f
     = f.buttons do
-      = fb_button do
-        = f.submit 'Save'
-      = fb_button 'Cancel', resource_path
+      = f.submit 'Save'
+      = link_to 'Cancel', resource_path
 
 = javascript_include_tag 'jquery-ui-timepicker-addon'
 :javascript
