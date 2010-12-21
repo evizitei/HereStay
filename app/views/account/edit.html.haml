@@ -20,6 +20,16 @@
       = f.inputs do
         = f.input :vrbo_login, :label => 'Login:'
         = f.input :vrbo_password, :label => 'Password:'
+      %p
+        - if current_user.twitter_name.blank?
+          %label &nbsp;
+          = link_to 'Add twitter', new_connectors_twitter_path
+        - else
+          %label My twitter
+          %strong=  f.object.twitter_name
+          %span
+            = link_to('change', new_connectors_twitter_path)
+            = link_to('remove', account_path(:user => {:remove_twitter => true}), :method => :put)
 
       = f.buttons do
         = simple_button do
