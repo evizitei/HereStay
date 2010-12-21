@@ -78,7 +78,7 @@ body
 
 #sidebar
   width: 170px
-  height: 300px
+  min-height: 300px
   float: left
   font-size: 13px
   .current-user
@@ -93,7 +93,7 @@ body
 
 #main
   float: left
-  width: 570px
+  width: 585px
   border-left: solid 4px #BCBEC0
 #header
   margin-bottom: 10px
@@ -164,7 +164,6 @@ div.jGrowl div.jGrowl-notification a
   overflow: hidden      
   .expander
     float: left
-    margin-right: 20px
     a
       display: inline-block
       width: 19px
@@ -188,9 +187,10 @@ div.jGrowl div.jGrowl-notification a
     padding-left: 23px
     background: transparent url(/images/u53.png) 2px 2px no-repeat
     float: left
+    margin-right: 10px
     input[type=text]
       border: 0
-      width: 354px
+      width: 420px
       background: transparent
     
 //--------------------- [ advanced search ] ---------------------//
@@ -533,7 +533,7 @@ table.bookings
   fieldset.buttons
     margin-top: 80px
     float: right
-//--------------------[ availabilities calendar fixes ]
+//--------------------[ availabilities calendar fixes ] ---------------------//
 .calendar 
   .fc-header 
     .ui-state-default
@@ -545,3 +545,9 @@ table.bookings
       background: #bfbfbf
       color: #bfbfbf
       border: 0
+//---------------------[bread crumbs] ---------------------//
+.bread_crumbs
+  margin: 15px 0 0 30px
+  font-size: 13px
+  span.selected
+    font-weight: bold

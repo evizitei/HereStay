@@ -232,4 +232,16 @@ module ApplicationHelper
       link_to text, url
     end
   end
+  
+  def property_bread_crumbs(crumbs, step = 1)
+    content_for :bread_crumbs do
+      content_tag(:div, :class => 'bread_crumbs') do
+        crumbs.each_with_index do |crumb, i|
+          #instead 'join' method  to get separator in selected crumbs
+          crumb = crumb + ' > ' if crumbs.size > 1 && crumbs.size > i+1
+          concat content_tag(:span, crumb, :class => (step > i ? 'selected' : ''))
+        end
+      end
+    end
+  end
 end

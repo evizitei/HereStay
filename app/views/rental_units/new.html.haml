@@ -2,9 +2,7 @@
   %ul
     %li.current= link_to 'Add Property'
     .clearfix
-%h2
-  %b New Post
-  %span > Preview / Save Changes 
+=property_bread_crumbs(['Create Your Property', 'Publish Your Property', 'Promote Your Property'],1)
 #property_form.property_form
   = error_messages_for @rental_unit
   = render :partial => 'upload_photo'
