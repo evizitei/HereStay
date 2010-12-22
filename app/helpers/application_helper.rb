@@ -146,8 +146,9 @@ module ApplicationHelper
     latlng
   end
   
-  def gmap_zoom(zoom = nil)
-    return zoom unless zoom.blank?
+  def gmap_zoom(val = nil)
+    zooms = [1,12,11,10,8,6]
+    return zooms[val.to_i] unless val.blank?
     zoom = logged_in? && current_user.valid_country? && current_user.get_latlng? ? 6 : 3
   end
   
@@ -155,7 +156,7 @@ module ApplicationHelper
     if params[:advanced] == '1'
       rows = []
       if center && !params[:location_lat].blank? && !params[:location_lng].blank?
-        rows << "marker = new google.maps.Marker({position: latlng, map: #{prefix}map, title: 'center'}); markersArray.push(marker);"
+        rows << "marker = new google.maps.Marker({position: search_map_latlng, map: #{prefix}map, title: 'center'}); markersArray.push(marker);"
       end
       items.each do |item|
         if !item.lng.blank? && !item.lat.blank?

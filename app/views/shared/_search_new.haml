@@ -85,7 +85,7 @@
        
     = hidden_field_tag 'location_lng', params[:location_lng]
     = hidden_field_tag 'location_lat', params[:location_lat]
-    = hidden_field_tag 'location_zoom', params[:location_zoom]||1
+    = hidden_field_tag 'location_zoom', params[:location_zoom]||5
 - if !current_user || !current_user.get_latlng?
   %script{:language => "JavaScript", :src => "http://www.geoplugin.net/javascript.gp", :type => "text/javascript" }
   
@@ -141,6 +141,7 @@
       function(){
         $(this).addClass('maximized').removeClass('minimized');
         $('#advanced-search').slideDown();
+        $('#advanced').val(1);
         if(!search_map){
           search_map = initSearchMap();
         }
@@ -148,6 +149,7 @@
       function(){
         $(this).addClass('minimized').removeClass('maximized');
         $('#advanced-search').slideUp();
+        $('#advanced').val(0);
       }
     );
 
