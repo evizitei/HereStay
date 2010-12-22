@@ -12,7 +12,7 @@ module ApplicationHelper
     if Rails.env.production? || Rails.env.development?
       js = <<-JAVASCRIPT
         window.fbAsyncInit = function() {
-          FB.init({appId: '#{Facebook::APP_ID}', status: true, cookie: true,xfbml: true});
+          runFbInit();
           FB.Canvas.setAutoResize();
         };
         (function() {

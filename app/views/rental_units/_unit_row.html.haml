@@ -11,13 +11,12 @@
   .right-column
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
     .title
-      == #{unit_row.name} 
+      = link_to unit_row.name, rental_unit_path(unit_row)
       %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
       .clearfix
     .description
       = truncate(unit_row.description, :length => 150, :separator => ' ')
-    .f_right{:style => 'margin-bottom: -15px;'}=render(:partial=>"rental_units/share_unit",:object=>unit_row)
-    
+    .f_right=render(:partial=>"rental_units/share_unit",:object=>unit_row)
     .comments
-      %fb:comments{:xid => "here_stay_unit_#{unit_row.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => unit_row.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
+      = link_to 'Comments', "#", {:class => 'fb_comments', :xid => "here_stay_unit_#{unit_row.id}", :send_notification_uid => unit_row.fb_user_id}
   .clearfix
