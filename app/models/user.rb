@@ -102,19 +102,24 @@ class User < ActiveRecord::Base
     if fb_profile['location']
       self.fb_location = fb_profile['location']['name']
       self.fb_location_update_at = Time.now
-      if self.fb_location_changed?
+      if self.fb_location_changed? || !self.valid_country?
+        self.valid_country = false
         if res = GoogleApi.geocoder(self.fb_location)
           self.fb_lat = res[:lat]
           self.fb_lng = res[:long]
+          self.valid_country = true if res[:geocoded_address] =~ /USA/
         end
+        
       end
     elsif fb_profile['hometown']
       self.fb_location = fb_profile['hometown']['name']
       self.fb_location_update_at = Time.now
       if self.fb_location_changed?
+        self.valid_country = false
         if res = GoogleApi.geocoder(self.fb_location)
           self.fb_lat = res[:lat]
           self.fb_lng = res[:long]
+          self.valid_country = true if res[:geocoded_address] =~ /USA/
         end
       end
     end
@@ -167,10 +172,12 @@ class User < ActiveRecord::Base
     end  
   end
   
+  def get_latlng?
+    !self.fb_lat.blank? && !self.fb_lng.blank?
+  end
+  
   def get_latlng
-    if self.fb_lat.blank? || self.fb_lng.blank?
-      self.capture_fb_profile_data!
-    end
-    true if !self.fb_lat.blank? && !self.fb_lng.blank?
+    self.capture_fb_profile_data! unless self.get_latlng?
+    self.valid_country? && self.get_latlng?
   end
 end
