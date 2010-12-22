@@ -1,0 +1,10 @@
+= render 'account/header'
+= render 'account/links'
+
+.border{:style => "padding: 10px"}
+  = semantic_form_for @subscription, :as => :subscription, :url => subscription_path, :html => {:method => :put}  do |f|
+    = f.semantic_errors 
+    = f.inputs do
+      = f.input :plan, :as => :radio, :collection => Subscription::Plans
+    = submit_tag "Save"
+    = simple_button 'Cancel', account_path

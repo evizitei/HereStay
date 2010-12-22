@@ -1,5 +1,5 @@
 Micasasucasa::Application.routes.draw do
-  root :to => "canvas#index"
+  root :to => "rental_units#index"
   resources :photos do
     collection do
       post :ajaxupload
@@ -13,15 +13,13 @@ Micasasucasa::Application.routes.draw do
   match "/chat_post"=>"messages#post_chat"
   match "/chat_check"=>"messages#check_messages"
 
-  match "/canvas"=>"canvas#index"
-  match "/canvas/"=>"canvas#index"
-  
-  
+
   resources :rental_units do
     collection do
       get :manage
-      post :save
+      get :search
       get :owned_by
+      post :save
       post :import
       post :preview
     end
@@ -91,7 +89,10 @@ Micasasucasa::Application.routes.draw do
     get :my_place
     get :my_rewards
   end
-  resource :subscription, :only => [:edit, :update, :destroy]
+  
+  resource :subscription, :only => [:show, :edit, :update, :destroy] do
+    get :change_plan
+  end
   
   resources :relations, :only => [:show]
   namespace "connectors" do

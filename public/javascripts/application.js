@@ -7,6 +7,23 @@ function redirectToFbApp(app_name, path){
   }
 }
 
+function runFbInit(){
+  var appID = $('meta[property="og:app_id"]').attr("content");
+  FB.init({appId: appID, status: true, cookie: true,xfbml: true});
+}
+
+function showFBComments(el){
+  var target = $(el);
+  xid = target.attr('xid') || 'true';
+  canpost = target.attr('canpost') || 'true';
+  candelete = target.attr('candelete') || 'false';
+  width = target.attr('width') || 380;
+  numposts = target.attr('numposts') || 4;
+  send_notification_uid = target.attr('send_notification_uid') || '';
+  $(target).replaceWith('<fb:comments xid="'+xid+'" canpost="'+canpost+'" candelete="'+candelete+'" showform="true" publish_feed="true" width='+width+' numposts='+numposts+' send_notification_uid="'+send_notification_uid+'"/>');
+  runFbInit();
+}
+
 function newMessages(data){
   var messages = "";
   var count = 0
@@ -140,5 +157,7 @@ $(document).ready(function() {
   
   $('#rental_unit_primary_photo_attributes_picture').focus(function(){
     $(this).click();
-  })  
+  });
+  
+  $('.fb_comments').click(function(){showFBComments(this); return false});
 });

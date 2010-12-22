@@ -1,0 +1,30 @@
+= render 'account/header'
+= render 'account/links'
+
+#billing-info
+  %p
+    %b My Billing Info 
+    > Edit > Save Changes
+  .info
+    %ul
+      %li
+        = @billing_info.first_name
+        = @billing_info.last_name
+      %li
+        = @billing_info.address1
+      %li
+        = @billing_info.address2
+      %li
+        = @billing_info.city
+        ,
+        = @billing_info.state
+      %li
+        = @billing_info.zip
+      %li
+        CC: xxxx-xxxx-xxxx-#{@billing_info.credit_card.last_four}
+      %li
+        Exp: xx/xx
+
+    .f_right    
+      = simple_button 'Edit My Billing Info', edit_subscription_path
+    

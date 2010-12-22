@@ -18,3 +18,8 @@ en:
       fail:
         one: ", 1 listing failed"
         other: ", %{count} listings failed"
+
+
+  activerecord:
+    model:
+      rental_unit: Property
