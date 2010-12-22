@@ -6,8 +6,8 @@ class AccountController < ApplicationController
   respond_to :html
   
   def show
-    @my_bookings = Booking.active.where(:renter_fb_id => current_user.fb_user_id)
-    render 'my_history'
+    # @my_bookings = Booking.active.where(:renter_fb_id => current_user.fb_user_id)
+    # render 'my_history'
   end
     
   def my_history
