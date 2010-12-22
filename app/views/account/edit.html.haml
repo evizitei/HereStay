@@ -1,4 +1,5 @@
 = render :partial => 'header', :locals => {:edit => true}
+= render 'links'
 
 #user-form.border
   = semantic_form_for current_user, :url => account_path  do |f|
@@ -20,13 +21,21 @@
       = f.inputs do
         = f.input :vrbo_login, :label => 'Login:'
         = f.input :vrbo_password, :label => 'Password:'
+      %p
+        - if current_user.twitter_name.blank?
+          %label &nbsp;
+          = link_to 'Add twitter', new_connectors_twitter_path
+        - else
+          %label My twitter
+          %strong=  f.object.twitter_name
+          %span
+            = link_to('change', new_connectors_twitter_path)
+            = link_to('remove', account_path(:user => {:remove_twitter => true}), :method => :put)
 
       = f.buttons do
         = simple_button do
-          = submit_tag "Save"
-        or
-        = simple_button 'Cancel', account_path
-
+          = submit_tag "Save Changes"
+          
 :javascript
   $(function(){
     var checkUsingFbProfile = function(){

@@ -1,17 +1,17 @@
-= render 'submenu'
+= render 'auction/lots/submenu'
 .property
   .left-column
     - if resource.property.picture
       .picture
-        = link_to image_tag(resource.property.picture(:thumb)), resource_path(resource)
+        = link_to image_tag(resource.property.picture(:thumb)), auction_lot_path(resource)
     - else
-      %a{:href => resource_path(resource)}
+      %a{:href => auction_lot_path(resource)}
         .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
   .right-column
     .title
       = resource.title
       - if current_user && resource.belongs_to?(current_user)
-        %span= link_to 'edit', edit_resource_path(resource)
+        %span= link_to 'edit', edit_auction_lot_path(resource)
     .property_details{:style => 'padding: 5px 0px'}
       .title= resource.property.name
       %p= resource.property.description
