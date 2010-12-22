@@ -88,6 +88,11 @@ class RentalUnitsController < ApplicationController
     end
   end
   
+  def search
+    search_setup
+    render 'index'
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain
@@ -114,5 +119,25 @@ class RentalUnitsController < ApplicationController
       object.attributes = attributes
       object.set_primary_photo(params)
       object.save
+    end
+    
+    def search_setup
+      @search = params[:search]
+      if @search
+        #search_obj = RentalUnit.search{ keywords params[:search]; paginate :page =>(params[:page] || 1), :per_page => 5}
+        search_obj = RentalUnit.advanced_search(params, current_user)
+        @rental_units = search_obj.results
+      else
+        # Lsit friends' listings first if user logged-in and has FB friends
+        # if current_user && !current_user.fb_friend_ids.blank?
+        #   search_obj = RentalUnit.friends_first(current_user.fb_user_id, current_user.fb_friend_ids, params[:page] || 1)
+        #   @rental_units = search_obj.results
+        #   @paginate_obj = search_obj.hits
+        # else
+        #   @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+        #   @paginate_obj = @rental_units
+        # end
+        @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+      end
     end
 end
