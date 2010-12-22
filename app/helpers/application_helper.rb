@@ -135,24 +135,20 @@ module ApplicationHelper
     end
   end
   
-  def init_gmap(element, lat, lng, zoom, prefix='')
+  def gmap_latlng(lat,lng)
     if !lat.blank? && !lng.blank?
       latlng = "#{lat}, #{lng}"
     elsif logged_in? && current_user.get_latlng
       latlng = "#{current_user.fb_lat}, #{current_user.fb_lng}"
     else  
-      latlng = "40.72228267283153, -73.9599609375"      
-    end
-    
-    "var latlng = new google.maps.LatLng(#{latlng});
-    var #{prefix}gmap_options = { zoom: 6, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
-    var #{prefix}map = new google.maps.Map(document.getElementById('#{element}'),  #{prefix}gmap_options);"    
+      latlng = "39.828175, -98.579500"
+    end   
+    latlng
   end
   
-  def gmap_event_listener(event, func, prefix = '')
-    "google.maps.event.addListener(#{prefix}map, '#{event}', function(event) {
-      #{func}(event, #{prefix}map);
-    });"    
+  def gmap_zoom(zoom = nil)
+    return zoom unless zoom.blank?
+    zoom = logged_in? && current_user.valid_country? && current_user.get_latlng? ? 6 : 3
   end
   
   def gmap_markers(items, prefix = '', center = true)

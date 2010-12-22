@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101217044503) do
+ActiveRecord::Schema.define(:version => 20101222085933) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(:version => 20101217044503) do
     t.string   "fb_lng"
     t.string   "fb_lat"
     t.string   "subscription_plan"
+    t.boolean  "valid_country",         :default => false
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"

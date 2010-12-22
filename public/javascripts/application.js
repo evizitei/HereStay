@@ -140,7 +140,5 @@ $(document).ready(function() {
   
   $('#rental_unit_primary_photo_attributes_picture').focus(function(){
     $(this).click();
-  })
-  
+  })  
 });
-
