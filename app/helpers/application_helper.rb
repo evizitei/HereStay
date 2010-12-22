@@ -216,7 +216,7 @@ module ApplicationHelper
     if ['lots', 'bids'].include?(controller_name)
       search_auction_lots_path
     else
-      root_path
+      search_rental_units_path
     end
   end
   
