@@ -4,6 +4,10 @@ class SubscriptionsController < ApplicationController
   before_filter :login_required
   respond_to :html
   
+  def show    
+    @billing_info = Recurly::BillingInfo.find(Recurly::Account.find(current_user.id).account_code)
+  end
+  
   def edit
     @subscription = current_user.subscription
   end

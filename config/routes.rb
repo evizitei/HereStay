@@ -89,7 +89,7 @@ Micasasucasa::Application.routes.draw do
     get :my_place
     get :my_rewards
   end
-  resource :subscription, :only => [:edit, :update, :destroy]
+  resource :subscription, :only => [:show, :edit, :update, :destroy]
   
   resources :relations, :only => [:show]
   namespace "connectors" do

@@ -1,4 +1,5 @@
 = render :partial => 'header', :locals => {:edit => true}
+= render 'links'
 
 #user-form.border
   = semantic_form_for current_user, :url => account_path  do |f|
@@ -33,10 +34,8 @@
 
       = f.buttons do
         = simple_button do
-          = submit_tag "Save"
-        or
-        = simple_button 'Cancel', account_path
-
+          = submit_tag "Save Changes"
+          
 :javascript
   $(function(){
     var checkUsingFbProfile = function(){

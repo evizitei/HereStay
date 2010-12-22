@@ -19,6 +19,9 @@ h4
   font-size: 13px
   font-weight: bold
 
+dt
+  font-weight: bold
+
 //--------------------- [ basic classes ] ---------------------//
 .f_right
   float: right
@@ -66,6 +69,24 @@ h4
     padding-left: 20px
     margin: 0
     padding: 0
+  
+.links
+  margin-bottom: 20px
+  overflow: hidden
+  a
+    display: block
+    float: left
+    text-decoration: none
+    color: gray
+    padding: 5px 10px
+    margin-right: 10px
+    border: 2px solid #B5B5B5
+    background: #E7E7E7
+    &.current
+      background: #90a9df
+      border: 2px solid black
+      color: black
+      
 
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
@@ -503,6 +524,11 @@ div.jGrowl div.jGrowl-notification a
   border: $border
   
 //--------------------- [ bookings table ] ---------------------//
+p.total-rewards
+  margin: 10px 0
+  span
+    margin-right: 10px
+
 table.bookings
   margin: 10px
   border-top: $border
@@ -553,9 +579,29 @@ table.bookings
       background: #bfbfbf
       color: #bfbfbf
       border: 0
+      
 //---------------------[bread crumbs] ---------------------//
 .bread_crumbs
   margin: 15px 0 0 30px
   font-size: 13px
   span.selected
     font-weight: bold
+    
+//---------------------[my-info-page] ---------------------//
+#my-info-page
+  border: $border
+  padding: 10px
+
+//---------------------[my-info-page] ---------------------//
+#billing-info
+  border: $border
+  padding: 10px
+  p
+    margin-bottom: 10px
+  .info
+    overflow: hidden
+    border: $border
+    padding: 20px
+    li
+      padding: 5px 0
+      color: gray

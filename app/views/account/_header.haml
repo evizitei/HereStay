@@ -2,7 +2,7 @@
 
 - content_for :submenu do
   %ul
-    %li{:class => action?('show') ? 'current' : ''}= link_to 'My Info'
+    %li{:class => action?('show') ? 'current' : ''}= link_to 'My Info', account_url
     %li{:class => action?('my_history') ? 'current' : ''}= link_to 'My History', my_history_account_url
     %li{:class => action?('my_rewards') ? 'current' : ''}= link_to 'My Rewards', my_rewards_account_url
   .clearfix  

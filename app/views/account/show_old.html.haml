@@ -1,0 +1,106 @@
+.f_left
+  = fb_button 'Edit Account', edit_account_path
+  = fb_button 'My Properties', manage_rental_units_path
+  - unless current_user.subscribed?
+    = fb_button "Subscribe for Full Features", edit_subscription_path
+%br
+%br
+#user_info
+  %p
+    %strong Name:
+    =fb_name(:uid=>current_user.fb_user_id)
+  %p
+    %strong Pic:
+    =fb_profile_pic(:size=>"small",:uid=>current_user.fb_user_id)    
+  -if current_user.email
+    %p
+      %strong Email:
+      =current_user.email
+  -if current_user.vrbo_login
+    %p
+      %strong VRBO Username:
+      =current_user.vrbo_login
+  -if current_user.twitter?
+    %p
+      %strong Twitter:
+      =current_user.twitter_name
+  - if current_user.subscribed?
+    %p
+      %strong Subscription plane:
+      = current_user.subscription_plan.humanize
+      %br
+      = fb_button "Change subscription plane", edit_subscription_path
+      = fb_button "Cancel subscription", subscription_path, :method => :delete
+#my_bookings
+  %h3 Where I am staying
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px;"} ID
+        %th{:style=>"padding:3px;"} Discussion
+        %th{:style=>"padding:3px;"} Arrive
+        %th{:style=>"padding:3px;"} Depart
+        %th{:style=>"padding:3px;"} Owner
+        %th{:style=>"padding:3px;"} Description
+    %tbody
+      -@my_bookings.each do |booking|
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            = link_to booking.id, [booking.rental_unit, booking]
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            = link_to "Discussion", booking_messages_path(booking)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.start_date
+              = booking.start_date.strftime("%m/%d/%Y")
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if booking.stop_date
+              = booking.stop_date.strftime("%m/%d/%Y")
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            $
+            -if booking.amount
+              =booking.amount
+            -else
+              \----
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
+            =fb_name(:uid=>booking.owner_fb_id)
+            - if booking.can_be_canceled?
+              %div
+                = link_to 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
+          %td{:style=>"padding:3px;font-size:10pt;"}= booking.description
+#others_booking_me
+  %h3 Who's staying at my place
+  =render(:partial=>"shared/bookings",:locals=>{:booking_collection=>@bookings})
+#my_rewards
+  %h3 My rewards
+  %table.colored-bg{:style=>"font-size:12pt;", :width => "100%"}
+    %thead
+      %tr
+        %th{:style=>"padding:3px;"} Owner
+        %th{:style=>"padding:3px;"} Renter
+        %th{:style=>"padding:3px;"} Unit
+        %th{:style=>"padding:3px;"} Reward
+    %tbody
+      -@rewards.each do |reward|
+        %tr
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
+            =fb_name(:uid=>reward.booking.owner_fb_id)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            -if reward.booking.renter_fb_id
+              =fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
+              =fb_name(:uid=>reward.booking.renter_fb_id)
+            -else
+              =reward.booking.renter_name
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            =link_to reward.booking.rental_unit.name,rental_unit_path(reward.booking.rental_unit.id)
+          %td{:style=>"padding:3px;font-size:10pt;"}
+            ==$#{reward.amount || 0.0}
+  %span
+    %b Total Rewards:
+    -rewards_total = @rewards.map{|r| r.amount}.inject(0.0){|amt,r| amt = amt + r}
+    == $#{rewards_total}
+    %b Total Redeemed:
+    == $#{current_user.redeemed_rewards || 0.0}
+    %b Rewards Balance:
+    == $#{rewards_total - (current_user.redeemed_rewards || 0.0)}

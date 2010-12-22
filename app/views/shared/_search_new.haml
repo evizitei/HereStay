@@ -58,7 +58,7 @@
         .slider-container
           .labels.rating= slider_ratings(params[:range_ratings_from]||0, params[:range_ratings_to]||10)
           #range_ratings
-    .right      
+    .right   
       #search_map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
       .zoom-box
         .header Zoom:
@@ -86,8 +86,11 @@
     = hidden_field_tag 'location_lng', params[:location_lng]
     = hidden_field_tag 'location_lat', params[:location_lat]
     = hidden_field_tag 'location_zoom', params[:location_zoom]||1
-
+- if !current_user || !current_user.get_latlng?
+  %script{:language => "JavaScript", :src => "http://www.geoplugin.net/javascript.gp", :type => "text/javascript" }
+  
 :javascript
+  var geoplugin #{'= true' if !current_user || !current_user.get_latlng?};
   var search_params = {
     'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
     'range_budget': [#{params[:range_budget_from]||RentalUnit.min_price},#{params[:range_budget_to]||RentalUnit.max_price}],
@@ -96,16 +99,54 @@
     'range_bathes': [#{params[:range_bathes_from]||0},#{params[:range_bathes_to]||5}],
     'range_ratings': [#{params[:range_ratings_from]||0},#{params[:range_ratings_to]||10}]
   };
+  
+  var markersArray = [];
+  var search_map;  
+  var search_map_latlng = new google.maps.LatLng(#{gmap_latlng(params[:location_lat], params[:location_lng])});
+  var search_map_zoom = #{gmap_zoom(params[:location_zoom])};
+  function initSearchMap(){
+    var map_options = {zoom: search_map_zoom, center: search_map_latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
+    var map = new google.maps.Map(document.getElementById('search_map_canvas'),  map_options);
+    #{gmap_markers(@rental_units||[], '')}
+    google.maps.event.addListener(map, 'click', function(event) {
+      markAndCenter(event, map);
+    });
+    return map;
+  }  
+  function markAndCenter(event, el){
+    clearOverlays();
+    addMarker(event.latLng, el);
+    el.setCenter(event.latLng)
+    $('#location_lat').val(event.latLng.lat());
+    $('#location_lng').val(event.latLng.lng());
+  }
+  function addMarker(location, el) {
+    marker = new google.maps.Marker({
+      position: location,
+      map: el,
+      title: "Search here"
+    });
+    markersArray.push(marker);
+  }
+  function clearOverlays() {
+    if (markersArray) {
+      for (i in markersArray) {
+        markersArray[i].setMap(null);
+      }
+    }
+  }
 
   $(document).ready(function() {
-
     $('#simple-search .expander a').toggle(
       function(){
-        $(this).addClass('maximized').removeClass('minimized');  
+        $(this).addClass('maximized').removeClass('minimized');
         $('#advanced-search').slideDown();
+        if(!search_map){
+          search_map = initSearchMap();
+        }
       },
       function(){
-        $(this).addClass('minimized').removeClass('maximized');  
+        $(this).addClass('minimized').removeClass('maximized');
         $('#advanced-search').slideUp();
       }
     );
@@ -207,12 +248,6 @@
       }
     });
 
-    var element = $("#search_map_canvas");
-    var markersArray = []
-    #{init_gmap('search_map_canvas', params[:location_lat], params[:location_lng], 8, 'search_')}
-    #{gmap_markers(@rental_units||[], 'search_')}
-    #{gmap_event_listener('click', 'markAndCenter', 'search_')}
-
     $("#radius_slider").slider({
       min: 1,
       max: 5,
@@ -227,29 +262,13 @@
         search_map.setZoom(zooms[ui.value]);
       }
     });
-
-    function markAndCenter(event, el){
-      clearOverlays();
-      addMarker(event.latLng, el);
-      el.setCenter(event.latLng)
-      $('#location_lat').val(event.latLng.lat());
-      $('#location_lng').val(event.latLng.lng());    
-    }
-
-    function addMarker(location, el) {
-      marker = new google.maps.Marker({
-        position: location,
-        map: el,
-        title: "Search here"
-      });
-      markersArray.push(marker);
-    }
-
-    function clearOverlays() {
-      if (markersArray) {
-        for (i in markersArray) {
-          markersArray[i].setMap(null);
-        }
+    
+    if(geoplugin){
+      if(geoplugin_countryName() == "United States"){
+        search_map_latlng = new google.maps.LatLng(geoplugin_latitude(), geoplugin_longitude());
+      }else{
+        search_map_latlng = new google.maps.LatLng(39.828175, -98.579500);
+        search_map_zoom = 3;
       }
     }
   });
