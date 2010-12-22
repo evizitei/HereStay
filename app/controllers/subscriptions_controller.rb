@@ -28,4 +28,8 @@ class SubscriptionsController < ApplicationController
     flash[:notice] = "Your subscription was canceled."
     respond_with(:location => account_path)
   end
+  
+  def change_plan
+    @subscription = current_user.subscription
+  end
 end
