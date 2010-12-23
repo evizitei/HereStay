@@ -113,6 +113,17 @@ body
     a
       font-weight: bold
       text-decoration: none
+  .suggestion
+    overflow: hidden
+    margin-bottom: 20px
+    h3
+      font-weight: normal
+      font-size: 14px
+      color: gray
+      margin: 5px
+    img
+      width: 30px
+      height: 30px
 
 #main
   float: left
@@ -296,33 +307,34 @@ div.jGrowl div.jGrowl-notification a
             width: 21px
       
 //--------------------- [ menu & submenu ] ---------------------//
-#sidebar
-  #menu
-    overflow: hidden
-    ul
-      li
-        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
-        padding: 5px 0px 0px 35px
-        height: 24px
-        a
-          text-decoration: none
-          color: #000
-        border: 0
-      li.all-properties
-        background: url('/images/menu_all_props_bg.png') 10px 4px no-repeat
-      li.my-properties
-        background: url('/images/menu_my_props_bg.png') 10px 4px no-repeat
-      li.account
-        background: url('/images/menu_account_bg.png') 10px 4px no-repeat
-      li.inquiries
-        background: url('/images/menu_inquiries_bg.png') 10px 4px no-repeat
-      li.reservations
-        background: url('/images/menu_reservations_bg.png') 10px 4px no-repeat
-      li.new-property
-        background: url('/images/menu_new_props_bg.png') 10px 4px no-repeat
-        margin-top: 20px
-      li.current
-        background-color: #D8DEEA
+#menu
+  overflow: hidden
+  margin-bottom: 20px
+  ul
+    li
+      background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      padding: 5px 0px 0px 35px
+      height: 24px
+      a
+        text-decoration: none
+        color: #000
+      border: 0
+    li.all-properties
+      background: url('/images/menu_all_props_bg.png') 10px 4px no-repeat
+    li.my-properties
+      background: url('/images/menu_my_props_bg.png') 10px 4px no-repeat
+    li.account
+      background: url('/images/menu_account_bg.png') 10px 4px no-repeat
+    li.inquiries
+      background: url('/images/menu_inquiries_bg.png') 10px 4px no-repeat
+    li.reservations
+      background: url('/images/menu_reservations_bg.png') 10px 4px no-repeat
+    li.new-property
+      background: url('/images/menu_new_props_bg.png') 10px 4px no-repeat
+      margin-top: 20px
+    li.current
+      background-color: #D8DEEA
+        
 .sub-menu
   border: 0
   border-bottom: 1px solid #B4B4B4

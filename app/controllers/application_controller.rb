@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :redirect_from_params
   before_filter :oauth_obj
+  before_filter :load_online_rental_units
 protected
   
   def oauth_obj
@@ -13,6 +14,10 @@ protected
   
   def fb_app_name
     Facebook::APP_NAME.to_s
+  end
+  
+  def load_online_rental_units
+    @online_rental_units = RentalUnit.online
   end
   
   def login_required
