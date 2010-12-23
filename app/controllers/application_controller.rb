@@ -17,7 +17,7 @@ protected
   end
   
   def load_online_rental_units
-    @online_rental_units = RentalUnit.online
+    @online_rental_units = User.except(current_user).online.map(&:rental_units).flatten
   end
   
   def login_required
