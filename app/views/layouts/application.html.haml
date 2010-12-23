@@ -34,11 +34,12 @@
           = li_link_to('Reservations', bookings_url, :class => 'reservations')
           = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
           
-      - if @online_rental_units && @online_rental_units.present?
+      - if @online_rental_units.present?
         .suggestion
           %h3 Chat Now
           - @online_rental_units.each do |unit|
-            = link_to image_tag(unit.picture(:thumb)), rental_unit_path(unit)
+            - if pic = unit.picture(:thumb)
+              = link_to image_tag(pic), rental_unit_path(unit)
       .suggestion
         %h3 My Network Properties                
         - 20.times do
