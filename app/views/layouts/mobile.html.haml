@@ -1,8 +1,9 @@
-%html
+%html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
   %head
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8'}
+    %meta{:property=>"og:app_id", :content=> Facebook::APP_ID}
     / = stylesheet_link_tag "mobile"
-    = javascript_include_tag "jquery", "rails"
+    = javascript_include_tag "jquery", "rails", "application"
     = csrf_meta_tag
     
     -if current_user && ENV['NO_CHAT'].blank?
