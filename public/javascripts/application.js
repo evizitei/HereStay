@@ -21,7 +21,7 @@ function showFBComments(el){
   numposts = target.attr('numposts') || 4;
   send_notification_uid = target.attr('send_notification_uid') || '';
   $(target).replaceWith('<fb:comments xid="'+xid+'" canpost="'+canpost+'" candelete="'+candelete+'" showform="true" publish_feed="true" width='+width+' numposts='+numposts+' send_notification_uid="'+send_notification_uid+'"/>');
-  runFbInit();
+  FB.XFBML.parse(target.parent()[0]);
 }
 
 function newMessages(data){
