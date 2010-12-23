@@ -38,7 +38,7 @@
         .suggestion
           %h3 Chat Now
           - @online_rental_units.each do |unit|
-            = image_tag unit.picture(:thumb)
+            = link_to image_tag(unit.picture(:thumb)), rental_unit_path(unit)
       .suggestion
         %h3 My Network Properties                
         - 20.times do
