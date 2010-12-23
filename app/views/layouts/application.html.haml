@@ -34,7 +34,7 @@
           = li_link_to('Reservations', bookings_url, :class => 'reservations')
           = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
           
-      - if @online_rental_units.present?
+      - if @online_rental_units && @online_rental_units.present?
         .suggestion
           %h3 Chat Now
           - @online_rental_units.each do |unit|
