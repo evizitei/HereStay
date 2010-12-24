@@ -103,4 +103,61 @@ describe User do
       user.messages.size.should == 3
     end
   end
+
+  describe "subscription" do
+    let(:user){ User.new() }
+    
+    it "should has advanced subscrition" do
+      user.subscription_plan = 'advanced'
+      user.has_advanced_subscrition?.should be_true
+    end
+    
+    it "should not has advanced subscrition" do
+      user.subscription_plan = 'free'
+      user.has_advanced_subscrition?.should be_false
+    end
+    
+    it "should not has advanced subscrition" do
+      user.subscription_plan = nil
+      user.has_advanced_subscrition?.should be_false
+    end
+    
+    it "should post updates to FB wall" do
+      user.stubs(:has_advanced_subscrition?).returns(true)
+      user.update_fb_wall = true
+      user.post_fb_wall_updates?.should be_true
+    end
+    
+    it "should not post updates to FB wall" do
+      user.stubs(:has_advanced_subscrition?).returns(true)
+      user.update_fb_wall = false
+      user.post_fb_wall_updates?.should be_false
+    end
+    
+    it "should not post updates to FB wall" do
+      user.stubs(:has_advanced_subscrition?).returns(false)
+      user.update_fb_wall = true
+      user.post_fb_wall_updates?.should be_false
+    end
+    
+    
+    it "should post updates to Twitter" do
+      user.stubs(:has_advanced_subscrition? => true, :twitter? => true)
+      user.update_twitter = true
+      user.post_twitter_updates?.should be_true
+    end
+    
+    it "should not post updates to Twitter" do
+      user.stubs(:has_advanced_subscrition? => true, :twitter? => true)
+      user.update_twitter = false
+      user.post_twitter_updates?.should be_false
+    end
+    
+    it "should not post updates to Twitter" do
+      user.stubs(:has_advanced_subscrition? => false, :twitter? => true)
+      user.update_twitter = true
+      user.post_twitter_updates?.should be_false
+    end
+    
+  end
 end

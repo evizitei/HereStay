@@ -67,7 +67,7 @@ class TwitterWrapper
   def self.post_unit_added(unit)
     message = "#{ActionController::Base.helpers.truncate(unit.name, :length => 50)} has been added. #{unit.price_from}"
     TwitterWrapper.delayed_post(:here_stay, message, unit.fb_url)
-    if unit.user and unit.user.subscription_plan == 'advanced' and unit.user.twitter?
+    if unit.user and unit.user.post_twitter_updates?
       message = "#{ActionController::Base.helpers.truncate(unit.name, :length => 50)} has been added for rent. #{unit.price_from}"
       TwitterWrapper.delayed_post(unit.user.id, message, unit.fb_url)
     end
@@ -76,7 +76,7 @@ class TwitterWrapper
   def self.post_unit_rented(booking)
     message = "#{ActionController::Base.helpers.truncate(booking.rental_unit.name, :length => 50)} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)}"
     TwitterWrapper.delayed_post(:here_stay, message, booking.rental_unit.fb_url)
-    if booking.rental_unit.user and booking.rental_unit.user.subscription_plan == 'advanced' and booking.rental_unit.user.twitter?
+    if booking.rental_unit.user and booking.rental_unit.user.post_twitter_updates?
       TwitterWrapper.delayed_post(booking.rental_unit.user.id, message, booking.rental_unit.fb_url)
     end
   end
@@ -84,7 +84,7 @@ class TwitterWrapper
   def self.post_auction_added(auction)
     message = "Auction #{ActionController::Base.helpers.truncate(auction.title, :length => 50)} has been added."
     TwitterWrapper.delayed_post(:here_stay, message, auction.fb_url)
-    if auction.user and auction.user.subscription_plan == 'advanced' and auction.user.twitter?
+    if auction.user and auction.user.post_twitter_updates?
       TwitterWrapper.delayed_post(auction.user.id, message, auction.fb_url)
     end
   end
