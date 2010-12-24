@@ -1,3 +1,14 @@
+-# content_for :head do
+:javascript
+  $(function() {
+    $('.all-wrap input').click(function(){
+      var th = $(this);
+      var pr = th.closest('.data-box');
+      var ch = pr.find('input:checkbox');
+      ch.attr('checked', th.is(':checked'));
+    });
+  });
+
 .clearfix
 .dataRow
   .image{:style => 'float: left; width: 140px;'}
@@ -23,12 +34,12 @@
   .clearfix
 .dataRow
   .f_left= f.label :name, 'Description:'
-  .f_right= f.text_area :description,:rows=>5
+  .f_right= f.text_area :description,:rows=>5, :class=>'big-text'
   .clearfix
 .dataRow.price
-  %h3 Price:
+  %h3 Price
   .row
-    %h4 Nightly:
+    %h4 Nightly
     .col
       = f.label :nightly_high_price, 'High Season:'
       = f.text_field :nightly_high_price, :class => 'small'
@@ -40,7 +51,7 @@
       = f.text_field :nightly_low_price, :class => 'small'
     .clearfix  
   .row
-    %h4 Weekly:
+    %h4 Weekly
     .col
       = f.label :weekly_high_price, 'High Season:'
       = f.text_field :weekly_high_price, :class => 'small'
@@ -52,7 +63,7 @@
       = f.text_field :weekly_low_price, :class => 'small'
     .clearfix
 .dataRow
-  %h3 Features:
+  %h3 Features
   .right-col
     .row
       = f.label :floors, 'Floors on Building:'
@@ -73,74 +84,87 @@
     .row
       = f.label :sq_footage, 'Sq Footage:'
       = f.text_field :sq_footage, :class => 'med'
+
   .clearfix
-.dataRow{:style => 'font-size: 12px;'}   
-  .left-col
-    .left-col
-      .row
-        = f.check_box :balcony
-        = f.label :balcony, 'Balcony:'
-      .row
-        = f.check_box :dishwasher
-        = f.label :dishwasher, 'Dishwasher:'
-      .row
-        = f.check_box :fireplace
-        = f.label :fireplace, 'Fireplace:'
-      .row
-        = f.check_box :hardwood_floors
-        = f.label :hardwood_floors, 'Hardwood Floors:'
-    .left-col
-      .row
-        = f.check_box :patio
-        = f.label :patio, 'Patio:'
-      .row
-        = f.check_box :refrigerator
-        = f.label :refrigerator, 'Refrigerator:'
-      .row
-        = f.check_box :microwave
-        = f.label :microwave, 'Microwave:'
-      .row
-        = f.check_box :washer_dryer
-        = f.label :washer_dryer, 'Washer/Dryer:'
-    .clearfix
-  .left-col
+.dataRow
+  .data-box.data-box-right
+    .all-wrap
+      = check_box_tag nil
+      Check All
+    %h3 Building Amenities
     .left-col
       .row
         = f.check_box :clubhouse
-        = f.label :clubhouse, 'Clubhouse:'
+        = f.label :clubhouse, 'Clubhouse'
       .row
         = f.check_box :exercise_room
-        = f.label :exercise_room, 'Exercise Room:'
+        = f.label :exercise_room, 'Exercise Room'
       .row
         = f.check_box :on_site_laundry
-        = f.label :on_site_laundry, 'On Site Laundry:'
+        = f.label :on_site_laundry, 'On Site Laundry'
       .row
         = f.check_box :on_site_manager
-        = f.label :on_site_manager, 'On Site Manager:'
+        = f.label :on_site_manager, 'On Site Manager'
     .left-col
       .row
         = f.check_box :security_gate
-        = f.label :security_gate, 'Security Gate:'
+        = f.label :security_gate, 'Security Gate'
       .row
         = f.check_box :swimming_pool
-        = f.label :swimming_pool, 'Swimming Pool:'
+        = f.label :swimming_pool, 'Swimming Pool'
       .row
         = f.check_box :tennis_courts
-        = f.label :tennis_courts, 'Tennis Courts:'
+        = f.label :tennis_courts, 'Tennis Courts'
       .row
         = f.check_box :parking
-        = f.label :parking, 'Parking:'
+        = f.label :parking, 'Parking'
       .row
         = f.check_box :wifi
-        = f.label :wifi, 'WiFi:'
+        = f.label :wifi, 'WiFi'
     .clearfix
-  .clearfix
-  .right-col
-    = f.label :unit_other, 'Other:'
-    = f.text_field :unit_other, :class => 'med'
-  .right-col
-    = f.label :building_other, 'Other:'
-    = f.text_field :building_other, :class => 'med'
+    .right-text
+      = f.label :building_other, 'Other:'
+      = f.text_field :building_other, :class => 'med'
+
+
+  .data-box.data-box-left
+    .all-wrap
+      = check_box_tag nil
+      Check All
+    %h3 Unit amenities
+    .left-col
+      .row
+        = f.check_box :balcony
+        = f.label :balcony, 'Balcony'
+      .row
+        = f.check_box :dishwasher
+        = f.label :dishwasher, 'Dishwasher'
+      .row
+        = f.check_box :fireplace
+        = f.label :fireplace, 'Fireplace'
+      .row
+        = f.check_box :hardwood_floors
+        = f.label :hardwood_floors, 'Hardwood Floors'
+      .row-empty
+    .left-col
+      .row
+        = f.check_box :patio
+        = f.label :patio, 'Patio'
+      .row
+        = f.check_box :refrigerator
+        = f.label :refrigerator, 'Refrigerator'
+      .row
+        = f.check_box :microwave
+        = f.label :microwave, 'Microwave'
+      .row
+        = f.check_box :washer_dryer
+        = f.label :washer_dryer, 'Washer/Dryer'
+    .clearfix
+    .right-text
+      = f.label :unit_other, 'Other:'
+      = f.text_field :unit_other, :class => 'med'
+
+
   .clearfix
 .dataRow
   .left-col

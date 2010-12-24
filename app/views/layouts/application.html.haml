@@ -20,7 +20,7 @@
     = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
     %a{:name=>'top'}
     #sidebar
-      -if current_user
+      - if current_user
         .current-user
           .f_left= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"thumb")
           .f_left= fb_name(:uid => current_user.fb_user_id, :useyou => false)
@@ -34,6 +34,16 @@
           = li_link_to('Reservations', bookings_url, :class => 'reservations')
           = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
           
+      - if @online_rental_units.present?
+        .suggestion
+          %h3 Chat Now
+          - @online_rental_units.each do |unit|
+            - if pic = unit.picture(:thumb)
+              = link_to image_tag(pic), rental_unit_path(unit)
+      .suggestion
+        %h3 My Network Properties                
+        - 20.times do
+          %div
     #main
       #header
         #logo= link_to image_tag('herestay2.png'), root_path

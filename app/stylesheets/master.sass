@@ -113,6 +113,17 @@ body
     a
       font-weight: bold
       text-decoration: none
+  .suggestion
+    overflow: hidden
+    margin-bottom: 20px
+    h3
+      font-weight: normal
+      font-size: 14px
+      color: gray
+      margin: 5px
+    img
+      width: 30px
+      height: 30px
 
 #main
   float: left
@@ -296,33 +307,34 @@ div.jGrowl div.jGrowl-notification a
             width: 21px
       
 //--------------------- [ menu & submenu ] ---------------------//
-#sidebar
-  #menu
-    overflow: hidden
-    ul
-      li
-        background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
-        padding: 5px 0px 0px 35px
-        height: 24px
-        a
-          text-decoration: none
-          color: #000
-        border: 0
-      li.all-properties
-        background: url('/images/menu_all_props_bg.png') 10px 4px no-repeat
-      li.my-properties
-        background: url('/images/menu_my_props_bg.png') 10px 4px no-repeat
-      li.account
-        background: url('/images/menu_account_bg.png') 10px 4px no-repeat
-      li.inquiries
-        background: url('/images/menu_inquiries_bg.png') 10px 4px no-repeat
-      li.reservations
-        background: url('/images/menu_reservations_bg.png') 10px 4px no-repeat
-      li.new-property
-        background: url('/images/menu_new_props_bg.png') 10px 4px no-repeat
-        margin-top: 20px
-      li.current
-        background-color: #D8DEEA
+#menu
+  overflow: hidden
+  margin-bottom: 20px
+  ul
+    li
+      background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      padding: 5px 0px 0px 35px
+      height: 24px
+      a
+        text-decoration: none
+        color: #000
+      border: 0
+    li.all-properties
+      background: url('/images/menu_all_props_bg.png') 10px 4px no-repeat
+    li.my-properties
+      background: url('/images/menu_my_props_bg.png') 10px 4px no-repeat
+    li.account
+      background: url('/images/menu_account_bg.png') 10px 4px no-repeat
+    li.inquiries
+      background: url('/images/menu_inquiries_bg.png') 10px 4px no-repeat
+    li.reservations
+      background: url('/images/menu_reservations_bg.png') 10px 4px no-repeat
+    li.new-property
+      background: url('/images/menu_new_props_bg.png') 10px 4px no-repeat
+      margin-top: 20px
+    li.current
+      background-color: #D8DEEA
+        
 .sub-menu
   border: 0
   border-bottom: 1px solid #B4B4B4
@@ -400,10 +412,16 @@ div.jGrowl div.jGrowl-notification a
     width: 50%
   .right-col
     float: right
-    width: 50%  
+    margin-left: 15px
+    text-align: right
+    //width: 50%
+  .right-text
     text-align: right
   label 
     font-weight: normal
+  .big-text
+    height: 100px
+    width: 425px
      
 .property
   width: 485px
@@ -472,21 +490,34 @@ div.jGrowl div.jGrowl-notification a
   border: solid 1px #B4B4B4
   padding: 10px
   input.med
-    width: 130px
+    width: 154px
+    margin-left: 3px
   input.small
     width: 70px
   .row
-    margin-bottom: 5px
+    margin-bottom: 7px
+  .row-empty
+    height: 25px
   .dataRow
     margin-bottom: 20px
     vertical-align: top
   .dataRow.price
     .row
-      margin-left: 10px
+      margin-left: 14px
     .col
       float: left
       width: 33%
-      
+    h4
+      margin: 15px 0 3px
+  .data-box
+    width: 233px
+    font-size: 12px
+  .data-box-left
+    float: left
+  .data-box-right
+    float: right
+  .all-wrap
+    float: right
 .booking_form
   border: solid 1px #bfbfbf
   padding: 10px

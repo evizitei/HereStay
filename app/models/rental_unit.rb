@@ -160,10 +160,11 @@ class RentalUnit < ActiveRecord::Base
   def self.advanced_search(params, user)
     self._search(params, user, 'search')
   end
+
   def self.advanced_search_ids(params, user)
     self._search(params, user, 'solr_search_ids')
   end
-  
+    
   def initialize(attrs = {})
     super(attrs)
     self.country ||= "USA"
