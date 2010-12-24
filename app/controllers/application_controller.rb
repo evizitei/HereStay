@@ -16,12 +16,9 @@ protected
     Facebook::APP_NAME.to_s
   end
   
-  def load_online_rental_units
-    @online_rental_units = if current_user
-      User.except(current_user).online.map(&:rental_units).flatten
-    else
-      User.online.map(&:rental_units).flatten
-    end
+  def load_online_rental_units    
+    users = logged_in? ? User.except(current_user) : User
+    @online_rental_units = users.online.map(&:rental_units).flatten
   end
   
   def login_required
