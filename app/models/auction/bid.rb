@@ -18,9 +18,9 @@ class Bid < ActiveRecord::Base
       self.winning = true
       self.save(:validate => false)
       AuctionMailer.win_confirmation_to_renter(self).deliver
-      booking = lot.property.bookings.build(:start_date => lot.arrive_on, :stop_date => lot.depart_on,
-        :amount => self.amount.to_f, :renter_fb_id => user.fb_user_id
-      )
+      # booking = lot.property.bookings.build(:start_date => lot.arrive_on, :stop_date => lot.depart_on,
+      #   :amount => self.amount.to_f, :renter_fb_id => user.fb_user_id
+      # )
       if booking.save
         booking.reserve!
       else
@@ -41,6 +41,16 @@ class Bid < ActiveRecord::Base
   def creation_notification
     AuctionMailer.bid_created_to_owner(self).deliver
     AuctionMailer.bid_created_to_renter(self).deliver
+  end
+  
+  def booking
+    @booking ||= build_booking
+  end
+  
+  def build_booking
+    lot.property.bookings.build(:start_date => lot.arrive_on, :stop_date => lot.depart_on,
+      :amount => self.amount.to_f, :renter_fb_id => user.fb_user_id
+    )
   end
   
 end
