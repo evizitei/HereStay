@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   
   scope :online , lambda {where(["last_poll_time > ?", (Time.zone.now - 1.minutes)])}
-  scope :except, lambda {|r| where("id != ?", r.id)}
+  scope :except, lambda {|u| where("id != ?", u.id)}
   
   # find or create user by fb-uid and update his oauth token and session data
   def self.for(oauth_obj)
