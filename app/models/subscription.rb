@@ -26,7 +26,7 @@ class Subscription
     :if => :require_billing_info_validation
   
   validates_presence_of :user_id
-  validate :validate_card_date
+  validate :validate_card_date, :if => :require_billing_info_validation
   
   def initialize(attributes = {})
     attributes.each do |name, value|
