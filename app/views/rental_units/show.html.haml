@@ -86,7 +86,7 @@
     %br
   .right-column
     .comments
-      %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true"}
+      %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true", :url => @rental_unit.fb_url}
   .clearfix
 :javascript
   var comment_handler = true;
