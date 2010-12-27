@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :bookings, :through => :rental_units, :readonly => false
   has_many :messages,:class_name=>"BookingMessage",:foreign_key=>"recipient_id"
   has_many :fb_streams, :class_name => "UserFbStream"
+  has_many :comments
   
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   
@@ -182,5 +183,19 @@ class User < ActiveRecord::Base
   def get_latlng
     self.capture_fb_profile_data! unless self.get_latlng?
     self.valid_country? && self.get_latlng?
+  end
+  
+  def get_last_comment(xid)
+    Koala::Facebook::RestAPI.new(self.access_token).fql_query("select xid, object_id, post_id, fromid, time, text, id, username, reply_xid  from comment where xid  = '#{xid}' and fromid = #{self.fb_user_id}").first
+  end
+  
+  def store_last_comment_for(rental_unit)
+    comment = get_last_comment("here_stay_unit_#{rental_unit.id}")
+    rental_unit.comments.create(:user_id => self.id, 
+                                :fb_user_id => self.fb_user_id,
+                                :fb_id => comment['id'],
+                                :text => comment['text'],
+                                :time => Time.at(comment['time'])
+                                )
   end
 end

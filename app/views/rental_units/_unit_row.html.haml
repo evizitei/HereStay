@@ -17,6 +17,14 @@
     .description
       = truncate(unit_row.description, :length => 150, :separator => ' ')
     .f_right=render(:partial=>"rental_units/share_unit",:object=>unit_row)
+    .clearfix
     .comments
-      = link_to 'Comments', "#", {:class => 'fb_comments', :xid => "here_stay_unit_#{unit_row.id}", :send_notification_uid => unit_row.fb_user_id}
+      - unit_row.last_comments.each do |comment|
+        .comment
+          .image= fb_profile_pic(:uid=>unit_row.user.fb_user_id)
+          .text
+            =fb_name(:uid => comment.fb_user_id )
+            =comment.text
+            .date== #{time_ago_in_words comment.time} ago
+          .clearfix
   .clearfix

@@ -19,6 +19,7 @@ class RentalUnit < ActiveRecord::Base
   belongs_to :user
   has_many :reservations
   has_many :user_fb_streams
+  has_many :comments
   
   validates_presence_of :name
   validates_uniqueness_of :vrbo_id, :scope => :user_id, :if => Proc.new{|a| a.new_record? && a.vrbo_id.present?}
@@ -310,5 +311,9 @@ class RentalUnit < ActiveRecord::Base
         self.primary_photo = Photo.where("rental_unit_id IS NULL OR rental_unit_id = ?", self.id).find(params[:preview_image_id])
       end
     end
+  end
+  
+  def last_comments(n=3)
+    self.comments.order('time DESC').limit(3)
   end
 end

@@ -86,5 +86,10 @@
     %br
   .right-column
     .comments
-      %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
+      %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true"}
   .clearfix
+:javascript
+  var comment_handler = true;
+  function storeComment() {
+    $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
+  }

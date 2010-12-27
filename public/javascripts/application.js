@@ -10,6 +10,11 @@ function redirectToFbApp(app_name, path){
 function runFbInit(){
   var appID = $('meta[property="og:app_id"]').attr("content");
   FB.init({appId: appID, status: true, cookie: true,xfbml: true});
+  FB.Event.subscribe('comments.add', function(r) {
+    if(typeof(comment_handler) != "undefined"){
+      storeComment();
+    }
+  }) 
 }
 
 function showFBComments(el){
@@ -158,6 +163,4 @@ $(document).ready(function() {
   $('#rental_unit_primary_photo_attributes_picture').focus(function(){
     $(this).click();
   });
-  
-  $('.fb_comments').click(function(){showFBComments(this); return false});
 });

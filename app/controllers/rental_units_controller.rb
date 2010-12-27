@@ -93,6 +93,12 @@ class RentalUnitsController < ApplicationController
     render 'index'
   end
   
+  def store_last_comment
+    @rental_unit = RentalUnit.find(params[:id])
+    current_user.store_last_comment_for(@rental_unit)
+    render :text => 'ok'
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain

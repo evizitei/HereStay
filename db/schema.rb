@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101222085933) do
+ActiveRecord::Schema.define(:version => 20101224160807) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -46,6 +46,18 @@ ActiveRecord::Schema.define(:version => 20101222085933) do
   end
 
   add_index "bookings", ["rental_unit_id"], :name => "index_bookings_on_rental_unit_id"
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "fb_user_id"
+    t.integer  "rental_unit_id"
+    t.text     "text"
+    t.string   "fb_id"
+    t.integer  "likes"
+    t.datetime "time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
