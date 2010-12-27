@@ -119,18 +119,6 @@ class Booking < ActiveRecord::Base
       reservation.update_attributes(:start_at => self.start_date.to_s(:db), :end_at => self.stop_date.to_s(:db), :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
     end
   end
-  
-  # Post to wall message "(This property) has been rented from (date) to (date)" 
-  # when the owner confirms or creates a booking
-  # TODO: move to background work
-  def rented_wall_post
-    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed",
-      :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}",
-      :link => rental_unit.fb_url,
-      :name => 'view this property',
-      :picture=> rental_unit.picture(:medium) || ''
-    )
-  end
 
   def recently_reserved?
     status_changed? && self.reserved?
@@ -191,7 +179,7 @@ class Booking < ActiveRecord::Base
   
   def do_reserve! 
     create_reservation
-    rented_wall_post
+    FacebookProxy.post_unit_rented(self)
     TwitterWrapper.post_unit_rented(self)
     UserMailer.booking_confirmation(self).deliver if self.renter_fb_id
   end

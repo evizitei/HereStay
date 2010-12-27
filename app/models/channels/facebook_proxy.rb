@@ -33,4 +33,26 @@ class FacebookProxy
     target = Facebook::APP_ID.to_s if target === :here_stay
     graph.put_object(target, *args)
   end
+  
+  # Post to wall message "(This property) has been rented from (date) to (date)"
+  # when the owner confirms or creates a booking
+  # TODO: move to background work
+  def self.post_unit_rented(booking)
+    rental_unit = booking.rental_unit
+    text = "#{rental_unit.name} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)}"
+    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed",
+      :message => text,
+      :link => rental_unit.fb_url,
+      :name => 'view this property',
+      :picture=> rental_unit.picture(:medium) || ''
+    )
+    if rental_unit.user.post_fb_wall_updates?
+      FacebookProxy.new(rental_unit.user.access_token).put_object('me', "feed",
+        :message => text,
+        :link => rental_unit.fb_url,
+        :name => 'view this property',
+        :picture=> rental_unit.picture(:medium) || ''
+      )
+    end
+  end
 end

@@ -11,7 +11,7 @@ class AccountController < ApplicationController
   end
     
   def my_history
-    @my_bookings = Booking.active.where(:renter_fb_id => current_user.fb_user_id)
+    @my_bookings = Booking.active.where("renter_fb_id = ? OR owner_fb_id = ?", current_user.fb_user_id, current_user.fb_user_id)
   end
   
   def my_place

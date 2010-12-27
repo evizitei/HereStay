@@ -23,3 +23,7 @@ en:
   activerecord:
     model:
       rental_unit: Property
+    attributes:
+      user:
+        update_twitter: Post twitter updates
+        update_fb_wall: Post Facebook wall updates

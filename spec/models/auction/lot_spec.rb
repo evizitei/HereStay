@@ -77,6 +77,9 @@ describe Lot do
     it "should send finish notifications to renter" do
       AuctionMailer.stubs(:lot_finished).returns(mock(:deliver => :true))
       AuctionMailer.expects(:win_confirmation_to_renter).with(@lot.current_bid).returns(mock(:deliver => :true))
+      # @lot.property = Factory(:rental_unit)
+      # @lot.current_bid.user = User.new(:fb_user_id => 12345)
+      Bid.any_instance.stubs(:build_booking).returns(mock(:save => true, :reserve! => true))
       @lot.send(:run_finish_callbacks)
     end
     

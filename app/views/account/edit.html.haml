@@ -31,7 +31,12 @@
           %span
             = link_to('change', new_connectors_twitter_path)
             = link_to('remove', account_path(:user => {:remove_twitter => true}), :method => :put)
-
+    - if current_user.has_advanced_subscrition?
+      .f_left
+        = f.inputs do
+          = f.input :update_twitter
+          = f.input :update_fb_wall
+          
       = f.buttons do
         = simple_button do
           = submit_tag "Save Changes"

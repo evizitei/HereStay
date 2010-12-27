@@ -6,6 +6,7 @@
       %tr
         %th Date
         %th Owner
+        %th Renter
         %th Property
     %tbody
       - @my_bookings.each do |booking|
@@ -16,7 +17,7 @@
             \-
             - if booking.stop_date
               = booking.stop_date.strftime("%m/%d/%Y")
-          %td.second
+          %td
             .f_left= fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
             .f_left
               %div= fb_name(:uid=>booking.owner_fb_id)
@@ -25,6 +26,10 @@
                 - if booking.can_be_canceled?
                   %div= simple_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
             .clearfix
+          %td
+            .f_left= fb_profile_pic(:uid => booking.renter_fb_id, :size => "thumb")
+            .f_left
+              %div= fb_name(:uid => booking.renter_fb_id)
           %td.third
             - if booking.rental_unit.primary_photo && booking.rental_unit.primary_photo.picture.file?
               = image_tag(booking.rental_unit.primary_photo.picture.url(:thumb))

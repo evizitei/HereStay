@@ -153,7 +153,19 @@ class User < ActiveRecord::Base
   end
   
   def subscribed?
-    subscription_plan
+    subscription_plan.present?
+  end
+  
+  def has_advanced_subscrition?
+    subscribed? && subscription_plan == 'advanced'
+  end
+  
+  def post_twitter_updates?
+    twitter? && has_advanced_subscrition? && update_twitter?
+  end
+  
+  def post_fb_wall_updates?
+    has_advanced_subscrition? && update_fb_wall?
   end
   
   private
