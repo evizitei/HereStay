@@ -4,7 +4,7 @@ namespace :comments do
     RentalUnit.all.each do |rental_unit|
       comments = Koala::Facebook::RestAPI.new(rental_unit.user.access_token).fql_query("select xid, object_id, post_id, fromid, time, text, id, username, reply_xid  from comment where xid  = 'here_stay_unit_#{rental_unit.id}'")
       comments.each do |comment|
-        user = User.find_by_fb_user_id(comment['fromid'])
+        user = User.find_by_fb_user_id(comment['fromid'].to_s)
         rental_unit.comments.create(:user_id => (user.nil? ? nil : user.id), 
                                 :fb_user_id => comment['fromid'],
                                 :fb_id => comment['id'],
