@@ -19,13 +19,13 @@ class Subscription
   
   validates_presence_of :plan
   validates_inclusion_of :plan, :in => Plans, :allow_blank => true
-  
+  validates_presence_of :user_id
+
   validates_presence_of :first_name, :last_name,
     :address1, :zip, :card_number, :city,
     :card_verification_value, :card_month, :card_year,
     :if => :require_billing_info_validation
-  
-  validates_presence_of :user_id
+
   validate :validate_card_date, :if => :require_billing_info_validation
   
   def initialize(attributes = {})

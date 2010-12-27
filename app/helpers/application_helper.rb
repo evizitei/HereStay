@@ -182,6 +182,10 @@ module ApplicationHelper
     end
   end
   
+  def fb_like_button(options)
+    content_tag 'fb:like','', options
+  end
+  
   def rental_unit_availabilities(rental_unit)
     row = "{title: 'Not available', end: new Date('#{Time.now.strftime("%m/%d/%Y")}')}#{',' if rental_unit.reservations.size > 0}"
     rental_unit.bookings.active.includes(:reservation).each_with_index do |booking, i|

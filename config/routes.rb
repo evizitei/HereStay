@@ -30,6 +30,7 @@ Micasasucasa::Application.routes.draw do
       post :store_last_post
       get :availabilities
       put :preview_update
+      post :store_last_comment
     end
     
     resources :bookings do
