@@ -15,6 +15,7 @@ set :scm, :git
 set :deploy_via, :remote_cache
 
 after 'deploy:update_code', 'deploy:link_db_config'
+after 'deploy:update_code', 'deploy:link_config_files'
 # after 'deploy:update_code', 'deploy:update_crontab'
 after 'deploy:update_code', 'bundler:bundle_new_release'
 after 'deploy:default', 'deploy:restart'
@@ -35,6 +36,12 @@ namespace :deploy do
   desc "Create database.yml symlink"
   task :link_db_config, :roles => :app do
     run "ln -fs #{shared_path}/database.yml #{current_release}/config/database.yml"
+  end
+  
+  desc "Create database.yml symlink"
+  task :link_config_files, :roles => :app do
+    run "ln -fs #{shared_path}/moonshado.conf #{current_release}/config/moonshado.conf"
+    run "ln -fs #{shared_path}/websolr.conf #{current_release}/config/websolr.conf"
   end
 
   desc "Update the crontab file"
