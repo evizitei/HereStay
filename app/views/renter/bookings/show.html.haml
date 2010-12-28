@@ -1,0 +1,6 @@
+%h2 Booking for #{resource.rental_unit.name}
+.properties
+  =render(:partial => "rental_units/unit_row", :object => resource.rental_unit, :locals => {:admin=>false})
+  -if resource.discounts.size < 1
+    %h3 get a discount here for publishing this on your wall!
+    =link_to "Post to your wall!", wall_post_booking_path(resource), :method => :post

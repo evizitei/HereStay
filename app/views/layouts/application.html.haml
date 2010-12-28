@@ -28,10 +28,12 @@
       #menu
         %ul
           = li_link_to('All Properties', rental_units_url, :class => 'all-properties')
-          = li_link_to('My Properties', manage_rental_units_url, :class => 'my-properties')
+          - if current_user && current_user.subscribed?
+            = li_link_to('My Properties', manage_rental_units_url, :class => 'my-properties')
+            = li_link_to('Reservations', bookings_url, :class => 'reservations sub')
           = li_link_to('My Account', account_url, :class => 'account')
           = li_link_to('Inquiries', inquiries_url, :class => 'inquiries')
-          = li_link_to('Reservations', bookings_url, :class => 'reservations')
+          = li_link_to('Reservations', renter_bookings_url, :class => 'reservations')
           = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
           
       - if @online_rental_units.present?
@@ -40,10 +42,14 @@
           - @online_rental_units.each do |unit|
             - if pic = unit.picture(:thumb)
               = link_to image_tag(pic), rental_unit_path(unit)
+
+      - if @my_network_properties.present?
       .suggestion
         %h3 My Network Properties                
-        - 20.times do
-          %div
+        - @my_network_properties.each do |unit|
+          - if pic = unit.picture(:thumb)
+            = link_to image_tag(pic), rental_unit_path(unit)
+            
     #main
       #header
         #logo= link_to image_tag('herestay2.png'), root_path

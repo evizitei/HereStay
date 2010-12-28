@@ -1,14 +1,14 @@
 =content_for :submenu do
   %ul
     %li{:class => params[:confirmed].blank? ? 'current' : ''}= link_to 'Pending', collection_url
-    %li{:class => !params[:confirmed].blank? ? 'current' : ''}= link_to 'Confirmed', collection_url(:confirmed => '1')
-  .clearfix
+    %li{:class => params[:confirmed].blank? ? '' : 'current'}= link_to 'Confirmed', collection_url(:confirmed => '1')
+  .clearfix    
 .border
   %table.bookings
     %thead
       %tr
         %th Property
-        %th Renter
+        %th Owner
         %th Arrive
         %th Depart
     %tbody
@@ -22,17 +22,12 @@
             %div
               = simple_button 'Details', rental_unit_path(booking.rental_unit)
           %td.second
-            .f_left= fb_profile_pic(:uid=>booking.renter_fb_id, :size=>"thumb")
+            .f_left= fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
             .f_left
-              - if booking.renter_fb_id
-                %div
-                  = fb_name(:uid=>booking.renter_fb_id)
-                  = user_online_status(booking.renter)
-                %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit, :created => 'false')
-              - else
-                = booking.renter_name
-              - if booking.can_be_canceled?
-                %div= simple_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
+              %div
+                = fb_name(:uid=>booking.owner_fb_id)
+                = user_online_status(booking.owner)
+              %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit, :created => 'false')
             .clearfix
           %td.arrive
             - if booking.start_date

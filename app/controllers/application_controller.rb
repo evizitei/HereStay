@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :redirect_from_params
   before_filter :oauth_obj
-  before_filter :load_online_rental_units
+  before_filter :load_info_for_sidebar
 protected
   
   def oauth_obj
@@ -16,9 +16,9 @@ protected
     Facebook::APP_NAME.to_s
   end
   
-  def load_online_rental_units    
-    users = logged_in? ? User.except(current_user) : User
-    @online_rental_units = users.online.map(&:rental_units).flatten
+  def load_info_for_sidebar
+    @online_rental_units = User.online.map(&:rental_units).flatten
+    @my_network_properties = current_user.rental_units_of_friends
   end
   
   def login_required
