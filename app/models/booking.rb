@@ -35,6 +35,7 @@ class Booking < ActiveRecord::Base
   
   scope :except, lambda{|r| where("id != ?", r.id) }
   scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  scope :for_renter, lambda{|u| where("renter_fb_id = ?", u.fb_user_id)}
   scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
   scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = \'Booking\' AND "funds"."type" = \'BookingCharge\'').where({:funds => {:id => nil}})
   

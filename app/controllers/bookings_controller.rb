@@ -45,20 +45,13 @@ class BookingsController < ApplicationController
     redirect_to @booking
   end
   
-  def confirm
-    @booking = Booking.active.find params[:id]
-    @booking.confirm_by_renter!
-    render :action=>:show
-  end
-  
   def cancel
     @booking = Booking.active.find params[:id]
     flash[:notice] = "Booking was canceled!" if @booking.cancel_by(current_user)
     redirect_to :back
   end
   
-  private
-  
+  private  
   def begin_of_association_chain
     current_user
   end
