@@ -1,0 +1,60 @@
+sudo aptitude update
+sudo aptitude upgrade
+
+sudo locale-gen en_US.UTF-8
+sudo update-locale LANG=en_US.UTF-8
+sudo dpkg-reconfigure locales
+
+sudo aptitude install postgresql-8.4 postgresql-server-dev-8.4 openssl libssl-dev libpcre3++-dev curl make screen build-essential libpcre3++-dev curl make screen  language-pack-en build-essential libcurl4-openssl-dev libpcre3-dev
+mkdir src
+cd src
+wget http://rubyforge.org/frs/download.php/71100/ruby-enterprise_1.8.7-2010.02_i3
+sudo dpkg -i ruby-enterprise_1.8.7-2010.02_i386_ubuntu10.04.deb
+
+
+sudo aptitude install libjpeg-dev giflib-dev libpng-dev libtiff-dev libfreetype6-dev liblcms-dev libwmf-dev libopenexr-dev libjpeg-dev  libbz2-dev gsfonts libjasper-dev imagemagick libmagickwand-dev libxslt-dev libsqlite3-dev libreadline6 libreadline6-dev
+
+sudo aptitude install exim exim4-config mailutils
+sudo dpkg-reconfigure exim4-config
+
+
+sudo aptitude install git-core
+
+
+# sudo sh -c 'echo "deb http://apt.brightbox.net lucid main" > /etc/apt/sources.list.d/brightbox.list'
+# sudo sh -c 'wget -q -O - http://apt.brightbox.net/release.asc | apt-key add -'
+# sudo apt-get update
+# sudo aptitude update
+
+sudo mkdir /var/log/nginx
+wget http://sysoev.ru/nginx/nginx-0.8.54.tar.gz
+tar -zxf nginx-0.8.54.tar.gz
+cd nginx-0.8.54
+
+sudo gem install passenger
+sudo passenger-install-nginx-module
+# select 2 and Ctrl+C
+
+sudo ./configure --prefix=/usr/local --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx --http-log-path=/var/log/nginx/access.log --with-http_ssl_module --add-module='/usr/local/lib/ruby/gems/1.8/gems/passenger-3.0.2/ext/nginx'
+
+make 
+sudo make install
+sudo vim /etc/init.d/nginx << create nginx start script
+sudo chmod +x /etc/init.d/nginx
+sudo update-rc.d nginx defaults
+
+sudo gem install rails -v=3.0.0 --no-ri --no-rdoc
+sudo gem install pg
+sudo su postgres
+  createuser -A -d --pwprompt herestay
+  exit
+sudo vim /etc/postgresql/8.4/main/pg_hba.conf
+> local   all         all                               trust
+
+
+=====
+add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
+/etc/init.d/ssh reload
+
+add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.ssh/environment
+add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.profile
