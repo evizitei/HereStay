@@ -1,0 +1,2 @@
+module Renter::BookingsHelper
+end
