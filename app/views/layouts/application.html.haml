@@ -44,11 +44,11 @@
               = link_to image_tag(pic), rental_unit_path(unit)
 
       - if @my_network_properties.present?
-      .suggestion
-        %h3 My Network Properties                
-        - @my_network_properties.each do |unit|
-          - if pic = unit.picture(:thumb)
-            = link_to image_tag(pic), rental_unit_path(unit)
+        .suggestion
+          %h3 My Network Properties                
+          - @my_network_properties.each do |unit|
+            - if pic = unit.picture(:thumb)
+              = link_to image_tag(pic), rental_unit_path(unit)
             
     #main
       #header

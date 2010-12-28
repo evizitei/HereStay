@@ -18,7 +18,7 @@ protected
   
   def load_info_for_sidebar
     @online_rental_units = User.online.map(&:rental_units).flatten
-    @my_network_properties = current_user.rental_units_of_friends
+    @my_network_properties = current_user.rental_units_of_friends if current_user
   end
   
   def login_required
