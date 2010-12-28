@@ -18,10 +18,4 @@ Micasasucasa::Application.configure do
   config.action_mailer.raise_delivery_errors = false
   
   config.active_support.deprecation = :log
-  
-  config.after_initialize do
-    Moonshado::Sms.configure do |config|
-      config.production_environment = false
-    end
-  end
 end

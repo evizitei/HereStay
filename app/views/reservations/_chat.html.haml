@@ -1,0 +1,39 @@
+.property
+  .left-column
+    -if chat.rental_unit.primary_photo && chat.rental_unit.primary_photo.picture.file?
+      .picture
+        =link_to image_tag(chat.rental_unit.primary_photo.picture.url(:thumb)), rental_unit_path(chat.rental_unit)
+    -else
+      %a{:href => rental_unit_path(chat.rental_unit)}
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}        
+  .right-column
+    .f_right= belongs_to_friend_icon current_user, chat.rental_unit
+    .title
+      = chat.rental_unit.name
+      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid => chat.rental_unit.user.fb_user_id)}
+      .clearfix
+    .description
+      = truncate(chat.rental_unit.description, :length => 150, :separator => ' ')
+    .buttons
+      .f_left= render(:partial=>"rental_units/share_unit",:object => chat.rental_unit)
+      -if chat.rental_unit.is_owner?(current_user) && chat.created?
+        =simple_button 'Reserve Property', [:reserve, chat ], :class => 'f_left'
+  .clearfix
+  .messages{:id => "booking_#{chat.id}"}
+    .listing
+      - chat.booking_messages.by_date.each do |message|
+        .message{:class=>message.html_class, :id => "message_#{message.id}"}
+          .user
+            = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
+          .arrow
+            %br
+          .body
+            %strong=message.message
+          .clearfix
+    .form
+      %a{:name => "messages_box_#{chat.id}", :style => "position:relative;top:-100px;z-index:9999999999999;"}
+      = form_for :booking_message, :url=> booking_messages_path(chat), :html => {:method => :post} do |f|
+        .f_right= f.submit "Comment"
+        .f_right=f.text_area :message
+        .f_right= fb_profile_pic(:uid => current_user.fb_user_id, :size => "thumb")
+        .clearfix

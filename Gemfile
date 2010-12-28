@@ -40,4 +40,5 @@ group :development,:test,:cucumber do
   gem 'shoulda'
   gem 'mocha'
   gem 'timecop'
+  gem 'ruby-debug'
 end
