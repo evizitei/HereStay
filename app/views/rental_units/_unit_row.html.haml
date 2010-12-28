@@ -28,4 +28,6 @@
             =comment.text
             .date== #{time_ago_in_words comment.time} ago
           .clearfix
+      - if unit_row.comments.count > 3
+        = link_to "More comments(#{unit_row.comments.count})", unit_row
   .clearfix
