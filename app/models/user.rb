@@ -153,7 +153,7 @@ class User < ActiveRecord::Base
     if self.fb_friend_ids.present?      
       self.fb_friend_ids.each do |id|
         break if res.count >= 20 
-        if friend = User.find_by_fb_user_id(id)
+        if friend = User.find_by_fb_user_id(id.to_s)
           res << friend.rental_units
           unless stop
             friend.rental_units_of_friends(true)
