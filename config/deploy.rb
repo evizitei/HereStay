@@ -18,15 +18,10 @@ after 'deploy:update_code', 'deploy:link_db_config'
 after 'deploy:update_code', 'deploy:link_config_files'
 # after 'deploy:update_code', 'deploy:update_crontab'
 after 'deploy:update_code', 'bundler:bundle_new_release'
+after 'deploy:update_code', 'deploy:migrate'
 after 'deploy:default', 'deploy:restart'
 
 namespace :deploy do
-  # task :default do
-  #   update
-  #   migrate
-  #   restart
-  #   update_crontab
-  # end
 
   desc "Restart Application"
   task :restart, :roles => :app, :except => { :no_release => true } do
@@ -42,6 +37,7 @@ namespace :deploy do
   task :link_config_files, :roles => :app do
     run "ln -fs #{shared_path}/moonshado.conf #{current_release}/config/moonshado.conf"
     run "ln -fs #{shared_path}/websolr.conf #{current_release}/config/websolr.conf"
+    run "ln -fs #{shared_path}/facebook.yml #{current_release}/config/facebook.yml"
   end
 
   desc "Update the crontab file"
