@@ -148,6 +148,22 @@ class User < ActiveRecord::Base
     end
   end
   
+  def rental_units_of_friends(stop=false)
+    res = []
+    if self.fb_friend_ids.present?      
+      self.fb_friend_ids.each do |id|
+        break if res.count >= 20 
+        if friend = User.find_by_fb_user_id(id)
+          res << friend.rental_units
+          unless stop
+            friend.rental_units_of_friends(true)
+          end
+        end        
+      end        
+    end     
+    res.flatten[0...20]         
+  end
+  
   def subscription
     Subscription.new({:plan => self.subscription_plan, :user => self})
   end
