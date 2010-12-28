@@ -23,7 +23,7 @@ class BookingsController < ApplicationController
   end
   
   def update
-    update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
+    update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was updated successfully.')
   end
 
   def reserve

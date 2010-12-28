@@ -76,7 +76,7 @@ class Booking < ActiveRecord::Base
   
   def confirm_by_renter!
     self.confirmed_by_renter_at = DateTime.now
-    self.save!
+    self.save
   end
   
   def other_user_than(user)
