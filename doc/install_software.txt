@@ -51,6 +51,9 @@ sudo su postgres
 sudo vim /etc/postgresql/8.4/main/pg_hba.conf
 > local   all         all                               trust
 
+=====
+sudo aptitude install solr-common
+
 
 =====
 add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
@@ -58,3 +61,4 @@ add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
 
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.ssh/environment
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.profile
+
