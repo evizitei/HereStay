@@ -3,6 +3,7 @@
     %li.current= link_to 'Edit Property'
     .clearfix
 =property_bread_crumbs(['Edit Your Property', 'Save changes'], 1)
+if current_user.vrbo_login.present? && current_user.vrbo_password.present?
 .f_right
   = form_tag load_data_from_vrbo_rental_unit_url(@rental_unit), :method => :put do
     Import From:

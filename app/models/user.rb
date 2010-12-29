@@ -228,8 +228,12 @@ class User < ActiveRecord::Base
   end
   
   def vrbo_listings
-    vl = VrboListing.new(self.vrbo_login, self.vrbo_password)
-    vl.listings
+    if self.vrbo_login.present? && self.vrbo_password.present?
+      vl = VrboListing.new(self.vrbo_login, self.vrbo_password)
+      vl.listings
+    else
+      []
+    end
   end
   
   #get existing or build new rental unit and load data to it from vrbo for user
