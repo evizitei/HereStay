@@ -222,6 +222,22 @@ class RentalUnit < ActiveRecord::Base
   
   # load attributes from vrbo listing
   # currently it loads following attrs: name, description, address fields
+  
+  def load_from_vrbo(id)
+    unless id.blank?
+      vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
+      self.attributes = vl.lisitng_attributes(id)
+      #TODO availability to load some images
+      if self.remote_images && self.remote_images.size > 0
+        if i = Photo.create(:image_url => self.remote_images.first) 
+          fake_params = {}   
+          fake_params[:preview_image_id] = i.id  
+          self.set_primary_photo(fake_params)
+        end
+      end
+    end
+  end
+  
   def load_from_vrbo!
     vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
     self.attributes = vl.lisitng_attributes(self.vrbo_id)

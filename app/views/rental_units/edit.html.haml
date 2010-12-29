@@ -3,8 +3,11 @@
     %li.current= link_to 'Edit Property'
     .clearfix
 =property_bread_crumbs(['Edit Your Property', 'Save changes'], 1)
-= simple_button 'VRBO Calendar', rental_unit_reservations_path(@rental_unit), :class_name => 'f_right'
-= simple_button 'Load VRBO Full Property', load_from_vrbo_rental_unit_path, :class_name => 'f_right', :method => :put
+.f_right
+  = form_tag load_data_from_vrbo_rental_unit_url(@rental_unit), :method => :put do
+    Import From:
+    = select_tag 'vrbo_id', options_for_select(current_user.vrbo_listings.map{|vl| [vl[:name], vl[:vrbo_id]]}), :include_blank => 'VRBO', :style => 'width: 60px;'
+    = submit_tag 'Go'
 .clearfix
 .property_form
   = error_messages_for @rental_unit

@@ -226,4 +226,20 @@ class User < ActiveRecord::Base
                                 :time => Time.at(comment['time'])
                                 )
   end
+  
+  def vrbo_listings
+    vl = VrboListing.new(self.vrbo_login, self.vrbo_password)
+    vl.listings
+  end
+  
+  #get existing or build new rental unit and load data to it from vrbo for user
+  def load_property_from_vrbo(params)
+    if params[:id].blank?
+      unit = self.rental_units.build
+    else
+      unit = self.rental_units.find(params[:id])
+    end
+    unit.load_from_vrbo(params[:vrbo_id])
+    unit
+  end
 end

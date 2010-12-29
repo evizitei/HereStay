@@ -25,6 +25,11 @@ class RentalUnitsController < ApplicationController
     @rental_units = collection
   end
   
+  def load_data_from_vrbo
+    @rental_unit = current_user.load_property_from_vrbo(params)
+    render (@rental_unit.new_record? ? 'new' : 'edit')
+  end
+  
   
   def load_from_vrbo
     rental_unit = current_user.rental_units.find(params[:id])

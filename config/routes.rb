@@ -22,6 +22,7 @@ Micasasucasa::Application.routes.draw do
       post :save
       post :import
       post :preview
+      post :load_data_from_vrbo
     end
     
     member do
@@ -31,6 +32,7 @@ Micasasucasa::Application.routes.draw do
       get :availabilities
       put :preview_update
       post :store_last_comment
+      put :load_data_from_vrbo
     end
     
     resources :bookings do
