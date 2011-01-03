@@ -12,6 +12,6 @@
   .clearfix
 .property_form
   = error_messages_for @rental_unit
-  = render :partial => 'upload_photo'
   = form_for @rental_unit, :rental_unit, :url => preview_update_rental_unit_path(@rental_unit), :html => { :multipart => true} do |f|
     = render 'form', {:f => f}
+= render :partial => 'upload_photo'

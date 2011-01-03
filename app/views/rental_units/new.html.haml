@@ -13,7 +13,8 @@
   .clearfix
 #property_form.property_form
   = error_messages_for @rental_unit
-  = render :partial => 'upload_photo'
+  -#= render :partial => 'upload_photo'
   = form_for @rental_unit, :rental_unit, :url => preview_rental_units_path, :html => { :multipart => true} do |f|
     = render 'form', {:f => f}
+= render :partial => 'upload_photo'
   

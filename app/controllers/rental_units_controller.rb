@@ -70,7 +70,7 @@ class RentalUnitsController < ApplicationController
   
   def preview
     @rental_unit = RentalUnit.new(params[:rental_unit])
-    @rental_unit.set_primary_photo(params)
+    #@rental_unit.set_primary_photo(params)
     respond_to do |format|
       if params[:edit_rental_unit].blank? && @rental_unit.valid?
         format.html
@@ -83,7 +83,7 @@ class RentalUnitsController < ApplicationController
   def preview_update
     @rental_unit = current_user.rental_units.find(params[:id])
     @rental_unit.attributes = params[:rental_unit]
-    @rental_unit.set_primary_photo(params)
+    #@rental_unit.set_primary_photo(params)
     respond_to do |format|
       if params[:edit_rental_unit].blank? && @rental_unit.valid?
         format.html
@@ -122,13 +122,13 @@ class RentalUnitsController < ApplicationController
     end
     
     def create_resource(object)
-      object.set_primary_photo(params)
+      object.save_photos(params)
       object.save
     end
     
     def update_resource(object, attributes)
       object.attributes = attributes
-      object.set_primary_photo(params)
+      object.save_photos(params)
       object.save
     end
     

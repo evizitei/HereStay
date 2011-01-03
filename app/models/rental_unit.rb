@@ -231,8 +231,7 @@ class RentalUnit < ActiveRecord::Base
       if self.remote_images && self.remote_images.size > 0
         if i = Photo.create(:image_url => self.remote_images.first) 
           fake_params = {}   
-          fake_params[:preview_image_id] = i.id  
-          self.set_primary_photo(fake_params)
+          self.photos << i
         end
       end
     end
@@ -319,13 +318,18 @@ class RentalUnit < ActiveRecord::Base
             'url' => self.fb_url}.to_json
   end
   
-  def set_primary_photo(params)
-    unless params[:preview_image_id].blank?
+  def save_photos(params)
+    unless params[:photo_ids].blank?
+      new_photos = Photo.where(:id => params[:photo_ids])
+      (self.photos - new_photos).map(&:destroy)
+      new_photos.each do |p|
+        self.photos << p
+      end 
       if self.new_record?
-        self.primary_photo = Photo.where("rental_unit_id IS NULL").find(params[:preview_image_id])
+        self.primary_photo = Photo.where("rental_unit_id IS NULL and id = ?",[:preview_image_id]).first
       else
-        self.primary_photo = Photo.where("rental_unit_id IS NULL OR rental_unit_id = ?", self.id).find(params[:preview_image_id])
-      end
+        self.photos.find_by_id(params[:preview_image_id]).try(:primary!)
+      end   
     end
   end
   

@@ -1,0 +1,4 @@
+= form_tag load_data_from_vrbo_rental_units_url, :method => (@rental_unit.new_record? ? :post : :put) do
+  Import From:
+  = select_tag 'vrbo_id', options_for_select(current_user.vrbo_listings.map{|vl| [vl[:name], vl[:vrbo_id]]}), :include_blank => 'VRBO', :style => 'width: 60px;'
+  = submit_tag 'Go'

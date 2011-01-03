@@ -3,6 +3,7 @@ Micasasucasa::Application.routes.draw do
   resources :photos do
     collection do
       post :ajaxupload
+      get :upload_form
     end      
   end
   
