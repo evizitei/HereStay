@@ -22,6 +22,7 @@ class PhotosController < ApplicationController
   
   def ajaxupload
     @photo = Photo.new(params[:photo])
+    @photo.primary = false
     if @photo.save
       responds_to_parent do |page|
         page << "$('#picture-fields').prepend(#{render(:partial => 'photo', :object => @photo).dump})"

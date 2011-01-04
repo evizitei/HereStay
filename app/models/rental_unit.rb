@@ -323,6 +323,7 @@ class RentalUnit < ActiveRecord::Base
       new_photos = Photo.where(:id => params[:photo_ids])
       (self.photos - new_photos).map(&:destroy)
       new_photos.each do |p|
+        p.primary = false if p.id.to_s != params[:preview_image_id]
         self.photos << p
       end 
       if self.new_record?
