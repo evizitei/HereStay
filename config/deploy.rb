@@ -74,8 +74,8 @@ namespace :solr do
   task :symlink_and_start, :except => { :no_release => true } do
     run "ln -nfs #{shared_path}/solr #{current_path}/solr"
     run "ls -al #{current_path}/solr/pids/"
-    run "cd #{current_path} && rake sunspot:reindex RAILS_ENV=#{rails_env}"
-    run "cd #{current_path} && rake sunspot:solr:start RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && rake sunspot:solr:start RAILS_ENV=#{rails_env} &&  rake sunspot:reindex RAILS_ENV=#{rails_env}"
+    # run "cd #{current_path} && rake sunspot:reindex RAILS_ENV=#{rails_env}"
   end
 end
 
