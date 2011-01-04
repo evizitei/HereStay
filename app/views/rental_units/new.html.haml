@@ -6,10 +6,8 @@
 .clearfix
 - if current_user.vrbo_login.present? && current_user.vrbo_password.present?
   .f_right
-    = form_tag load_data_from_vrbo_rental_units_url do
-      Import From:
-      = select_tag 'vrbo_id', options_for_select(current_user.vrbo_listings.map{|vl| [vl[:name], vl[:vrbo_id]]}), :include_blank => 'VRBO', :style => 'width: 60px;'
-      = submit_tag 'Go'
+    = form_tag load_data_from_vrbo_rental_units_url, :id => 'vrbo_form' do
+      =render 'vrbo_form'
   .clearfix
 #property_form.property_form
   = error_messages_for @rental_unit

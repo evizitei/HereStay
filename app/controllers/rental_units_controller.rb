@@ -104,6 +104,10 @@ class RentalUnitsController < ApplicationController
     render :text => 'ok'
   end
   
+  def vrbo_listings
+    render :layout => false
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain

@@ -1,4 +1,19 @@
-= form_tag load_data_from_vrbo_rental_units_url, :method => (@rental_unit.new_record? ? :post : :put) do
-  Import From:
-  = select_tag 'vrbo_id', options_for_select(current_user.vrbo_listings.map{|vl| [vl[:name], vl[:vrbo_id]]}), :include_blank => 'VRBO', :style => 'width: 60px;'
-  = submit_tag 'Go'
+Import From:
+%span#vrbo_listings
+  VRBO
+  = image_tag('ajax_small.gif')
+= submit_tag 'Go'
+:javascript
+  $(document).ready(function() {
+    $("#vrbo_form input").attr('disabled', 'disabled');
+    $.post('#{vrbo_listings_rental_units_url}',{}, function(data){
+      $('#vrbo_listings').html(data);
+    })
+      $("#vrbo_form select").live('change', function(){
+        if(parseInt($(this).val()) > 0){
+          $("#vrbo_form input").removeAttr('disabled');
+        }else{
+          $("#vrbo_form input").attr('disabled', 'disabled');
+        }
+      })
+    })
