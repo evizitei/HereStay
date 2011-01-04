@@ -31,6 +31,12 @@ class PhotosController < ApplicationController
     end
   end
   
+  def ajaxupload_remote
+    if !params[:remote_photo].blank? && @photo = Photo.create(:image_url => params[:remote_photo])
+      render :partial => 'photo', :object => @photo
+    end
+  end
+  
   protected
     def begin_of_association_chain
       current_user

@@ -227,13 +227,6 @@ class RentalUnit < ActiveRecord::Base
     unless id.blank?
       vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
       self.attributes = vl.lisitng_attributes(id)
-      #TODO availability to load some images
-      if self.remote_images && self.remote_images.size > 0
-        if i = Photo.create(:image_url => self.remote_images.first) 
-          fake_params = {}   
-          self.photos << i
-        end
-      end
     end
   end
   

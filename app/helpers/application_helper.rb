@@ -272,6 +272,11 @@ module ApplicationHelper
       photos.each do |photo|
         concat render :partial => 'photos/photo', :object => photo
       end
+      if rental_unit.remote_images
+        rental_unit.remote_images.each_with_index do |photo, i|
+          concat render :partial => 'photos/remote_photo', :object => photo, :locals => {:i => i}
+        end
+      end
     end
   end
 end
