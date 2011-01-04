@@ -3,11 +3,6 @@
     %li.current= link_to 'Recent', collection_url
     %li= link_to 'Auction', auction_root_path
   .clearfix
-- unless logged_in?
-  %br
-  %br
-  = fb_login_button
-  \-- Press here to start using HereStay!
 .properties
   = render :partial => 'unit_row', :collection => collection
   =will_paginate(collection,:renderer=>"FacebookLinkRenderer")
