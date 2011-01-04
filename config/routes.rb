@@ -3,6 +3,7 @@ Micasasucasa::Application.routes.draw do
   resources :photos do
     collection do
       post :ajaxupload
+      get :upload_form
     end      
   end
   
@@ -23,6 +24,7 @@ Micasasucasa::Application.routes.draw do
       post :import
       post :preview
       post :load_data_from_vrbo
+      post :vrbo_listings
     end
     
     member do

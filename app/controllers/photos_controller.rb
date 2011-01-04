@@ -22,10 +22,11 @@ class PhotosController < ApplicationController
   
   def ajaxupload
     @photo = Photo.new(params[:photo])
+    @photo.primary = false
     if @photo.save
       responds_to_parent do |page|
-        page << "$('#preview_image_id').val('#{@photo.id}')"; 
-        page << "$('#preview_img').attr('src', '#{@photo.picture.url(:thumb)}')"
+        page << "$('#picture-fields').prepend(#{render(:partial => 'photo', :object => @photo).dump})"
+        page << "redrawPhotos();$('.ajax_photo_loader').hide();"
       end
     end
   end

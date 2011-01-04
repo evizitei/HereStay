@@ -102,6 +102,16 @@ function rentalUnitShare(data){
   
 }
 
+function redrawPhotos(){
+  $('#cluetip-inner #preview_images').html($('#picture-fields').html());
+  $('.count-photos').html($('#picture-fields .photo').size())
+  if($('#picture-fields .photo').size() > 3){
+    $('.thumbs-left-logic, .thumbs-right-logic').show();
+  }else{
+    $('.thumbs-left-logic, .thumbs-right-logic').hide();
+  }
+}
+
 $(document).ready(function() {
   /* Initial new message poll */
   checkNewMessages();
@@ -155,12 +165,60 @@ $(document).ready(function() {
     return false;
   })
   
-  $('#photo_picture').change(function(){
+  $('#photo_picture').live('change', function(){
     $(this).parents('form').submit();
-    $('#preview_img').attr('src', '/images/ajax_small.gif')
+    $(this).val('');
+    $('.ajax_photo_loader').show();
   })
   
-  $('#rental_unit_primary_photo_attributes_picture').focus(function(){
-    $(this).click();
+  $('a.change-photo-logic').cluetip({
+    showTitle: false,
+    width: 350,
+    height: 'auto',
+    sticky: true,
+    activation: 'click',
+    local: true, 
+    hideLocal: true,
+    onShow: function(ct, c){
+      redrawPhotos();
+    }
   });
+  
+  $('.remove-picture-logic').live('click', function(){
+    var block = $('#picture-fields #ph' + $(this).attr('rel'));
+    if($('#picture-fields .photo').size() > 1){
+      if (block.find('input').val() == $('#preview_image_id').val()){
+        $('#preview_image_id').val('0');
+        $('#preview_img').attr('src','/images/no_photo.png');
+      }
+      block.remove();
+    }else{
+      alert("You can't delete last photo! You must upload new photo before.");
+    }
+    redrawPhotos();
+    return false;
+  })
+  
+  $('.make-primary-logic').live('click', function(){
+    $('#picture-fields .photo').removeClass('primary');
+    $('#picture-fields #ph' + $(this).attr('rel')).addClass('primary');
+    $('#preview_image_id').val($(this).attr('rel'));
+    $('#preview_img').attr('src',$('#picture-fields #ph' + $(this).attr('rel') + ' img').attr('src'));
+    redrawPhotos();
+    return false;
+  })
+  
+  $('.thumbs-right-logic').live('click', function () {
+    $('#picture-fields .photo:first').clone().appendTo("#picture-fields");
+    $('#picture-fields .photo:first').remove();
+    redrawPhotos();
+    return false;
+  }, {  duration: 400, speed: 0.95, min: 200  })
+  
+  $('.thumbs-left-logic').live('click', function () {
+    $('#picture-fields .photo:last').clone().prependTo("#picture-fields");
+    $('#picture-fields .photo:last').remove();
+    redrawPhotos();
+    return false;
+  }, {  duration: 400, speed: 0.95, min: 200  })
 });

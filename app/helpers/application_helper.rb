@@ -245,4 +245,33 @@ module ApplicationHelper
       end
     end
   end
+  
+  def primary_picture(rental_unit)
+    unless params[:preview_image_id].blank?
+      p = Photo.unlinked_or_for_rental_unit(rental_unit).find_by_id(params[:preview_image_id])
+    else
+      p = rental_unit.primary_photo
+    end
+    if p && p.picture.file?
+      src = p.picture.url(:thumb)
+      id = p.id
+    end
+    content_tag(:div, :class => 'picture') do
+      concat image_tag(src||'no_photo.png', :id => 'preview_img')
+      concat hidden_field_tag 'preview_image_id', id||0
+    end
+  end
+  
+  def picture_fields(rental_unit)
+    if params[:photo_ids].blank?
+      photos = rental_unit.photos
+    else
+      photos = Photo.unlinked_or_for_rental_unit(rental_unit).where(:id => params[:photo_ids])
+    end
+    content_tag(:div, :id => 'picture-fields') do
+      photos.each do |photo|
+        concat render :partial => 'photos/photo', :object => photo
+      end
+    end
+  end
 end

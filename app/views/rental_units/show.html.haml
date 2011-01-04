@@ -1,6 +1,3 @@
-- unless current_user
-  = fb_login_button
-  \-- Press here to start booking your vacation!
 .f_right= simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)
 %h2{:style => 'width: 420px;'}= @rental_unit.name
 .clearfix

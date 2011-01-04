@@ -1,5 +1,13 @@
-=form_for :photo, :url => ajaxupload_photos_url, :html => { :multipart => true, :target => 'uploadframe'} do |f|
-  .preview_img_btn
-    %div{:style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"}
-      =file_field_tag 'photo[picture]', :size => 1, :style => "opacity: 0;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);"
+%div.multi-upload-form
+  %span.thumbs-left-logic &larr;
+  Photos(
+  %span.count-photos>= @rental_unit.photos.count
+  )
+  %span.thumbs-right-logic &rarr;
+  #preview_images
+  .clearfix
+  =form_for :photo, :url => ajaxupload_photos_url, :html => { :multipart => true, :target => 'uploadframe'} do |f|
+    %div
+      =file_field_tag 'photo[picture]'
+      =image_tag('ajax_small.gif', :class => 'ajax_photo_loader hidden')
 %iframe#uploadframe{:name => 'uploadframe', :src => "about:blank", :height => "0", :frameborder => "0", :width => "0"}

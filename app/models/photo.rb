@@ -21,6 +21,7 @@ class Photo < ActiveRecord::Base
   
   scope :primary, where(:primary => true)
   scope :unlinked_or_for_rental_unit, lambda{|r| where("rental_unit_id IS NULL OR rental_unit_id = ?", r.id) }
+  scope :unlinked, where("rental_unit_id IS NULL")
   
   def primary!
     reset_primary
@@ -41,8 +42,8 @@ class Photo < ActiveRecord::Base
     end
     
     def reassign_primary
-      if photo = rental_unit.photos.first
-        photo.primary!
+      if rental_unit && photo = rental_unit.photos.first
+        photo.primary! 
       end
     end
     
