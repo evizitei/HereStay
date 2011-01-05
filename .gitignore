@@ -12,3 +12,5 @@ autotest/*
 .DS_Store
 public/stylesheets/master.css
 public/stylesheets/temparry.css
+config/database.yml
+config/facebook.yml
