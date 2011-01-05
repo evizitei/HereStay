@@ -35,6 +35,7 @@ Micasasucasa::Application.routes.draw do
       put :preview_update
       post :store_last_comment
       put :load_data_from_vrbo
+      get :promote
     end
     
     resources :bookings do

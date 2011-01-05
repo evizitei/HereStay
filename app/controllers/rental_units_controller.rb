@@ -6,7 +6,9 @@ class RentalUnitsController < ApplicationController
   respond_to :html
 
   def create
-    create!(:notice => 'Rental unit was created successfully', :location => manage_rental_units_url)
+    create! :notice => 'Rental unit was created successfully' do |success, failure| 
+      success.html { redirect_to promote_rental_unit_url(@rental_unit)}
+    end
   end
 
   def update
@@ -106,6 +108,10 @@ class RentalUnitsController < ApplicationController
   
   def vrbo_listings
     render :layout => false
+  end
+  
+  def promote
+    @rental_unit = current_user.rental_units.find(params[:id])
   end
   
   protected

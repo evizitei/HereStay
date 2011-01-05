@@ -1,0 +1,41 @@
+=content_for :submenu do
+  %ul
+    %li.current= link_to 'Add Property'
+=property_bread_crumbs(['Create Your Property', 'Publish Your Property', 'Promote Your Property'], 3)
+= form_tag '', :class => 'promote_property_form' do |f|
+  .f_right= submit_tag "Promote Property"
+  .clearfix
+  .property_form
+    .dataRow
+      = radio_button_tag 'promote_action', '1'
+      = label_tag 'promote_action_1', 'Share this Property on My Wall'
+    .dataRow
+      = radio_button_tag 'promote_action', '2', false, :disabled => 'disabled'
+      = label_tag 'promote_action_2', 'Send this Property in a Message'
+    .dataRow
+      = radio_button_tag 'promote_action', '3', false, :disabled => 'disabled'
+      = label_tag 'promote_action_3', 'Discount this Property'
+    .dataRow
+      = radio_button_tag 'promote_action', '4'
+      = label_tag 'promote_action_4', 'Auctioning Your Property'
+:javascript
+  $(document).ready(function() {
+    $('.promote_property_form').submit(function(){
+      var type = $('input:radio:checked',this).val();
+      if(type == 1){
+        $.ajax({
+          url: '#{share_rental_unit_path(@rental_unit)}',
+          type: "GET",
+          dataType: "json",
+          success: function(data){
+            rentalUnitShare(data);
+          }
+        })
+      }
+      if(type==4){
+        window.location.href = '/auction/auctions/new?lot[property_id]=#{@rental_unit.id}'
+      }
+      return false;
+    })
+  })
+  
