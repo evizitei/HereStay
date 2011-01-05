@@ -10,4 +10,4 @@ production:
   consumer_secret: wjJBWGAXYDzE8Z6V7vHXBiHNixe207HA8yTcILGZw
   oauth_token: 211484270-NviVjsFoo3qja0bswFmBk6CRmBk2yJUQ7T3g5u70
   oauth_token_secret: 4ZV0KS3Ws3lRZvKQxiqgg2cq5BeytRA1fMrMSFx4so
-  callback_url: http://herestay.heroku.com/connectors/twitter/callback
+  callback_url: http://herestay.com/connectors/twitter/callback
