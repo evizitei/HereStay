@@ -4,6 +4,7 @@ class RentalUnitsController < ApplicationController
   before_filter :login_required, :except => %w(index show owned_by availabilities)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
+  rescue_from VrboProxy::Error, :with => :show_errors
 
   def create
     create! :notice => 'Rental unit was created successfully' do |success, failure| 
@@ -159,6 +160,12 @@ class RentalUnitsController < ApplicationController
         #   @paginate_obj = @rental_units
         # end
         @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+      end
+    end
+    
+    def show_errors(err)
+      respond_to do |format|
+        format.html{render :text => "Error: #{err.to_s}"}
       end
     end
 end
