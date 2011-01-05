@@ -1,6 +1,6 @@
 if Rails.env.production?
   ActionMailer::Base.smtp_settings = {  
-    :address              => "herestay.com",
+    :address              => "localhost",
     :port                 => 25,
     :domain               => "herestay.com" 
   }

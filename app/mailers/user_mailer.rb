@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => "donotreply@here-stay.com"
+  default :from => "donotreply@herestay.com"
   
   def owner_message_notification(message)
     @message = message
