@@ -1,0 +1,9 @@
+%div{:id => "rph#{i}", :class => "photo"}
+  .img
+    = image_tag (remote_photo)
+    = hidden_field_tag 'photo_ids[]'
+  .notloaded Not Loaded
+  .actions
+    = link_to 'load', remote_photo, :class => 'load-remote-photo-logic', :rel => i
+    = link_to 'remove', '', :class => 'remove-picture-logic', :rel => "rph#{i}"
+    
