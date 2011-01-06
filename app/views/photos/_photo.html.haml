@@ -1,4 +1,4 @@
-%div{:id => "ph#{photo.id}", :class => "photo#{primary_class(photo)}"}
+%div{:id => "ph#{photo.id}", :class => "photo#{' primary' if primary}"}
   .img
     = image_tag (photo.picture.url(:thumb))
     = hidden_field_tag 'photo_ids[]', photo.id
