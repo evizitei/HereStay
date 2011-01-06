@@ -140,6 +140,9 @@ Micasasucasa::Application.routes.draw do
     member do
       put :make
     end
+    collection do
+      get :search
+    end
   end
   
   namespace "renter" do

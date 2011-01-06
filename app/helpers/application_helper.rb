@@ -220,6 +220,8 @@ module ApplicationHelper
   def advanced_search_path
     if ['lots', 'bids'].include?(controller_name)
       search_auction_lots_path
+    elsif controller_name == 'deals'
+      search_deals_path
     else
       search_rental_units_path
     end

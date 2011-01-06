@@ -18,6 +18,7 @@ class Deal < ActiveRecord::Base
   after_create :run_created_callbacks
   
   scope :active, where(:status => 'active')
+  scope :with_rental_unit_ids, lambda{|rental_unit_ids| where(:rental_unit_id => rental_unit_ids )}
   
   def active?
     status == 'active'
