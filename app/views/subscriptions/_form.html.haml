@@ -1,0 +1,24 @@
+- unless current_user.subscribed?
+  = f.inputs :name => 'Subscription plan' do
+    = f.input :plan, :as => :radio, :collection => Subscription::Plans, :label => "", :required => false
+
+= f.inputs :id => 'billing_info', :name => 'Billing info' do
+  = f.input :change_billing_info, :as => :hidden, :input_html => {:value => true}
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :address1
+  = f.input :address2
+  = f.input :city
+  = f.input :state
+  = f.input :zip
+  = f.input :country, :collection => COUNTRY_CODES
+  = f.input :phone, :as => :phone
+
+  = f.inputs :name => "Credit card" do
+    = f.input :card_number, :label => 'Number', :hint => 'Credit card number, dashes and spaces are okay'
+    = f.input :card_month , :label => 'Month', :hint => "Credit card's expiration date's month", :input_html => {:size => 2}
+    = f.input :card_year, :label => 'Year', :hint => "Credit card's expiration date's 4-digit year", :input_html => {:size => 4}
+    = f.input :card_verification_value, :label => 'CVV Code', :hint => "CVV code on the signature panel, or above the card number on AmEx", :input_html => {:size => 5}
+
+= submit_tag "Save"
+= simple_button 'Cancel', account_path
