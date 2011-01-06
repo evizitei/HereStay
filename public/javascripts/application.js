@@ -55,15 +55,14 @@ function scrollTo(x,y){
 function checkNewMessages(chat_check_url){
   if(typeof( window[ 'user_data' ] ) != "undefined" ){
     chat_check_url = user_data.chat_check_url;
-    delete user_data.chat_check_url;
-    
+    delete user_data.chat_check_url;    
     setInterval(function() {
       $.ajax({
         url: chat_check_url,
         type: "GET",
-              data: user_data,
-              dataType: "json",
-              success: newMessages,
+        data: user_data,
+        dataType: "json",
+        success: newMessages
       })
     }, 10000);
   }
@@ -95,11 +94,10 @@ function rentalUnitShare(data){
         url: url,
         data: {post_id: response.post_id},
         type: "POST",
-        dataType: "json",
+        dataType: "json"
       })
     }
-  });
-  
+  });  
 }
 
 function redrawPhotos(){
