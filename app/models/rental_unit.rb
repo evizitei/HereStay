@@ -315,12 +315,12 @@ class RentalUnit < ActiveRecord::Base
     unless params[:photo_ids].blank?
       new_photos = Photo.where(:id => params[:photo_ids])
       (self.photos - new_photos).map(&:destroy)
-      new_photos.each do |p|
-        p.primary = false if p.id.to_s != params[:preview_image_id]
-        self.photos << p
+      new_photos.each do |photo|
+        photo.primary = false if photo.id.to_s != params[:preview_image_id]
+        self.photos << photo
       end 
       if self.new_record?
-        self.primary_photo = Photo.where("rental_unit_id IS NULL and id = ?",[:preview_image_id]).first
+        self.primary_photo = Photo.where("rental_unit_id IS NULL and id = ?",params[:preview_image_id]).first
       else
         self.photos.find_by_id(params[:preview_image_id]).try(:primary!)
       end   
