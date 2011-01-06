@@ -6,4 +6,10 @@ if Rails.env.production?
   }
 end
 
-ActionMailer::Base.default_url_options[:host] = "herestay.com"  
+if Rails.env.development? && ENV['DEV_URL']
+  ActionMailer::Base.default_url_options[:host] = ENV['DEV_URL']
+  HOST = ENV['DEV_URL']
+else
+  ActionMailer::Base.default_url_options[:host] = "herestay.com"
+  HOST = "herestay.com"
+end
