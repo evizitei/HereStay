@@ -96,7 +96,7 @@ Micasasucasa::Application.routes.draw do
     get :my_rewards
   end
   
-  resource :subscription, :only => [:show, :edit, :update, :destroy] do
+  resource :subscription do
     get :change_plan
   end
   
