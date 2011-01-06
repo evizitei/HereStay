@@ -136,6 +136,12 @@ Micasasucasa::Application.routes.draw do
     end
   end
   
+  resources :deals do
+    member do
+      put :make
+    end
+  end
+  
   namespace "renter" do
     resources :bookings, :only => [:index, :confirm] do
       member do

@@ -57,4 +57,11 @@ class UserMailer < ActionMailer::Base
       end
     end
   end
+  
+  def deal_booking_error_to_owner(deal, booking)
+    @deal = deal
+    @booking = booking
+    
+    mail(:to => @deal.rental_unit.user.email, :subject => "Booking was not created")
+  end
 end

@@ -1,0 +1,6 @@
+= f.inputs do
+  = f.input :rental_unit_id, :as => :select, :collection => current_user.rental_units.map{|u| [truncate(u.name, :length => 50), u.id]}, :required => true
+  = f.input :start_on, :as => :datepicker
+  = f.input :end_on,  :as => :datepicker
+  = f.input :amount
+  = f.input :percent

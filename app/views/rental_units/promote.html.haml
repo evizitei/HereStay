@@ -13,7 +13,7 @@
       = radio_button_tag 'promote_action', '2', false, :disabled => 'disabled'
       = label_tag 'promote_action_2', 'Send this Property in a Message'
     .dataRow
-      = radio_button_tag 'promote_action', '3', false, :disabled => 'disabled'
+      = radio_button_tag 'promote_action', '3', false
       = label_tag 'promote_action_3', 'Discount this Property'
     .dataRow
       = radio_button_tag 'promote_action', '4'
@@ -31,8 +31,9 @@
             rentalUnitShare(data);
           }
         })
-      }
-      if(type==4){
+      } else if(type == 3){
+        window.location.href = '/deals/new?deal[rental_unit_id]=#{@rental_unit.id}'
+      } else if(type==4){
         window.location.href = '/auction/auctions/new?lot[property_id]=#{@rental_unit.id}'
       }
       return false;

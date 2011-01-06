@@ -1,0 +1,9 @@
+= render 'submenu'
+
+.property
+  %h2 Edit Deal
+  = semantic_form_for resource, :url => resource_path do |f|
+    = render 'fields', :f => f
+    = f.buttons do
+      = f.submit 'Save'
+      = link_to 'Cancel', resource_path
