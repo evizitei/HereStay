@@ -247,8 +247,8 @@ module ApplicationHelper
   end
   
   def primary_picture(rental_unit)
-    unless params[:preview_image_id].blank?
-      p = Photo.unlinked_or_for_rental_unit(rental_unit).find_by_id(params[:preview_image_id])
+    unless params[:primary_photo_id].blank?
+      p = Photo.unlinked_or_for_rental_unit(rental_unit).find_by_id(params[:primary_photo_id])
     else
       p = rental_unit.primary_photo
     end
@@ -257,8 +257,8 @@ module ApplicationHelper
       id = p.id
     end
     content_tag(:div, :class => 'picture') do
-      concat image_tag(src||'no_photo.png', :id => 'preview_img')
-      concat hidden_field_tag 'preview_image_id', id||0
+      concat image_tag(src||'no_photo.png', :id => 'primary_photo')
+      concat hidden_field_tag 'primary_photo_id', id||0
     end
   end
   
@@ -270,7 +270,8 @@ module ApplicationHelper
     end
     content_tag(:div, :id => 'picture-fields') do
       photos.each do |photo|
-        concat render :partial => 'photos/photo', :object => photo
+        primary  = (params[:primary_photo_id] == photo.id.to_s || (params[:primary_photo_id].blank? && photo.primary? && photo.rental_unit_id))
+        concat render :partial => 'photos/photo', :object => photo, :locals => {:primary => primary}
       end
       if rental_unit.remote_images
         rental_unit.remote_images.each_with_index do |photo, i|
