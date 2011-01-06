@@ -18,7 +18,7 @@ class DealsController < ApplicationController
   
   def search
     result = RentalUnit.advanced_search_ids(params, current_user)
-    @lots = Deal.active.with_rental_unit_ids(result).paginate(:page => params[:page], :per_page => 10)
+    @deals = Deal.active.with_rental_unit_ids(result).paginate(:page => params[:page], :per_page => 10)
     render 'index'
   end
   
