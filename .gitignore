@@ -12,3 +12,7 @@ autotest/*
 .DS_Store
 public/stylesheets/master.css
 public/stylesheets/temparry.css
+config/facebook.yml
+.idea
+.AppleDouble
+.DS_Store
