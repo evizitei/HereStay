@@ -4,7 +4,7 @@
 #user-form.border
   = semantic_form_for current_user, :url => account_path  do |f|
     = f.semantic_errors
-    .f_left
+    .half_part
       = f.inputs do
         = f.input :use_fb_profile, :label => "Use Facebook profile"
     
@@ -16,7 +16,7 @@
           = f.input :phone, :label => 'Phone:'
           = f.input :sms_starting_at, :label => 'SMSFrom:'
           = f.input :sms_ending_at, :label => 'To:'
-    .f_left    
+    .half_part
       %p VRBO access          
       = f.inputs do
         = f.input :vrbo_login, :label => 'Login:'

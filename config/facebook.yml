@@ -1,15 +1,15 @@
 development:
-  app_id: 139448139436113
-  secret: 8878da4199b3af4cacbf188b15c21517
-  api_key: 866b7e4c4fd445105e4264fdacac8669
-  app_name: here_stay
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local
 test:
-  app_id: 139448139436113
-  secret: 8878da4199b3af4cacbf188b15c21517
-  api_key: 866b7e4c4fd445105e4264fdacac8669
-  app_name: here_stay
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local
 production:
-  app_id: 139448139436113
-  secret: 8878da4199b3af4cacbf188b15c21517
-  api_key: 866b7e4c4fd445105e4264fdacac8669
-  app_name: here_stay
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local
