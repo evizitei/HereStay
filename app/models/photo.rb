@@ -4,8 +4,7 @@ require 'open-uri'
 class Photo < ActiveRecord::Base
   attr_accessor :image_url
   
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :mini => "50x50>" },
-    :url => "http://#{HOST}/system/:attachment/:id/:style/:filename"
+  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :mini => "50x50>" }
   belongs_to :rental_unit
   
   validates_presence_of :image_remote_url, :if => :image_url_provided?, :message => 'is invalid or inaccessible'
