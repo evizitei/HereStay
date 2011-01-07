@@ -12,7 +12,10 @@ autotest/*
 .DS_Store
 public/stylesheets/master.css
 public/stylesheets/temparry.css
-apache-solr-1.4.1
-config/database.yml
 config/facebook.yml
+.idea
+.AppleDouble
+.DS_Store
+config/database.yml
+apache-solr-1.4.1
 public/system
