@@ -25,6 +25,7 @@ class Subscription
     :address1, :zip, :card_number, :city,
     :card_verification_value, :card_month, :card_year,
     :if => :require_billing_info_validation
+
   validate :validate_card_date, :if => :require_billing_info_validation
   
   def initialize(attributes = {})

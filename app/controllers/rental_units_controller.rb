@@ -4,9 +4,12 @@ class RentalUnitsController < ApplicationController
   before_filter :login_required, :except => %w(index show owned_by availabilities)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
+  rescue_from VrboProxy::Error, :with => :show_errors
 
   def create
-    create!(:notice => 'Rental unit was created successfully', :location => manage_rental_units_url)
+    create! :notice => 'Rental unit was created successfully' do |success, failure| 
+      success.html { redirect_to promote_rental_unit_url(@rental_unit)}
+    end
   end
 
   def update
@@ -23,6 +26,11 @@ class RentalUnitsController < ApplicationController
   
   def manage
     @rental_units = collection
+  end
+  
+  def load_data_from_vrbo
+    @rental_unit = current_user.load_property_from_vrbo(params)
+    render (@rental_unit.new_record? ? 'new' : 'edit')
   end
   
   
@@ -65,7 +73,7 @@ class RentalUnitsController < ApplicationController
   
   def preview
     @rental_unit = RentalUnit.new(params[:rental_unit])
-    @rental_unit.set_primary_photo(params)
+    #@rental_unit.set_primary_photo(params)
     respond_to do |format|
       if params[:edit_rental_unit].blank? && @rental_unit.valid?
         format.html
@@ -78,7 +86,7 @@ class RentalUnitsController < ApplicationController
   def preview_update
     @rental_unit = current_user.rental_units.find(params[:id])
     @rental_unit.attributes = params[:rental_unit]
-    @rental_unit.set_primary_photo(params)
+    #@rental_unit.set_primary_photo(params)
     respond_to do |format|
       if params[:edit_rental_unit].blank? && @rental_unit.valid?
         format.html
@@ -99,6 +107,14 @@ class RentalUnitsController < ApplicationController
     render :text => 'ok'
   end
   
+  def vrbo_listings
+    render :layout => false
+  end
+  
+  def promote
+    @rental_unit = current_user.rental_units.find(params[:id])
+  end
+  
   protected
     # Disable not-owner to manage reservations
     def begin_of_association_chain
@@ -117,13 +133,13 @@ class RentalUnitsController < ApplicationController
     end
     
     def create_resource(object)
-      object.set_primary_photo(params)
+      object.save_photos(params)
       object.save
     end
     
     def update_resource(object, attributes)
       object.attributes = attributes
-      object.set_primary_photo(params)
+      object.save_photos(params)
       object.save
     end
     
@@ -144,6 +160,12 @@ class RentalUnitsController < ApplicationController
         #   @paginate_obj = @rental_units
         # end
         @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+      end
+    end
+    
+    def show_errors(err)
+      respond_to do |format|
+        format.html{render :text => "Error: #{err.to_s}"}
       end
     end
 end

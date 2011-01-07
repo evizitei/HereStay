@@ -12,12 +12,8 @@
 .clearfix
 .dataRow
   .image{:style => 'float: left; width: 140px;'}
-    - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
-    -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
-      .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb), :id => 'preview_img')
-    -else
-      .picture=image_tag('no_photo.png', :id => 'preview_img')
-    = hidden_field_tag 'preview_image_id', (@rental_unit.primary_photo ? @rental_unit.primary_photo.id : nil)
+    .btn= link_to image_tag('save_img_button.png'), '#', :class => 'change-photo-logic', :rel => 'div.multi-upload-form'
+    = primary_picture(@rental_unit)
   .address{:style => 'float: right;text-align: right; width: 340px;'}
     .row
       = f.label :name, 'Property Name:'
@@ -32,6 +28,7 @@
       = f.label :zip, 'Zip:'
       = f.text_field :zip
   .clearfix
+.dataRow.hidden= picture_fields(@rental_unit)
 .dataRow
   .f_left= f.label :name, 'Description:'
   .f_right= f.text_area :description,:rows=>5, :class=>'big-text'
@@ -122,10 +119,6 @@
         = f.check_box :wifi
         = f.label :wifi, 'WiFi'
     .clearfix
-    .right-text
-      = f.label :building_other, 'Other:'
-      = f.text_field :building_other, :class => 'med'
-
 
   .data-box.data-box-left
     .all-wrap
@@ -160,10 +153,6 @@
         = f.check_box :washer_dryer
         = f.label :washer_dryer, 'Washer/Dryer'
     .clearfix
-    .right-text
-      = f.label :unit_other, 'Other:'
-      = f.text_field :unit_other, :class => 'med'
-
 
   .clearfix
 .dataRow
@@ -177,3 +166,4 @@
   .right-col
     = f.submit "Post It"
   .clearfix
+= f.text_field :vrbo_id

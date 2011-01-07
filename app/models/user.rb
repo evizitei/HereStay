@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   before_validation :capture_fb_profile, :if => :need_capture_fb_profile?
   
   scope :online , lambda {where(["last_poll_time > ?", (Time.zone.now - 1.minutes)])}
-  scope :except, lambda {|r| where("id != ?", r.id)}
+  scope :except, lambda {|u| where("id != ?", u.id)}
   
   # find or create user by fb-uid and update his oauth token and session data
   def self.for(oauth_obj)
@@ -148,6 +148,22 @@ class User < ActiveRecord::Base
     end
   end
   
+  def rental_units_of_friends(stop=false)
+    res = []
+    if self.fb_friend_ids.present?      
+      self.fb_friend_ids.each do |id|
+        break if res.count >= 20 
+        if friend = User.find_by_fb_user_id(id.to_s)
+          res << friend.rental_units
+          unless stop
+            friend.rental_units_of_friends(true)
+          end
+        end        
+      end        
+    end     
+    res.flatten[0...20]         
+  end
+  
   def subscription
     Subscription.new({:plan => self.subscription_plan, :user => self})
   end
@@ -209,5 +225,25 @@ class User < ActiveRecord::Base
                                 :text => comment['text'],
                                 :time => Time.at(comment['time'])
                                 )
+  end
+  
+  def vrbo_listings
+    if self.vrbo_login.present? && self.vrbo_password.present?
+      vl = VrboListing.new(self.vrbo_login, self.vrbo_password)
+      vl.listings
+    else
+      []
+    end
+  end
+  
+  #get existing or build new rental unit and load data to it from vrbo for user
+  def load_property_from_vrbo(params)
+    if params[:id].blank?
+      unit = self.rental_units.build
+    else
+      unit = self.rental_units.find(params[:id])
+    end
+    unit.load_from_vrbo(params[:vrbo_id])
+    unit
   end
 end

@@ -32,6 +32,7 @@
           = simple_button 'Photos', rental_unit_photos_path(rental_unit), :class_name => 'f_left'
           = simple_button 'Video', rental_unit_video_path(rental_unit), :class_name => 'f_left'
           = simple_button 'Inquiries', rental_unit_inquiries_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Promote', promote_rental_unit_path(rental_unit), :class_name => 'f_left'
           = simple_button 'Reservations', rental_unit_bookings_path(rental_unit), :class_name => 'f_left'
           = simple_button 'Delete', rental_unit_path(rental_unit), :class_name => 'f_left', :method=>:delete
       .left-column

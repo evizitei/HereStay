@@ -1,0 +1,9 @@
+#picture-fields
+  - pictures.photos.each do |picture|
+    .picture
+      = image_tag (picture.picture.url(:thumb))
+      = link_to 'primary', '', :class => 'make-primary-logic'
+      %br
+      = link_to 'remove', '', :class => 'remove-picture-logic'
+      = hidden_field_tag 'picture_ids[]', picture.id
+    

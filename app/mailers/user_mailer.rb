@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => "donotreply@here-stay.com"
+  default :from => "donotreply@herestay.com"
   
   def owner_message_notification(message)
     @message = message
@@ -56,5 +56,12 @@ class UserMailer < ActionMailer::Base
         mail(:to=>renter.email)
       end
     end
+  end
+  
+  def deal_booking_error_to_owner(deal, booking)
+    @deal = deal
+    @booking = booking
+    
+    mail(:to => @deal.rental_unit.user.email, :subject => "Booking was not created")
   end
 end

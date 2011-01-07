@@ -10,8 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-
-ActiveRecord::Schema.define(:version => 20101224160807) do
+ActiveRecord::Schema.define(:version => 20110106165558) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -56,6 +55,18 @@ ActiveRecord::Schema.define(:version => 20101224160807) do
     t.string   "fb_id"
     t.integer  "likes"
     t.datetime "time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "deals", :force => true do |t|
+    t.date     "start_on"
+    t.date     "end_on"
+    t.integer  "cents",          :default => 0
+    t.integer  "user_id"
+    t.integer  "rental_unit_id"
+    t.integer  "percent"
+    t.string   "status",         :default => "active"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

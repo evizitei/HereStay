@@ -17,4 +17,9 @@ namespace :utils do
   task :finish_auctions => :environment do
     Lot.finish!
   end
+  
+  desc "Remove old unlinked photos."
+  task :remove_unlinked_images => :environment do
+    Photo.unlinked.where("created_at < ?", 1.days.ago).map(&:destroy)
+  end
 end

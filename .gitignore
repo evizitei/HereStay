@@ -16,3 +16,5 @@ config/facebook.yml
 .idea
 .AppleDouble
 .DS_Store
+config/database.yml
+public/system

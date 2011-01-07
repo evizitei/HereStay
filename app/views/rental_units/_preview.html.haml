@@ -1,10 +1,6 @@
 .property
   .left-column
-    -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
-      .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
-    -else
-      .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
-    = hidden_field_tag 'preview_image_id', (@rental_unit.primary_photo ? @rental_unit.primary_photo.id : nil)
+    = primary_picture(@rental_unit)
   .right-column
     .title
       == #{@rental_unit.name} 
@@ -13,6 +9,7 @@
     .description{:style => 'margin: 10px 0;'}
       = @rental_unit.description
   .clearfix
+  .hidden= picture_fields(@rental_unit)
   .amenities     
     .left-col
       .left-col
@@ -95,3 +92,5 @@
 = f.hidden_field :sq_footage
 = f.hidden_field :unit_other
 = f.hidden_field :building_other
+
+= f.hidden_field :vrbo_id

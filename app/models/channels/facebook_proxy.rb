@@ -40,19 +40,16 @@ class FacebookProxy
   def self.post_unit_rented(booking)
     rental_unit = booking.rental_unit
     text = "#{rental_unit.name} has been rented from #{booking.start_date.to_s(:short_date)} to #{booking.stop_date.to_s(:short_date)}"
-    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed",
+    options = {
       :message => text,
       :link => rental_unit.fb_url,
-      :name => 'view this property',
-      :picture=> rental_unit.picture(:medium) || ''
-    )
+      :name => 'view this property'
+    }
+p rental_unit.picture(:medium)
+    options[:picture] = rental_unit.picture(:medium) if rental_unit.picture(:medium)
+    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed", options)
     if rental_unit.user.post_fb_wall_updates?
-      FacebookProxy.new(rental_unit.user.access_token).put_object('me', "feed",
-        :message => text,
-        :link => rental_unit.fb_url,
-        :name => 'view this property',
-        :picture=> rental_unit.picture(:medium) || ''
-      )
+      FacebookProxy.new(rental_unit.user.access_token).put_object('me', "feed", options)
     end
   end
 end

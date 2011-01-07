@@ -1,0 +1,12 @@
+= render 'account/header'
+= render 'account/links'
+
+#billing-info
+  %p
+    %b Get Full Features 
+    > Save Changes
+  .info
+    = semantic_form_for @subscription, :as => :subscription, :url => subscription_path, :html => {:method => :post}  do |f|
+      = f.semantic_errors
+      = render 'form', :f => f
+    .clearfix
