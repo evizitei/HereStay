@@ -1,0 +1,15 @@
+development:
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local
+test:
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local
+production:
+  app_id: 127450337319657
+  secret: ad7de00a6921b7dfb42325c46d7ecbf7
+  api_key: 8de4867fb0faaca4e12169b81897624e
+  app_name: listic_local

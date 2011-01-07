@@ -17,4 +17,5 @@ config/facebook.yml
 .AppleDouble
 .DS_Store
 config/database.yml
+apache-solr-1.4.1
 public/system
