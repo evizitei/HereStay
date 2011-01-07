@@ -220,6 +220,8 @@ module ApplicationHelper
   def advanced_search_path
     if ['lots', 'bids'].include?(controller_name)
       search_auction_lots_path
+    elsif controller_name == 'deals'
+      search_deals_path
     else
       search_rental_units_path
     end
@@ -241,6 +243,41 @@ module ApplicationHelper
           #instead 'join' method  to get separator in selected crumbs
           crumb = crumb + ' > ' if crumbs.size > 1 && crumbs.size > i+1
           concat content_tag(:span, crumb, :class => (step > i ? 'selected' : ''))
+        end
+      end
+    end
+  end
+  
+  def primary_picture(rental_unit)
+    unless params[:primary_photo_id].blank?
+      p = Photo.unlinked_or_for_rental_unit(rental_unit).find_by_id(params[:primary_photo_id])
+    else
+      p = rental_unit.primary_photo
+    end
+    if p && p.picture.file?
+      src = p.picture.url(:thumb)
+      id = p.id
+    end
+    content_tag(:div, :class => 'picture') do
+      concat image_tag(src||'no_photo.png', :id => 'primary_photo')
+      concat hidden_field_tag 'primary_photo_id', id||0
+    end
+  end
+  
+  def picture_fields(rental_unit)
+    if params[:photo_ids].blank?
+      photos = rental_unit.photos
+    else
+      photos = Photo.unlinked_or_for_rental_unit(rental_unit).where(:id => params[:photo_ids])
+    end
+    content_tag(:div, :id => 'picture-fields') do
+      photos.each do |photo|
+        primary  = (params[:primary_photo_id] == photo.id.to_s || (params[:primary_photo_id].blank? && photo.primary? && photo.rental_unit_id))
+        concat render :partial => 'photos/photo', :object => photo, :locals => {:primary => primary}
+      end
+      if rental_unit.remote_images
+        rental_unit.remote_images.each_with_index do |photo, i|
+          concat render :partial => 'photos/remote_photo', :object => photo, :locals => {:i => i}
         end
       end
     end

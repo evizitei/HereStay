@@ -1,0 +1,8 @@
+%div{:id => "ph#{photo.id}", :class => "photo#{' primary' if primary}"}
+  .img
+    = image_tag (photo.picture.url(:thumb))
+    = hidden_field_tag 'photo_ids[]', photo.id
+  .actions
+    = link_to 'primary', '', :class => 'make-primary-logic', :rel => photo.id
+    = link_to 'remove', '', :class => 'remove-picture-logic', :rel => "ph#{photo.id}"
+    

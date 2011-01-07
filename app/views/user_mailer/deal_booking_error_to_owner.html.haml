@@ -1,0 +1,31 @@
+Sorry,
+
+%p Booking was not created.
+- if @booking.errors
+  %p
+    %b Errors:
+    %ul
+    - @booking.errors.each do |key, error|
+      %li
+        %b= key.to_s.humanize
+        = error
+
+%p
+  You can visit the application and enter the booking data manually.
+  = link_to 'Click here to create booking', new_rental_unit_booking_url(@deal.rental_unit)
+
+%p
+  %b The new booking details:
+  %br
+  %b Arrive date:
+  = @booking.start_date.to_s(:us_date)
+  
+  %br
+  %b Depart date:
+  = @booking.stop_date.to_s(:us_date)
+  
+  %br
+  %b Amount:
+  = @bid.amount.format
+%p
+  Deal details: #{deal_url(@deal)}

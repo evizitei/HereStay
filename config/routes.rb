@@ -3,6 +3,7 @@ Micasasucasa::Application.routes.draw do
   resources :photos do
     collection do
       post :ajaxupload
+      post :ajaxupload_remote
     end      
   end
   
@@ -22,6 +23,8 @@ Micasasucasa::Application.routes.draw do
       post :save
       post :import
       post :preview
+      post :load_data_from_vrbo
+      post :vrbo_listings
     end
     
     member do
@@ -31,6 +34,8 @@ Micasasucasa::Application.routes.draw do
       get :availabilities
       put :preview_update
       post :store_last_comment
+      put :load_data_from_vrbo
+      get :promote
     end
     
     resources :bookings do
@@ -91,7 +96,7 @@ Micasasucasa::Application.routes.draw do
     get :my_rewards
   end
   
-  resource :subscription, :only => [:show, :edit, :update, :destroy] do
+  resource :subscription do
     get :change_plan
   end
   
@@ -128,6 +133,15 @@ Micasasucasa::Application.routes.draw do
           get :win
         end
       end
+    end
+  end
+  
+  resources :deals do
+    member do
+      put :make
+    end
+    collection do
+      get :search
     end
   end
   

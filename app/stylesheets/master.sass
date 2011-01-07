@@ -546,6 +546,10 @@ div.jGrowl div.jGrowl-notification a
     float: right
   .all-wrap
     float: right
+  .image
+    .btn
+      margin-bottom: -17px
+      position: relative
 .booking_form
   border: solid 1px #bfbfbf
   padding: 10px
@@ -561,15 +565,48 @@ div.jGrowl div.jGrowl-notification a
       font-weight: bold
       span
         font-weight: normal
-
-.preview_img_btn
-  background: url('/images/save_img_button.png') top right no-repeat
-  width: 100px
-  height: 17px
+        
+#preview_images
+  width: 330px
+  height: 104px
+  border: solid 1px #BCBEC0
+  background: #F6F7FA
+  margin-bottom: 10px
   overflow: hidden
-  z-index: 1
-  position: relative 
-  margin-bottom: -35px
+  .photo
+    padding: 5px
+    overflow: hidden
+    width: 100px
+    height: 95px
+    float: left
+    .actions
+      text-align: center
+      height: 15px
+      a
+        font-size: 12px
+        color: #8B8C8D
+    &.primary
+      background: #8B8C8D
+      .actions
+        a
+          color: #fff
+    .img
+      overflow: hidden
+      width: 100px
+      height: 80px
+    img
+      width: 100px
+    .notloaded
+      height: 20px
+      text-align: center
+      font-weight: bold
+      margin-top: -20px
+      position: relative
+      color: #BCBEC0
+      background: #fff
+.thumbs-right-logic, .thumbs-left-logic
+  cursor: hand
+  cursor: pointer
 
 //--------------------- [ account pages ] ---------------------//
 #account-header
@@ -668,3 +705,13 @@ table.bookings
     li
       padding: 5px 0
       color: gray
+//---------------------------[cluetip]-----------------------------//
+
+.cluetip-default 
+  background-color: #EDEEF3
+  #cluetip-outer
+    background-color: #EDEEF3
+  #cluetip-close
+    a
+      color: #8B8C8D
+      

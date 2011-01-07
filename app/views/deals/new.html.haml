@@ -1,0 +1,9 @@
+= render 'submenu'
+
+.property
+  %h2 New Deal
+  = semantic_form_for resource, :url => collection_path do |f|
+    = render 'fields', :f => f
+    = f.buttons do
+      = f.submit 'Add'
+      = link_to 'Cancel', collection_path

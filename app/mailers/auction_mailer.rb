@@ -1,5 +1,5 @@
 class AuctionMailer < ActionMailer::Base
-  default :from => "donotreply@here-stay.com"
+  default :from => "donotreply@herestay.com"
   
   def lot_created(lot)
     mail(:to => lot.property.user.email, :subject => "Auction created") do |format|

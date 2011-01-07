@@ -12,7 +12,8 @@ wget http://rubyforge.org/frs/download.php/71100/ruby-enterprise_1.8.7-2010.02_i
 sudo dpkg -i ruby-enterprise_1.8.7-2010.02_i386_ubuntu10.04.deb
 
 
-sudo aptitude install libjpeg-dev giflib-dev libpng-dev libtiff-dev libfreetype6-dev liblcms-dev libwmf-dev libopenexr-dev libjpeg-dev  libbz2-dev gsfonts libjasper-dev imagemagick libmagickwand-dev libxslt-dev libsqlite3-dev libreadline6 libreadline6-dev
+sudo aptitude install libjpeg-dev giflib-dev libpng-dev libtiff-dev libfreetype6-dev liblcms-dev libwmf-dev libopenexr-dev libjpeg-dev  libbz2-dev gsfonts libjasper-dev imagemagick libmagickwand-dev libxslt-dev libsqlite3-dev
+sudo aptitude install libreadline5 libreadline5-dev
 
 sudo aptitude install exim exim4-config mailutils
 sudo dpkg-reconfigure exim4-config
@@ -51,6 +52,9 @@ sudo su postgres
 sudo vim /etc/postgresql/8.4/main/pg_hba.conf
 > local   all         all                               trust
 
+=====
+sudo aptitude install solr-common
+
 
 =====
 add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
@@ -58,3 +62,4 @@ add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
 
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.ssh/environment
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.profile
+

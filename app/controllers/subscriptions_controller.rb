@@ -4,12 +4,28 @@ class SubscriptionsController < ApplicationController
   before_filter :login_required
   respond_to :html
   
+  def new
+    @subscription = Subscription.new()
+    @subscription.user = current_user
+  end
+  
   def show    
     @billing_info = Recurly::BillingInfo.find(Recurly::Account.find(current_user.id).account_code)
   end
   
   def edit
     @subscription = current_user.subscription
+  end
+  
+  def create
+    @subscription = Subscription.new(params[:subscription])
+    @subscription.user = current_user
+    @subscription.ip_address = request.remote_ip
+
+    if @subscription.valid? && @subscription.save
+      flash[:notice] = "Your was subscriped successfully."
+    end
+    respond_with(@subscription, :location => account_path)
   end
   
   def update

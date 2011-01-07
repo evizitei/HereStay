@@ -222,6 +222,14 @@ class RentalUnit < ActiveRecord::Base
   
   # load attributes from vrbo listing
   # currently it loads following attrs: name, description, address fields
+  
+  def load_from_vrbo(id)
+    unless id.blank?
+      vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
+      self.attributes = vl.lisitng_attributes(id)
+    end
+  end
+  
   def load_from_vrbo!
     vl = VrboListing.new(user.vrbo_login, user.vrbo_password)
     self.attributes = vl.lisitng_attributes(self.vrbo_id)
@@ -303,13 +311,19 @@ class RentalUnit < ActiveRecord::Base
             'url' => self.fb_url}.to_json
   end
   
-  def set_primary_photo(params)
-    unless params[:preview_image_id].blank?
+  def save_photos(params)
+    unless params[:photo_ids].blank?
+      new_photos = Photo.where(:id => params[:photo_ids])
+      (self.photos - new_photos).map(&:destroy)
+      new_photos.each do |photo|
+        photo.primary = false if photo.id.to_s != params[:primary_photo_id]
+        self.photos << photo
+      end 
       if self.new_record?
-        self.primary_photo = Photo.where("rental_unit_id IS NULL").find(params[:preview_image_id])
+        self.primary_photo = Photo.where("rental_unit_id IS NULL and id = ?",params[:primary_photo_id]).first
       else
-        self.primary_photo = Photo.where("rental_unit_id IS NULL OR rental_unit_id = ?", self.id).find(params[:preview_image_id])
-      end
+        self.photos.find_by_id(params[:primary_photo_id]).try(:primary!)
+      end   
     end
   end
   

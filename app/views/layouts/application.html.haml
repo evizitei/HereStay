@@ -20,11 +20,15 @@
     = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
     %a{:name=>'top'}
     #sidebar
-      - if current_user
+      - if logged_in?
         .current-user
           .f_left= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"thumb")
           .f_left= fb_name(:uid => current_user.fb_user_id, :useyou => false)
           .clearfix
+      - else
+        .current-user
+          = fb_login_button
+          \-- Press here to start using HereStay!
       #menu
         %ul
           = li_link_to('All Properties', rental_units_url, :class => 'all-properties')

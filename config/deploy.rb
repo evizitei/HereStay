@@ -14,11 +14,13 @@ set :run_method, :run
 set :scm, :git
 set :deploy_via, :remote_cache
 
+before 'deploy:update_code', 'solr:stop'
 after 'deploy:update_code', 'deploy:link_db_config'
 after 'deploy:update_code', 'deploy:link_config_files'
 # after 'deploy:update_code', 'deploy:update_crontab'
 after 'deploy:update_code', 'bundler:bundle_new_release'
 after 'deploy:update_code', 'deploy:migrate'
+after 'deploy:update_code', 'solr:symlink_and_start'
 after 'deploy:default', 'deploy:restart'
 
 namespace :deploy do
@@ -53,7 +55,27 @@ namespace :deploy do
   task :rake, :roles => [:app] do
     run "cd #{current_path} && rake #{ENV['TASK']} RAILS_ENV=#{rails_env}"
   end
+end
 
+namespace :solr do
+  desc  "Stop solr"
+  task :stop do
+    run "cd #{current_path} && rake sunspot:solr:stop RAILS_ENV=#{rails_env}; true;"
+  end
+  
+  desc  "Start solr"
+  task :star do
+    run "cd #{current_path} && rake sunspot:solr:start RAILS_ENV=#{rails_env}; true;"
+  end
+  
+  desc <<-DESC
+  Symlink in-progress deployment to a shared Solr index.
+  DESC
+  task :symlink_and_start, :except => { :no_release => true } do
+    run "ln -nfs #{shared_path}/solr #{current_path}/solr"
+    run "cd #{current_path} && rake sunspot:solr:start RAILS_ENV=#{rails_env}; true"
+    run "cd #{current_path} && rake sunspot:reindex RAILS_ENV=#{rails_env}; true"
+  end
 end
 
 desc "Generate a maintenance.html to disable requests to the application. Ex.: cap production deploy:web:disable TEMPLATE=public/rebith.html"
