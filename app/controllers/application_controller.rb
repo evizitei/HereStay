@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_from_params
   before_filter :oauth_obj
   before_filter :load_info_for_sidebar
+  after_filter :set_headers
 protected
   
   def oauth_obj
@@ -55,5 +56,9 @@ protected
   
   def user_puls
     current_user.pulse! if current_user
+  end
+  
+  def set_headers
+    response.headers['P3P'] = 'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"'
   end
 end
