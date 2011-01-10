@@ -4,6 +4,7 @@ describe MessagesController do
   describe "Chat polling" do
 
     before(:each) do
+      pending
       owner = Factory(:user,:fb_user_id=>"12345")
       unit = Factory(:rental_unit,:user_id=>owner.id)
       @booking = Factory(:booking,:rental_unit=>unit)
@@ -34,6 +35,14 @@ describe MessagesController do
       get(:poll_chat,:user=>@user.fb_user_id,:booking=>@booking.id,
           :last_message=>"")
       assigns(:list).size.should == @messages.size
+    end
+    
+    it "updates the users poll time to indicate their online status" do
+      poll_time = 1.hour.ago
+      @user.update_attributes!(:last_poll_time=>poll_time)
+      get(:poll_chat,:user=>@user.fb_user_id,:booking=>@booking.id,
+          :last_message=>"")
+      @user.reload.last_poll_time.should_not == poll_time
     end
   end
 end

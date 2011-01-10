@@ -5,8 +5,6 @@ require 'rails/all'
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
-require "lib/chat_poll_action"
-require "lib/chat_post_action"
 
 module Micasasucasa
   class Application < Rails::Application
@@ -16,7 +14,7 @@ module Micasasucasa
 
     # Add additional load paths for your own custom dirs
     # config.load_paths += %W( #{config.root}/extras )
-    config.autoload_paths += %W( #{config.root}/app/models/channels)
+    config.autoload_paths += %W( #{config.root}/app/models/channels #{config.root}/app/models/funds #{config.root}/app/models/auction)
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

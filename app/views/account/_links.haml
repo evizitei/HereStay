@@ -1,0 +1,7 @@
+.links
+  = link_to 'Edit', edit_account_path, :class => current_page?(edit_account_path) ? 'current' : ''
+  - if current_user.subscribed?
+    = link_to 'My Billing Info', subscription_path, :class => current_page?(subscription_path) ? 'current' : ''
+    = link_to 'Subscriptions', change_plan_subscription_path, :class => current_page?(change_plan_subscription_path) ? 'current' : ''
+  - else
+    = link_to 'Get Full Features', new_subscription_path, :class => current_page?(subscription_path) ? 'current' : ''

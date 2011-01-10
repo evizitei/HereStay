@@ -1,0 +1,17 @@
+= render 'account/header'
+= render 'account/links'
+
+.border{:style => "padding: 10px"}
+  Blah blah blah...
+  = semantic_form_for @subscription, :as => :subscription, :url => subscription_path, :html => {:method => :put}  do |f|
+    = f.semantic_errors 
+    = f.inputs do
+      - case current_user.subscription_plan
+      - when "free"
+        %input{ :type => "checkbox", :value => "advanced", :name => "subscription[plan]", :id => "subscription_plan_advanced"}
+        %label{ :for => "subscription_plan_advanced" } Agree with terms & subscribe to advanced plan.        
+      - when "advanced"
+        %input{ :type => "checkbox", :value => "free", :name => "subscription[plan]", :id => "subscription_plan_free"}
+        %label{ :for => "subscription_plan_free" } Cancel advanced subscription.
+    = submit_tag "Accept"
+    = simple_button 'Cancel', account_path

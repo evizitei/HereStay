@@ -1,0 +1,111 @@
+= error_messages_for @rental_unit
+%table.dataTable
+  %tbody
+    %tr.dataRow
+      %th.label Property Name:
+      %td.data= f.text_field :name
+      %td.rightCol
+    %tr.dataRow
+      %th.label Description:
+      %td.data= f.text_area :description,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Address Line 1:
+      %td.data= f.text_field :address
+      %td.rightCol
+    %tr.dataRow
+      %th.label Address Line 2:
+      %td.data= f.text_field :address_2
+      %td.rightCol
+    %tr.dataRow
+      %th.label City:
+      %td.data= f.text_field :city
+      %td.rightCol
+        =f.label :state,"State:"
+        =f.text_field :state
+    %tr.dataRow
+      %th.label Country:
+      %td.data= f.text_field :country
+      %td.rightCol
+    %tr.dataRow
+      %th.label Zip:
+      %td.data= f.text_field :zip
+      %td.rightCol
+    %tr.dataRow
+      %th.label VRBO ID:
+      %td.data= f.text_field :vrbo_id,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Pricing:
+      %td.data
+        %table
+          %tbody
+            %tr
+              %th
+              %th High
+              %th Mid
+              %th Low
+            %tr
+              %td Nightly
+              %td= f.text_field :nightly_high_price,:size=>6
+              %td= f.text_field :nightly_mid_price,:size=>6
+              %td= f.text_field :nightly_low_price,:size=>6
+            %tr
+              %td Weekly
+              %td= f.text_field :weekly_high_price,:size=>6
+              %td= f.text_field :weekly_mid_price,:size=>6
+              %td= f.text_field :weekly_low_price,:size=>6
+      %td.rightCol
+    %tr.dataRow
+      %th.label Pricing Description:
+      %td.data= f.text_area :pricing,:rows=>5
+      %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+        
+        
+        
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+        
+    %tr.dataRow
+      %th.label Photo:
+      - @rental_unit.build_primary_photo unless @rental_unit.primary_photo
+      = f.fields_for :primary_photo do |p|
+        = p.hidden_field :primary, :value => true
+        %td.data= p.file_field :picture
+        %td.rightCol
+    %tr.spacer
+      %td{:colspan=>3}
+        %hr
+    %tr.dataRow
+      %th.label Bedrooms:
+      %td.data= f.text_field :bedrooms, :size => 4, :maxlength => 3
+      %td.rightCol
+    %tr.dataRow
+      %th.label Bathrooms:
+      %td.data= f.text_field :bathrooms, :size => 4, :maxlength => 3
+      %td.rightCol
+    %tr.dataRow
+      %th.label Adults:
+      %td.data= f.text_field :adults, :size => 4, :maxlength => 3
+      %td.rightCol
+    %tr.dataRow
+      %th.label Kids:
+      %td.data= f.text_field :kids, :size => 4, :maxlength => 3
+      %td.rightCol
+  %tfoot
+    %tr.dataRow
+      %th.label
+      %td.data
+        %label.fbButton= f.submit "Save Changes"
+        %label.fbButton
+          =link_to content_tag(:input,nil,{:type=>"button",:value=>"Cancel"}),manage_rental_units_path

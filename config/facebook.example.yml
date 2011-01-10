@@ -1,0 +1,5 @@
+production:
+  app_id: 111111111111111
+  secret: b71a7b71a7b71a7b71a7b71a7b71a7
+  api_key: b71a7b71a7b71a7b71a7b71a7b71a7
+  app_name: app_name

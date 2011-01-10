@@ -1,0 +1,42 @@
+.f_left
+  = fb_button 'Edit Account', edit_account_path
+  = fb_button 'My Properties', manage_rental_units_path
+  - unless current_user.subscribed?
+    = fb_button "Subscribe for Full Features", edit_subscription_path
+%br
+%br
+#user_info
+  %p
+    %strong Name:
+    =fb_name(:uid=>current_user.fb_user_id)
+  %p
+    %strong Pic:
+    =fb_profile_pic(:size=>"small",:uid=>current_user.fb_user_id)    
+  -if current_user.email
+    %p
+      %strong Email:
+      =current_user.email
+  -if current_user.vrbo_login
+    %p
+      %strong VRBO Username:
+      =current_user.vrbo_login
+  -if current_user.twitter?
+    %p
+      %strong Twitter:
+      =current_user.twitter_name
+  - if current_user.subscribed?
+    %p
+      %strong Subscription plane:
+      = current_user.subscription_plan.humanize
+      %br
+      = fb_button "Change subscription plane", edit_subscription_path
+      = fb_button "Cancel subscription", subscription_path, :method => :delete
+
+.submenu{:style => 'border: solid 1px #FFC67D; margin-bottom: 10px;'}
+  %div{:class => "item#{' cur' if controller.action_name == 'show'}"}
+    =link_to 'My Stays', account_url
+  %div{:class => "item#{' cur' if controller.action_name == 'my_place'}"}
+    =link_to 'My Place', my_place_account_url 
+  %div{:class => "item#{' cur' if controller.action_name == 'my_rewards'}"}
+    =link_to 'My Rewards', my_rewards_account_url 
+  .clearfix

@@ -1,8 +1,8 @@
 #video_form
   %form{ :action=> "#{@upload_token[:url]}?nexturl=#{save_rental_unit_video_url(@rental_unit)}", :method=>"post", :enctype=>"multipart/form-data"}
     %p 
-      The video you upload here will be hosted on our YouTube account, and will link back to your listing.
-      It will also be displayed on your listing page anytime someone on facebook looks at this listing.
+      The video you upload here will be hosted on our YouTube account, and will link back to your property.
+      It will also be displayed on your property page anytime someone on facebook looks at this property.
     %input{:id=>"file",:type=>"file",:name=>"file"}
     %input{:type=>"hidden",:name=>"token",:value=>@upload_token[:token]}
     %input{:type=>"submit",:value=>"Upload"}

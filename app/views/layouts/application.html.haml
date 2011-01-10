@@ -1,14 +1,70 @@
-!!!
 %html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
   %head
-    %title HereStay
-    -if @og_meta
-      %meta{:property=>"og:title",:content=>@og_meta[:title]}
-      %meta{:property=>"og:type",:content=>@og_meta[:type]}
-      %meta{:property=>"og:image",:content=>@og_meta[:image]}
-      %meta{:property=>"og:url",:content=>@og_meta[:url]}
-      %meta{:property=>"og:site_name",:content=>@og_meta[:site_name]}
-      %meta{:property=>"og:app_id",:content=>@og_meta[:app_id]}
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8'}
+    %meta{:property=>"og:app_id", :content=> Facebook::APP_ID}
+
+    = stylesheet_link_tag "formtastic.css", "formtastic_changes.css", "jacked_fb_styles", '/javascripts/cluetip/jquery.cluetip.css', '/jquery-ui/css/redmond/jquery-ui-1.8.2.custom.css', '/fancybox/jquery.fancybox-1.3.4.css', 'jquery.jgrowl', '/fullcalendar/fullcalendar.css', 'master'
+
+    = javascript_include_tag "jquery", "rails", "/jquery-ui/js/jquery-ui-1.8.2.custom.min.js", "/fancybox/jquery.fancybox-1.3.4.pack.js", "cluetip/jquery.hoverIntent.js", 'cluetip/jquery.cluetip.js', "application", 'jquery.jgrowl', '/fullcalendar/fullcalendar.min.js'
     = csrf_meta_tag
+
+    -if current_user && ENV['NO_CHAT'].blank?
+      :javascript
+        var user_data = {
+          "user" : "#{current_user.fb_user_id}",
+          "last_message" : "#{current_user.messages.by_date.last.try(:id)}",
+          "chat_check_url": "#{chat_check_url}",
+          "except_chat": "#{@booking.id if @booking}"
+        };
   %body
-    = yield 
+    = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
+    %a{:name=>'top'}
+    #sidebar
+      - if logged_in?
+        .current-user
+          .f_left= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"thumb")
+          .f_left= fb_name(:uid => current_user.fb_user_id, :useyou => false)
+          .clearfix
+      - else
+        .current-user
+          = fb_login_button
+          \-- Press here to start using HereStay!
+      #menu
+        %ul
+          = li_link_to('All Properties', rental_units_url, :class => 'all-properties')
+          - if current_user && current_user.subscribed?
+            = li_link_to('My Properties', manage_rental_units_url, :class => 'my-properties')
+            = li_link_to('Reservations', bookings_url, :class => 'reservations sub')
+          = li_link_to('My Account', account_url, :class => 'account')
+          = li_link_to('Inquiries', inquiries_url, :class => 'inquiries')
+          = li_link_to('Reservations', renter_bookings_url, :class => 'reservations')
+          = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
+          
+      - if @online_rental_units.present?
+        .suggestion
+          %h3 Chat Now
+          - @online_rental_units.each do |unit|
+            - if pic = unit.picture(:thumb)
+              = link_to image_tag(pic), rental_unit_path(unit)
+
+      - if @my_network_properties.present?
+        .suggestion
+          %h3 My Network Properties                
+          - @my_network_properties.each do |unit|
+            - if pic = unit.picture(:thumb)
+              = link_to image_tag(pic), rental_unit_path(unit)
+            
+    #main
+      #header
+        #logo= link_to image_tag('herestay2.png'), root_path
+        #like-button
+          = render 'shared/like_button'
+        .clearfix
+        = display_flashes
+        = render 'shared/search_new'
+        .submenu= yield :submenu
+      = yield :bread_crumbs
+      #content
+        = yield
+      #fb-root
+      = fb_connect_async_js

@@ -4,4 +4,4 @@
 
 %p== You are scheduled to stay there from #{@booking.start_date.strftime("%m/%d/%Y")} to #{@booking.stop_date.strftime("%m/%d/%Y")} for just $#{@booking.amount}  Follow the link below to confirm this booking:
 
-=link_to "Confirm My Vacation!",renter_confirm_booking_url(@booking)
+=link_to "Confirm My Vacation!", confirm_renter_booking_url(@booking)

@@ -10,7 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101103163742) do
+ActiveRecord::Schema.define(:version => 20110106165558) do
+
+  create_table "bids", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "cents"
+    t.integer  "lot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "winning",    :default => false, :null => false
+  end
 
   create_table "booking_messages", :force => true do |t|
     t.string   "user_fb_id"
@@ -18,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
     t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "recipient_id"
   end
 
   create_table "bookings", :force => true do |t|
@@ -37,6 +47,30 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
 
   add_index "bookings", ["rental_unit_id"], :name => "index_bookings_on_rental_unit_id"
 
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "fb_user_id"
+    t.integer  "rental_unit_id"
+    t.text     "text"
+    t.string   "fb_id"
+    t.integer  "likes"
+    t.datetime "time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "deals", :force => true do |t|
+    t.date     "start_on"
+    t.date     "end_on"
+    t.integer  "cents",          :default => 0
+    t.integer  "user_id"
+    t.integer  "rental_unit_id"
+    t.integer  "percent"
+    t.string   "status",         :default => "active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -55,6 +89,39 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
     t.integer  "booking_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "funds", :force => true do |t|
+    t.string   "type"
+    t.string   "state"
+    t.integer  "user_id"
+    t.integer  "document_id"
+    t.string   "document_type"
+    t.integer  "cents",          :default => 0, :null => false
+    t.string   "transaction_id"
+    t.text     "description"
+    t.datetime "processed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "lots", :force => true do |t|
+    t.string   "title"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "min_bid_cents"
+    t.integer  "min_nights"
+    t.text     "terms"
+    t.boolean  "socially_connected"
+    t.boolean  "stayed_before"
+    t.integer  "property_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "arrive_on"
+    t.date     "depart_on"
+    t.boolean  "accept_bids_under_minimum", :default => false, :null => false
+    t.text     "cancel_bid_policy"
+    t.boolean  "completed",                 :default => false, :null => false
   end
 
   create_table "photos", :force => true do |t|
@@ -103,6 +170,33 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
     t.string   "vrbo_id"
     t.integer  "user_id"
     t.string   "country"
+    t.integer  "bedrooms"
+    t.integer  "bathrooms"
+    t.integer  "adults"
+    t.integer  "kids"
+    t.boolean  "balcony",              :default => false
+    t.boolean  "dishwasher",           :default => false
+    t.boolean  "fireplace",            :default => false
+    t.boolean  "hardwood_floors",      :default => false
+    t.boolean  "patio",                :default => false
+    t.boolean  "refrigerator",         :default => false
+    t.boolean  "microwave",            :default => false
+    t.boolean  "washer_dryer",         :default => false
+    t.boolean  "clubhouse",            :default => false
+    t.boolean  "exercise_room",        :default => false
+    t.boolean  "on_site_laundry",      :default => false
+    t.boolean  "on_site_manager",      :default => false
+    t.boolean  "security_gate",        :default => false
+    t.boolean  "swimming_pool",        :default => false
+    t.boolean  "tennis_courts",        :default => false
+    t.boolean  "parking",              :default => false
+    t.boolean  "wifi",                 :default => false
+    t.string   "unit_other"
+    t.string   "building_other"
+    t.integer  "floors"
+    t.integer  "located_on_floor"
+    t.string   "year_built"
+    t.string   "sq_footage"
   end
 
   add_index "rental_units", ["fb_user_id"], :name => "index_rental_units_on_fb_user_id"
@@ -142,6 +236,14 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
     t.datetime "updated_at"
   end
 
+  create_table "user_fb_streams", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "rental_unit_id"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.datetime "authorized_at"
     t.string   "fb_user_id"
@@ -160,6 +262,24 @@ ActiveRecord::Schema.define(:version => 20101103163742) do
     t.string   "twitter_secret"
     t.string   "twitter_token"
     t.string   "twitter_name"
+    t.string   "first_name"
+    t.string   "middle_initial"
+    t.string   "last_name"
+    t.string   "company"
+    t.boolean  "use_fb_profile",        :default => false
+    t.datetime "last_poll_time"
+    t.string   "phone"
+    t.time     "sms_starting_at"
+    t.time     "sms_ending_at"
+    t.text     "fb_friend_ids"
+    t.string   "fb_location"
+    t.datetime "fb_location_update_at"
+    t.string   "fb_lng"
+    t.string   "fb_lat"
+    t.string   "subscription_plan"
+    t.boolean  "valid_country",         :default => false
+    t.boolean  "update_twitter",        :default => false, :null => false
+    t.boolean  "update_fb_wall",        :default => false, :null => false
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"

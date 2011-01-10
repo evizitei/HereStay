@@ -1,0 +1,22 @@
+%html{"xmlns:fb"=>"http://www.facebook.com/2008/fbml"}
+  %head
+    %meta{'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8'}
+    %meta{:property=>"og:app_id", :content=> Facebook::APP_ID}
+    / = stylesheet_link_tag "mobile"
+    = javascript_include_tag "jquery", "rails", "application"
+    = csrf_meta_tag
+    
+    -if current_user && ENV['NO_CHAT'].blank?
+      :javascript
+        var user_data = {
+          "user" : "#{current_user.fb_user_id}",
+          "last_message" : "#{current_user.messages.by_date.last.try(:id)}",
+          "chat_check_url": "#{chat_check_url}",
+          "except_chat": "#{@booking.id if @booking}"
+        };
+  %body
+    %a{:name=>'top'}
+    = display_flashes
+    = yield
+    #fb-root
+    = fb_connect_async_js

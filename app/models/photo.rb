@@ -4,13 +4,10 @@ require 'open-uri'
 class Photo < ActiveRecord::Base
   attr_accessor :image_url
   
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>" },
-                      :storage => :s3,:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
-                      :path => "child/:attachment/:id/:style/:basename.:extension",
-                      :s3_host_alias => "s3.micasa-fb.com", 
-                      :bucket => "s3.micasa-fb.com", 
-                      :url=>":s3_alias_url"
-                      
+  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :mini => "50x50>" },
+    :url => "http://#{HOST}/system/:attachment/:id/:style/:filename",
+    :path => ":rails_root/public/system/:attachment/:id/:style/:filename"
+  
   belongs_to :rental_unit
   
   validates_presence_of :image_remote_url, :if => :image_url_provided?, :message => 'is invalid or inaccessible'
@@ -20,6 +17,8 @@ class Photo < ActiveRecord::Base
   after_destroy :reassign_primary, :if => :primary?
   
   scope :primary, where(:primary => true)
+  scope :unlinked_or_for_rental_unit, lambda{|r| where("rental_unit_id IS NULL OR rental_unit_id = ?", r.id) }
+  scope :unlinked, where("rental_unit_id IS NULL")
   
   def primary!
     reset_primary
@@ -33,15 +32,15 @@ class Photo < ActiveRecord::Base
     
     def assign_primary
       if self.primary?
-        reset_primary
-      elsif !self.rental_unit.photos.primary.exists?
+        reset_primary if self.rental_unit
+      elsif !self.rental_unit || !self.rental_unit.photos.primary.exists?
         self.primary = true
       end
     end
     
     def reassign_primary
-      if photo = rental_unit.photos.first
-        photo.primary!
+      if rental_unit && photo = rental_unit.photos.first
+        photo.primary! 
       end
     end
     

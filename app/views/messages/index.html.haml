@@ -1,0 +1,102 @@
+.properties
+  = simple_button 'Availability Calendar', [parent.rental_unit, :reservations], :class_name => 'f_right'
+  .clearfix
+  .property
+    .left-column
+      -if parent.rental_unit.primary_photo && parent.rental_unit.primary_photo.picture.file?
+        .picture
+          =link_to image_tag(parent.rental_unit.primary_photo.picture.url(:thumb)), rental_unit_path(parent.rental_unit)
+      -else
+        %a{:href => rental_unit_path(parent.rental_unit)}
+          .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+        
+    .right-column
+      .f_right= belongs_to_friend_icon current_user, parent.rental_unit
+      .title
+        = parent.rental_unit.name
+        %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid => parent.rental_unit.user.fb_user_id)}
+        .clearfix
+      .description
+        = truncate(parent.rental_unit.description, :length => 150, :separator => ' ')
+      .buttons
+        .f_left= render(:partial=>"rental_units/share_unit",:object => parent.rental_unit)
+        -if parent.rental_unit.is_owner?(current_user) && parent.created?
+          =simple_button 'Reserve Property', [:reserve, parent ], :class => 'f_left'
+    .clearfix
+    .messages{:id => "booking_#{parent.id}"}
+      .listing
+        - parent.booking_messages.by_date.each do |message|
+          .message{:class=>message.html_class, :id => "message_#{message.id}"}
+            .user
+              = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
+            .arrow
+              %br
+            .body
+              %strong=message.message
+            .clearfix
+      .form
+        %a{:name => "messages_box_#{parent.id}", :style => "position:relative;top:-100px;z-index:9999999999999;"}
+        = form_for :booking_message, :url=> booking_messages_path(parent), :html => {:method => :post, :id => "chat_form", :onsubmit => "onSubmit(); return false;"} do |f|
+          .f_right= f.submit "Comment"
+          .f_right=f.text_area :message
+          .f_right= fb_profile_pic(:uid => current_user.fb_user_id, :size => "thumb")
+          .clearfix
+
+
+
+
+
+
+:javascript
+  var polling_data = {
+      "last_message" : "#{parent.booking_messages.by_date.last.try(:id)}"};
+
+  $(document).ready(function() {
+    $("#booking_message_message").focus();
+    setInterval(function() {
+      $.ajax({
+        url: "#{collection_url}",
+        type: "GET",
+              data: polling_data,
+              dataType: "json",
+              success: appendMessages,
+            })
+          }, 10000);
+        });
+
+        function onSubmit() {
+          $.ajax({
+            url: "#{collection_url}",
+            type: "POST",
+            dataType: "json",
+            data: $("#chat_form").serialize(),
+            success: appendMessages,
+          });
+          $("#booking_message_message").val("").focus();
+        }
+        
+        function appendMessages(data){
+          var count = 0;
+          $.each(data, function(i, item) {
+            appendMessage(item);
+            count++;
+          });
+          if(count > 0) {scrollDown();}
+        }
+        
+        function appendMessage(item){
+          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"' linked='false'></fb:name></a>" + "</div>"
+          $("#booking_messages").append(html_message);
+          polling_data["last_message"] = item.id;
+        }
+
+        function scrollDown() {
+          FB.XFBML.parse(document.getElementById('booking_messages'));
+          var messages = document.getElementById("booking_messages");
+          //messages.scrollTop = messages.scrollHeight;
+          if(parseInt(messages.scrollHeight) > 600){
+            window.location.href = '#messages_bottom';
+          }else{
+            window.location.href = '#messages_top';
+          }
+        }

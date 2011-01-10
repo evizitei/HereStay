@@ -1,92 +1,74 @@
 class BookingsController < ApplicationController
-  before_filter :oauth_obj
-  before_filter :get_rental_unit, :only => %w(index new create)
-  before_filter :get_booking, :only => %w(show confirm exec_confirm wall_post renter_confirm edit update)
+  inherit_resources
+  layout 'application'
   
-  rescue_from ActiveRecord::RecordNotSaved, :with => :confirmation_error
+  before_filter :login_required
+  
+  defaults :resource_class => Booking, :collection_name => 'bookings', :instance_name => 'booking'
   respond_to :html
-  def index
-    @bookings = @rental_unit.bookings
-  end
+  belongs_to :rental_unit, :optional => true
+  actions :index, :new, :create, :edit, :update, :show, :reserve, :exec_reserve
+  helper_method :parent
   
-  def show
+  has_scope :reserved, :only =>[:index], :type => :boolean, :default => true
+  has_scope :not_confirmed, :type => :boolean, :default => true, :only =>[:index] do |controller, scope, value|
+    controller.params[:confirmed].blank? ? scope.not_confirmed : scope
   end
+  has_scope :confirmed, :only =>[:index]  
   
-  def new
-    @booking = @rental_unit.bookings.build
-  end
+  rescue_from ActiveRecord::RecordNotSaved, :with => :reservation_error
   
   def create
-    @booking = @rental_unit.bookings.build(params[:booking])
-    @booking.complete
-    respond_to do |format|
-      if @booking.save
-        flash[:notice] = 'Booking was created successfully.'
-        format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
-      else
-        format.html{render 'new'}
-      end
-    end
-  end
-  
-  def edit
-     @rental_unit = @booking.rental_unit
+    create!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was created successfully.')
   end
   
   def update
-    if @booking.update_attributes(params[:booking])
-      flash[:notice] = 'Booking was updated successfully.'
-    end
-    respond_with(@booking, :location => rental_unit_bookings_url(@booking.rental_unit))
+    update!(:location => rental_unit_bookings_url(parent), :notice => 'Booking was updated successfully.')
+  end
+
+  def reserve
   end
   
-  # TODO: move to message controller
-  def discuss
-    if params[:id]
-      get_booking
-    elsif params[:rental_unit_id]
-      # find existing uncomplete booking or create new for user @user
-      @booking = get_rental_unit.find_uncompleted_booking_for_user_or_create(@user)
-    end
-  end
-  
-  def confirm
-  end
-  
-  def exec_confirm
+  def exec_reserve
     respond_to do |format|
-      if  @booking.update_attributes_and_confirm(params[:booking])
-        flash[:notice] = 'Booking was confirmed.'
+      if  resource.update_attributes_and_reserve(params[:booking])
+        flash[:notice] = 'Booking was reserved.'
         format.html{redirect_to rental_unit_bookings_url(@booking.rental_unit)}
       else
-        format.html{render 'confirm'}
+        format.html{render 'reserve'}
       end
     end
   end
   
   def wall_post
-    @booking.wall_post_by_user!(@user)
+    @booking.wall_post_by_user!(current_user)
     redirect_to @booking
   end
   
-  def renter_confirm
-    @booking.confirm_by_renter!
-    render :action=>:show
+  def cancel
+    @booking = Booking.active.find params[:id]
+    flash[:notice] = "Booking was canceled!" if @booking.cancel_by(current_user)
+    redirect_to :back
   end
   
-  private
-    def get_rental_unit
-      @rental_unit = RentalUnit.find(params[:rental_unit_id])
-    end
-    
-    def get_booking
-      @booking = Booking.find(params[:id])
-    end
+  private  
+  def begin_of_association_chain
+    current_user
+  end
+  
+  def create_resource(object)
+    object.reserve! if object.save
+     
+  end
+  
+  def collection
+      @booking ||= end_of_association_chain.active
+  end
     
     # Handle errors occure in after_save callback (post to wall, post Vrbo reservation)
-    def confirmation_error
-      @booking.errors.add_to_base('Can\'t confirm booking.')
-      source_page = self.action_name == 'exec_confirm' ? 'confirm' : 'new'
+    def reservation_error
+      @booking.errors.add_to_base('Can\'t reserve booking.')
+      source_page = self.action_name == 'exec_reserve' ? 'reserve' : 'new'
       render source_page
     end
 end

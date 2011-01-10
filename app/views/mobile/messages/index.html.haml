@@ -1,0 +1,72 @@
+%h2 Discussion on #{@booking.rental_unit.name}
+-if parent.rental_unit.is_owner?(current_user)
+  = fb_button "Confirm Booking!", edit_mobile_booking_path(parent), :class_name => 'f_right'
+
+= form_for :booking_message, :url => collection_path, :html=> {:id=>"chat_form", :onsubmit2 => "onSubmit(); return false;"} do |f|
+  =f.text_area :message,{:rows=>6,:cols=>55}
+  %br
+  =f.submit "Send Message"
+
+#booking_messages
+  - @booking.booking_messages.by_date.each do |message|
+    .message{:class=>message.html_class}
+      .message_body
+        %i= show_date message.created_at, :us_date
+        %br
+        %strong=message.message
+      
+%a{:name => 'messages_bottom'}
+
+:javascript
+  var polling_data = {
+    "last_message" : "#{@booking.booking_messages.by_date.last.try(:id)}"
+  };
+
+  $(document).ready(function() {
+    $("#booking_message_message").focus();        
+    setInterval(function() {
+      $.ajax({
+        url: "#{collection_path}",
+        type: "GET",
+              data: polling_data,
+              dataType: "json",
+              success: appendMessages,
+            })
+          }, 10000);
+        });
+
+        function onSubmit() {
+          $.ajax({
+            url: "#{collection_path}",
+            type: "POST",
+            dataType: "json",
+            data: $("#chat_form").serialize(),
+            success: appendMessages,
+          });
+          $("#booking_message_message").val("").focus();
+        }
+
+        function appendMessages(data){
+          var count = 0;
+          $.each(data, function(i, item) {
+            appendMessage(item);
+            count++;
+          });
+          if(count > 0) {scrollDown();}
+        }
+
+        function appendMessage(item){
+          var html_message = "<div class=\"message " + item.message_class + "\"> " + "<div class=\"message_body\">" + "<i>" + item.sent_at + "</i>" + "<br/><strong>" + item.message + "</strong>" + "</div>" + "<a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "<br/><fb:name uid='"+item.user_fb_id+"' linked='false'></fb:name></a>" + "</div>"
+          $("#booking_messages").append(html_message);
+          polling_data["last_message"] = item.id;
+        }
+
+        function scrollDown() {
+          var messages = document.getElementById("booking_messages");
+          //messages.scrollTop = messages.scrollHeight;
+          if(parseInt(messages.scrollHeight) > 600){
+            window.location.href = '#messages_bottom';
+          }else{
+            window.location.href = '#messages_top';
+          }
+        }

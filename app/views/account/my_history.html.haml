@@ -1,0 +1,38 @@
+= render :partial => 'header'
+
+.border
+  %table.bookings
+    %thead
+      %tr
+        %th Date
+        %th Owner
+        %th Renter
+        %th Property
+    %tbody
+      - @my_bookings.each do |booking|
+        %tr
+          %td.first
+            - if booking.start_date
+              = booking.start_date.strftime("%m/%d/%Y")
+            \-
+            - if booking.stop_date
+              = booking.stop_date.strftime("%m/%d/%Y")
+          %td
+            .f_left= fb_profile_pic(:uid=>booking.owner_fb_id, :size=>"thumb")
+            .f_left
+              %div= fb_name(:uid=>booking.owner_fb_id)
+              /
+                %div= simple_button 'Contact Me', rental_unit_inquiries_url(booking.rental_unit, :created => 'false')
+                - if booking.can_be_canceled?
+                  %div= simple_button 'Cancel reservation', [:cancel, booking.rental_unit, booking], :confirm => 'Are you sure?', :method => :post
+            .clearfix
+          %td
+            .f_left= fb_profile_pic(:uid => booking.renter_fb_id, :size => "thumb")
+            .f_left
+              %div= fb_name(:uid => booking.renter_fb_id)
+          %td.third
+            - if booking.rental_unit.primary_photo && booking.rental_unit.primary_photo.picture.file?
+              = image_tag(booking.rental_unit.primary_photo.picture.url(:thumb))
+            - else
+              = booking.rental_unit.name
+            = simple_button 'Details', rental_unit_path(booking.rental_unit)

@@ -1,0 +1,14 @@
+= f.inputs do
+  = f.input :title
+  = f.input :property_id, :as => :select, :collection => current_user.rental_units.map{|u| [truncate(u.name, :length => 50), u.id]}, :required => true
+  = f.input :start_at, :as => :datetimepicker
+  = f.input :end_at,  :as => :datetimepicker
+  = f.input :min_bid_amount
+  = f.input :accept_bids_under_minimum
+  = f.input :terms, :label => "Terms and conditions", :input_html => {:cols => 20, :rows => 6}
+  = f.input :cancel_bid_policy, :input_html => {:cols => 20, :rows => 6}
+  %br
+  = f.input :arrive_on, :as => :datepicker
+  = f.input :depart_on, :as => :datepicker
+  / = f.input :socially_connected
+  /   = f.input :stayed_before

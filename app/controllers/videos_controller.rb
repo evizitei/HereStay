@@ -24,6 +24,6 @@ class VideosController < ApplicationController
 
   protected
    def get_rental_unit
-      @rental_unit = @user.rental_units.find(params[:rental_unit_id])
+      @rental_unit = current_user.rental_units.find(params[:rental_unit_id])
    end
 end

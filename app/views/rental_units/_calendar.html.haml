@@ -1,0 +1,10 @@
+.calendar{:id => "calendar_#{calendar.id}"}
+:javascript
+  $(document).ready(function() {
+    var date = new Date();
+    $('#calendar_#{calendar.id}').fullCalendar({
+      editable: false,
+      events: [#{rental_unit_availabilities(calendar)}],
+      theme: true
+    })
+  })

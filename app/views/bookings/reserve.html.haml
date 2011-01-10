@@ -1,0 +1,47 @@
+:javascript
+  function calculate_fee(){
+    var val;
+    val = parseFloat($("#booking_amount").val());
+    if(isNaN(val)){
+      $("#fee").html("$ 0.00");
+    }else{
+      val = (Math.round((val * 0.05) * 100) / 100);
+      $("#fee").html("$" + val + "");
+    }
+  }
+  
+  $(document).ready(function(){
+    $("#booking_amount").bind("blur",calculate_fee);
+    calculate_fee();
+  });
+=raw(enable_jqueryui_datepicker)
+%h2 Reserve Booking for #{resource.rental_unit.name}
+.booking_form
+  .row= error_messages_for resource
+  =form_for :booking, :url=> [:exec_reserve, parent, resource], :html => {:method => :put} do |f|
+    .row
+      .col.label= f.label :start_date, 'Start Date:'
+      .col=date_picker_tag("booking[start_date]",resource.start_date)
+      .clearfix
+    .row
+      .col.label= f.label :start_date, 'Start Date:'
+      .col= date_picker_tag("booking[stop_date]",resource.stop_date)
+      .clearfix
+    .row
+      .col.label= f.label :amount, 'Amount:'
+      .col= f.text_field :amount
+      .col.fee
+        Fee:
+        %span#fee
+      .clearfix
+    .row
+      .col.label= f.label :description, 'Description:'
+      .col= f.text_area :description, :rows=>5
+      .clearfix
+    .row
+      .col.label
+        %br
+      .col
+        = f.submit "Save"
+        = simple_button('Cancel', inquiries_url)
+      .clearfix

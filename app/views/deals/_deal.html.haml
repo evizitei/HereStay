@@ -1,0 +1,29 @@
+.property
+  .left-column
+    -if resource.rental_unit.primary_photo && resource.rental_unit.primary_photo.picture.file?
+      .picture
+        =link_to image_tag(resource.rental_unit.primary_photo.picture.url(:thumb)), rental_unit_path(resource.rental_unit)
+    -else
+      %a{:href => rental_unit_path(resource.rental_unit)}
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+
+    %div= simple_button 'Contact', new_rental_unit_inquiry_path(resource.rental_unit)
+  
+  .right-column
+    %div{:style => 'float:right'}= belongs_to_friend_icon current_user, resource.rental_unit
+    .title
+      = link_to resource.rental_unit.name, rental_unit_path(resource.rental_unit)
+      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>resource.rental_unit.user.fb_user_id)}
+      %span{:style => 'font-weight: normal;'}
+        = link_to 'Edit', edit_resource_path(resource)
+      .clearfix
+    
+    .description
+      = truncate(resource.rental_unit.description, :length => 150, :separator => ' ')
+    .price
+      #{resource.percent}% OFF
+      (only #{resource.amount.format})
+      from #{resource.start_on.to_s(:us_date)} to #{resource.end_on.to_s(:us_date)}
+      - if resource.active?
+        = link_to 'Make deal', make_deal_path(resource), :method => :put
+  .clearfix

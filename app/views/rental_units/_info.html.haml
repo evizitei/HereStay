@@ -2,13 +2,16 @@
   %th= "About:"
   %td.data= info.name
   %td.rightCol
+    %div{:style => 'float:right'}= belongs_to_friend_icon current_user, info
 %tr.data_row
   %th Owner:
   %td.data
-    %fb:profile-pic{:uid=>info.user.fb_user_id,:size=>"thumb"}
-    %fb:name{:uid=>info.user.fb_user_id}
-    = fb_button 'All Listings', owned_by_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
+    %a{:href => "http://www.facebook.com/profile.php?id=#{info.user.fb_user_id}", :target => 'top', :class => 'fb-profile-link'}
+      =fb_profile_pic(:uid=>info.user.fb_user_id,:size=>"thumb")
+      =fb_name(:uid=>info.user.fb_user_id)
+    = fb_button 'All Properties', owned_by_rental_units_path(:user_id=>info.user_id), :class_name => 'f_right'
   %td.rightCol
+    ==The owner is #{info.user.availability_message}
 %tr.spacer
   %td{:colspan=>3}
     %hr
@@ -63,6 +66,27 @@
           %td== $#{info.weekly_mid_price}
           %td== $#{info.weekly_low_price}
   %td.rightCol
+- if info.bedrooms?
+  %tr.data_row
+    %th.label Bedrooms
+    %td.data= info.bedrooms
+    %td.rightCol
+- if info.bathrooms?
+  %tr.data_row
+    %th.label Bathrooms
+    %td.data= info.bathrooms
+    %td.rightCol
+- if info.adults?
+  %tr.data_row
+    %th.label Adults
+    %td.data= info.adults
+    %td.rightCol
+- if info.kids?
+  %tr.data_row
+    %th.label Kids
+    %td.data= info.kids
+    %td.rightCol
+
 %style
   :sass
     td, th

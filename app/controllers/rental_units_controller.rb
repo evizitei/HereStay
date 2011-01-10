@@ -1,75 +1,48 @@
 class RentalUnitsController < ApplicationController
-  before_filter :login_required, :except => %w(index show share owned_by)
+  inherit_resources
+  layout 'application'
+  before_filter :login_required, :except => %w(index show owned_by availabilities)
+  before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
-
-  def index
-    @app_page = (params[:profile_id].to_s == "123982284313527")
-    if @app_page
-      offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
-      @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
-    else
-      @rental_units = RentalUnit.find_all_by_fb_user_id(params[:profile_id])
-      if @rental_units.size == 0
-        @app_page = true
-        offset = rand(RentalUnit.order("id DESC").limit(1).select("id").first.id - 5) rescue 0
-        @rental_units = RentalUnit.order("id ASC").limit(5).where("id >= #{offset}")
-      end
-    end
-  end
-
-  def manage
-    @rental_units = @user.rental_units
-  end
-
-  def new
-    @rental_unit = RentalUnit.new()
-  end
-
-  def edit
-    @rental_unit = @user.rental_units.find(params[:id])
-  end
+  rescue_from VrboProxy::Error, :with => :show_errors
 
   def create
-    @rental_unit = @user.rental_units.build(params[:rental_unit])
-    if @rental_unit.save
-      flash[:notice] = 'Rental unit was created successfully'
+    create! :notice => 'Rental unit was created successfully' do |success, failure| 
+      success.html { redirect_to promote_rental_unit_url(@rental_unit)}
     end
-    respond_with(@rental_unit, :location => manage_rental_units_url)
   end
 
   def update
-    @rental_unit = @user.rental_units.find(params[:id])
-    if @rental_unit.update_attributes(params[:rental_unit])
-      flash[:notice] = 'Rental unit was updated successfully'
-    end
-    respond_with(@rental_unit, :location => manage_rental_units_url)
-  end
-
-  def show
-    @rental_unit = RentalUnit.find(params[:id])
-    @og_meta = {:title=>@rental_unit.name,
-                :type=>"hotel",
-                :image=> @rental_unit.primary_photo ? @rental_unit.primary_photo.picture.url(:thumb) : nil,
-                :url=>rental_unit_url(@rental_unit),
-                :site_name=>"HereStay",
-                :app_id=>Facebook::APP_ID}
+    update!(:notice => 'Rental unit was updated successfully', :location => manage_rental_units_url)
   end
 
   def destroy
-    @rental_unit = @user.rental_units.find(params[:id])
-    @rental_unit.destroy
-    redirect_to manage_rental_units_url
+    destroy!(:notice => 'Rental unit was destroyed successfully', :location => manage_rental_units_url)
   end
-
+  
+  def owned_by
+    @rental_units = collection
+  end
+  
+  def manage
+    @rental_units = collection
+  end
+  
+  def load_data_from_vrbo
+    @rental_unit = current_user.load_property_from_vrbo(params)
+    render (@rental_unit.new_record? ? 'new' : 'edit')
+  end
+  
+  
   def load_from_vrbo
-    rental_unit = @user.rental_units.find(params[:id])
+    rental_unit = current_user.rental_units.find(params[:id])
     rental_unit.load_from_vrbo!
     flash[:notice] = "Full listing loaded from Vrbo successfully. Photos will be imported in some minutes."
     redirect_to edit_rental_unit_url(rental_unit)
   end
 
   def import
-    rental_units = RentalUnit.import_from_vrbo!(@user)
+    rental_units = RentalUnit.import_from_vrbo!(current_user)
 
     flash[:notice] = t(:'flash.import.completed')
     flash[:notice] << t(:'flash.import.success', :count => rental_units[:success].size)
@@ -80,28 +53,119 @@ class RentalUnitsController < ApplicationController
 
   def share
     @rental_unit = RentalUnit.find(params[:id])
-    unless @rental_unit.user == @user
-      redirect_to "http://apps.facebook.com/#{fb_app_name}"
-    end
-  end
-
-  def owned_by
-    @user = User.find params[:user_id]
-    @rental_units = @user.rental_units.paginate(:page => params[:page], :per_page => 1)
+    render :json => @rental_unit.share_json_for(current_user)
   end
   
-  def promotion_form
+  def store_last_post
+    fb_stream = current_user.fb_streams.find_or_initialize_by_rental_unit_id(params[:id])
+    fb_stream.message = current_user.get_stream_publishing(params[:post_id])
+    fb_stream.save
+    render :text => 'ok'
+  end
+
+  def availabilities
     @rental_unit = RentalUnit.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js{render :partial => 'calendar.html.haml', :object => @rental_unit}
+    end
+  end
+  
+  def preview
+    @rental_unit = RentalUnit.new(params[:rental_unit])
+    #@rental_unit.set_primary_photo(params)
+    respond_to do |format|
+      if params[:edit_rental_unit].blank? && @rental_unit.valid?
+        format.html
+      else
+        format.html{ render :action => :new}
+      end
+    end
+  end
+  
+  def preview_update
+    @rental_unit = current_user.rental_units.find(params[:id])
+    @rental_unit.attributes = params[:rental_unit]
+    #@rental_unit.set_primary_photo(params)
+    respond_to do |format|
+      if params[:edit_rental_unit].blank? && @rental_unit.valid?
+        format.html
+      else
+        format.html{ render :action => :edit}
+      end
+    end
+  end
+  
+  def search
+    search_setup
+    render 'index'
+  end
+  
+  def store_last_comment
+    @rental_unit = RentalUnit.find(params[:id])
+    current_user.store_last_comment_for(@rental_unit)
+    render :text => 'ok'
+  end
+  
+  def vrbo_listings
+    render :layout => false
   end
   
   def promote
-    @rental_unit = RentalUnit.find(params[:id])
-    graph = Koala::Facebook::GraphAPI.new(@user.authorize_signature)
-    graph.put_wall_post("#{params["canned_text"]} -- #{params["Comments"]}",{:name=>@rental_unit.name,
-                                                                             :link=>rental_unit_url(@rental_unit.id),
-                                                                             :caption=>"Provided by HereStay",
-                                                                             :description=>@rental_unit.description,
-                                                                             :picture=>@rental_unit.primary_photo.picture.url(:medium)})
-    redirect_to manage_rental_units_path
+    @rental_unit = current_user.rental_units.find(params[:id])
   end
+  
+  protected
+    # Disable not-owner to manage reservations
+    def begin_of_association_chain
+      # raise self.action_name.inspect
+      case self.action_name
+        when 'index', 'show' : super
+        when 'owned_by' :
+          @user=User.find(params[:user_id])
+        else
+          current_user
+      end
+    end
+    
+    def collection
+      @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+    end
+    
+    def create_resource(object)
+      object.save_photos(params)
+      object.save
+    end
+    
+    def update_resource(object, attributes)
+      object.attributes = attributes
+      object.save_photos(params)
+      object.save
+    end
+    
+    def search_setup
+      @search = params[:search]
+      if @search
+        #search_obj = RentalUnit.search{ keywords params[:search]; paginate :page =>(params[:page] || 1), :per_page => 5}
+        search_obj = RentalUnit.advanced_search(params, current_user)
+        @rental_units = search_obj.results
+      else
+        # Lsit friends' listings first if user logged-in and has FB friends
+        # if current_user && !current_user.fb_friend_ids.blank?
+        #   search_obj = RentalUnit.friends_first(current_user.fb_user_id, current_user.fb_friend_ids, params[:page] || 1)
+        #   @rental_units = search_obj.results
+        #   @paginate_obj = search_obj.hits
+        # else
+        #   @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+        #   @paginate_obj = @rental_units
+        # end
+        @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+      end
+    end
+    
+    def show_errors(err)
+      respond_to do |format|
+        format.html{render :text => "Error: #{err.to_s}"}
+      end
+    end
 end

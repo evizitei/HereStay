@@ -1,11 +1,44 @@
-%fb:profile-pic{:size=>"small",:uid=>@user.fb_user_id}
-%h2
-  %fb:name{:uid=>@user.fb_user_id,:useyou=>"false",:possessive=>"true"}
-  Listings:
-%br
-=render :partial=>"unit_row",:collection=>@rental_units
-%br
-= fb_button 'My Account', account_path, :class_name => 'f_left logged_in'
-= fb_button 'Add Listing', new_rental_unit_path, :class_name => 'f_left logged_in'
-= fb_button 'Import active listings from Vrbo', import_rental_units_path, :method => :post, :class_name => 'f_left logged_in'
-= fb_button 'Back to Search', root_path, :class_name => 'f_left logged_in'
+=content_for :submenu do
+  %ul
+    %li.current= link_to 'My Properties'
+    .clearfix
+%h2= pluralize(@rental_units.size, 'post')
+.properties
+  -@rental_units.each do |rental_unit|
+    .property
+      .left-column
+        -if rental_unit.primary_photo && rental_unit.primary_photo.picture.file?
+          .picture
+            =link_to image_tag(rental_unit.primary_photo.picture.url(:thumb)), rental_unit_path(rental_unit)
+        -else
+          %a{:href => rental_unit_path(rental_unit)}
+            .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}            
+        
+      .right-column
+        .f_right= belongs_to_friend_icon current_user, rental_unit
+        .title
+          = rental_unit.name
+          %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>rental_unit.user.fb_user_id)}
+          .clearfix
+        .description
+          = truncate(rental_unit.description, :length => 150, :separator => ' ')
+      .clearfix
+      
+      
+      - if rental_unit.is_owner?(current_user)
+        %br
+        .admin_buttons.clearfix
+          = simple_button 'Edit', edit_rental_unit_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Photos', rental_unit_photos_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Video', rental_unit_video_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Inquiries', rental_unit_inquiries_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Promote', promote_rental_unit_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Reservations', rental_unit_bookings_path(rental_unit), :class_name => 'f_left'
+          = simple_button 'Delete', rental_unit_path(rental_unit), :class_name => 'f_left', :method=>:delete
+      .left-column
+        %div=render(:partial=>"rental_units/share_unit",:object=>rental_unit)
+      .right-column
+        .comments
+          %fb:comments{:xid => "here_stay_unit_#{rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => rental_unit.fb_user_id, :publish_feed => "true", :width => 380, :numposts => 4}
+      .clearfix
+  =will_paginate(@rental_units,:renderer=>"FacebookLinkRenderer")

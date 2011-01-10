@@ -9,7 +9,7 @@ gem 'koala-rails'
 gem 'paperclip'
 gem "aws-s3"
 gem "nokogiri"
-gem "yajl-ruby"
+gem "yajl-ruby", "0.7.7"
 gem "httparty"
 gem 'sunspot_rails', :git => 'http://github.com/outoftime/sunspot.git'
 gem "will_paginate", "~> 3.0.pre2"
@@ -18,10 +18,15 @@ gem 'mechanize'
 gem 'addressable'
 gem 'formtastic'
 gem 'dynamic_form'
-gem 'cramp',:git=>'git://github.com/lifo/cramp.git'
 gem 'twitter', '0.9.12'
 gem 'bitly'
-gem 'thin'
+gem "moonshado-sms", "1.1.0"
+gem "recurly"
+gem 'has_scope'
+gem "aasm", :git => 'https://github.com/rubyist/aasm.git'
+gem 'compass', '0.10.6'
+gem 'hassle', :git => 'https://github.com/neonlex/hassle.git'
+gem "money"
 
 group :development,:test,:cucumber do
   gem 'cucumber'
@@ -34,5 +39,6 @@ group :development,:test,:cucumber do
   gem 'launchy'
   gem 'shoulda'
   gem 'mocha'
-  gem 'jasmine'
+  gem 'timecop'
+  gem 'ruby-debug'
 end

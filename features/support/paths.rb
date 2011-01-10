@@ -16,6 +16,10 @@ module NavigationHelpers
       '/canvas'
     when /the booking discussion page for booking (\d+)/
       discuss_booking_path($1) 
+    when /the my account page/
+      "/account"
+    when /the listing for "(.+)"/
+      rental_unit_path(RentalUnit.find_by_name($1))
 
     # Add more mappings here.
       #

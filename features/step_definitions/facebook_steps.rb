@@ -5,3 +5,8 @@ Given /^I am logged in as the user with FB id "([^"]*)"$/ do |fb_id|
   Koala::Facebook::OAuth.stubs(:new).returns(oauth) 
   User.stubs(:for).returns(@user)
 end
+
+Given /^I am logged in as the user with FB id "([^"]*)" and phone "([^"]*)"$/ do |fb_id,phone|
+  Given "I am logged in as the user with FB id \"#{fb_id}\""
+  @user.update_attributes!(:phone=>phone)
+end

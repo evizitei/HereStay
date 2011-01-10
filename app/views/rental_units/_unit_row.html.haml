@@ -1,19 +1,33 @@
-.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
-  .unit_box
-    .unit_picture
-      -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
-        =image_tag(unit_row.primary_photo.picture.url(:thumb))
-    .unit_description
-      .title=link_to unit_row.name,rental_unit_path(unit_row.id)
-      .description
-        = unit_row.description
-  -if @user && unit_row.user == @user
-    %br
-    .admin_buttons.clearfix
-      = fb_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Photos', rental_unit_photos_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Video', rental_unit_video_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Bookings', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
-      = fb_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
-
-  =render(:partial=>"rental_units/share_unit",:object=>unit_row)
+.property
+  .left-column
+    -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
+      .picture
+        =link_to image_tag(unit_row.primary_photo.picture.url(:thumb)), rental_unit_path(unit_row)
+    -else
+      %a{:href => rental_unit_path(unit_row)}
+        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+    %div= simple_button 'Availability', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
+    %div= simple_button 'Contact', new_rental_unit_inquiry_path(unit_row)
+  .right-column
+    %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
+    .title
+      = link_to unit_row.name, rental_unit_path(unit_row)
+      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
+      .clearfix
+    .description
+      = truncate(unit_row.description, :length => 150, :separator => ' ')
+    .f_right=render(:partial=>"rental_units/share_unit",:object=>unit_row)
+    .clearfix
+    .comments
+      .comment= fb_like_button(:href => unit_row.fb_url, :width => "320", :height => "20", :show_faces => "false")
+      - unit_row.last_comments.each do |comment| 
+        .comment
+          .image= fb_profile_pic(:uid => comment.fb_user_id)
+          .text
+            =fb_name(:uid => comment.fb_user_id )
+            =comment.text
+            .date== #{time_ago_in_words comment.time} ago
+          .clearfix
+      - if unit_row.comments.count > 3
+        = link_to "More comments(#{unit_row.comments.count})", unit_row
+  .clearfix

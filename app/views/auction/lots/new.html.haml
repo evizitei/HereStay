@@ -1,0 +1,15 @@
+= render 'submenu'
+.property
+  %h2 New Auction
+  = semantic_form_for resource, :url => collection_path do |f|
+    = render 'fields', :f => f
+    = f.buttons do
+      = f.submit 'Add'
+      = link_to 'Cancel', collection_path
+
+= javascript_include_tag 'jquery-ui-timepicker-addon'
+:javascript
+  $(function(){
+   $('#lot_start_at').datetimepicker();
+   $('#lot_end_at').datetimepicker();
+  });

@@ -1,5 +1,6 @@
 require 'twitter_wrapper'
 class Connectors::TwitterController < ApplicationController
+  before_filter :oauth_obj
   before_filter :login_required
   before_filter :twitter_wrapper
   
@@ -29,6 +30,6 @@ class Connectors::TwitterController < ApplicationController
   
   private
     def twitter_wrapper
-      @wrapper = TwitterWrapper.new(@user)
+      @wrapper = TwitterWrapper.new(current_user)
     end
 end

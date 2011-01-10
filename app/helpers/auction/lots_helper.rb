@@ -1,0 +1,2 @@
+module Auction::LotsHelper
+end

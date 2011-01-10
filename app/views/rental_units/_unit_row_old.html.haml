@@ -1,0 +1,27 @@
+.unit.UIObjectListing.clearfix.UIObjectListing_PicPadding.unit_row{:class=>cycle("odd","even")}
+  .unit_box
+    .unit_picture
+      -if unit_row_old.primary_photo && unit_row_old.primary_photo.picture.file?
+        =image_tag(unit_row_old.primary_photo.picture.url(:thumb))
+    .unit_description
+      %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row_old
+      .title{:style => 'overflow: hidden'}=link_to unit_row_old.name,rental_unit_path(unit_row_old.id)
+      .clearfix
+      .description
+        = unit_row_old.description
+        %br
+        == Owner is #{unit_row_old.user.availability_message}
+  - if unit_row_old.is_owner?(current_user)
+    %br
+    .admin_buttons.clearfix
+      = fb_button 'Edit', edit_rental_unit_path(unit_row_old), :class_name => 'f_left'
+      = fb_button 'Photos', rental_unit_photos_path(unit_row_old), :class_name => 'f_left'
+      = fb_button 'Video', rental_unit_video_path(unit_row_old), :class_name => 'f_left'
+      = fb_button 'Bookings', rental_unit_bookings_path(unit_row_old), :class_name => 'f_left'
+      = fb_button 'Delete', rental_unit_path(unit_row_old), :class_name => 'f_left', :method=>:delete
+
+  %div
+    .f_left=render(:partial=>"rental_units/share_unit",:object=>unit_row_old)
+    .f_left= fb_button 'Availabilities', [:availabilities, unit_row_old], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row_old)
+    .clearfix
+  .clearfix

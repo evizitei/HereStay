@@ -1,0 +1,25 @@
+#relation_content
+  .wrapper
+    .user_wrapper
+      %h2 You
+      = fb_profile_pic(:size => "small", :uid => current_user.fb_user_id)
+      %br
+      = fb_name(:uid => current_user.fb_user_id)
+    - if @friend or @mutual_friend
+      .arrow &nbsp;
+      - if  @mutual_friend
+        .user_wrapper
+          %h2 Your Friend
+          = fb_profile_pic(:size => "small", :uid => @mutual_friend)
+          %br
+          = fb_name(:uid => @mutual_friend)
+        .arrow  &nbsp;
+    - else
+      .no_relation  &nbsp;
+    .user_wrapper.owner
+      %h2 Property Owner
+      = fb_profile_pic(:size => "small", :uid => @owner.fb_user_id)
+      %br
+      = fb_name(:uid => @owner.fb_user_id)
+    .clearfix
+= fb_connect_async_js

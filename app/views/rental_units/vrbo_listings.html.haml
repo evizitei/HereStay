@@ -1,0 +1,1 @@
+= select_tag 'vrbo_id', options_for_select(current_user.vrbo_listings.map{|vl| [vl[:name], vl[:vrbo_id]]}), :include_blank => 'select property', :style => 'width: 120px;'

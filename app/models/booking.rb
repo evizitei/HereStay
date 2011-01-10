@@ -1,41 +1,53 @@
 require 'httparty'
 class Booking < ActiveRecord::Base
+  include AASM
+  
+  aasm_column :status
+  aasm_initial_state :created  
+  aasm_state :created # just created
+  aasm_state :reserved, :enter => :do_reserve!  # reserved by owner
+  aasm_state :canceled_by_owner, :enter => :do_cancel_by_owner!
+  aasm_state :canceled_by_renter, :enter => :do_cancel_by_renter!
+  
+  aasm_event :reserve do
+    transitions :to => :reserved, :from => [:created], :guard => :valid?
+  end
+  
+  aasm_event :cancel_by_renter do
+    transitions :to => :canceled_by_renter, :from => [:created, :reserved]
+  end
+  
+  aasm_event :cancel_by_owner do
+    transitions :to => :canceled_by_owner, :from => [:created, :reserved]
+  end
+  
   belongs_to :rental_unit
   has_many :booking_messages, :dependent => :destroy
   has_many :discounts
   has_many :rewards
   has_one  :reservation, :dependent => :destroy
+  has_many :booking_charges, :dependent => :destroy, :as => :document
   
   validate :check_dates
   validate :validate_dates, :if => :require_validate_dates?
   
-  before_save :update_reservation, :unless => :recently_confirmed?
-  after_save :run_on_confirm, :if => :recently_confirmed?
+  before_save :update_reservation, :unless => :status_changed?
   
-  scope :uncompleted, :conditions => ["status is NULL OR status != ?", 'COMPLETE']
-  scope :completed, where(:status => 'COMPLETE')
   scope :except, lambda{|r| where("id != ?", r.id) }
+  scope :for_user, lambda{|u| where("owner_fb_id = ? OR renter_fb_id = ?", u.fb_user_id, u.fb_user_id)}
+  scope :for_renter, lambda{|u| where("renter_fb_id = ?", u.fb_user_id)}
+  scope :started, lambda{where(["start_date <= ?", Time.zone.now])}
+  scope :without_booking_charges, joins('LEFT JOIN "funds" ON "funds"."document_id" = "bookings"."id" AND "funds"."document_type" = \'Booking\' AND "funds"."type" = \'BookingCharge\'').where({:funds => {:id => nil}})
   
-  # change status without saving (like aasm)
-  def complete
-    self.status = "COMPLETE"
-  end
+  scope :not_reserved, :conditions => {:status => 'created'}
+  scope :confirmed, :conditions => ["confirmed_by_renter_at IS NOT NULL"]
+  scope :not_confirmed, :conditions => ["confirmed_by_renter_at IS NULL"]
+  scope :canceled, :conditions => {:status => ['canceled_by_owner', 'canceled_by_renter']}
+  scope :active, :conditions => {:status => ['created', 'reserved']}
   
-  def confirm!
-    UserMailer.booking_confirmation(self).deliver
-    self.complete
-    self.save!
-  end
-  
-  def confirmed?
-    self.status == "COMPLETE"
-  end
-  
-  # upadate record and confirm
-  def update_attributes_and_confirm(attributes)
-    self.attributes = attributes
-    complete
-    save
+  # upadate record and reserve
+  def update_attributes_and_reserve(attributes)
+    self.reserve! if self.update_attributes(attributes)
   end
   
   def promotional_fee
@@ -64,7 +76,36 @@ class Booking < ActiveRecord::Base
   
   def confirm_by_renter!
     self.confirmed_by_renter_at = DateTime.now
-    self.save!
+    self.save
+  end
+  
+  def other_user_than(user)
+    fb_id = [self.owner_fb_id,self.renter_fb_id].select{|id| id != user.fb_user_id}.first
+    User.find_by_fb_user_id(fb_id)
+  end
+  
+  def cancel_by(user)
+    if self.owner_fb_id == user.fb_user_id
+      self.cancel_by_owner! 
+    elsif self.renter_fb_id == user.fb_user_id
+      self.cancel_by_renter!
+    end      
+  end
+  
+  def can_be_canceled?
+    self.created? || (self.reserved? && self.reservation && Time.now < self.reservation.start_at)    
+  end
+  
+  def cents
+    (amount*100).to_i
+  end
+  
+  def owner
+    rental_unit.user
+  end
+  
+  def renter
+    User.find_by_fb_user_id(self.renter_fb_id)
   end
   
   private
@@ -79,34 +120,14 @@ class Booking < ActiveRecord::Base
       reservation.update_attributes(:start_at => self.start_date.to_s(:db), :end_at => self.stop_date.to_s(:db), :first_name => self.renter_name, :notes => self.description, :save_on_remote_server => rental_unit.vrbo_id.present?)
     end
   end
-  
-  # Post to wall message "(This property) has been rented from (date) to (date)" 
-  # when the owner confirms or creates a booking
-  # TODO: move to background work
-  def rented_wall_post
-    oauth = Koala::Facebook::OAuth.new(Facebook::APP_ID.to_s, Facebook::SECRET.to_s)
-    graph = Koala::Facebook::GraphAPI.new(oauth.get_app_access_token)
-    graph.put_object(Facebook::APP_ID.to_s, "feed",
-      :message => "#{rental_unit.name} has been rented from #{self.start_date.to_s(:short_date)} to #{self.stop_date.to_s(:short_date)}",
-      :link => rental_unit.fb_url,
-      :name => 'view this property',
-      :picture=> rental_unit.picture(:medium) || ''
-    )
-  end
-  
-  def run_on_confirm
-    create_reservation
-    rented_wall_post
-    TwitterWrapper.post_unit_rented(self)
-  end
-  
-  def recently_confirmed?
-    status_changed? && self.confirmed?
+
+  def recently_reserved?
+    status_changed? && self.reserved?
   end
   
   # validate dates for other booking or reservation in this period when booking confirmed and dates are changes
   def require_validate_dates?
-    self.confirmed? && (self.status_changed? || start_date_changed? || stop_date_changed?)
+    (self.created? || self.reserved?) && (start_date_changed? || stop_date_changed?)
   end
   
   # don't allow to start_at be greater than end_at
@@ -129,7 +150,7 @@ class Booking < ActiveRecord::Base
   end
   
   def exists_other_booking_in_same_period?
-    rental_unit.bookings.completed.exists?([" stop_date > ? AND start_date < ? AND id != ? ", self.start_date.to_s(:db), self.stop_date.to_s(:db), self.id || 0])
+    rental_unit.bookings.reserved.exists?([" stop_date > ? AND start_date < ? AND id != ? ", self.start_date.to_s(:db), self.stop_date.to_s(:db), self.id || 0])
   end
   
   # don't allow create more than one reservation with status UNAVAILABLE or RESERVE in same period
@@ -141,5 +162,36 @@ class Booking < ActiveRecord::Base
   
   def exists_other_reservations_in_same_period?
     rental_unit.reservations.busy.exists?([" ? < end_at AND ? > start_at AND booking_id != ?", self.start_date.to_datetime, self.stop_date.to_datetime, self.id||0])
+  end
+  
+  # Charge booking fee
+  # Find all reserved booking which does not have booking charges
+  # Should be run by cron every day
+  def self.charge_booking_fee
+    Booking.reserved.started.without_booking_charges.each do |booking|
+      booking.booking_charges.create!
+    end
+  end
+  
+  before_create :set_owner_fb_id
+  def set_owner_fb_id
+    self.owner_fb_id = self.rental_unit.user.fb_user_id
+  end
+  
+  def do_reserve! 
+    create_reservation
+    FacebookProxy.post_unit_rented(self)
+    TwitterWrapper.post_unit_rented(self)
+    UserMailer.booking_confirmation(self).deliver if self.renter_fb_id
+  end
+  
+  def do_cancel_by_renter!
+    UserMailer.booking_canceled_notification(self, self.renter_fb_id).deliver
+    UserMailer.booking_canceled_by_renter_notification(self).deliver
+  end
+  
+  def do_cancel_by_owner!
+    UserMailer.booking_canceled_notification(self, self.owner_fb_id).deliver
+    UserMailer.booking_canceled_by_owner_notification(self).deliver
   end
 end

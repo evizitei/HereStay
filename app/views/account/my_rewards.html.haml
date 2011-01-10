@@ -1,0 +1,46 @@
+= render :partial => 'header'
+
+%p.total-rewards
+  %span
+    Total Rewards:
+    - rewards_total = @rewards.map{|r| r.amount}.inject(0.0){|amt,r| amt = amt + r}
+    == $#{rewards_total}
+  %span
+    Total Redeemed:
+    == $#{current_user.redeemed_rewards || 0.0}
+  %span
+    Rewards Balance:
+    == $#{rewards_total - (current_user.redeemed_rewards || 0.0)}
+
+.border
+  %table.bookings
+    %thead
+      %tr
+        %th In
+        %th Out
+        %th Owner
+        %th Renter
+        %th Cash Earned
+        %th Property
+    %tbody
+      -@rewards.each do |reward|
+        %tr
+          %td
+            12/4/10
+          %td
+            12/8/10
+          %td
+            = fb_profile_pic(:uid=>reward.booking.owner_fb_id,:size=>"thumb")
+            = fb_name(:uid=>reward.booking.owner_fb_id)
+          %td
+            - if reward.booking.renter_fb_id
+              = fb_profile_pic(:uid=>reward.booking.renter_fb_id,:size=>"thumb")
+              = fb_name(:uid=>reward.booking.renter_fb_id)
+            - else
+              = reward.booking.renter_name
+          %td
+            $1.25
+          %td
+            = link_to reward.booking.rental_unit.name,rental_unit_path(reward.booking.rental_unit.id)
+          %td
+            ==$#{reward.amount || 0.0}

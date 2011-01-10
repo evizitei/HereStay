@@ -1,0 +1,16 @@
+= render 'submenu'
+.property
+  %h2 Edit auction: #{resource.title}
+
+  = semantic_form_for resource, :url => resource_path do |f|
+    = f.semantic_errors
+    = render 'fields', :f => f
+    = f.buttons do
+      = f.submit 'Save'
+      = link_to 'Cancel', resource_path
+
+= javascript_include_tag 'jquery-ui-timepicker-addon'
+:javascript
+  $(function(){
+   $('.datetimepicker').datetimepicker();
+  });

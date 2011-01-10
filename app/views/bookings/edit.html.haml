@@ -14,31 +14,31 @@
     $("#booking_amount").bind("blur",calculate_fee);
   });
 =raw(enable_jqueryui_datepicker)
-%h2 Edit Booking for #{@booking.rental_unit.name}
-= error_messages_for @booking
+%h2 Edit Booking for #{resource.rental_unit.name}
+= error_messages_for resource
 .pal.grayArea.gray_box.colored-bg
   #booking_form
-    =form_for(@booking) do |f|
+    =form_for :booking, :url=> resource_url, :html => {:method => :put} do |f|
       %table.dataTable
         %tbody
           %tr.dataRow
             %th.label Renter Name:
             %td.data  
-              -if @booking.renter_fb_id
-                %fb:name{:uid=>@booking.renter_fb_id}
+              -if resource.renter_fb_id
+                %fb:name{:uid=>resource.renter_fb_id}
               -else
-                =@booking.renter_name
+                =resource.renter_name
             %td.rightCol
           %tr.spacer
             %td{:colspan=>3}
               %hr
           %tr.dataRow
             %th.label Start Date:
-            %td.data=date_picker_tag("booking[start_date]",@booking.start_date)
+            %td.data=date_picker_tag("booking[start_date]",resource.start_date)
             %td.rightCol
           %tr.dataRow
             %th.label Stop Date:
-            %td.data=date_picker_tag("booking[stop_date]",@booking.stop_date)
+            %td.data=date_picker_tag("booking[stop_date]",resource.stop_date)
             %td.rightCol
           %tr.dataRow
             %th.label Amount:
@@ -61,4 +61,4 @@
             %td.data
               = fb_button do
                 = f.submit "Save"
-              = fb_button 'Cancel', rental_unit_bookings_path(@booking.rental_unit)
+              = fb_button 'Cancel', rental_unit_bookings_path(resource.rental_unit)
