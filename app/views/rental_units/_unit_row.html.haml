@@ -6,7 +6,7 @@
     -else
       %a{:href => rental_unit_path(unit_row)}
         .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
-    %div= simple_button 'Availabilities', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
+    %div= simple_button 'Availability', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
     %div= simple_button 'Contact', new_rental_unit_inquiry_path(unit_row)
   .right-column
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
