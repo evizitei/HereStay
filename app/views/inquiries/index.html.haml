@@ -8,7 +8,6 @@
 :javascript
   var polling_data = {
       "last_message" : "#{current_user.messages.by_date.last.try(:id)}"};
-
   $(document).ready(function() {
     $("#booking_message_message").focus();
     setInterval(function() {
@@ -21,6 +20,13 @@
         })
       }, 10000);
       
+      $('.form textarea').live('keypress', function(e){
+        if (e.keyCode == 13) {
+          $(this).parents('form').submit();
+          $(this).blur();
+        }
+      })
+      
       $('.form form').submit(function(){
         $.ajax({
             url: $(this).attr('action'),
@@ -29,7 +35,7 @@
             data: $(this).serialize(),
             success: appendMessages,
           });
-          $(this).find('textarea').val("").focus();
+          $(this).find('textarea').val("");
         return false;
       })
     });

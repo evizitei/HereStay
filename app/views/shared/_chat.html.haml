@@ -33,7 +33,7 @@
     .form
       %a{:name => "messages_box_#{chat.id}", :style => "position:relative;top:-100px;z-index:9999999999999;"}
       = form_for :booking_message, :url=> booking_messages_path(chat), :html => {:method => :post} do |f|
-        .f_right= f.submit "Comment"
+        .f_right= f.submit "Send"
         .f_right=f.text_area :message
         .f_right= fb_profile_pic(:uid => current_user.fb_user_id, :size => "thumb")
         .clearfix
