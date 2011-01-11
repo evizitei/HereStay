@@ -46,7 +46,7 @@ class VideoCreator
   end
   
   def sound_track
-    File.join(Rails.root, 'tmp', 'sound_tracks', 'sound_track.mp3')
+    File.join(Rails.root, 'public', 'sound_tracks', 'sound_track.mp3')
   end
   
   def change_dir
