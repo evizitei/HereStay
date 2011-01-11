@@ -1,5 +1,6 @@
 class PhotosController < ApplicationController
-  before_filter :oauth_obj
+  layout 'application'
+  # before_filter :oauth_obj
   
   inherit_resources
 

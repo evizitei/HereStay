@@ -79,6 +79,11 @@
             = f.label :wifi, 'WiFi:'
         .clearfix
       .clearfix
+  - if @rental_unit.has_video?
+    .video
+      %h3 Video
+      = render 'shared/youtube_player', :video_id => @rental_unit.video_id
+  
   .left-column 
     %br
   .right-column

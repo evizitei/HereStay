@@ -2,10 +2,13 @@ class VideosController < ApplicationController
   before_filter :oauth_obj
   before_filter :login_required
   before_filter :get_rental_unit
-  
+  layout 'application'
   def show
     unless @rental_unit.has_video?
-      @upload_token = @rental_unit.upload_token
+      @upload_info = YoutubeProxy.new.upload_token(
+        {:title => @rental_unit.name, :description => @rental_unit.youtube_description},
+        save_rental_unit_video_url(@rental_unit)
+      )
     end
   end
   
@@ -16,10 +19,15 @@ class VideosController < ApplicationController
   end
   
   def destroy
-    YoutubeProxy.new.delete_video(@rental_unit.video_id, YoutubeToken.current)
-    @rental_unit.update_attributes!(:video_id=>nil,:video_status=>nil,:video_code=>nil)
+    @rental_unit.delete_youtube_video
     flash[:notice] = 'Video was deleted successfully.'
     redirect_to manage_rental_units_path(@rental_unit)
+  end
+  
+  def generate
+    @rental_unit.generate_video_and_upload
+    flash[:notice] = 'Video was created.'
+    redirect_to rental_unit_video_url(@rental_unit)
   end
 
   protected
