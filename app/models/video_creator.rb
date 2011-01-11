@@ -4,27 +4,33 @@ require 'fileutils'
 class VideoCreator
   class Error < Exception; end
   
-  def initialize(*images)
+  def initialize(images)
     @remote_images = images
     change_dir
     @images = []
     @duration = 2.to_f
+    @youtube_options = {}
   end
   
-  def run!
-    begin
-      fetch_images
-      raise Error, 'No images were found' if @images.blank?
-      p cmd
-      `#{cmd}`
-      upload_to_youtube
-    ensure
-      # rm_tmpdir
-      Dir.chdir Rails.root
-    end
+  def process!
+    fetch_images
+    raise Error, 'No images were found' if @images.blank?
+    `#{cmd}`
+  end
+  
+  def path_to_file
+    output_video_path
+  end
+  
+  def cleanup
+    rm_tmpdir
   end
   
   protected
+  def output_video_path
+    @output_video_path ||= File.join(tmpdir, 'video.mp4')
+  end
+  
   def fetch_images
     @remote_images.each_with_index do |image, index|
       begin
@@ -39,17 +45,8 @@ class VideoCreator
     end
   end
   
-  def output_video_path
-    'out.mp4'
-  end
-  
-  #TODO: upload video file to youtube serve and return file id
-  def upload_to_youtube
-    '123455666'
-  end
-  
   def sound_track
-    File.join(Rails.root, 'tmp', 'sound_track.mp3')
+    File.join(Rails.root, 'tmp', 'sound_tracks', 'sound_track.mp3')
   end
   
   def change_dir
@@ -57,7 +54,7 @@ class VideoCreator
   end
   
   def create_tmpdir
-    tmpdir = File.join(Rails.root, 'tmp', '123')
+    tmpdir = File.join(Rails.root, 'tmp', rand(1000000).to_s)
     FileUtils.mkdir_p tmpdir
     tmpdir
   end
@@ -77,8 +74,8 @@ class VideoCreator
     k = (1.0/@duration*10).round/10.0
     rate = (1.0/@duration*10).round/10.0
     vframes = (@images.size * @duration * rate ).to_i * 3
-    p rate
-    p vframes
+    # p rate
+    # p vframes
     "ffmpeg -f image2 -loop_input -r #{rate}  -i %03d.jpg -vframes #{vframes} -y -i #{sound_track}  #{output_video_path}"
   end
 end

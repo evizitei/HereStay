@@ -10,6 +10,13 @@ GIT
       sunspot (= 1.2.rc4)
 
 GIT
+  remote: https://github.com/kylejginavan/youtube_it.git
+  revision: e1e504affbc4e32187cc32335adc786fd275c8a3
+  specs:
+    youtube_it (1.2.0)
+      oauth (>= 0.4.4)
+
+GIT
   remote: https://github.com/neonlex/hassle.git
   revision: 4996fea736584d337b4ff18f7e795601ca37ef19
   specs:
@@ -262,3 +269,4 @@ DEPENDENCIES
   twitter (= 0.9.12)
   will_paginate (~> 3.0.pre2)
   yajl-ruby (= 0.7.7)
+  youtube_it!
