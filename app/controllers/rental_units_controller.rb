@@ -66,8 +66,8 @@ class RentalUnitsController < ApplicationController
   def availabilities
     @rental_unit = RentalUnit.find(params[:id])
     respond_to do |format|
-      format.html
-      format.js{render :partial => 'calendar.html.haml', :object => @rental_unit}
+      format.html{render :layout => false}
+      format.js{render :partial => 'calendar.html.haml'}
     end
   end
   

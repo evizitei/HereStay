@@ -692,16 +692,57 @@ table.bookings
     
 //--------------------[ availabilities calendar fixes ] ---------------------//
 .calendar 
-  .fc-header 
-    .ui-state-default
-      padding: 2
-  .fc-event
-    border: 0
+  padding-top: 10px
+  font-size: 12px
+  width: 218px
+  .date
+    text-align: center
+    .month
+      font-weight: bold
+    .ajax-loader
+      display: none
+      img
+        width: 10px
+        height: 10px
+  .prev-nav
+    position: relative
+    margin-top: -15px
     a
-      font-size: 3px
-      background: #bfbfbf
-      color: #bfbfbf
-      border: 0
+      text-decoration: none
+      color: #000
+  table
+    margin-top: 10px
+    background: #fff
+    collapse: collapse
+    border: 1px solid #C5DBEC
+    border-bottom: 0
+    border-right: 0
+    td, th
+      width: 30px
+      height: 30px
+      border: 1px solid #C5DBEC
+      border-top: 0
+      border-left: 0
+      vertical-align: top
+      &.other_month
+        color: #fff
+      &.cur
+        background: url("/images/cal_event_end.png") no-repeat
+      &.event, &.last, &.cur.event
+        background: #ED1B23
+      &.event.start
+        background: url("/images/cal_event_start.png") no-repeat
+      &.event.end
+        background: url("/images/cal_event_end.png") no-repeat
+      &.event.start.end
+        background: #ED1B23
+      span
+        margin: 2px
+    th
+      height: 20px
+      font-weight: bold
+      background: #DFEFFC
+      padding-left: 2px
       
 //---------------------[bread crumbs] ---------------------//
 .bread_crumbs

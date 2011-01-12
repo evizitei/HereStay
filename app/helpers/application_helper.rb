@@ -186,17 +186,6 @@ module ApplicationHelper
     content_tag 'fb:like','', options
   end
   
-  def rental_unit_availabilities(rental_unit)
-    row = "{title: 'Not available', end: new Date('#{Time.now.strftime("%m/%d/%Y")}')}"
-    rental_unit.bookings.active.includes(:reservation).each_with_index do |booking, i|
-      if reservation = booking.reservation
-        start_at = (i == 0 && reservation.start_at.to_date <= Time.now.to_date) ? Time.now.to_date + 1.day : reservation.start_at
-        row << ", {title: 'Not available', start: new Date('#{start_at.strftime("%m/%d/%Y")}'), end: new Date('#{reservation.end_at.strftime("%m/%d/%Y")}')}"
-      end
-    end
-    row
-  end
-  
   def user_online_status(user)
     if user
       return image_tag('user_online.png', :title => 'User online') if user.online?

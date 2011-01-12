@@ -1,0 +1,31 @@
+.date
+  %span.month= options[:cur_month_name]
+  %span.year= options[:year]
+  %span.ajax-loader=image_tag('ajax_small.gif')
+.prev-nav
+  -if options[:month_state] == 'future'
+    .f_left= link_to '&larr;'.html_safe, availabilities_rental_unit_url(@rental_unit, :year => options[:prev_y], :month => options[:prev_m]), :class => 'prev'
+  .f_right= link_to '&rarr;'.html_safe, availabilities_rental_unit_url(@rental_unit, :year => options[:next_y], :month => options[:next_m]), :class => 'next'
+  .clearfix
+%table
+  %tr
+    - ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].each do |day|
+      %th= day  
+  - d = 1
+  - 6.times do |w|
+    %tr
+      - 7.times do |i|
+        - d += 1
+        - if d  <= options[:first_day]
+          %td.other_month= (options[:prev_days] - options[:first_day] + d)
+        - else
+          - if d >  options[:first_day] + month_days(options[:month],options[:year]) 
+            %td.other_month= d - month_days(options[:month],options[:year]) - options[:first_day]
+          -else
+            -if options[:month_state] == 'last' || options[:month_state] == 'current' && (d - options[:first_day]) < options[:cur_day]
+              %td.current-month.last
+                %span=  (d - options[:first_day])
+            -else
+              %td{:class => "current-month day#{d - options[:first_day]}#{' cur' if options[:cur_day] == (d - options[:first_day])}#{' event' if options[:busy_days].include?(d - options[:first_day])}#{' start' if options[:start_days].include?(d - options[:first_day])}#{' end' if options[:end_days].include?(d - options[:first_day])}"}
+                %span=  (d - options[:first_day])
+  

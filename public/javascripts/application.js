@@ -117,17 +117,22 @@ $(document).ready(function() {
   /* Initial clue Tips */
   $('a.availabilities_button').cluetip({
     showTitle: false,
-    width: 300,
-    height: 360,
+    width: 240,
+    height: 'auto',
     sticky: true,
     activation: 'click',
     fx: { open: 'slideDown' },
-    ajaxCache: true,
-    'ajaxSettings': {dataType: 'script'},
-    onShow: function(ct, c){
-      $('.calendar').fullCalendar('today');
-    }
+    ajaxCache: false,
+    'ajaxSettings': {}
   });
+  $('.calendar .prev-nav a').live('click', function(){
+    var parent = $(this).parents('.calendar');
+    parent.find('.ajax-loader').show();
+    $.get(this.href,{}, function(data){
+      parent.replaceWith(data);      
+    })
+    return false; 
+  })
   
   /* Initial clue Tips */
   $('a.clueTip').cluetip({
