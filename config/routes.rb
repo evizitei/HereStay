@@ -53,6 +53,7 @@ Micasasucasa::Application.routes.draw do
     resource :video, :only => [:show, :save, :destroy] do
       member do
         get :save
+        post :generate
       end
     end
     resources :reservations do

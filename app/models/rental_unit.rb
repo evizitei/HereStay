@@ -32,6 +32,7 @@ class RentalUnit < ActiveRecord::Base
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
+  after_create :generate_video_and_upload, :if => :need_generate_video?
   
   searchable do
     text    :name, :default_boost=>2
@@ -181,10 +182,6 @@ class RentalUnit < ActiveRecord::Base
     "#{self.description}  BOOK: #{fb_url}"
   end
   
-  def upload_token
-    YoutubeProxy.new.get_upload_token(YoutubeToken.current,self.name,self.youtube_description)
-  end
-  
   def has_video?
     !self.video_id.nil?
   end
@@ -265,6 +262,36 @@ class RentalUnit < ActiveRecord::Base
     [address, address_2, city, state, zip, country].find_all{|a| a.present?}.join(', ')
   end
   
+  def generate_video_and_upload
+    if self.photos.present?
+      begin
+        video = VideoCreator.new(self.photos.map{|m| m.picture.url(:video)})
+        video.process!
+        resp = YoutubeProxy.new.upload_video(video.path_to_file, {:title => self.name, :description => self.youtube_description})
+        self.video_id = resp.video_id.gsub('http://gdata.youtube.com/feeds/api/videos/', '')
+        res = self.save!(:validate => false)
+      rescue VideoCreator::Error
+        Rails.logger.error { "VideoCreator::Error occured during generating video: #{VideoCreator::Error.to_s}" }
+        false
+      rescue => err
+        Rails.logger.error { "Error occured during generating video: #{err.to_s}"}
+        false
+      ensure
+       video.cleanup
+      end
+    end
+  end
+  
+  def delete_youtube_video
+    if has_video?
+      YoutubeProxy.new.delete_video(self.video_id)
+      self.video_id = nil
+      self.video_status = nil
+      self.video_code = nil
+      self.save!(:validate => false)
+    end
+  end
+  
   private
   def full_address_changed?
     ['address', 'address_2', 'city', 'state', 'zip', 'country'].any?{|a| self.send("#{a}_changed?")}
@@ -295,6 +322,10 @@ class RentalUnit < ActiveRecord::Base
   
   def location
     self
+  end
+  
+  def need_generate_video?
+    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
   end
   
   public  

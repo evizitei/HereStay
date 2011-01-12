@@ -63,3 +63,107 @@ add 'PermitUserEnvironment yes' to /etc/ssh/sshd_config
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.ssh/environment
 add WEBSOLR_URL and MOONSHADOSMS_URL into /home/herestay/.profile
 
+====
+Install ffmpeg
+
+sudo aptitude install ffmpeg sudo aptitude install libxvidcore-dev libxvidcore4 libtwolame-dev
+
+sudo apt-get install build-essential subversion git-core checkinstall yasm texi2html \
+libfaad-dev libopencore-amrnb-dev libopencore-amrwb-dev libsdl1.2-dev libtheora-dev \
+libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev
+
+cd ~/src
+git clone git://git.videolan.org/x264.git
+cd x264
+./configure
+make
+sudo checkinstall --pkgname=x264 --pkgversion "2:0.`grep X264_BUILD x264.h -m1 | \
+cut -d' ' -f3`.`git rev-list HEAD | wc -l`+git`git rev-list HEAD -n 1 | \
+head -c 7`" --backup=no --default --deldoc=yes
+
+**********************************************************************
+
+ Done. The new package has been installed and saved to
+
+ /home/dmitry/src/x264/x264_2:0.112.1867+git22bfd31-1_i386.deb
+
+ You can remove it from your system anytime using: 
+
+      dpkg -r x264
+
+**********************************************************************
+
+
+cd ~/src
+git clone git://review.webmproject.org/libvpx.git
+cd libvpx
+./configure
+make
+sudo checkinstall --pkgname=libvpx --pkgversion="`date +%Y%m%d%H%M`-git" --backup=no \
+--default --deldoc=yes
+
+
+**********************************************************************
+
+ Done. The new package has been installed and saved to
+
+ /home/dmitry/src/libvpx/libvpx_201101111948-git-1_i386.deb
+
+ You can remove it from your system anytime using: 
+
+      dpkg -r libvpx
+
+**********************************************************************
+
+
+
+sudo apt-get remove libmp3lame-dev
+sudo apt-get install nasm
+cd ~/src
+wget http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
+tar xzvf lame-3.98.4.tar.gz
+cd lame-3.98.4
+./configure --enable-nasm --disable-shared
+make
+sudo checkinstall --pkgname=lame-ffmpeg --pkgversion="3.98.4" --backup=no --default --deldoc=yes
+
+**********************************************************************
+
+ Done. The new package has been installed and saved to
+
+ /home/dmitry/src/lame-3.98.4/lame-ffmpeg_3.98.4-1_i386.deb
+
+ You can remove it from your system anytime using: 
+
+      dpkg -r lame-ffmpeg
+
+**********************************************************************
+
+
+cd ~/src
+svn checkout svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
+cd ffmpeg
+./configure --enable-gpl --enable-version3 --enable-nonfree --enable-postproc \
+--enable-libfaad --enable-libopencore-amrnb --enable-libopencore-amrwb \
+--enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid \
+--enable-x11grab --enable-libvpx
+make
+sudo checkinstall --pkgname=ffmpeg --pkgversion "4:SVN-r`LANG=C svn info | \
+grep Revision | awk '{ print $NF }'`" --backup=no --default --deldoc=yes
+hash x264 ffmpeg ffplay
+
+**********************************************************************
+
+ Done. The new package has been installed and saved to
+
+ /home/dmitry/src/ffmpeg/ffmpeg_4:SVN-r26309-1_i386.deb
+
+ You can remove it from your system anytime using: 
+
+      dpkg -r ffmpeg
+
+**********************************************************************
+
+
+# удаление
+# sudo apt-get remove x264 ffmpeg qt-faststart build-essential subversion git-core checkinstall yasm texi2html libfaac-dev libmp3lame-dev libsdl1.2-dev libtheora-dev libvorbis-dev libx11-dev libxfixes-dev libxvidcore-dev zlib1g-dev
