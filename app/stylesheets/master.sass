@@ -706,10 +706,17 @@ table.bookings
         height: 10px
   .prev-nav
     position: relative
-    margin-top: -15px
+    margin-top: -12px
     a
       text-decoration: none
       color: #000
+      &:hover
+        color: #F88B8F
+    a.today
+      padding: 2px
+      padding-top: 0
+      background: #C5DBEC
+      font-size: 0.8em  
   table
     margin-top: 10px
     background: #fff
@@ -728,6 +735,8 @@ table.bookings
         color: #fff
       &.cur
         background: url("/images/cal_event_end.png") no-repeat
+        span
+          font-weight: bold
       &.event, &.last, &.cur.event
         background: #F88B8F
       &.event.start

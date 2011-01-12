@@ -5,7 +5,7 @@ module AvailabilitiesHelper
     today = Date.today
     options[:month] = params[:month].blank? ? today.mon : params[:month].to_i
     options[:year] = params[:year].blank? ? today.year : params[:year].to_i
-    
+    options[:today] = today
     month_first_day = Time.mktime(options[:year], options[:month], 1).to_date
     cur_month_first_day = Time.mktime(today.year, today.mon, 1).to_date
     if cur_month_first_day > month_first_day
