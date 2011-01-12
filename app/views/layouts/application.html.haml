@@ -67,4 +67,9 @@
       #content
         = yield
       #fb-root
+      :javascript
+        function reloadLocation(){
+          document.location.href = "#{request.fullpath}";
+        }
       = fb_connect_async_js
+      
