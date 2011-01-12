@@ -4,12 +4,14 @@
   %span.ajax-loader=image_tag('ajax_small.gif')
 .prev-nav
   -if options[:month_state] == 'future'
-    .f_left= link_to '&larr;'.html_safe, availabilities_rental_unit_url(@rental_unit, :year => options[:prev_y], :month => options[:prev_m]), :class => 'prev'
+    .f_left
+      = link_to '&larr;'.html_safe, availabilities_rental_unit_url(@rental_unit, :year => options[:prev_y], :month => options[:prev_m]), :class => 'prev'
+      = link_to 'today', availabilities_rental_unit_url(@rental_unit, :year => options[:today].year, :month => options[:today].mon), :class => 'today'
   .f_right= link_to '&rarr;'.html_safe, availabilities_rental_unit_url(@rental_unit, :year => options[:next_y], :month => options[:next_m]), :class => 'next'
   .clearfix
 %table
   %tr
-    - ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].each do |day|
+    - ['Su','Mo','Tu','We','Th','Fr','Sa'].each do |day|
       %th= day  
   - d = 1
   - 6.times do |w|

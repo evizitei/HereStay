@@ -5,16 +5,20 @@ module AvailabilitiesHelper
     today = Date.today
     options[:month] = params[:month].blank? ? today.mon : params[:month].to_i
     options[:year] = params[:year].blank? ? today.year : params[:year].to_i
-    if today.mon > options[:month]
+    options[:today] = today
+    month_first_day = Time.mktime(options[:year], options[:month], 1).to_date
+    cur_month_first_day = Time.mktime(today.year, today.mon, 1).to_date
+    if cur_month_first_day > month_first_day
       options[:month_state] = 'last'
-    elsif today.mon == options[:month]
+    elsif cur_month_first_day == month_first_day
       options[:month_state] = 'current'
       options[:cur_day] = today.day
     else
       options[:month_state] = 'future'
     end
+    
     options[:days] = month_days(options[:month],options[:year])
-    options[:first_day_date] = Time.mktime(options[:year], options[:month], 1)
+    options[:first_day_date] = month_first_day
     options[:first_day] = options[:first_day_date].wday    
     options[:cur_month_name] = options[:first_day_date].strftime("%B")   
     options[:prev_m] = options[:month] == 1 ? 12 : options[:month] - 1
@@ -25,7 +29,7 @@ module AvailabilitiesHelper
     options[:first_day] = (options[:first_day] == 0 && options[:first_day_date]) ? 7 : options[:first_day]
     
     booking_ids = @rental_unit.bookings.active.map(&:id)
-    month_first_day = Time.mktime(options[:year], options[:month], 1)
+    
     month_last_day = month_first_day + 1.month
     reservations = Reservation.where("booking_id in (?) AND start_at >= ? AND end_at < ?", booking_ids, month_first_day, month_last_day)
     #find event start dates to mark it

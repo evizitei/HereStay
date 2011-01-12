@@ -7,9 +7,19 @@ function redirectToFbApp(app_name, path){
   }
 }
 
+function redirectTo(path){
+  document.write = "";
+  window.location.href = path;
+  setTimeout(function(){document.body.innerHTML='';},1);
+  window.self.onload=function(evt){document.body.innerHTML='';};
+}
+
 function runFbInit(){
   var appID = $('meta[property="og:app_id"]').attr("content");
   FB.init({appId: appID, status: true, cookie: true,xfbml: true});
+  FB.Event.subscribe('auth.login', function(response) {       
+    reloadLocation();
+  });
   FB.Event.subscribe('comments.add', function(r) {
     if(typeof(comment_handler) != "undefined"){
       storeComment();
