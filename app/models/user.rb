@@ -24,11 +24,11 @@ class User < ActiveRecord::Base
         user.save(:validate => false) if user.changed?
       end
       
-      if user 
+      if user
         # capture user email and location from FB profile
-        Delayed::Job.enqueue(FbUserDataFetcher.new(user.id)) if user.email.blank? || user.need_update_fb_location?
+        user.delay.capture_fb_profile_data! if user.email.blank? || user.need_update_fb_location?
         # capture facebook friend ids
-        Delayed::Job.enqueue(FbFriendsFetcher.new(user.id)) if user.fb_friend_ids.nil?
+        user.delay.get_fb_friend_ids! if user.fb_friend_ids.nil?
       end
       
       user
@@ -105,7 +105,6 @@ class User < ActiveRecord::Base
     self.email = fb_profile['email']
     if fb_profile['location']
       self.fb_location = fb_profile['location']['name']
-      self.fb_location_update_at = Time.now
       if self.fb_location_changed? || !self.valid_country?
         self.valid_country = false
         if res = GoogleApi.geocoder(self.fb_location)
@@ -113,11 +112,9 @@ class User < ActiveRecord::Base
           self.fb_lng = res[:long]
           self.valid_country = true if res[:geocoded_address] =~ /USA/
         end
-        
       end
     elsif fb_profile['hometown']
       self.fb_location = fb_profile['hometown']['name']
-      self.fb_location_update_at = Time.now
       if self.fb_location_changed?
         self.valid_country = false
         if res = GoogleApi.geocoder(self.fb_location)
@@ -127,13 +124,14 @@ class User < ActiveRecord::Base
         end
       end
     end
+    self.fb_location_update_at = Time.now
     save(:validate => false)
   end
   
   # return true if fb_location empty or last attempt to update fb_location was run more than 1 day ago
   # fb_location_update_at will allow don't update more than once a day
   def need_update_fb_location?
-    fb_location.blank? && (fb_location_update_at.nil? || fb_location_update_at > 1.day.ago)
+    fb_location.blank? && (fb_location_update_at.blank? || fb_location_update_at < 1.day.ago)
   end
   
   def mutual_friends_with(user)
