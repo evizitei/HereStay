@@ -29,10 +29,13 @@ class RentalUnit < ActiveRecord::Base
 
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
-    unit.generate_video_and_upload if unit.need_generate_video?
+    unit.delay.generate_video_and_upload if unit.need_generate_video?
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
+  before_destroy do |unit|
+    YoutubeProxy.new.delay.delete_video(self.video_id) if unit.has_video?
+  end
   
   searchable do
     text    :name, :default_boost=>2
@@ -284,7 +287,7 @@ class RentalUnit < ActiveRecord::Base
   
   def delete_youtube_video
     if has_video?
-      YoutubeProxy.new.delete_video(self.video_id)
+      YoutubeProxy.new.delay.delete_video(self.video_id)
       self.video_id = nil
       self.video_status = nil
       self.video_code = nil
