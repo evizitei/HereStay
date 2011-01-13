@@ -1,4 +1,6 @@
 require 'rubygems'
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
 
 set :stages, %w(production)
 set :default_stage, "production"

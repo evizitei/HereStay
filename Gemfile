@@ -28,6 +28,7 @@ gem 'compass', '0.10.6'
 gem 'hassle', :git => 'https://github.com/neonlex/hassle.git'
 gem "money"
 gem "youtube_it", :git => 'https://github.com/kylejginavan/youtube_it.git'
+gem 'whenever', :require => false
 
 group :development,:test,:cucumber do
   gem 'cucumber'
