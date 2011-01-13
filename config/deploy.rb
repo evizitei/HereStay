@@ -1,4 +1,6 @@
 require 'rubygems'
+require 'delayed/recipes'
+
 set :whenever_command, "bundle exec whenever"
 
 
@@ -24,6 +26,9 @@ after 'deploy:update_code', 'bundler:bundle_new_release'
 after 'deploy:update_code', 'deploy:migrate'
 after 'deploy:update_code', 'solr:symlink_and_start'
 after 'deploy:default', 'deploy:restart'
+
+before "deploy:update_code", "delayed_job:stop"
+after "deploy:update_code", "delayed_job:start"
 
 require "whenever/capistrano"
 
