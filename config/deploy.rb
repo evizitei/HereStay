@@ -1,6 +1,6 @@
 require 'rubygems'
 set :whenever_command, "bundle exec whenever"
-require "whenever/capistrano"
+
 
 set :stages, %w(production)
 set :default_stage, "production"
@@ -24,6 +24,8 @@ after 'deploy:update_code', 'bundler:bundle_new_release'
 after 'deploy:update_code', 'deploy:migrate'
 after 'deploy:update_code', 'solr:symlink_and_start'
 after 'deploy:default', 'deploy:restart'
+
+require "whenever/capistrano"
 
 namespace :deploy do
 
