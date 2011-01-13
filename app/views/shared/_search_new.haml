@@ -3,7 +3,7 @@
   #simple-search
     .search-wrapper
       .lens
-      = text_field_tag :search, params[:search]
+      = text_field_tag :search, params[:search], :placeholder => 'Search Thousands of Vacation Rentals'
     .expander
       = link_to 'advanced', '#', :class => 'minimized'
       = submit_tag 'Filter'

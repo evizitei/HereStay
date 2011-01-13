@@ -121,6 +121,9 @@ function redrawPhotos(){
 }
 
 $(document).ready(function() {
+  
+  $("#search").textPlaceholder();
+  
   /* Initial new message poll */
   checkNewMessages();
   
