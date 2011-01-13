@@ -134,6 +134,7 @@ class User < ActiveRecord::Base
     fb_location.blank? && (fb_location_update_at.blank? || fb_location_update_at < 1.day.ago)
   end
   
+  
   def mutual_friends_with(user)
     if !self.fb_friend_ids.blank? && !user.fb_friend_ids.blank?
       self.fb_friend_ids & user.fb_friend_ids
@@ -207,7 +208,7 @@ class User < ActiveRecord::Base
   end
   
   def get_latlng
-    self.capture_fb_profile_data! unless self.get_latlng?
+    self.capture_fb_profile_data! if need_update_fb_location?
     self.valid_country? && self.get_latlng?
   end
   
