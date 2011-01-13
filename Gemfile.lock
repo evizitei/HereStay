@@ -33,6 +33,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    aaronh-chronic (0.3.9)
     abstract (1.0.0)
     actionmailer (3.0.0)
       actionpack (= 3.0.0)
@@ -220,6 +221,9 @@ GEM
       multi_json (~> 0.0.4)
       oauth (~> 0.4.3)
     tzinfo (0.3.23)
+    whenever (0.6.2)
+      aaronh-chronic (>= 0.3.9)
+      activesupport (>= 2.3.4)
     will_paginate (3.0.pre2)
     xml-simple (1.0.12)
     xpath (0.1.2)
@@ -267,6 +271,7 @@ DEPENDENCIES
   sunspot_rails!
   timecop
   twitter (= 0.9.12)
+  whenever
   will_paginate (~> 3.0.pre2)
   yajl-ruby (= 0.7.7)
   youtube_it!
