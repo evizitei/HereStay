@@ -29,10 +29,10 @@ class RentalUnit < ActiveRecord::Base
 
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
+    unit.generate_video_and_upload if unit.need_generate_video?
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
-  after_create :generate_video_and_upload, :if => :need_generate_video?
   
   searchable do
     text    :name, :default_boost=>2
