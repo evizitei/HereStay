@@ -221,11 +221,14 @@ div.jGrowl div.jGrowl-notification a
 #simple-search
   overflow: hidden      
   .expander
+    position: relative
     float: left
     a
-      display: inline-block
+      position: absolute
+      display: block
       width: 18px
       color: transparent
+      margin-top: 3px
       &.minimized
         background: transparent url(/images/u11.png) 0 0 no-repeat
       &.maximized
@@ -233,12 +236,14 @@ div.jGrowl div.jGrowl-notification a
     input
       border: 0
       background: none
-      font-size: 18px
+      font-size: 16px
+      line-height: 22px
+      font-weight: normal
       cursor: hand
       cursor: pointer
       color: #8B8C8D
       padding: 0
-      margin: 0
+      margin: 0 0 0 20px      
   .search-wrapper
     border: 1px solid #B4B4B4
     padding: 2px
