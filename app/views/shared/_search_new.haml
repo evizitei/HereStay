@@ -2,6 +2,7 @@
 = form_tag advanced_search_path, :id => 'search-form', :method => :get do
   #simple-search
     .search-wrapper
+      .lens
       = text_field_tag :search, params[:search]
     .expander
       = link_to 'advanced', '#', :class => 'minimized'
