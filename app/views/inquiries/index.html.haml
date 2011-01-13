@@ -28,14 +28,20 @@
       })
       
       $('.form form').submit(function(){
-        $.ajax({
-            url: $(this).attr('action'),
-            type: "POST",
-            dataType: "json",
-            data: $(this).serialize(),
-            success: appendMessages,
-          });
-          $(this).find('textarea').val("");
+        var textarea = $(this).find('textarea');
+        
+        if (textarea.val() === '' || !!textarea.val().match(/^\s*$/)) {
+          alert('Message is empty! Please enter a body of the message!');
+        } else {
+          $.ajax({
+              url: $(this).attr('action'),
+              type: "POST",
+              dataType: "json",
+              data: $(this).serialize(),
+              success: appendMessages,
+            });
+          textarea.val('');        
+        }
         return false;
       })
     });

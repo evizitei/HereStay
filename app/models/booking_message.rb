@@ -21,6 +21,7 @@ class BookingMessage < ActiveRecord::Base
   end
   before_create :set_recipient
   
+  validates_presence_of :message
   
   def html_class
     (self.user_fb_id == self.booking.rental_unit.user.fb_user_id ? "owner_message" : "renter_message")
