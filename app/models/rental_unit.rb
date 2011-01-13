@@ -292,6 +292,10 @@ class RentalUnit < ActiveRecord::Base
     end
   end
   
+  def need_generate_video?
+    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
+  end
+  
   private
   def full_address_changed?
     ['address', 'address_2', 'city', 'state', 'zip', 'country'].any?{|a| self.send("#{a}_changed?")}
@@ -322,10 +326,6 @@ class RentalUnit < ActiveRecord::Base
   
   def location
     self
-  end
-  
-  def need_generate_video?
-    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
   end
   
   public  
