@@ -1,4 +1,7 @@
-.f_right= simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)
+.f_right
+  = simple_button 'Availabilities', availabilities_rental_unit_path(@rental_unit)
+  = simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)
+  
 %h2{:style => 'width: 420px;'}= @rental_unit.name
 .clearfix
 .property
@@ -15,7 +18,29 @@
       %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>@rental_unit.user.fb_user_id)}
       .clearfix
     .description{:style => 'margin: 10px 0;'}
+      = @rental_unit.full_address
+      %br
+      %br
       = @rental_unit.description
+    .price
+      %table
+        %tbody
+          %tr
+            %th
+            %th High
+            %th Mid
+            %th Low
+          %tr
+            %td Nightly
+            %td= @rental_unit.nightly_high_price ? "$#{@rental_unit.nightly_high_price}" : ''
+            %td= @rental_unit.nightly_mid_price ? "$#{@rental_unit.nightly_mid_price}" : ''
+            %td= @rental_unit.nightly_low_price ? "$#{@rental_unit.nightly_low_price}" : ''
+          %tr
+            %td Weekly
+            %td= @rental_unit.weekly_high_price ? "$#{@rental_unit.weekly_high_price}" : ''
+            %td= @rental_unit.weekly_mid_price ? "$#{@rental_unit.weekly_mid_price}" : ''
+            %td= @rental_unit.weekly_low_price ? "$#{@rental_unit.weekly_low_price}" : ''
+                  
   .clearfix
   .amenities 
     = form_for @rental_unit do |f|
@@ -23,66 +48,69 @@
         .left-col
           .row
             = f.check_box :balcony, :disabled => true
-            = f.label :balcony, 'Balcony:'
+            = f.label :balcony, 'Balcony'
           .row
             = f.check_box :dishwasher, :disabled => true
-            = f.label :dishwasher, 'Dishwasher:'
+            = f.label :dishwasher, 'Dishwasher'
           .row
             = f.check_box :fireplace, :disabled => true
-            = f.label :fireplace, 'Fireplace:'
+            = f.label :fireplace, 'Fireplace'
           .row
             = f.check_box :hardwood_floors, :disabled => true
-            = f.label :hardwood_floors, 'Hardwood Floors:'
+            = f.label :hardwood_floors, 'Hardwood Floors'
         .left-col
           .row
             = f.check_box :patio, :disabled => true
-            = f.label :patio, 'Patio:'
+            = f.label :patio, 'Patio'
           .row
             = f.check_box :refrigerator, :disabled => true
-            = f.label :refrigerator, 'Refrigerator:'
+            = f.label :refrigerator, 'Refrigerator'
           .row
             = f.check_box :microwave, :disabled => true
-            = f.label :microwave, 'Microwave:'
+            = f.label :microwave, 'Microwave'
           .row
             = f.check_box :washer_dryer, :disabled => true
-            = f.label :washer_dryer, 'Washer/Dryer:'
+            = f.label :washer_dryer, 'Washer/Dryer'
         .clearfix
       .left-col
         .left-col
           .row
             = f.check_box :clubhouse, :disabled => true
-            = f.label :clubhouse, 'Clubhouse:'
+            = f.label :clubhouse, 'Clubhouse'
           .row
             = f.check_box :exercise_room, :disabled => true
-            = f.label :exercise_room, 'Exercise Room:'
+            = f.label :exercise_room, 'Exercise Room'
           .row
             = f.check_box :on_site_laundry, :disabled => true
-            = f.label :on_site_laundry, 'On Site Laundry:'
+            = f.label :on_site_laundry, 'On Site Laundry'
           .row
             = f.check_box :on_site_manager, :disabled => true
-            = f.label :on_site_manager, 'On Site Manager:'
+            = f.label :on_site_manager, 'On Site Manager'
         .left-col
           .row
             = f.check_box :security_gate, :disabled => true
-            = f.label :security_gate, 'Security Gate:'
+            = f.label :security_gate, 'Security Gate'
           .row
             = f.check_box :swimming_pool, :disabled => true
-            = f.label :swimming_pool, 'Swimming Pool:'
+            = f.label :swimming_pool, 'Swimming Pool'
           .row
             = f.check_box :tennis_courts, :disabled => true
-            = f.label :tennis_courts, 'Tennis Courts:'
+            = f.label :tennis_courts, 'Tennis Courts'
           .row
             = f.check_box :parking, :disabled => true
-            = f.label :parking, 'Parking:'
+            = f.label :parking, 'Parking'
           .row
             = f.check_box :wifi, :disabled => true
-            = f.label :wifi, 'WiFi:'
+            = f.label :wifi, 'WiFi'
         .clearfix
       .clearfix
   - if @rental_unit.has_video?
     .video
       %h3 Video
       = render 'shared/youtube_player', :video_id => @rental_unit.video_id
+
+  - if @rental_unit.geocoded_address.present?
+    #map_canvas{:style=>"width:480px;height:400px; margin-bottom: 25px",:data=>{:canmap=>(@rental_unit.geocoding_success ? "true" : "false"),:lat=>@rental_unit.lat,:long=>@rental_unit.long,:fulladdress=>@rental_unit.geocoded_address}} 
   
   .left-column 
     %br
@@ -90,8 +118,24 @@
     .comments
       %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true", :url => @rental_unit.fb_url}
   .clearfix
+
 :javascript
-  var comment_handler = true;
-  function storeComment() {
-    $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
-  }
+:javascript
+  $(document).ready(function(){
+    (function(){
+      var element = $("#map_canvas");
+      if(element.attr("data-lat").length > 0){
+        var latlng = new google.maps.LatLng(parseFloat(element.attr("data-lat")),parseFloat(element.attr("data-long")));
+        var myOptions = {zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+        var marker = new google.maps.Marker({position: latlng,map: map,title: element.attr("data-fulladdress")});
+      }else{
+        $("#map_canvas").html("<h1>Sorry, cannot map this address</h1>");
+      }      
+    })();
+    
+    var comment_handler = true;
+    function storeComment() {
+      $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
+    }
+  });
