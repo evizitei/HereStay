@@ -154,9 +154,14 @@ class RentalUnit < ActiveRecord::Base
           without(:busy_on, Range.new(start_date, end_date))
         end
         # Owner should be a friend or friend of friend
-        if params[:friend_only] && user && user.fb_friend_ids.present?
-          friend_ids = user.fb_friend_ids << user.fb_user_id
+        if params[:owners]=='friends_of_friends' && user
+          friend_ids = user.fb_friend_ids||[]
+          friend_ids = friend_ids << user.fb_user_id
           with(:fb_friend_ids).any_of(friend_ids)
+          without(:owner_fb_id, user.fb_user_id)
+        elsif params[:owners]=='friends' && user
+          friend_ids = user.fb_friend_ids||[]
+          with(:owner_fb_id).any_of(friend_ids)
           without(:owner_fb_id, user.fb_user_id)
         end
       end
