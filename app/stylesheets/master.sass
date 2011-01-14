@@ -22,6 +22,10 @@ h4
 dt
   font-weight: bold
 
+a
+  text-decoration: none
+  color: #3B5998
+
 //--------------------- [ basic classes ] ---------------------//
 .f_right
   float: right
@@ -80,11 +84,13 @@ dt
     color: #868789
     padding: 5px 10px
     margin-right: 10px
-    border: 2px solid #c6c6c8
+    border-width: 1px
+    border-style: solid
+    border-color: #c6c6c8
     background: #e5e6eb
     &.current
       background: #90a9df
-      border: 2px solid #6b706a
+      border-color: #6b706a
       color: #373d49
 
 .text-placeholder
@@ -114,6 +120,14 @@ form.formtastic legend.label label
 form.formtastic fieldset > ol > li fieldset ol
   float: none
 
+input[type="button"]
+  border: solid 1px #8d8d8d
+  color: #494949
+  background: #e4e5eb url('/images/button_bg.gif') repeat-x 50% 50%
+  padding: 2px 5px
+  cursor: pointer
+  
+
 //--------------------- [ slider ] ---------------------//
 #advanced-search .ui-slider-horizontal
   margin-left: 6px
@@ -122,7 +136,7 @@ form.formtastic fieldset > ol > li fieldset ol
 
 //--------------------- [ layout ] ---------------------//
 body
-  font-family: sans-serif
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif
 
 #sidebar
   width: 170px
@@ -152,15 +166,18 @@ body
 
 #main
   float: left
-  width: 584px  
-  border-left: solid 4px #BCBEC0
+  width: 584px
+  border-color: #BCBEC0
+  border-width: 0 1px
+  border-style: solid
   
 #header
   margin-bottom: 10px
-  overflow: hidden
+  //overflow: hidden
   padding: 20px
   padding-bottom: 0
-  background: #EDEEF3 url('/images/dot3.gif') left bottom repeat-x
+  background: #EDEEF3 //url('/images/dot3.gif') left bottom repeat-x
+  border-bottom: 1px solid  #d8deeb
 
 #logo
   float: left
@@ -192,17 +209,17 @@ div.jGrowl div.jGrowl-notification a
 
 //--------------------- [ flash ] ---------------------//
 #flash .flash
-  border: 3px solid #FFC67D
+  border: 1px solid #FFC67D
   color: #000
-  font-weight: bold
+  //font-weight: bold
   margin: 10px 0
   padding: 10px
   font-size: 1.2em
 
 #flash .flash.alert
-  border: 3px solid red
+  border: 1px solid red
   color: red
-  font-weight: bold
+  //font-weight: bold
   margin: 10px 0
   padding: 10px
 
@@ -215,7 +232,7 @@ div.jGrowl div.jGrowl-notification a
 
 //--------------------- [ simple search ] ---------------------//
 #search-form
-  border: solid 2px #DCDEE7
+  border: solid 1px #DCDEE7
   padding: 3px
   overflow: hidden
   margin-bottom: 10px
@@ -232,6 +249,7 @@ div.jGrowl div.jGrowl-notification a
       width: 18px
       color: transparent
       margin-top: 7px
+      overflow: hidden
       &.minimized
         background: transparent url(/images/u11.png) 0 0 no-repeat
       &.maximized
@@ -277,6 +295,7 @@ div.jGrowl div.jGrowl-notification a
   .friends
     margin-bottom: 10px
     label
+      margin-left: 10px
       font-size: 13px
   .date-range, .left
     p
@@ -351,30 +370,51 @@ div.jGrowl div.jGrowl-notification a
   margin-bottom: 20px
   ul
     li
-      background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
-      padding: 5px 0px 0px 35px
-      height: 24px
+      //background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
+      //padding: 5px 0px 0px 35px
+      //height: 24px
       a
         text-decoration: none
-        color: #000
+        color: #333
+        border-style: solid
+        border-width: 2px 0
+        border-color: #fff
+        display: block
+        line-height: 12px
+        padding: 3px 8px 3px 28px
+        background-repeat: no-repeat
+        &:hover
+          background-color: #EFF2F7
+          border-color: #EFF2F7
       border: 0
-    li.all-properties
-      background: url('/images/menu_all_props_bg.png') 10px 4px no-repeat
-    li.my-properties
-      background: url('/images/menu_my_props_bg.png') 10px 4px no-repeat
-    li.account
-      background: url('/images/menu_account_bg.png') 10px 4px no-repeat
-    li.inquiries
-      background: url('/images/menu_inquiries_bg.png') 10px 4px no-repeat
-    li.reservations
-      background: url('/images/menu_reservations_bg.png') 10px 4px no-repeat
+    li.all-properties a
+      background-image: url('/images/fb_origin03.png')
+      background-position: 5px -95px
+    li.my-properties a
+      background-image: url('/images/fb_origin04.png')
+      background-position: 5px -14px
+    li.account a
+      background-image: url('/images/fb_origin01.png')
+      background-position: 5px -16px
+    li.inquiries a
+      background-image: url('/images/fb_origin02.png')
+      background-position: 5px -16px
+    li.reservations a
+      background-image: url('/images/fb_origin01.png')
+      background-position: 5px -186px
       &.sub
         margin-left: 10px
     li.new-property
-      background: url('/images/menu_new_props_bg.png') 10px 4px no-repeat
-      margin-top: 20px
-    li.current
+      margin-top: 10px
+      border-top: 1px solid #eee
+      padding-top: 10px
+      a
+        background-image: url('/images/fb_origin02.png')
+        background-position: 5px 0px
+
+    li.current a
       background-color: #D8DEEA
+      border-color: #D8DEEA
         
 .sub-menu
   border: 0
@@ -414,18 +454,21 @@ div.jGrowl div.jGrowl-notification a
         border: 1px solid $light_gray
 .submenu
   margin-top: 20px
+  height: 28px
   li
     display: block 
     float: left
     background: #D8DEEC
     padding: 5px 15px 5px 15px
     margin-right: 10px
-    border: solid 3px #DCDEE7
-    margin-bottom: -3px
+    border: solid 1px #DCDEE7
+    margin-bottom: -2px
+    line-height: 16px
     a
-      color: #4D5085
+      color: #484e82
       text-decoration: none
       font-weight: bold
+      font-size: 15px
     &.current
       background: #FFF
       border-bottom: solid 3px #FFF
@@ -436,6 +479,7 @@ div.jGrowl div.jGrowl-notification a
   padding: 10px
   font-size: 13px
   margin: 20px
+  min-height: 200px
   
 //--------------------- [ rental utils ] ---------------------//
 .property, .property_form
@@ -809,4 +853,7 @@ table.bookings
   #cluetip-close
     a
       color: #8B8C8D
-      
+
+.admin_buttons
+  margin: 5px 0
+

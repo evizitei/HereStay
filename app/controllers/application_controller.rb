@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_from_params
   before_filter :oauth_obj
   before_filter :load_info_for_sidebar
-  after_filter :set_headers
+  after_filter :set_headers  
+  helper_method :current_coordinates
 protected
   
   def oauth_obj
@@ -60,5 +61,14 @@ protected
   
   def set_headers
     response.headers['P3P'] = 'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"'
+  end
+  
+  def current_coordinates
+    if current_user && current_user.get_latlng
+      {:lat => current_user.fb_lat, :lng => current_user.fb_lng}
+    else
+      coords = Geoplugin.query_latlng(request.remote_ip) unless session[:current_coordinates]
+      session[:current_coordinates] = coords ? coords : {:lat => '39.828175', :lng => '-98.579500'}
+    end
   end
 end

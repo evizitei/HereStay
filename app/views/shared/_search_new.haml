@@ -11,12 +11,14 @@
   #advanced-search{:class => params[:advanced] == '1' && 'active'} 
     .friends
       %label
-        = check_box_tag 'friends_only', 1, params[:friends_only] == '1'
+        = radio_button_tag 'owners', 'friends', params[:owners] == 'friends'
         Friends Only
       %label
-        = check_box_tag 'friends_of_friends_only', 1, params[:friends_of_friends_only] == '1'
+        = radio_button_tag 'owners', 'friends_of_friends', params[:owners] == 'friends_of_friends'
         Friends of Friends Only
-    
+      %label
+        = radio_button_tag 'owners', '', params[:owners].blank?
+        All
     .date-range  
       %p
         = label_tag 'search_start_date', 'Arrive:'

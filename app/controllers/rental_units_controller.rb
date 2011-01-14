@@ -1,7 +1,7 @@
 class RentalUnitsController < ApplicationController
   inherit_resources
   layout 'application'
-  before_filter :login_required, :except => %w(index show owned_by availabilities)
+  before_filter :login_required, :except => %w(index show owned_by availabilities search)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
   rescue_from VrboProxy::Error, :with => :show_errors
@@ -129,7 +129,11 @@ class RentalUnitsController < ApplicationController
     end
     
     def collection
-      @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+      if self.action_name == 'index'
+        @rental_units ||= setup_collection.results
+      else
+        @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+      end
     end
     
     def create_resource(object)
@@ -167,5 +171,9 @@ class RentalUnitsController < ApplicationController
       respond_to do |format|
         format.html{render :text => "Error: #{err.to_s}"}
       end
+    end
+    
+    def setup_collection
+      RentalUnit.featured_search(current_coordinates, params[:page])
     end
 end

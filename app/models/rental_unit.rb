@@ -29,10 +29,13 @@ class RentalUnit < ActiveRecord::Base
 
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
+    unit.delay.generate_video_and_upload if unit.need_generate_video?
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
-  after_create :generate_video_and_upload, :if => :need_generate_video?
+  before_destroy do |unit|
+    YoutubeProxy.new.delay.delete_video(self.video_id) if unit.has_video?
+  end
   
   searchable do
     text    :name, :default_boost=>2
@@ -74,6 +77,7 @@ class RentalUnit < ActiveRecord::Base
         end
       end.flatten
     end
+    boolean :featured
   end
   
   # List all listings and order the friends' lisitngs first
@@ -150,9 +154,14 @@ class RentalUnit < ActiveRecord::Base
           without(:busy_on, Range.new(start_date, end_date))
         end
         # Owner should be a friend or friend of friend
-        if params[:friend_only] && user && user.fb_friend_ids.present?
-          friend_ids = user.fb_friend_ids << user.fb_user_id
+        if params[:owners]=='friends_of_friends' && user
+          friend_ids = user.fb_friend_ids||[]
+          friend_ids = friend_ids << user.fb_user_id
           with(:fb_friend_ids).any_of(friend_ids)
+          without(:owner_fb_id, user.fb_user_id)
+        elsif params[:owners]=='friends' && user
+          friend_ids = user.fb_friend_ids||[]
+          with(:owner_fb_id).any_of(friend_ids)
           without(:owner_fb_id, user.fb_user_id)
         end
       end
@@ -165,6 +174,22 @@ class RentalUnit < ActiveRecord::Base
 
   def self.advanced_search_ids(params, user)
     self._search(params, user, 'solr_search_ids')
+  end
+  
+  def self.featured_search(coords, page = 1)
+    self.search do
+      paginate(:page =>(page), :per_page => 5)
+      keywords "*:*" do
+        boost(3) do
+          with(:featured, true)
+        end
+      end
+      if coords
+        with(:location).near(coords[:lat], coords[:lng], :precision => 1, :boost => 1, :precision_factor => 1) do
+        end
+      end
+      order_by(:score, :desc)
+    end
   end
     
   def initialize(attrs = {})
@@ -284,12 +309,16 @@ class RentalUnit < ActiveRecord::Base
   
   def delete_youtube_video
     if has_video?
-      YoutubeProxy.new.delete_video(self.video_id)
+      YoutubeProxy.new.delay.delete_video(self.video_id)
       self.video_id = nil
       self.video_status = nil
       self.video_code = nil
       self.save!(:validate => false)
     end
+  end
+  
+  def need_generate_video?
+    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
   end
   
   private
@@ -322,10 +351,6 @@ class RentalUnit < ActiveRecord::Base
   
   def location
     self
-  end
-  
-  def need_generate_video?
-    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
   end
   
   public  

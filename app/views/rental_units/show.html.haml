@@ -1,16 +1,12 @@
-.f_right
-  = simple_button 'Availabilities', availabilities_rental_unit_path(@rental_unit)
-  = simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)
-  
-%h2{:style => 'width: 420px;'}= @rental_unit.name
-.clearfix
 .property
   .left-column
     -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
       .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
     -else
       .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'} 
-    %div=render(:partial=>"rental_units/share_unit",:object=>@rental_unit)
+    %div= render(:partial=>"rental_units/share_unit",:object=>@rental_unit)
+    %div= simple_button 'Availabilities', availabilities_rental_unit_path(@rental_unit)
+    %div= simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)    
   .right-column
     .f_right= belongs_to_friend_icon current_user, @rental_unit
     .title
@@ -119,7 +115,6 @@
       %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true", :url => @rental_unit.fb_url}
   .clearfix
 
-:javascript
 :javascript
   $(document).ready(function(){
     (function(){
