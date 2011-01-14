@@ -136,14 +136,7 @@ module ApplicationHelper
   end
   
   def gmap_latlng(lat,lng)
-    if !lat.blank? && !lng.blank?
-      latlng = "#{lat}, #{lng}"
-    elsif logged_in? && current_user.get_latlng
-      latlng = "#{current_user.fb_lat}, #{current_user.fb_lng}"
-    else  
-      latlng = "39.828175, -98.579500"
-    end   
-    latlng
+    "#{current_coordinates[:lat]}, #{current_coordinates[:lng]}"
   end
   
   def gmap_zoom(val = nil)

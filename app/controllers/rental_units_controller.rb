@@ -129,7 +129,7 @@ class RentalUnitsController < ApplicationController
     end
     
     def collection
-      if self.action_name == 'index' && !@solr_down
+      if self.action_name == 'index'
         @rental_units ||= setup_collection.results
       else
         @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
@@ -174,11 +174,6 @@ class RentalUnitsController < ApplicationController
     end
     
     def setup_collection
-      coords = if current_user && current_user.get_latlng?
-        {:lat => current_user.fb_lat, :lng => current_user.fb_lng}
-      else
-        Geoplugin.query_latlng(request.remote_ip)
-      end
-      RentalUnit.featured_search(coords, params[:page])
+      RentalUnit.featured_search(current_coordinates, params[:page])
     end
 end
