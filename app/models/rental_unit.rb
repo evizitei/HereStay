@@ -74,6 +74,7 @@ class RentalUnit < ActiveRecord::Base
         end
       end.flatten
     end
+    boolean :featured
   end
   
   # List all listings and order the friends' lisitngs first
@@ -165,6 +166,22 @@ class RentalUnit < ActiveRecord::Base
 
   def self.advanced_search_ids(params, user)
     self._search(params, user, 'solr_search_ids')
+  end
+  
+  def self.featured_search(coords, page = 1)
+    self.search do
+      paginate(:page =>(page), :per_page => 5)
+      keywords "*:*" do
+        boost(3) do
+          with(:featured, true)
+        end
+      end
+      if coords
+        with(:location).near(coords[:lat], coords[:lng], :precision => 1, :boost => 1, :precision_factor => 1) do
+        end
+      end
+      order_by(:score, :desc)
+    end
   end
     
   def initialize(attrs = {})

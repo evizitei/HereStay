@@ -129,7 +129,11 @@ class RentalUnitsController < ApplicationController
     end
     
     def collection
-      @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+      if self.action_name == 'index' && !@solr_down
+        @rental_units ||= setup_collection.results
+      else
+        @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+      end
     end
     
     def create_resource(object)
@@ -167,5 +171,14 @@ class RentalUnitsController < ApplicationController
       respond_to do |format|
         format.html{render :text => "Error: #{err.to_s}"}
       end
+    end
+    
+    def setup_collection
+      coords = if current_user && current_user.get_latlng?
+        {:lat => current_user.fb_lat, :lng => current_user.fb_lng}
+      else
+        Geoplugin.query_latlng(request.remote_ip)
+      end
+      RentalUnit.featured_search(coords, params[:page])
     end
 end
