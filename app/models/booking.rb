@@ -180,7 +180,7 @@ class Booking < ActiveRecord::Base
   
   def do_reserve! 
     create_reservation
-    FacebookProxy.post_unit_rented(self)
+    FacebookProxy.delay.post_unit_rented(self)
     TwitterWrapper.post_unit_rented(self)
     UserMailer.booking_confirmation(self).deliver if self.renter_fb_id
   end

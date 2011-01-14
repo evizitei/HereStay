@@ -45,7 +45,22 @@ class FacebookProxy
       :link => rental_unit.fb_url,
       :name => 'view this property'
     }
-p rental_unit.picture(:medium)
+
+    options[:picture] = rental_unit.picture(:medium) if rental_unit.picture(:medium)
+    FacebookProxy.new(:here_stay).put_object(:here_stay, "feed", options)
+    if rental_unit.user.post_fb_wall_updates?
+      FacebookProxy.new(rental_unit.user.access_token).put_object('me', "feed", options)
+    end
+  end
+  
+  def self.post_unit_added(rental_unit)
+    text = "#{rental_unit.name} has been added. #{rental_unit.price_from}"
+    options = {
+      :message => text,
+      :link => rental_unit.fb_url,
+      :name => 'view this property'
+    }
+
     options[:picture] = rental_unit.picture(:medium) if rental_unit.picture(:medium)
     FacebookProxy.new(:here_stay).put_object(:here_stay, "feed", options)
     if rental_unit.user.post_fb_wall_updates?
