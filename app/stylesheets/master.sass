@@ -713,11 +713,13 @@ table.bookings
     
 //--------------------[ availabilities calendar fixes ] ---------------------//
 .calendar 
-  padding-top: 10px
+  margin-top: -20px
   font-size: 12px
   width: 218px
   .date
+    width: 170px
     text-align: center
+    padding-left: 20px
     .month
       font-weight: bold
     .ajax-loader
@@ -728,6 +730,7 @@ table.bookings
   .prev-nav
     position: relative
     margin-top: -12px
+    width: 170px
     a
       text-decoration: none
       color: #000
@@ -805,9 +808,18 @@ table.bookings
   background-color: #EDEEF3
   #cluetip-outer
     background-color: #EDEEF3
-  #cluetip-close
-    a
-      color: #8B8C8D
+  #cluetip-inner
+    #cluetip-close
+      width: 17px
+      height: 17px
+      overflow: hidden
+      margin-top: -5
+      margin-left: 210px
+      background: transparent url("/images/close.png") top left no-repeat
+      a
+        padding: 17px
+        color: transparent
+      
       
 
 .admin_buttons
