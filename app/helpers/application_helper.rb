@@ -136,7 +136,11 @@ module ApplicationHelper
   end
   
   def gmap_latlng(lat,lng)
-    "#{current_coordinates[:lat]}, #{current_coordinates[:lng]}"
+    if !lat.blank? && !lng.blank?
+      "#{lat}, #{lng}"
+    else  
+      "#{current_coordinates[:lat]}, #{current_coordinates[:lng]}"
+    end
   end
   
   def gmap_zoom(val = nil)
