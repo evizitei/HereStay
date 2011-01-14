@@ -19,6 +19,16 @@
       = truncate(unit_row.description, :length => 150, :separator => ' ')
     .f_right=render(:partial=>"rental_units/share_unit",:object=>unit_row)
     .clearfix
+    - if action_name == 'manage' && unit_row.is_owner?(current_user)
+      .admin_buttons
+        = simple_button 'Edit', edit_rental_unit_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Photos', rental_unit_photos_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Video', rental_unit_video_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Inquiries', rental_unit_inquiries_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Promote', promote_rental_unit_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Reservations', rental_unit_bookings_path(unit_row), :class_name => 'f_left'
+        = simple_button 'Delete', rental_unit_path(unit_row), :class_name => 'f_left', :method=>:delete
+      .clearfix
     .comments
       .comment= fb_like_button(:href => unit_row.fb_url, :width => "320", :height => "20", :show_faces => "false")
       - unit_row.last_comments.each do |comment| 
