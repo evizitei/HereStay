@@ -136,7 +136,8 @@ $(document).ready(function() {
     activation: 'click',
     fx: { open: 'slideDown' },
     ajaxCache: false,
-    'ajaxSettings': {}
+    'ajaxSettings': {},
+    closeText: "<img src='/images/close.png'/>"
   });
   $('.calendar .prev-nav a').live('click', function(){
     var parent = $(this).parents('.calendar');
