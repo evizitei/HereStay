@@ -1,9 +1,10 @@
 =content_for :submenu do
   %ul
-    %li.current= link_to 'Featured', collection_url
+    %li.current= link_to (controller.action_name == 'search' ? 'Results' : 'Featured'), collection_url
     %li= link_to 'Deals', deals_path
     %li= link_to 'Auction', auction_root_path
   .clearfix
+
 .properties
   = render :partial => 'unit_row', :collection => collection
   =will_paginate(collection,:renderer=>"FacebookLinkRenderer")

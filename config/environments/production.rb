@@ -5,4 +5,5 @@ Micasasucasa::Application.configure do
   config.action_dispatch.x_sendfile_header = "X-Sendfile"
   config.serve_static_assets = true
   config.i18n.fallbacks = true
+  config.active_support.deprecation = :notify
 end

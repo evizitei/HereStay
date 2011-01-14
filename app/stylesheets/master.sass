@@ -86,7 +86,9 @@ dt
       background: #90a9df
       border: 2px solid #6b706a
       color: #373d49
-      
+
+.text-placeholder
+  color: #AAA !important   
 
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
@@ -163,6 +165,7 @@ body
 #logo
   float: left
   margin-right: 20px
+  margin-bottom: 5px
 
 #like-button
   float: left
@@ -213,7 +216,7 @@ div.jGrowl div.jGrowl-notification a
 //--------------------- [ simple search ] ---------------------//
 #search-form
   border: solid 2px #DCDEE7
-  padding: 5px
+  padding: 3px
   overflow: hidden
   margin-bottom: 10px
   background: #F6F7FA
@@ -221,35 +224,48 @@ div.jGrowl div.jGrowl-notification a
 #simple-search
   overflow: hidden      
   .expander
+    position: relative
     float: left
     a
-      display: inline-block
+      position: absolute
+      display: block
       width: 18px
       color: transparent
+      margin-top: 7px
       &.minimized
         background: transparent url(/images/u11.png) 0 0 no-repeat
       &.maximized
         background: transparent url(/images/u10.png) 0 0 no-repeat
     input
+      display: block
       border: 0
       background: none
-      font-size: 18px
+      font-size: 15px
+      line-height: 22px
+      font-weight: normal
       cursor: hand
       cursor: pointer
       color: #8B8C8D
       padding: 0
-      margin: 0
+      margin: 4px 0 0 20px      
   .search-wrapper
     border: 1px solid #B4B4B4
-    padding: 2px
-    padding-left: 23px
-    background: transparent url(/images/u53.png) 2px 2px no-repeat
+    padding: 5px
+    background: #fff
     float: left
     margin-right: 10px
+    .lens
+      width: 22px
+      height: 16px
+      float: left
+      background: transparent url(/images/u53.png) 2px 2px no-repeat
     input[type=text]
       border: 0
+      outline: 0
       width: 420px
       background: transparent
+      font-size: 14px
+      
     
 //--------------------- [ advanced search ] ---------------------//
 
@@ -462,6 +478,9 @@ div.jGrowl div.jGrowl-notification a
     overflow: hidden
     font-weight: bold
     font-size: 13px
+    .by
+      font-weight: normal
+      line-height: 20px
   .share_box
     padding: 1px 10px
   .messages

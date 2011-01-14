@@ -12,7 +12,8 @@
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
     .title
       = link_to unit_row.name, rental_unit_path(unit_row)
-      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
+      %br
+      %span.by== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
       .clearfix
     .description
       = truncate(unit_row.description, :length => 150, :separator => ' ')

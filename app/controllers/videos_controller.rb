@@ -25,7 +25,7 @@ class VideosController < ApplicationController
   end
   
   def generate
-    @rental_unit.generate_video_and_upload
+    @rental_unit.delay.generate_video_and_upload
     flash[:notice] = 'Video was created.'
     redirect_to rental_unit_video_url(@rental_unit)
   end
