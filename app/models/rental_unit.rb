@@ -349,6 +349,10 @@ class RentalUnit < ActiveRecord::Base
     p.nil? ? DEFAULT_MAX_PRICE : (p.to_f).ceil
   end
   
+  def self.min_max_prices
+    [RentalUnit.min_price, RentalUnit.max_price].sort
+  end
+  
   def location
     self
   end
