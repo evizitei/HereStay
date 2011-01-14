@@ -29,6 +29,7 @@ class RentalUnit < ActiveRecord::Base
 
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
+    FacebookProxy.delay.post_unit_added(unit)
     unit.delay.generate_video_and_upload if unit.need_generate_video?
   end
   
