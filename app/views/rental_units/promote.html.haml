@@ -3,8 +3,7 @@
     %li.current= link_to 'Add Property'
 =property_bread_crumbs(['Create Your Property', 'Publish Your Property', 'Promote Your Property'], 3)
 = form_tag '', :class => 'promote_property_form' do |f|
-  .f_right= submit_tag "Promote Property"
-  .clearfix
+
   .property_form
     .dataRow
       = radio_button_tag 'promote_action', '1'
@@ -18,6 +17,9 @@
     .dataRow
       = radio_button_tag 'promote_action', '4'
       = label_tag 'promote_action_4', 'Auctioning Your Property'
+  .f_right= submit_tag "Promote Property"
+  .clearfix
+  
 :javascript
   $(document).ready(function() {
     $('.promote_property_form').submit(function(){

@@ -131,9 +131,14 @@ input[type="button"], input[type="submit"], button
   border: solid 1px #8d8d8d
   color: #494949
   background: #e4e5eb url('/images/button_bg.gif') repeat-x 50% 50%
-  padding: 2px 5px
+  padding: 2px 5px !important
   cursor: pointer
   
+form.formtastic .buttons ol
+  margin-left: 6px
+
+form.formtastic p.inline-errors
+  padding-left: 6px
 
 //--------------------- [ slider ] ---------------------//
 #advanced-search .ui-slider-horizontal
@@ -496,7 +501,7 @@ div.jGrowl div.jGrowl-notification a
     float: left
     margin-right: 10px
     div
-      margin-bottom: 5px
+      margin-bottom: 10px
   .right-column
     width: 370px
     float: left  
@@ -534,7 +539,7 @@ div.jGrowl div.jGrowl-notification a
       font-weight: normal
       line-height: 20px
   .share_box
-    padding: 1px 10px
+    padding: 5px 0px
   .messages
     .fb-profile-link 
       img
@@ -607,12 +612,21 @@ div.jGrowl div.jGrowl-notification a
         .date
           color: #9D9EA3
           margin-top: 5px
-      
+
+.new_rental_unit
+  .property
+    width: auto
+  .f_right
+    margin-left: 10px
+.promote_property_form
+  .property_form
+    margin-bottom: 20px
+
 .property_form
   border: solid 1px #B4B4B4
   padding: 10px
   input.med
-    width: 154px
+    width: 134px
     margin-left: 3px
   input.small
     width: 70px
