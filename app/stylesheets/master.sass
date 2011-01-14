@@ -7,6 +7,9 @@ $lite_gray = #edeef4
 $border = 1px solid #B4B4B4
 
 //--------------------- [ typo ] ---------------------//
+*
+  outline: none
+
 h2
   font-size: 18px
   
@@ -60,19 +63,23 @@ a
   margin-right: 10px
 
 #errorExplanation
-  border: 2px solid red
-  background-color: #fff
-  padding: 5px
-  margin-bottom: 5px
+  border: 1px solid red
+  background-color: #FFEFEF
+  padding: 10px
+  margin-bottom: 15px
   h2
     font-size: 1.2em
+    margin: 5px 0 10px
   ul
     list-style-type: none
     padding-left: 20px
+    margin: 10px 0
   li
     padding-left: 20px
-    margin: 0
+    margin: 3px
     padding: 0
+  h2, p
+    display: none
   
 .links
   margin-bottom: 20px
@@ -120,7 +127,7 @@ form.formtastic legend.label label
 form.formtastic fieldset > ol > li fieldset ol
   float: none
 
-input[type="button"]
+input[type="button"], input[type="submit"], button
   border: solid 1px #8d8d8d
   color: #494949
   background: #e4e5eb url('/images/button_bg.gif') repeat-x 50% 50%
@@ -166,7 +173,7 @@ body
 
 #main
   float: left
-  width: 584px
+  width: 582px
   border-color: #BCBEC0
   border-width: 0 1px
   border-style: solid
@@ -402,8 +409,9 @@ div.jGrowl div.jGrowl-notification a
     li.reservations a
       background-image: url('/images/fb_origin01.png')
       background-position: 5px -186px
-      &.sub
-        margin-left: 10px
+    li.reservations.sub a
+      padding-left: 50px
+      background-position: 25px -186px
     li.new-property
       margin-top: 10px
       border-top: 1px solid #eee
@@ -516,6 +524,9 @@ div.jGrowl div.jGrowl-notification a
   .description
     text-align: justify
     margin: 10px 0  
+  .price
+    td, th
+      padding: 5px 5px 0px 0px
   .amenities
     margin: 20px 0 
   .title
@@ -755,11 +766,13 @@ table.bookings
     
 //--------------------[ availabilities calendar fixes ] ---------------------//
 .calendar 
-  padding-top: 10px
+  margin-top: -20px
   font-size: 12px
   width: 218px
   .date
+    width: 170px
     text-align: center
+    padding-left: 20px
     .month
       font-weight: bold
     .ajax-loader
@@ -770,6 +783,7 @@ table.bookings
   .prev-nav
     position: relative
     margin-top: -12px
+    width: 170px
     a
       text-decoration: none
       color: #000
@@ -847,10 +861,16 @@ table.bookings
   background-color: #EDEEF3
   #cluetip-outer
     background-color: #EDEEF3
-  #cluetip-close
-    a
-      color: #8B8C8D
-
+  #cluetip-inner
+    #cluetip-close
+      width: 17px
+      height: 17px
+      overflow: hidden
+      margin-top: -5
+      margin-left: 210px
+      background: transparent url("/images/close.png") top left no-repeat
+      a
+        padding: 17px
+        color: transparent
 .admin_buttons
   margin: 5px 0
-
