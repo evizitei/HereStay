@@ -1,7 +1,7 @@
 class RentalUnitsController < ApplicationController
   inherit_resources
   layout 'application'
-  before_filter :login_required, :except => %w(index show owned_by availabilities)
+  before_filter :login_required, :except => %w(index show owned_by availabilities search)
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
   rescue_from VrboProxy::Error, :with => :show_errors
