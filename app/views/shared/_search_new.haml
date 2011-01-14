@@ -37,9 +37,9 @@
         .slider-container
           .labels.budget
             %span $
-            %span.from>= params[:range_budget_from]||RentalUnit.min_price
+            %span.from>= params[:range_budget_from]||RentalUnit.min_max_prices.first
             %span - $
-            %span.to>= params[:range_budget_to]||RentalUnit.max_price
+            %span.to>= params[:range_budget_to]||RentalUnit.min_max_prices.last
           #range_budget
       .field-box
         = label_tag 'adults', 'Adults:'
@@ -96,7 +96,7 @@
   var geoplugin #{'= true' if !current_user || !current_user.get_latlng?};
   var search_params = {
     'range_bedrooms': [#{params[:range_bedrooms_from]||1},#{params[:range_bedrooms_to]||5}],
-    'range_budget': [#{params[:range_budget_from]||RentalUnit.min_price},#{params[:range_budget_to]||RentalUnit.max_price}],
+    'range_budget': [#{params[:range_budget_from]||RentalUnit.min_max_prices.first},#{params[:range_budget_to]||RentalUnit.min_max_prices.last}],
     'range_adults': [#{params[:range_adults_from]||0},#{params[:range_adults_to]||5}],
     'range_kids': [#{params[:range_kids_from]||0},#{params[:range_kids_to]||5}],
     'range_bathes': [#{params[:range_bathes_from]||0},#{params[:range_bathes_to]||5}],
@@ -197,8 +197,8 @@
     });
     
     $("#range_budget").slider({
-      min: #{RentalUnit.min_price},
-      max: #{RentalUnit.max_price},
+      min: #{RentalUnit.min_max_prices.first},
+      max: #{RentalUnit.min_max_prices.last},
       values: search_params.range_budget,
       range: true,
       slide: function(ivent,ui){
