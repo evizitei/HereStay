@@ -13,9 +13,11 @@
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, resource.rental_unit
     .title
       = link_to resource.rental_unit.name, rental_unit_path(resource.rental_unit)
-      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>resource.rental_unit.user.fb_user_id)}
-      %span{:style => 'font-weight: normal;'}
-        = link_to 'Edit', edit_resource_path(resource)
+      - if resource.belongs_to?(current_user)
+        %span{:style => 'font-weight: normal;'}
+          = link_to 'Edit', edit_resource_path(resource)
+      %br
+      %span.by By #{ fb_name(:uid=>resource.rental_unit.user.fb_user_id)}
       .clearfix
     
     .description
@@ -24,6 +26,6 @@
       #{resource.percent}% OFF
       (only #{resource.amount.format})
       from #{resource.start_on.to_s(:us_date)} to #{resource.end_on.to_s(:us_date)}
-      - if resource.active?
+      -# if resource.active?
         = link_to 'Make deal', make_deal_path(resource), :method => :put
   .clearfix
