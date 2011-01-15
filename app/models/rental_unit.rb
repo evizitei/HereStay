@@ -38,6 +38,8 @@ class RentalUnit < ActiveRecord::Base
     YoutubeProxy.new.delay.delete_video(self.video_id) if unit.has_video?
   end
   
+  scope :active, where(:deleted_at => nil)
+  
   searchable do
     text    :name, :default_boost=>2
     text    :description
@@ -79,12 +81,14 @@ class RentalUnit < ActiveRecord::Base
       end.flatten
     end
     boolean :featured
+    boolean(:deleted){|u| u.deleted_at.present?}
   end
   
   # List all listings and order the friends' lisitngs first
   def self.friends_first(fb_seeker_id, friend_ids, page)
     friend_ids = [0] if friend_ids.blank?
     self.search do
+      without(:deleted, true)
       keywords "*:*" do
         
         # Boost listing if it belongs to friend
@@ -99,7 +103,6 @@ class RentalUnit < ActiveRecord::Base
           without(:owner_fb_id, fb_seeker_id)
         end
       end
-      
       order_by(:score, :desc)
       order_by(:created_at, :desc)
       paginate :page => page
@@ -110,7 +113,7 @@ class RentalUnit < ActiveRecord::Base
     self.send(search_method) do
       keywords(params[:search])
       paginate(:page =>(params[:page] || 1), :per_page => 5)
-      
+      without(:deleted, true)
       if params[:advanced] == '1'
         if params[:range_bedrooms_to].to_i > 4
           with(:bedrooms).greater_than(params[:range_bedrooms_from].to_i - 1) unless params[:range_bedrooms_from].to_i == 1
@@ -180,6 +183,7 @@ class RentalUnit < ActiveRecord::Base
   def self.featured_search(coords, page = 1)
     self.search do
       paginate(:page =>(page), :per_page => 5)
+      without(:deleted, true)
       keywords "*:*" do
         boost(3) do
           with(:featured, true)
@@ -322,6 +326,12 @@ class RentalUnit < ActiveRecord::Base
     self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
   end
   
+  def destroy_with_marking
+    self.deleted_at = Time.now
+    self.save(:validate => false)
+  end
+  alias_method_chain :destroy, :marking
+
   private
   def full_address_changed?
     ['address', 'address_2', 'city', 'state', 'zip', 'country'].any?{|a| self.send("#{a}_changed?")}

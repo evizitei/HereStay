@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110113120825) do
+ActiveRecord::Schema.define(:version => 20110115074446) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(:version => 20110113120825) do
     t.string   "year_built"
     t.string   "sq_footage"
     t.boolean  "featured",             :default => false
+    t.datetime "deleted_at"
   end
 
   add_index "rental_units", ["fb_user_id"], :name => "index_rental_units_on_fb_user_id"
