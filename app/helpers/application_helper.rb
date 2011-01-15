@@ -125,7 +125,7 @@ module ApplicationHelper
     values[par.to_i]
   end
   
-  def belongs_to_friend_icon user, rental_unit
+  def belongs_to_friend_icon(user, rental_unit)
     if user && !user.fb_friend_ids.blank? && !rental_unit.user.fb_friend_ids.blank?
       if rental_unit.user.fb_friend_ids.include?(user.fb_user_id.to_i)
         link_to image_tag('icon_friend.png', :title => 'The listing belongs to your friend.', :border => 0), relation_path(rental_unit.user), :class => 'clueTip', :rel => relation_path(rental_unit.user)
