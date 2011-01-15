@@ -263,11 +263,11 @@
 
     $("#radius_slider").slider({
       min: 1,
-      max: 5,
+      max: 7,
       value: #{ params[:location_zoom].blank? ? 5 : params[:location_zoom]},
       slide: function(ivent,ui){
-        var values = ['', '1.5', '5', '25', '90', '350' ]
-        var zooms = [1,12,11,10,8,6]
+        var values = ['', '1.5', '5', '25', '90', '350', '1500', '6000']
+        var zooms = [1,12,11,10,8,6,4,2]
         id = $(this).attr('id');
         var container = $(this).parent('.slider-container');
         container.find('.value').html(values[ui.value]);

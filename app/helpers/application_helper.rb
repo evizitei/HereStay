@@ -121,7 +121,7 @@ module ApplicationHelper
   end
   
   def zoom_labels(par)
-    values = ['', '1.5', '5', '25', '90', '350' ]
+    values = ['', '1.5', '5', '25', '90', '350', '1500', '6000' ]
     values[par.to_i]
   end
   
@@ -144,9 +144,9 @@ module ApplicationHelper
   end
   
   def gmap_zoom(val = nil)
-    zooms = [1,12,11,10,8,6]
+    zooms = [1,12,11,10,8,6,4,2]
     return zooms[val.to_i] unless val.blank?
-    zoom = logged_in? && current_user.valid_country? && current_user.get_latlng? ? 6 : 3
+    zoom = current_coordinates[:zoom]
   end
   
   def gmap_markers(items, prefix = '', center = true)
