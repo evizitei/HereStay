@@ -23,6 +23,8 @@
     .listing
       - chat.booking_messages.by_date.each do |message|
         .message{:class=>message.html_class, :id => "message_#{message.id}"}
+          .time
+            = message.created_at.strftime("%b %e, %Y %I:%M %p")
           .user
             = fb_profile_pic(:uid => message.user_fb_id, :size => "thumb")
           .arrow

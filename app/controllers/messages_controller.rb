@@ -54,6 +54,7 @@ class MessagesController < ApplicationController
       "user_fb_id" => msg.user_fb_id,
        "message_class" => msg.html_class,
        "sent_at" => msg.created_at.to_formatted_s(:short), 
+       "sent_at_long" => msg.created_at.strftime("%b %e, %Y %I:%M %p"),
        "message" => msg.message,
        "id" => msg.id,
        "url" => rental_unit_inquiries_url(msg.booking.rental_unit),
