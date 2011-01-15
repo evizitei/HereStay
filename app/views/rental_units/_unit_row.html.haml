@@ -11,7 +11,7 @@
   .right-column
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, unit_row
     .title
-      = link_to unit_row.name, rental_unit_path(unit_row)
+      = link_to truncate(unit_row.name, :length => 50), rental_unit_path(unit_row)
       %br
       %span.by== By #{ fb_name(:uid=>unit_row.user.fb_user_id)}
       .clearfix

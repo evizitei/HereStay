@@ -140,6 +140,14 @@
   }
 
   $(document).ready(function() {
+    if($('#advanced-search').hasClass('active')){
+      $('#simple-search .expander a').addClass('maximized').removeClass('minimized');
+      $('#advanced-search').slideDown();
+      $('#advanced').val(1);
+      if(!search_map){
+        search_map = initSearchMap();
+      }
+    }
     $('#simple-search .expander a').toggle(
       function(){
         $(this).addClass('maximized').removeClass('minimized');
