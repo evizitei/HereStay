@@ -119,6 +119,14 @@ function redrawPhotos(){
     $('.thumbs-left-logic, .thumbs-right-logic').hide();
   }
 }
+function customFBloginButton(url){
+  FB.login(function(response) {
+    if (response.session) {
+      window.top.location.href = url;
+    } else {
+    }
+  }, {perms:'publish_stream,offline_access,user_birthday,email,user_location'});
+}
 
 $(document).ready(function() {
   
