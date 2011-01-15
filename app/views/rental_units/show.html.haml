@@ -10,8 +10,9 @@
   .right-column
     .f_right= belongs_to_friend_icon current_user, @rental_unit
     .title
-      == #{@rental_unit.name} 
-      %span{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>@rental_unit.user.fb_user_id)}
+      = @rental_unit.name
+      %br
+      %span.by{:style => 'font-weight: normal;'}== By #{ fb_name(:uid=>@rental_unit.user.fb_user_id)}
       .clearfix
     .description{:style => 'margin: 10px 0;'}
       = @rental_unit.full_address
@@ -22,20 +23,20 @@
       %table
         %tbody
           %tr
-            %th
-            %th High
-            %th Mid
-            %th Low
+            %th{:width => 90}
+            %th{:width => 90} High
+            %th{:width => 90} Mid
+            %th{:width => 90} Low
           %tr
             %td Nightly
-            %td= @rental_unit.nightly_high_price ? "$#{@rental_unit.nightly_high_price}" : ''
-            %td= @rental_unit.nightly_mid_price ? "$#{@rental_unit.nightly_mid_price}" : ''
-            %td= @rental_unit.nightly_low_price ? "$#{@rental_unit.nightly_low_price}" : ''
+            %td= @rental_unit.nightly_high_price ? "$#{@rental_unit.nightly_high_price}" : 'N/A'
+            %td= @rental_unit.nightly_mid_price ? "$#{@rental_unit.nightly_mid_price}" : 'N/A'
+            %td= @rental_unit.nightly_low_price ? "$#{@rental_unit.nightly_low_price}" : 'N/A'
           %tr
             %td Weekly
-            %td= @rental_unit.weekly_high_price ? "$#{@rental_unit.weekly_high_price}" : ''
-            %td= @rental_unit.weekly_mid_price ? "$#{@rental_unit.weekly_mid_price}" : ''
-            %td= @rental_unit.weekly_low_price ? "$#{@rental_unit.weekly_low_price}" : ''
+            %td= @rental_unit.weekly_high_price ? "$#{@rental_unit.weekly_high_price}" : 'N/A'
+            %td= @rental_unit.weekly_mid_price ? "$#{@rental_unit.weekly_mid_price}" : 'N/A'
+            %td= @rental_unit.weekly_low_price ? "$#{@rental_unit.weekly_low_price}" : 'N/A'
                   
   .clearfix
   .amenities 
