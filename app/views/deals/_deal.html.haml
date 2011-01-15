@@ -12,7 +12,7 @@
   .right-column
     %div{:style => 'float:right'}= belongs_to_friend_icon current_user, resource.rental_unit
     .title
-      = link_to resource.rental_unit.name, rental_unit_path(resource.rental_unit)
+      = link_to truncate(resource.rental_unit.name, :length => 50), rental_unit_path(resource.rental_unit)
       - if resource.belongs_to?(current_user)
         %span{:style => 'font-weight: normal;'}
           = link_to 'Edit', edit_resource_path(resource)
