@@ -2,7 +2,7 @@
   %ul
     %li.current= link_to 'My Properties'
     .clearfix
-%h2= pluralize(@rental_units.size, 'post')
+%h2= pluralize(@rental_units.total_entries, 'post')
 .properties
   = render :partial => 'unit_row', :collection => @rental_units
   =will_paginate(@rental_units,:renderer=>"FacebookLinkRenderer")
