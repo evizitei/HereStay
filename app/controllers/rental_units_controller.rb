@@ -5,7 +5,9 @@ class RentalUnitsController < ApplicationController
   before_filter :subscription_required, :only => %w(manage new create edit update destroy load_from_vrbo import)
   respond_to :html
   rescue_from VrboProxy::Error, :with => :show_errors
-
+  
+  has_scope :active, :only => :show, :default => 'true'
+  
   def create
     create! :notice => 'Rental unit was created successfully' do |success, failure| 
       success.html { redirect_to promote_rental_unit_url(@rental_unit)}
@@ -112,7 +114,7 @@ class RentalUnitsController < ApplicationController
   end
   
   def promote
-    @rental_unit = current_user.rental_units.find(params[:id])
+    @rental_unit = current_user.rental_units.active.find(params[:id])
   end
   
   protected
@@ -132,7 +134,7 @@ class RentalUnitsController < ApplicationController
       if self.action_name == 'index'
         @rental_units ||= setup_collection.results
       else
-        @rental_units ||= end_of_association_chain.paginate(:page => params[:page], :per_page => 5)
+        @rental_units ||= end_of_association_chain.active.paginate(:page => params[:page], :per_page => 5)
       end
     end
     
@@ -163,7 +165,7 @@ class RentalUnitsController < ApplicationController
         #   @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
         #   @paginate_obj = @rental_units
         # end
-        @rental_units = RentalUnit.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
+        @rental_units = RentalUnit.active.paginate(:page=>params[:page] || 1,:order=>"created_at DESC")
       end
     end
     

@@ -20,11 +20,13 @@ class Lot < ActiveRecord::Base
   
   after_create :run_created_callbacks
   
-  scope :not_completed, where(:completed => false)
-  scope :expired, where(["end_at < ?", Time.zone.now])
-  scope :closest, order('end_at').where(['end_at > :now AND start_at < :now', {:now => Time.zone.now}])
-  scope :upcoming, order('end_at').where(['start_at > ? ', Time.zone.now])
-  scope :with_property_ids, lambda{|property_ids| where(:property_id => property_ids )}
+  scope :with_active_property, where({:rental_units => {:deleted_at => nil}}).joins(:property)
+  scope :not_completed, with_active_property.where(:completed => false)
+  scope :expired, with_active_property.where(["end_at < ?", Time.zone.now])
+  scope :closest, with_active_property.order('end_at').where(['end_at > :now AND start_at < :now', {:now => Time.zone.now}])
+  scope :upcoming, with_active_property.order('end_at').where(['start_at > ? ', Time.zone.now])
+  scope :with_property_ids, lambda{|property_ids| with_active_property.where(:property_id => property_ids )}
+  
 
   def initialize(attrs = {})
     super(attrs)
