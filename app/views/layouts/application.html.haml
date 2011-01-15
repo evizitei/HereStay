@@ -17,11 +17,9 @@
           "except_chat": "#{@booking.id if @booking}"
         };
   %body
-    = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
-    %a{:name=>'top'}
-    - if false #logged_in?
-      = render 'shared/allow'
-    - else
+    #base-content
+      = javascript_tag "redirectToFbApp('#{Facebook::APP_NAME}', '#{request.fullpath}');" if Rails.env.production?
+      %a{:name=>'top'}
       #sidebar
         - if logged_in?
           .current-user
@@ -42,21 +40,21 @@
             = li_link_to('Inquiries', inquiries_url, :class => 'inquiries')
             = li_link_to('Reservations', renter_bookings_url, :class => 'reservations')
             = li_link_to('Add Property', new_rental_unit_url, :class => 'new-property')
-
+            
         - if @online_rental_units.present?
           .suggestion
             %h3 Chat Now
             - @online_rental_units.each do |unit|
               - if pic = unit.picture(:thumb)
                 = link_to image_tag(pic), rental_unit_path(unit)
-
+  
         - if @my_network_properties.present?
           .suggestion
-            %h3 My Network Properties
+            %h3 My Network Properties                
             - @my_network_properties.each do |unit|
               - if pic = unit.picture(:thumb)
                 = link_to image_tag(pic), rental_unit_path(unit)
-
+              
       #main
         #header
           #logo= link_to image_tag('herestay2.png'), root_path
@@ -75,4 +73,4 @@
             document.location.href = "#{request.fullpath}";
           }
         = fb_connect_async_js
-      
+        

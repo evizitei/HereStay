@@ -60,7 +60,7 @@
         }
         
         function appendMessage(item){
-          var html_message = "<div class=\"message " + item.message_class + "\" id=\"message_" + item.id + "\"> " + "<div class=\"user\"><a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "</a></div>" + "<div class=\"arrow\"><br></div><div class=\"body\"><strong>" + item.message + "</strong>" + "</div>" + "<div class=\"clearfix\"></div></div>"
+          var html_message = "<div class=\"message " + item.message_class + "\" id=\"message_" + item.id + "\"> " + '<div class="time">' + item.sent_at_long + "</div>" + "<div class=\"user\"><a href='http://www.facebook.com/profile.php?id=" + item.user_fb_id + "' target='top' class='fb-profile-link'><fb:profile-pic uid='"+item.user_fb_id+"' size='thumb' linked='false'></fb:profile-pic>" + "</a></div>" + "<div class=\"arrow\"><br></div><div class=\"body\"><strong>" + item.message + "</strong>" + "</div>" + "<div class=\"clearfix\"></div></div>"
           if(!$('#message_' + item.id)[0]){
             $('#booking_' + item.booking_id + ' .listing').append(html_message);
           }
