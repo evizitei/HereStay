@@ -25,6 +25,6 @@
         %h3 Trust
         Tap into your personal network. Get referrals from your circle of friends. You probably know someone who owns a vacation property, or knows Kevin Bacon.
 
-
-
-
+- url = request.url  =~ /mobile/ ? request.url : "http://apps.facebook.com/#{Facebook::APP_NAME}/"
+:javascript
+  $(document).ready(function(){ $("body .demo_action").click(function(){customFBloginButton('#{url}'); return false;});});
