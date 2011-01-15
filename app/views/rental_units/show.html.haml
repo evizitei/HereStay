@@ -5,7 +5,7 @@
     -else
       .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'} 
     %div= render(:partial=>"rental_units/share_unit",:object=>@rental_unit)
-    %div= simple_button 'Availabilities', availabilities_rental_unit_path(@rental_unit)
+    %div= simple_button 'Availabilities', availabilities_rental_unit_path(@rental_unit), :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(@rental_unit)
     %div= simple_button 'Contact', new_rental_unit_inquiry_path(@rental_unit)    
   .right-column
     .f_right= belongs_to_friend_icon current_user, @rental_unit
