@@ -262,4 +262,13 @@ $(document).ready(function() {
     })
     return false;
   })
+  $('.terminate-chat-logic').live('click', function(){
+    if(confirm('Are you sure?')){
+      var parent = $(this).parents('.property'); 
+      $.post(this.href, {}, function(){
+        parent.remove();
+      })      
+    } 
+    return false;   
+  })
 });

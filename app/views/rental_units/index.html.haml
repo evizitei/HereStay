@@ -6,5 +6,6 @@
   .clearfix
 
 .properties
+  = will_paginate(collection,:renderer=>"FacebookLinkRenderer")
   = render :partial => 'unit_row', :collection => collection
-  =will_paginate(collection,:renderer=>"FacebookLinkRenderer")
+  = will_paginate(collection,:renderer=>"FacebookLinkRenderer")

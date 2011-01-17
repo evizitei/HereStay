@@ -8,6 +8,9 @@
 - if collection.blank?
   %h3 There is no reservations.
 - else
+  %p
+    = will_paginate collection
+    
   %table.tbl_reservation
     %tr{:class => cycle('unit_row odd', 'unit_row even')}
       %th.first{:width => 50} #

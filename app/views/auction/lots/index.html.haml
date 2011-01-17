@@ -6,6 +6,7 @@
   = link_to 'Upcoming', collection_path(:upcoming => true)
   
 .auctions
+  = will_paginate collection  
   %table
     %tr.head
       %th Auction Ends
