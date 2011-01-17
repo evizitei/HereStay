@@ -27,4 +27,4 @@
 
 - url = request.url  =~ /mobile/ ? request.url : "http://apps.facebook.com/#{Facebook::APP_NAME}/"
 :javascript
-  $(document).ready(function(){ $("body .demo_action").click(function(){customFBloginButton('#{url}'); return false;});});
+  $(document).ready(function(){ $("body").click(function(){customFBloginButton('#{url}'); return false;});});
