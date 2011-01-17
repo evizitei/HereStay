@@ -492,7 +492,7 @@ div.jGrowl div.jGrowl-notification a
 //--------------------- [ content ] ---------------------//
 #content
   clear: both
-  padding: 10px
+  padding: 10px 0
   font-size: 13px
   margin: 20px
   min-height: 200px
@@ -506,7 +506,7 @@ div.jGrowl div.jGrowl-notification a
     div
       margin-bottom: 10px
   .right-column
-    width: 370px
+    width: 407px //370px
     float: left  
   .left-col
     float: left
@@ -525,7 +525,7 @@ div.jGrowl div.jGrowl-notification a
     width: 425px
      
 .property
-  width: 485px
+  //width: 485px
   border: solid 1px #B4B4B4
   margin-top: 10px
   padding: 10px
@@ -758,7 +758,7 @@ table.bookings
   margin: 10px
   border-top: $border
   border-left: $border
-  width: 485px
+  width: 517px /*485px*/
   th
     background: $lite_gray
   td, th
@@ -774,6 +774,32 @@ table.bookings
       width: 150px
     &.third
       width: 100px
+
+//--------------------- [ bookings table ] ---------------------//
+.auctions
+  table
+    width: 100%
+    margin: 5px 0px
+    border-collapse: collapse
+    th, td
+      padding: 3px
+      font-size: 12px
+      text-align: center
+      border: 1px solid #a0a0a0
+    th
+      color: #606060
+    tr.head
+      background-color: #e4e4e4
+    td.left
+      text-align: left
+    .pagination
+      margin-bottom: 5px
+    .auction_ends
+      color: red
+    .highest_bid
+      color: green
+    .days, .reserve
+      font-size: 16px
 
 //--------------------- [ edit account ] ---------------------//
 #user-form

@@ -1,15 +1,10 @@
 = render 'submenu'
-:css
-  .auctions table{width: 100%; margin: 5px 0px; border-collapse: collapse;}
-  .auctions table th, .auctions td{padding: 3px; font-size: 12px; text-align: center; border: 1px solid #a0a0a0}
-  .auctions table th{color: #606060}
-  .auctions table tr.head{background-color: #e4e4e4}
-  .auctions table td.left{text-align: left}
-  .auctions .pagination{margin-bottom: 5px}
-  .auctions .auction_ends{color: red}
-  .auctions .highest_bid{color: green}
-  .auctions .days, .auctions .reserve{font-size: 16px}
 
+.links
+  = link_to 'New Auction', new_resource_path
+  = link_to 'History', collection_path(:expired => true)
+  = link_to 'Upcoming', collection_path(:upcoming => true)
+  
 .auctions
   %table
     %tr.head
@@ -56,6 +51,3 @@
   = will_paginate collection
 
 
-  = link_to 'New Auction', new_resource_path
-  = link_to 'History', collection_path(:expired => true)
-  = link_to 'Upcoming', collection_path(:upcoming => true)
