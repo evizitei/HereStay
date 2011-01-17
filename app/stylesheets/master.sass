@@ -39,6 +39,10 @@ a
   
 .clearfix
   clear: both
+  line-height: 0 !important
+  height: 0px !important
+  font-size: 0px !important
+  display: block
   
 .simple-button
   a
@@ -61,7 +65,7 @@ a
 
 .fb-profile-link
   color: #3B5998
-  margin-right: 10px
+  //margin-right: 10px
 
 #errorExplanation
   border: 1px solid red
@@ -165,7 +169,6 @@ input[type="button"], input[type="submit"], button
   margin-left: 6px
   width: 105px
 
-
 //--------------------- [ layout ] ---------------------//
 body
   font-family: "lucida grande", tahoma, verdana, arial, sans-serif
@@ -173,19 +176,31 @@ body
   width: 760px
   overflow: hidden
 #sidebar
+  //padding-top: 50px
   width: 170px
   min-height: 300px
   float: left
   font-size: 13px
   .current-user
-    margin-bottom: 20px
+    min-height: 63px
+    margin-bottom: 2px
     .fb-profile-link 
       img
-        width: 30px
+        //width: 30px
         padding-right: 5px
     a
       font-weight: bold
       text-decoration: none
+    .user_name
+      display: inline-block
+      vertical-align: top
+      width: 105px
+      overflow: hidden
+      font-size: 11px
+      padding: 4px 0 1px
+      //word-wrap: break-word  //why???
+    .user_pic
+      display: inline-block
   .suggestion
     overflow: hidden
     margin-bottom: 20px
@@ -200,19 +215,27 @@ body
 
 #main
   float: left
-  width: 582px
+  width: 584px
+  overflow: hidden
+
+#page
   border-color: #BCBEC0
   border-width: 0 1px
   border-style: solid
-  overflow: hidden
-  
+
 #header
-  margin-bottom: 10px
+  padding: 0px 0 10px 1px
+  background: white
+
+#service
+  margin: 0 0 10px
   //overflow: hidden
   padding: 20px
   padding-bottom: 0
-  background: #EDEEF3 //url('/images/dot3.gif') left bottom repeat-x
-  border-bottom: 1px solid  #d8deeb
+  background: #EDEEF3 
+  border-width: 1px 0
+  border-style: solid
+  border-color: #BCBEC0 transparent #d8deeb transparent
 
 #logo
   float: left
@@ -222,7 +245,7 @@ body
 #like-button
   float: left
   width: 200px
-  margin-top: 15px
+  margin-top: 17px
 
 //--------------------- [ UIObject ] ---------------------//
 .UIObjectListing_Title
@@ -334,7 +357,7 @@ div.jGrowl div.jGrowl-notification a
       font-size: 13px
   .date-range, .left
     p
-      padding: 5px
+      padding: 5px 0
     label
       display: inline-block
       width: 76px
@@ -342,6 +365,7 @@ div.jGrowl div.jGrowl-notification a
       font-size: 13px
     input
       width: 110px !important
+      margin-right: 20px
   .date-range
     margin-bottom: 10px
   .left
@@ -352,9 +376,17 @@ div.jGrowl div.jGrowl-notification a
     padding-left: 30px
     .zoom-box
       text-align: center
-      margin-top: 20px
+      margin-top: 12px
+      .slider-container
+        display: inline-block
+        width: 120px
+      .header
+        font-size: 13px
+        width: 50px
+        display: inline-block
       .labels
         color: #5C9CCC
+        margin-bottom: 7px
       .ui-slider
         margin: 0 auto
   .field-box
@@ -402,12 +434,9 @@ div.jGrowl div.jGrowl-notification a
 //--------------------- [ menu & submenu ] ---------------------//
 #menu
   overflow: hidden
-  margin-bottom: 20px
+  //margin-bottom: 20px
   ul
     li
-      //background: url('/images/menu_tmp_bg.png') 10px 4px no-repeat
-      //padding: 5px 0px 0px 35px
-      //height: 24px
       a
         text-decoration: none
         color: #333
@@ -416,6 +445,7 @@ div.jGrowl div.jGrowl-notification a
         border-color: #fff
         display: block
         line-height: 12px
+        font-size: 11px
         padding: 3px 8px 3px 28px
         background-repeat: no-repeat
         &:hover
@@ -506,7 +536,7 @@ div.jGrowl div.jGrowl-notification a
       color: #484e82
       text-decoration: none
       font-weight: bold
-      font-size: 15px
+      font-size: 14px
     &.current
       background: #FFF
       border-bottom: solid 3px #FFF

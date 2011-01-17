@@ -26,8 +26,8 @@
         #sidebar
           - if logged_in?
             .current-user
-              .f_left= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"thumb")
-              .f_left= fb_name(:uid => current_user.fb_user_id, :useyou => false)
+              .user_pic= fb_profile_pic(:uid => current_user.fb_user_id, :size=>"square")
+              .user_name= fb_name(:uid => current_user.fb_user_id, :useyou => false)
               .clearfix
           - else
             .current-user
@@ -60,16 +60,18 @@
               
         #main
           #header
-            #logo= link_to image_tag('herestay2.png'), root_path
+            #logo= link_to image_tag('logo_medium.png', :alt => "HereStay"), root_path
             #like-button
               = render 'shared/like_button'
             .clearfix
-            = display_flashes
-            = render 'shared/search_new'
-            .submenu= yield :submenu
-          = yield :bread_crumbs
-          #content
-            = yield
+          #page
+            #service  
+              = render 'shared/search_new'
+              = display_flashes
+              .submenu= yield :submenu
+            = yield :bread_crumbs
+            #content
+              = yield
       #fb-root
       :javascript
         function reloadLocation(){
