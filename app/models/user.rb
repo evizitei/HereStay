@@ -103,6 +103,13 @@ class User < ActiveRecord::Base
   def capture_fb_profile_data!
     fb_profile = FacebookProxy.new(self.access_token).get_object('me')
     self.email = fb_profile['email']
+    
+    if self.use_fb_profile
+      self.first_name = fb_profile['first_name']
+      self.last_name = fb_profile['last_name']
+      self.company = fb_profile['company']
+    end
+    
     if fb_profile['location']
       self.fb_location = fb_profile['location']['name']
       if self.fb_location_changed? || !self.valid_country?
