@@ -1,4 +1,5 @@
 = render 'submenu'
-.properties= render :partial => 'deal', :collection => collection, :as => :resource
 
+= will_paginate collection, :renderer => "FacebookLinkRenderer"
+.properties= render :partial => 'deal', :collection => collection, :as => :resource
 = will_paginate collection, :renderer => "FacebookLinkRenderer"
