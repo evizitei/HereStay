@@ -65,6 +65,9 @@ Micasasucasa::Application.routes.draw do
       collection do
         get :messages
       end
+      member do
+        post :terminate
+      end
     end
   end
   
@@ -111,6 +114,9 @@ Micasasucasa::Application.routes.draw do
   resources :inquiries, :only => [:index] do
     collection do
       get :messages
+    end
+    member do
+      post :terminate
     end
   end
   

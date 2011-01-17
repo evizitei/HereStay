@@ -119,6 +119,14 @@ function redrawPhotos(){
     $('.thumbs-left-logic, .thumbs-right-logic').hide();
   }
 }
+function customFBloginButton(url){
+  FB.login(function(response) {
+    if (response.session) {
+      window.top.location.href = url;
+    } else {
+    }
+  }, {perms:'publish_stream,offline_access,user_birthday,email,user_location'});
+}
 
 $(document).ready(function() {
   
@@ -253,5 +261,14 @@ $(document).ready(function() {
        $('.ajax_photo_loader').hide();
     })
     return false;
+  })
+  $('.terminate-chat-logic').live('click', function(){
+    if(confirm('Are you sure?')){
+      var parent = $(this).parents('.property'); 
+      $.post(this.href, {}, function(){
+        parent.remove();
+      })      
+    } 
+    return false;   
   })
 });

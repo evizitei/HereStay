@@ -44,6 +44,7 @@ class Booking < ActiveRecord::Base
   scope :not_confirmed, :conditions => ["confirmed_by_renter_at IS NULL"]
   scope :canceled, :conditions => {:status => ['canceled_by_owner', 'canceled_by_renter']}
   scope :active, :conditions => {:status => ['created', 'reserved']}
+  scope :not_terminated, where(:terminated => false)
   
   # upadate record and reserve
   def update_attributes_and_reserve(attributes)
@@ -106,6 +107,10 @@ class Booking < ActiveRecord::Base
   
   def renter
     User.find_by_fb_user_id(self.renter_fb_id)
+  end
+  
+  def terminate_chat!
+    update_attribute(:terminated, true)
   end
   
   private

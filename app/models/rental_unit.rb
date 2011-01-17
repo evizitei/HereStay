@@ -204,7 +204,7 @@ class RentalUnit < ActiveRecord::Base
   
   # find uncompleted booking by user or create new if booking not found
   def find_uncompleted_booking_for_user_or_create(user)
-    booking = self.bookings.not_reserved.find_by_renter_fb_id(user.fb_user_id)
+    booking = self.bookings.not_reserved.not_terminated.find_by_renter_fb_id(user.fb_user_id)
     booking || self.bookings.create!(:renter_fb_id=> user.fb_user_id, :owner_fb_id => self.fb_user_id )
   end
   
