@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110117062836) do
+ActiveRecord::Schema.define(:version => 20110117110225) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -269,7 +269,7 @@ ActiveRecord::Schema.define(:version => 20110117062836) do
     t.string   "middle_initial"
     t.string   "last_name"
     t.string   "company"
-    t.boolean  "use_fb_profile",        :default => false
+    t.boolean  "use_fb_profile",        :default => true
     t.datetime "last_poll_time"
     t.string   "phone"
     t.time     "sms_starting_at"
