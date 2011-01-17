@@ -12,6 +12,7 @@ $border = 1px solid #B4B4B4
 
 h2
   font-size: 18px
+  margin-bottom: 5px
   
 h3
   font-size: 16px
@@ -103,29 +104,46 @@ a
 .text-placeholder
   color: #AAA !important   
 
+.pagination
+  margin-top: 10px
+
 //--------------------- [ override ] ---------------------//
 .ui-slider-horizontal
   height: 0.5em
   
-form.formtastic label
-  font-weight: normal
-  margin-right: 6px
+form.formtastic
+  label
+    font-weight: normal
+    margin-right: 6px
+    font-size: 13px
+  legend.label
+    float: left
+    text-align: right
+    width: 25%
+    position: static
+    margin-right: 6px
+  legend.label label
+    width: 100%
+    float: none
+    display: inline-block
+    position: static !important
+  fieldset > ol
+    > li fieldset ol
+      float: none
+    > li.boolean label input
+      margin: 0 0.5em 0 6px
+  p.inline-errors
+    padding-left: 6px
+  .buttons ol
+    margin-left: 6px
+    input
+      margin-right: 5px
+  abbr, acronym
+    font-size: 11px
 
-form.formtastic legend.label
-  float: left
-  text-align: right
-  width: 25%
-  position: static
-  margin-right: 6px
-
-form.formtastic legend.label label
-  width: 100%
-  float: none
+.field_with_errors
   display: inline-block
-  position: static !important
-
-form.formtastic fieldset > ol > li fieldset ol
-  float: none
+  color: #f00
 
 input[type="button"], input[type="submit"], button
   border: solid 1px #8d8d8d
@@ -133,12 +151,14 @@ input[type="button"], input[type="submit"], button
   background: #e4e5eb url('/images/button_bg.gif') repeat-x 50% 50%
   padding: 2px 5px !important
   cursor: pointer
-  
-form.formtastic .buttons ol
-  margin-left: 6px
 
-form.formtastic p.inline-errors
-  padding-left: 6px
+.admin_buttons
+  margin: 5px 0
+  text-align: right
+  input[type="button"], input[type="submit"], button
+    margin: 0 1px 0 2px
+    padding: 2px 4px !important
+    font-size: 11px
 
 //--------------------- [ slider ] ---------------------//
 #advanced-search .ui-slider-horizontal
@@ -421,9 +441,11 @@ div.jGrowl div.jGrowl-notification a
       padding-left: 50px
       background-position: 25px -186px
     li.new-property
-      margin-top: 10px
-      border-top: 1px solid #eee
-      padding-top: 10px
+      margin: 10px 0
+      border-width: 1px 0
+      border-style: solid
+      border-color: #eee
+      padding: 10px 0
       a
         background-image: url('/images/fb_origin02.png')
         background-position: 5px 0px
@@ -527,7 +549,7 @@ div.jGrowl div.jGrowl-notification a
 .property
   //width: 485px
   border: solid 1px #B4B4B4
-  margin-top: 10px
+  margin: 10px 0
   padding: 10px
   .description
     text-align: justify
@@ -631,7 +653,7 @@ div.jGrowl div.jGrowl-notification a
     margin-left: 10px
 .promote_property_form
   .property_form
-    margin-bottom: 20px
+    margin-bottom: 10px
 
 .property_form
   border: solid 1px #B4B4B4
@@ -925,8 +947,6 @@ table.bookings
       img
         margin-right: -8px
         margin-top: -3px
-.admin_buttons
-  margin: 5px 0
 
 //---------------------------[allow]-----------------------------//
 
