@@ -14,7 +14,7 @@ class InquiriesController < ApplicationController
   has_scope :not_terminated, :type => :boolean, :default => true
   
   def messages
-    booking_ids = Booking.created.for_user(current_user)
+    booking_ids = apply_scopes(Booking).for_user(current_user)
     messages = BookingMessage.last_messages(params[:last_message]).for_bookings( booking_ids)
     render :json => messages_to_json(messages)
   end
