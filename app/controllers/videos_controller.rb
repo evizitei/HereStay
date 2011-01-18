@@ -1,10 +1,11 @@
 class VideosController < ApplicationController
   before_filter :oauth_obj
-  before_filter :login_required
-  before_filter :get_rental_unit
+  before_filter :login_required, :except => [:show]
+  before_filter :get_rental_unit, :except => [:show]
   layout 'application'
   
   def show
+    @rental_unit = RentalUnit.find(params[:rental_unit_id])
     unless @rental_unit.has_video?
       @upload_info = YoutubeProxy.new.upload_token(
         {:title => @rental_unit.name, :description => @rental_unit.youtube_description},
