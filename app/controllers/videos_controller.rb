@@ -3,6 +3,7 @@ class VideosController < ApplicationController
   before_filter :login_required
   before_filter :get_rental_unit
   layout 'application'
+  
   def show
     unless @rental_unit.has_video?
       @upload_info = YoutubeProxy.new.upload_token(
@@ -13,20 +14,20 @@ class VideosController < ApplicationController
   end
   
   def save
-    @rental_unit.update_attributes!(:video_id=>params[:id],:video_status=>params[:status],:video_code=>params[:code])
+    Video.create_from_youtube_callback(@rental_unit, params)
     flash[:notice] = 'Video was uploaded successfully.'
     redirect_to rental_unit_video_path(@rental_unit)
   end
   
   def destroy
-    @rental_unit.delete_youtube_video
+    @rental_unit.video.destroy
     flash[:notice] = 'Video was deleted successfully.'
     redirect_to manage_rental_units_path(@rental_unit)
   end
   
   def generate
-    @rental_unit.delay.generate_video_and_upload
-    flash[:notice] = 'Video was created.'
+    @rental_unit.generate_video
+    flash[:notice] = 'Video was created. It will takes some minutes to upload the video to remote server.'
     redirect_to rental_unit_video_url(@rental_unit)
   end
 

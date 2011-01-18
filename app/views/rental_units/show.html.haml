@@ -101,10 +101,10 @@
             = f.label :wifi, 'WiFi'
         .clearfix
       .clearfix
-  - if @rental_unit.has_video?
+  - if @rental_unit.has_video? && @rental_unit.video.status = 'completed'
     .video
       %h3 Video
-      = render 'shared/youtube_player', :video_id => @rental_unit.video_id
+      = render 'shared/youtube_player', :video_id => @rental_unit.video.youtube_id
 
   - if @rental_unit.geocoded_address.present?
     #map_canvas{:style=>"width:480px;height:400px; margin-bottom: 25px",:data=>{:canmap=>(@rental_unit.geocoding_success ? "true" : "false"),:lat=>@rental_unit.lat,:long=>@rental_unit.long,:fulladdress=>@rental_unit.geocoded_address}} 
