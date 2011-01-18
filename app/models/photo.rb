@@ -4,7 +4,7 @@ require 'open-uri'
 class Photo < ActiveRecord::Base
   attr_accessor :image_url
   
-  has_attached_file :picture, :styles => { :medium => "300x300>", :thumb => "100x100>", :mini => "50x50>", :video => ['640x380>', :jpg]},
+  has_attached_file :picture, :styles => { :medium => "300x300>", :vthumb => "120x90>", :thumb => "100x100>", :mini => "50x50>", :video => ['640x380>', :jpg]},
     :convert_options => {:video => "-gravity center -extent '640x380'"},
     :url => "http://#{HOST}/system/:attachment/:id/:style/:filename",
     :path => ":rails_root/public/system/:attachment/:id/:style/:filename"

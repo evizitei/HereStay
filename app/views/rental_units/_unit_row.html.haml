@@ -1,11 +1,15 @@
 .property
   .left-column
-    -if unit_row.primary_photo && unit_row.primary_photo.picture.file?
+    - if unit_row.has_video? && unit_row.video.completed?
+      .picture{:style => "background: url(http://i.ytimg.com/vi/#{unit_row.video.youtube_id}/default.jpg)"}
+        = link_to image_tag('video.png'), rental_unit_video_path(unit_row)
+    - elsif unit_row.primary_photo && unit_row.primary_photo.picture.file?
       .picture
-        =link_to image_tag(unit_row.primary_photo.picture.url(:thumb)), rental_unit_path(unit_row)
+        =link_to image_tag(unit_row.primary_photo.picture.url(:vthumb)), rental_unit_path(unit_row)
     -else
       %a{:href => rental_unit_path(unit_row)}
-        .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'}
+        .picture{:style => 'height: 90px; width: 120px; background: #bfbfbf;'}
+      
     %div= simple_button 'Availability', [:availabilities, unit_row], :link_class => 'availabilities_button', :rel => availabilities_rental_unit_path(unit_row)
     %div= simple_button 'Contact', new_rental_unit_inquiry_path(unit_row)
   .right-column

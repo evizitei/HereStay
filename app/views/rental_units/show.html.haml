@@ -1,6 +1,9 @@
 .property
   .left-column
-    -if @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
+    - if @rental_unit.has_video? && @rental_unit.video.completed?
+      .picture{:style => "background: url(http://i.ytimg.com/vi/#{@rental_unit.video.youtube_id}/default.jpg)"}
+        = link_to image_tag('video.png'), rental_unit_video_path(@rental_unit)
+    - elsif @rental_unit.primary_photo && @rental_unit.primary_photo.picture.file?
       .picture=image_tag(@rental_unit.primary_photo.picture.url(:thumb))
     -else
       .picture{:style => 'height: 100px; width: 100px; background: #bfbfbf;'} 

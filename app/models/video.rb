@@ -43,6 +43,10 @@ class Video < ActiveRecord::Base
     video.save!
   end
   
+  def completed?
+    status == 'completed'
+  end
+  
   def clear_youtube_video
      YoutubeProxy.new.delay.delete_video(self.youtube_id) if self.youtube_id
   end
