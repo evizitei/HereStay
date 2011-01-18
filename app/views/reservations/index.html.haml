@@ -9,6 +9,7 @@
   %h3 There is no reservations.
 - else
   %p
+    = only_page(collection)
     = will_paginate collection
     
   %table.tbl_reservation
@@ -33,6 +34,7 @@
             = fb_button 'edit', edit_resource_path(resource)
             = fb_button 'remove', resource_path(resource), :method => :delete
   %p
+    = only_page(collection)
     = will_paginate collection
   
 = fb_button 'Back to rental unit', parent_path
