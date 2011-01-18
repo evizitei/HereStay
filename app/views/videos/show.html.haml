@@ -1,11 +1,21 @@
 %h2 Video for #{@rental_unit.name}
 = fb_button 'Property details', rental_unit_path(@rental_unit)
-= fb_button 'My Properties', manage_rental_units_path
+= fb_button 'My Properties', manage_rental_units_path if @rental_unit.is_owner?(current_user)
 
-%div.colored-bg.clearfix{:style => 'padding:10px'}
+%div
   - if @rental_unit.has_video?
     %div{:style => 'text-align: center'}
-      = render 'shared/youtube_player', :video_id => @rental_unit.video_id
-  - else
+      - if @rental_unit.video.status == 'completed'
+        = render 'shared/youtube_player', :video_id => @rental_unit.video.youtube_id
+      - elsif @rental_unit.is_owner?(current_user)
+        - elsif  @rental_unit.video.status == 'pending'
+          %div Video is in processing
+          :javascript
+            timedRefresh(5000);
+        - elsif  @rental_unit.video.status == 'error'
+          %div Error occurred in video processing
+    - if @rental_unit.is_owner?(current_user)
+      %div
+        = fb_button 'Delete video', rental_unit_video_path(@rental_unit), :method => :delete
+  - elsif @rental_unit.is_owner?(current_user)
     = render 'new'
-= fb_button 'Delete video', rental_unit_video_path(@rental_unit), :method => :delete if @rental_unit.has_video?

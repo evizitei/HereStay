@@ -13,7 +13,8 @@ class RentalUnit < ActiveRecord::Base
   
   accepts_nested_attributes_for :photos, :allow_destroy => true
   accepts_nested_attributes_for :primary_photo, :allow_destroy => true, :reject_if => proc { |attributes| attributes['picture'].blank? }
-    
+  
+  has_one :video, :dependent => :destroy
   has_many :bookings
   has_many :booking_messages, :through => "booking"
   belongs_to :user
@@ -30,13 +31,10 @@ class RentalUnit < ActiveRecord::Base
   after_create do |unit|
     TwitterWrapper.post_unit_added(unit)
     FacebookProxy.delay.post_unit_added(unit)
-    unit.delay.generate_video_and_upload if unit.need_generate_video?
+    unit.generate_video if unit.need_generate_video?
   end
   
   after_save :add_remote_images, :if => :remote_images_present?
-  before_destroy do |unit|
-    YoutubeProxy.new.delay.delete_video(self.video_id) if unit.has_video?
-  end
   
   scope :active, where(:deleted_at => nil)
   
@@ -208,14 +206,6 @@ class RentalUnit < ActiveRecord::Base
     booking || self.bookings.create!(:renter_fb_id=> user.fb_user_id, :owner_fb_id => self.fb_user_id )
   end
   
-  def youtube_description
-    "#{self.description}  BOOK: #{fb_url}"
-  end
-  
-  def has_video?
-    !self.video_id.nil?
-  end
-  
   def is_owner?(u)
     self.user == u
   end
@@ -292,41 +282,24 @@ class RentalUnit < ActiveRecord::Base
     [address, address_2, city, state, zip, country].find_all{|a| a.present?}.join(', ')
   end
   
-  def generate_video_and_upload
-    if self.photos.present?
-      begin
-        video = VideoCreator.new(self.photos.map{|m| m.picture.url(:video)})
-        video.process!
-        resp = YoutubeProxy.new.upload_video(video.path_to_file, {:title => self.name, :description => self.youtube_description})
-        self.video_id = resp.video_id.gsub('http://gdata.youtube.com/feeds/api/videos/', '')
-        res = self.save!(:validate => false)
-      rescue VideoCreator::Error
-        Rails.logger.error { "VideoCreator::Error occured during generating video: #{VideoCreator::Error.to_s}" }
-        false
-      rescue => err
-        Rails.logger.error { "Error occured during generating video: #{err.to_s}"}
-        false
-      ensure
-       video.cleanup
-      end
-    end
+  def youtube_description
+    "#{self.description}  BOOK: #{fb_url}"
   end
   
-  def delete_youtube_video
-    if has_video?
-      YoutubeProxy.new.delay.delete_video(self.video_id)
-      self.video_id = nil
-      self.video_status = nil
-      self.video_code = nil
-      self.save!(:validate => false)
-    end
+  def has_video?
+    self.video.present?
+  end
+  
+  def generate_video
+    Video.generate_for_rental_unit(self)
   end
   
   def need_generate_video?
-    self.video_id.blank? && self.photos.present? && self.user.has_advanced_subscrition?
+    self.video.blank? && self.photos.present?
   end
   
   def destroy_with_marking
+    self.video.destroy if self.video
     self.deleted_at = Time.now
     self.save(:validate => false)
   end

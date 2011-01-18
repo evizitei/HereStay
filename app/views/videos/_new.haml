@@ -1,12 +1,13 @@
 #video_form
+  %div{:style => 'margin: 10px 0'}
+    The video you upload here will be hosted on our YouTube account, and will link back to your property.
+    It will also be displayed on your property page anytime someone on facebook looks at this property.
   = form_tag @upload_info[:url], :multipart => true do
     = hidden_field_tag :token, @upload_info[:token]
-    %p 
-      The video you upload here will be hosted on our YouTube account, and will link back to your property.
-      It will also be displayed on your property page anytime someone on facebook looks at this property.
     = label_tag :file
     = file_field_tag :file
     = submit_tag "Upload video"
 
-- if !@rental_unit.has_video? && @rental_unit.photos.present?
-  = link_to 'Generate video from images', generate_rental_unit_video_path(@rental_unit), :method => :post
+- if 1==1 || !@rental_unit.has_video? && @rental_unit.photos.present?
+  %div{:style => 'margin: 10px 0'}
+    = link_to 'Generate video from images', generate_rental_unit_video_path(@rental_unit), :method => :post

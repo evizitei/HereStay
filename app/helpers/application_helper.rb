@@ -52,7 +52,13 @@ module ApplicationHelper
       "<label class='#{options[:class_name]} simple-button #{current_page?(url) ? 'current' : ''}'>#{link}</label>".html_safe
     end
   end
-    
+  
+  def only_page(collection)
+    if collection.total_pages == 1
+      '1 of 1 page'
+    end
+  end
+      
   def get_flash_message
     if flash[:alert]
       wrap_flash_message flash[:alert], :alert

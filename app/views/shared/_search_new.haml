@@ -3,7 +3,7 @@
   #simple-search
     .search-wrapper
       .lens
-      = text_field_tag :search, params[:search], :placeholder => 'Search Thousands of Vacation Rentals'
+      = text_field_tag :search, params[:search], :placeholder => 'Search Thousands of Vacation Rentals', :class => 'search_field'
     .expander
       = link_to 'advanced', '#', :class => 'minimized'
       = submit_tag 'Filter'
@@ -73,7 +73,7 @@
             miles
           #radius_slider
         
-      
+    .clear
     = hidden_field_tag 'advanced', params[:advanced]||0
     = hidden_field_tag 'range_bedrooms_from', params[:range_bedrooms_from]||1
     = hidden_field_tag 'range_bedrooms_to', params[:range_bedrooms_to]||5

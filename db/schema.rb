@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110117110225) do
+ActiveRecord::Schema.define(:version => 20110118024436) do
 
   create_table "bids", :force => true do |t|
     t.integer  "user_id"
@@ -286,6 +286,15 @@ ActiveRecord::Schema.define(:version => 20110117110225) do
   end
 
   add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
+
+  create_table "videos", :force => true do |t|
+    t.integer  "rental_unit_id"
+    t.string   "status"
+    t.string   "youtube_id"
+    t.string   "error"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "youtube_tokens", :force => true do |t|
     t.string   "value"

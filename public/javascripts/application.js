@@ -128,6 +128,10 @@ function customFBloginButton(url){
   }, {perms:'publish_stream,offline_access,user_birthday,email,user_location'});
 }
 
+function timedRefresh(timeoutPeriod) {
+  setTimeout("location.reload(true);",timeoutPeriod);
+}
+
 function parseAvailabilityButtons(){
   $('a.availabilities_button').cluetip({
     showTitle: false,

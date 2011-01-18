@@ -6,6 +6,7 @@
   = link_to 'Upcoming', collection_path(:upcoming => true)
   
 .auctions
+  = only_page(collection)
   = will_paginate collection  
   %table
     %tr.head
@@ -50,5 +51,6 @@
           There are no auctions.
   
   = will_paginate collection
+  = only_page(collection)
 
 
