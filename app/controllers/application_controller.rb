@@ -68,7 +68,7 @@ protected
       {:lat => current_user.fb_lat, :lng => current_user.fb_lng, :zoom => 6}
     else
       coords = Geoplugin.query_latlng(request.remote_ip) unless session[:current_coordinates]
-      session[:current_coordinates] = coords ? coords.merge({:zoom => 6}) : {:lat => '39.828175', :lng => '-98.579500', :zoom => 3}
+      session[:current_coordinates] = coords ? coords.merge({:zoom => 6}) : {:lat => '39.828175', :lng => '-98.579500', :zoom => 2}
     end
   end
 end

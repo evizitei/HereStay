@@ -30,7 +30,7 @@
       .field-box
         = label_tag 'bedrooms', 'Bedrooms:' 
         .slider-container
-          .labels= slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)          
+          .labels= slider_labels(1, 5, params[:range_bedrooms_from]||1, params[:range_bedrooms_to]||5)
           #range_bedrooms
       .field-box
         = label_tag 'budget', 'Budget:'
@@ -61,6 +61,8 @@
         .slider-container
           .labels.rating= slider_ratings(params[:range_ratings_from]||0, params[:range_ratings_to]||10)
           #range_ratings
+      .field-box.button
+        = submit_tag 'Filter', :class => "remote-search-logic"
     .right   
       #search_map_canvas{:style=>"width:250px; height:250px;clear:both;",:data=>{:canmap=>("true"),:lat=>1,:long=>1,:fulladdress=>'test'}}
       .zoom-box
@@ -107,35 +109,93 @@
   var search_map;  
   var search_map_latlng = new google.maps.LatLng(#{gmap_latlng(params[:location_lat], params[:location_lng])});
   var search_map_zoom = #{gmap_zoom(params[:location_zoom])};
+  
   function initSearchMap(){
     var map_options = {zoom: search_map_zoom, center: search_map_latlng, mapTypeId: google.maps.MapTypeId.ROADMAP};
     var map = new google.maps.Map(document.getElementById('search_map_canvas'),  map_options);
     #{gmap_markers(@rental_units||[], '')}
     google.maps.event.addListener(map, 'click', function(event) {
-      markAndCenter(event, map);
+      markAndCenter(event.latLng, map);
     });
     return map;
   }  
-  function markAndCenter(event, el){
+  
+  function markAndCenter(latLng, el){
     clearOverlays();
-    addMarker(event.latLng, el);
-    el.setCenter(event.latLng)
-    $('#location_lat').val(event.latLng.lat());
-    $('#location_lng').val(event.latLng.lng());
+    marker = addMarker(latLng, el, 'Search from here');
+    google.maps.event.addListener(marker, 'click', function() {
+      removeMarker(marker);
+    });
+    el.setCenter(latLng)
+    $('#location_lat').val(latLng.lat());
+    $('#location_lng').val(latLng.lng());
+    return marker;
   }
-  function addMarker(location, el) {
+  
+  function addMarker(location, el, txt) {
     marker = new google.maps.Marker({
       position: location,
       map: el,
-      title: "Search here"
+      title: txt
     });
     markersArray.push(marker);
+    return marker;
   }
+  
   function clearOverlays() {
     if (markersArray) {
       for (i in markersArray) {
         markersArray[i].setMap(null);
       }
+    }
+  }
+  
+  function removeMarker(marker){
+    marker.setMap(null);
+    $('#location_lat').val('');
+    $('#location_lng').val('');  
+  }
+  
+  function renderSearchResult(data){
+    $('.properties').html(data);
+    clearOverlays();
+    var bounds = new google.maps.LatLngBounds();
+    //mark center
+    if(($('#location_lat').val() != '') && ($('#location_lng').val() != '')){
+      ltn = new google.maps.LatLng( $('#location_lat').val(), $('#location_lng').val());
+      bounds.extend(ltn);
+      markAndCenter(ltn, search_map);
+    }
+    //mark properties
+    if($('.properties .property').size() > 0){
+      $('.properties .property').each(function(){
+        var ltn = new google.maps.LatLng($(this).attr('data_lat'), $(this).attr('data_lng'));
+        var text = $(this).find('.title a:first').html();
+        var  marker = addMarker(ltn, search_map, text);
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow = new google.maps.InfoWindow({ 
+            content: text
+          });
+          infowindow.open(search_map, marker);
+        });
+      bounds.extend(ltn);
+      })
+      //resizing map with finding properties
+      search_map.fitBounds(bounds);
+    };  
+  }
+  
+  function ajaxSearch(){
+    if($('.properties')[0]){
+      var form = $('#search-form');
+      if($("#search").val() == 'Search Thousands of Vacation Rentals'){
+        $("#search").val('');
+      }
+      $.get(form.attr('action'), form.serialize(), function(data){
+        renderSearchResult(data);
+        FB.XFBML.parse($('.properties')[0]);
+        parseAvailabilityButtons();
+      }, 'script')
     }
   }
 
@@ -201,6 +261,9 @@
         }
         $('#range_bedrooms_from').val(ui.values[0]);
         $('#range_bedrooms_to').val(ui.values[1]);
+      },
+      stop: function(ivent, ui){
+        ajaxSearch();
       }
     });
     
@@ -216,6 +279,9 @@
         container.find('.to').html(ui.values[1]);
         $('#range_budget_from').val(ui.values[0]);
         $('#range_budget_to').val(ui.values[1]);
+      },
+      stop: function(ivent, ui){
+        ajaxSearch();
       }
     });
     
@@ -237,6 +303,9 @@
           }
           $('#' + id +'_from').val(ui.values[0]);
           $('#' + id +'_to').val(ui.values[1]);
+        },
+        stop: function(ivent, ui){
+          ajaxSearch();
         }
       });
     });
@@ -258,6 +327,9 @@
         }
         $('#range_ratings_from').val(ui.values[0]);
         $('#range_ratings_to').val(ui.values[1]);
+      },
+      stop: function(ivent, ui){
+        ajaxSearch();
       }
     });
 
@@ -273,6 +345,9 @@
         container.find('.value').html(values[ui.value]);
         $('#location_zoom').val(ui.value);
         search_map.setZoom(zooms[ui.value]);
+      },
+      stop: function(ivent, ui){
+        ajaxSearch();
       }
     });
     
@@ -284,4 +359,11 @@
         search_map_zoom = 3;
       }
     }
+    
+    $('.remote-search-logic').click(function(){
+      if($('.properties')[0]){
+        ajaxSearch();
+        return false;
+      }
+    })
   });
