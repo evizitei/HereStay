@@ -102,7 +102,7 @@ class RentalUnitsController < ApplicationController
     search_setup
     respond_to do |format|
       format.html{render 'index'}
-      format.js{render :partial => 'unit_row', :collection => @rental_units}
+      format.js{render :partial => 'unit_rows'}
     end
   end
   

@@ -158,6 +158,7 @@
   
   function renderSearchResult(data){
     $('.properties').html(data);
+    $('.submenu li:first a').html('Results');
     clearOverlays();
     var bounds = new google.maps.LatLngBounds();
     //mark center
