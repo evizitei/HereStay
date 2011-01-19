@@ -19,7 +19,10 @@ class DealsController < ApplicationController
   def search
     result = RentalUnit.advanced_search_ids(params, current_user)
     @deals = Deal.active.with_rental_unit_ids(result).paginate(:page => params[:page], :per_page => 10)
-    render 'index'
+    respond_to do |format|
+      format.html{render 'index'}
+      format.js
+    end
   end
   
   protected

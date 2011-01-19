@@ -1,7 +1,4 @@
-= render 'submenu'
+=content_for :submenu do
+  = render 'submenu'
 
-= only_page(collection)
-= will_paginate collection, :renderer => "FacebookLinkRenderer"
-.properties= render :partial => 'deal', :collection => collection, :as => :resource
-= will_paginate collection, :renderer => "FacebookLinkRenderer"
-= only_page(collection)
+= render 'deals'

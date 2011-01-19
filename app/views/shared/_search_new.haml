@@ -157,8 +157,6 @@
   }
   
   function renderSearchResult(data){
-    $('.properties').html(data);
-    $('.submenu li:first a').html('Results');
     clearOverlays();
     var bounds = new google.maps.LatLngBounds();
     //mark center
@@ -187,17 +185,15 @@
   }
   
   function ajaxSearch(){
-    if($('.properties')[0]){
-      var form = $('#search-form');
-      if($("#search").val() == 'Search Thousands of Vacation Rentals'){
-        $("#search").val('');
-      }
-      $.get(form.attr('action'), form.serialize(), function(data){
-        renderSearchResult(data);
-        FB.XFBML.parse($('.properties')[0]);
-        parseAvailabilityButtons();
-      }, 'script')
+    var form = $('#search-form');
+    if($("#search").val() == 'Search Thousands of Vacation Rentals'){
+      $("#search").val('');
     }
+    $.get(form.attr('action'), form.serialize(), function(data){
+      renderSearchResult();
+      FB.XFBML.parse($('.properties')[0]);
+      parseAvailabilityButtons();
+    }, 'script')
   }
 
   $(document).ready(function() {
@@ -361,10 +357,17 @@
       }
     }
     
-    $('.remote-search-logic').click(function(){
-      if($('.properties')[0]){
-        ajaxSearch();
-        return false;
-      }
+    $('#search').blur(function(){
+      ajaxSearch();
+    })
+    $('#search-form input:radio').change(function(){
+      ajaxSearch();
+    })
+    $("#search_start_date, #search_end_date").blur(function(){
+      ajaxSearch();
+    })    
+    $('#search-form').submit(function(){
+      ajaxSearch();
+      return false;
     })
   });

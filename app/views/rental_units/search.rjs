@@ -1,0 +1,4 @@
+page << "$('#content').html(#{render(:partial => 'properties').dump});"
+page << "$('.submenu').html(#{render(:partial => 'submenu').dump});"
+page << "$('#menu li').removeClass('current');"
+page << "$('#menu li:first').addClass('current');"
