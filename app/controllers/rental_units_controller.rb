@@ -100,7 +100,10 @@ class RentalUnitsController < ApplicationController
   
   def search
     search_setup
-    render 'index'
+    respond_to do |format|
+      format.html{render 'index'}
+      format.js{render :partial => 'unit_rows'}
+    end
   end
   
   def store_last_comment

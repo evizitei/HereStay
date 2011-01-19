@@ -156,6 +156,10 @@
   }
   
 :javascript
+  var comment_handler = true;
+  function storeComment() {
+    $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
+  }
   $(document).ready(function(){
     (function(){
       var element = $("#map_canvas");

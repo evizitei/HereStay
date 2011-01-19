@@ -1,4 +1,4 @@
-.property
+.property{:data_lat => unit_row.lat, :data_lng => unit_row.lng}
   .left-column
     - if unit_row.has_video? && unit_row.video.completed?
       .picture{:style => "background: url(http://i.ytimg.com/vi/#{unit_row.video.youtube_id}/default.jpg)"}

@@ -132,14 +132,7 @@ function timedRefresh(timeoutPeriod) {
   setTimeout("location.reload(true);",timeoutPeriod);
 }
 
-$(document).ready(function() {
-  
-  $("#search").textPlaceholder();
-  
-  /* Initial new message poll */
-  checkNewMessages();
-  
-  /* Initial clue Tips */
+function parseAvailabilityButtons(){
   $('a.availabilities_button').cluetip({
     showTitle: false,
     width: 240,
@@ -159,6 +152,17 @@ $(document).ready(function() {
     })
     return false; 
   })
+  
+}
+
+$(document).ready(function() {
+  
+  $("#search").textPlaceholder();
+  
+  /* Initial new message poll */
+  checkNewMessages();
+  
+  parseAvailabilityButtons();
   
   /* Initial clue Tips */
   $('a.clueTip').cluetip({
