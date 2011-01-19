@@ -42,6 +42,11 @@
             %td= @rental_unit.weekly_low_price ? "$#{@rental_unit.weekly_low_price}" : 'N/A'
                   
   .clearfix
+  - if @rental_unit.photos.present?
+    %ul.photos.thumb
+      - @rental_unit.photos.each do |photo|
+        %li.photo
+          = image_tag photo.picture.url(:thumb)
   .amenities 
     = form_for @rental_unit do |f|
       .left-col
@@ -119,6 +124,37 @@
       %fb:comments{:xid => "here_stay_unit_#{@rental_unit.id}", :canpost => "true", :candelete => "false", :showform=> "true", :send_notification_uid => @rental_unit.fb_user_id, :width => 380, :numposts => 4, :notify => "true", :url => @rental_unit.fb_url}
   .clearfix
 
+:css
+  ul.thumb {
+  	float: left;
+  	list-style: none;
+  	margin: 0; 
+  	padding: 20px;
+  	padding-bottom: 15px;
+  	width: 480px;
+  }
+  ul.thumb li {
+  	margin: 0; padding: 5px;
+  	float: left;
+  	position: relative;  /* Set the absolute positioning base coordinate */
+  	width: 110px;
+  	height: 110px;
+  }
+  ul.thumb li img {
+  	width: 100px; height: 100px; /* Set the small thumbnail size */
+  	-ms-interpolation-mode: bicubic; /* IE Fix for Bicubic Scaling */
+  	border: 1px solid #ddd;
+  	padding: 5px;
+  	background: #f0f0f0;
+  	position: absolute;
+  	left: 0; top: 0;
+  }
+  ul.thumb li img.hover {
+    background: white;
+    // background:url(thumb_bg.png) no-repeat center center;  /* Image used as background on hover effect
+  	border: none; /* Get rid of border on hover */
+  }
+  
 :javascript
   $(document).ready(function(){
     (function(){
@@ -137,4 +173,34 @@
     function storeComment() {
       $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
     }
+    
+    $("ul.thumb li").hover(function() {
+    	$(this).css({'z-index' : '10'}); /*Add a higher z-index value so this image stays on top*/ 
+      $(this).find('img').attr('src', $(this).find('img').attr('src').replace('thumb', 'medium'));
+    	$(this).find('img').addClass("hover").stop() /* Add class of "hover", then stop animation queue buildup*/
+    		.animate({
+    			marginTop: '-110px', /* The next 4 lines will vertically align this image */ 
+    			marginLeft: '-110px',
+    			top: '50%',
+    			left: '50%',
+          // width: '174px', /* Set new width */
+          // height: '174px', /* Set new height */
+          width: '200px', /* Set new width */
+          height: '200px', /* Set new height */
+    			padding: '5px'
+    		}, 200); /* this value of "200" is the speed of how fast/slow this hover animates */
+    	} , function() {
+    	$(this).css({'z-index' : '0'}); /* Set z-index back to 0 */
+      // $(this).find('img').attr('src', $(this).find('img').attr('src').replace('medium', 'thumb'));
+    	$(this).find('img').removeClass("hover").stop()  /* Remove the "hover" class , then stop animation queue buildup*/
+    		.animate({
+    			marginTop: '0', /* Set alignment back to default */
+    			marginLeft: '0',
+    			top: '0',
+    			left: '0',
+          width: '100px', /* Set width back to default */
+          height: '100px', /* Set height back to default */
+    			padding: '5px'
+    		}, 400);
+    });
   });
