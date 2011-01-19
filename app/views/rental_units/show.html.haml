@@ -120,6 +120,10 @@
   .clearfix
 
 :javascript
+  var comment_handler = true;
+  function storeComment() {
+    $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
+  }
   $(document).ready(function(){
     (function(){
       var element = $("#map_canvas");
@@ -132,9 +136,4 @@
         $("#map_canvas").html("<h1>Sorry, cannot map this address</h1>");
       }      
     })();
-    
-    var comment_handler = true;
-    function storeComment() {
-      $.post('#{store_last_comment_rental_unit_url(@rental_unit)}');
-    }
   });
