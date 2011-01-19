@@ -43,10 +43,18 @@
                   
   .clearfix
   - if @rental_unit.photos.present?
-    %ul.photos.thumb
-      - @rental_unit.photos.each do |photo|
-        %li.photo
-          = image_tag photo.picture.url(:thumb)
+    %ul.photos.thumb      
+      - i = 0
+      - @rental_unit.photos.each_slice 4 do |photos|
+        %div.photo{:class => i == 0 ? 'current' : ''}
+          - photos.each do |photo|
+            %li
+              = image_tag photo.picture.url(:thumb)                
+        - i = i + 1
+      %div.navigation{:style => 'clear: both;'}
+        = link_to 'Prev', '#', :class => 'prev'
+        |  
+        = link_to 'Next', '#', :class => 'next'
   .amenities 
     = form_for @rental_unit do |f|
       .left-col
@@ -133,6 +141,15 @@
   	padding-bottom: 15px;
   	width: 480px;
   }
+  ul.thumb div {
+    display: none;
+  }
+  ul.thumb div.current, ul.thumb div.navigation {
+    display: block;
+  }  
+  ul.thumb div.navigation {
+    text-align: center;
+  }
   ul.thumb li {
   	margin: 0; padding: 5px;
   	float: left;
@@ -207,4 +224,20 @@
     			padding: '5px'
     		}, 400);
     });
+    
+    $('ul.photos.thumb a.prev').click(function() {
+      var current = $('ul.photos.thumb div.current');
+      if (current.prev().hasClass('photo')) {
+        current.removeClass('current');
+        current.prev().addClass('current');
+      }
+    });
+    
+    $('ul.photos.thumb a.next').click(function() {
+      var current = $('ul.photos.thumb div.current');
+      if (current.next().hasClass('photo')) {
+        current.removeClass('current');
+        current.next().addClass('current');
+      }
+    });    
   });
