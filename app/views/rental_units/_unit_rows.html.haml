@@ -1,5 +1,11 @@
-= only_page(collection)
-= will_paginate(collection,:renderer=>"FacebookLinkRenderer")
-= render :partial => 'unit_row', :collection => collection
-= will_paginate(collection,:renderer=>"FacebookLinkRenderer", :outer_window => 0)
-= only_page(collection)
+- if collection.size > 0
+  = only_page(collection)
+  = will_paginate(collection,:renderer=>"FacebookLinkRenderer")
+  = render :partial => 'unit_row', :collection => collection
+  = will_paginate(collection,:renderer=>"FacebookLinkRenderer", :outer_window => 0)
+  = only_page(collection)
+-else
+  %h3.empty-result 
+    There are no properties
+    - if controller.action_name == 'search'
+      for these search parameters
