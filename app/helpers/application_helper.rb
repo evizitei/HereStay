@@ -55,7 +55,7 @@ module ApplicationHelper
   
   def only_page(collection)
     if collection.total_pages == 1
-      '1 of 1 page'
+      'Page 1 of 1'
     end
   end
       
