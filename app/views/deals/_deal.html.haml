@@ -1,4 +1,4 @@
-.property
+.property{:data_lat => resource.rental_unit.lat, :data_lng => resource.rental_unit.lng}
   .left-column
     -if resource.rental_unit.primary_photo && resource.rental_unit.primary_photo.picture.file?
       .picture

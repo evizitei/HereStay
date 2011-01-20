@@ -1,0 +1,5 @@
+%ul
+  %li.current= link_to (controller.action_name == 'search' ? 'Results' : 'Featured'), collection_url
+  %li= link_to 'Deals', deals_path
+  %li= link_to 'Auction', auction_root_path
+.clearfix
