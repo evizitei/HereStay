@@ -231,6 +231,7 @@
         current.removeClass('current');
         current.prev().addClass('current');
       }
+      return false;
     });
     
     $('ul.photos.thumb a.next').click(function() {
@@ -239,5 +240,6 @@
         current.removeClass('current');
         current.next().addClass('current');
       }
+      return false;
     });    
   });
